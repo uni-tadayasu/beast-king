@@ -1,12 +1,12 @@
 /**
  * ビーストキング — The First Chronicle
- * Original, deterministic 1,024-card core set. All rules text corresponds to
+ * Original, deterministic 1,024-card core set + 128 fusion cards. All rules text corresponds to
  * effects implemented in engine.js; no network, randomized content, or filler IDs.
  */
-export const ELEMENTS = Object.freeze([
+const CARD_SERIES = Object.freeze([
   { id: 'dawn', name: '星光', color: '#e9c475', glyph: '✦', description: '星を冠する守護者。結界と回復で、揺るがない戦線を築く。' },
   { id: 'tide', name: '蒼海', color: '#72cce8', glyph: '◈', description: '記憶を湛えた深海。手札を整え、静かな波で勝機を引き寄せる。' },
-  { id: 'ember', name: '紅炎', color: '#ef8b69', glyph: '✹', description: '消えない心火の眷属。烈火と速攻で、相手のコアを追い詰める。' },
+  { id: 'ember', name: '紅炎', color: '#ef8b69', glyph: '✹', description: '消えない心火の眷属。烈火と速攻で、相手のハートポイントを追い詰める。' },
   { id: 'gale', name: '風嵐', color: '#80d3c1', glyph: '❋', description: '空路を駆ける自由な翼。速さと手数で、戦場の流れをつかむ。' },
   { id: 'grove', name: '翠樹', color: '#a9cf7c', glyph: '❧', description: '忘れられた森の盟約。癒やしと強化を重ね、命を大きく育てる。' },
   { id: 'stone', name: '地晶', color: '#d4b18a', glyph: '◇', description: '大地に眠る不動の意志。厚い守護と結界で、敵の攻勢を受け止める。' },
@@ -14,10 +14,31 @@ export const ELEMENTS = Object.freeze([
   { id: 'aether', name: '霊機', color: '#99b9f7', glyph: '⌘', description: '想いで動く古代の機構。知恵と連携で、未来の一手を組み上げる。' },
 ].map(Object.freeze));
 
-export const TYPE_LABELS = Object.freeze({ beast: '魔獣', miracle: 'ミラクル', gimmick: 'ギミック' });
+const ORIGIN_MAP = Object.freeze({ dawn: 'flower', tide: 'river', ember: 'seed', gale: 'grass', grove: 'tree', stone: 'mountain', dusk: 'seed', aether: 'grass' });
+export const ORIGINS = Object.freeze([
+  { id: 'mountain', name: '山', color: '#bca789', glyph: '▲', description: '山の不動の力。守護と結界で、揺るがない戦線を築く。' },
+  { id: 'river', name: '川', color: '#75c8e6', glyph: '≈', description: '川の流れを読む知恵。回復と手札補給で、次の一手を整える。' },
+  { id: 'seed', name: '種', color: '#dcc17e', glyph: '◉', description: '種に眠る可能性。ダメージと吸収を重ね、勝機を育てる。' },
+  { id: 'grass', name: '草', color: '#8dce89', glyph: '❧', description: '草のしなやかな生命力。速さと連携で、戦場の流れを動かす。' },
+  { id: 'flower', name: '花', color: '#e6a4be', glyph: '✿', description: '花ひらく守りの力。守護と回復を組み合わせ、味方を支える。' },
+  { id: 'tree', name: '木', color: '#a2bc7d', glyph: '♧', description: '木々が重ねる生命の力。回復と強化で、戦線を大きく育てる。' },
+].map(Object.freeze));
+// Preserve the existing UI/engine import while exposing exactly six origins.
+export const ELEMENTS = ORIGINS;
+
+export const TYPE_LABELS = Object.freeze({ beast: '魔獣', miracle: 'ミラクル', gimmick: 'ギミック', fusion: '合成魔獣' });
+export const FUSION_CARD_ID = 'M0256';
+export const POINT_SCALE = 100;
+export const FUSION_MATERIAL_BONUS = 100;
 export const RARITY_ORDER = Object.freeze(['N', 'R', 'KR', 'KKR', 'GR', 'GGR']);
 export const RARITY_LABELS = Object.freeze({ N: 'ノーマル', R: 'レア', KR: 'キラレア', KKR: 'キラキラレア', GR: 'ギラレア', GGR: 'ギラギラレア' });
 export const KEYWORD_LABELS = Object.freeze({ guard: '守護', rush: '速攻', drain: '吸収' });
+export const MODEL_LABELS = Object.freeze({ attack: 'アタック型', defense: 'ディフェンス型' });
+export const SUBTYPE_LABELS = Object.freeze({ power: '威力カード', regeneration: '再生カード', reflection: '反射カード', support: '魔獣サポートカード' });
+export const MODEL_DESCRIPTIONS = Object.freeze({
+  attack: 'アタック型：相手の魔獣の攻撃を受けると、守備力にかかわらず消滅してお墓ゾーンへ移動する。持ち主のハートポイントは相手の攻撃力分を全て受ける。結界では軽減できず、反撃もしない。',
+  defense: 'ディフェンス型：相手の攻撃力が守備力以下なら生存し、守備力も持ち主のハートポイントも減らない。攻撃力が守備力を上回ると消滅してお墓ゾーンへ移動し、持ち主のハートポイントは超過分だけ減る。結界では軽減できず、反撃もしない。',
+});
 
 const REALMS = [
   {
@@ -121,11 +142,25 @@ const REALMS = [
 const KEYWORD_TEXT = {
   guard: '守護：相手は守護を持つ魔獣を先に攻撃しなければならない。',
   rush: '速攻：召喚したターンから攻撃できる。',
-  drain: '吸収：戦闘で実際に与えたダメージ分、自分のコアを回復する。',
+  drain: '吸収：戦闘で相手のハートポイントを実際に減らした分、自分のハートポイントを回復する。',
 };
 const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
 const idFor = (prefix, index) => `${prefix}${String(index + 1).padStart(4, '0')}`;
-const freezeCard = (card) => Object.freeze({ ...card, effect: Object.freeze(card.effect), keywords: Object.freeze(card.keywords) });
+const freezeCard = card => {
+  const kind = card.effect.kind;
+  const value = ['none', 'draw', 'fusion'].includes(kind) ? card.effect.value : card.effect.value * POINT_SCALE;
+  const effect = Object.freeze({ kind, value });
+  let text = card.text;
+  if (card.type === 'beast') text = beastText(kind, value, card.keywords);
+  else if (card.type === 'fusion') text = `特殊デッキから「合成」で召喚。素材2枚目以降、1枚につき攻撃力・守備力+${FUSION_MATERIAL_BONUS}。` + beastText(kind, value, card.keywords);
+  else if (card.type === 'miracle' && kind !== 'fusion') text = miracleText(kind, value);
+  else if (card.type === 'gimmick') text = gimmickText(kind, value);
+  const origin = ORIGIN_MAP[card.element];
+  const model = card.type === 'beast' || card.type === 'fusion' ? (card.model || (card.keywords.includes('guard') || card.hp > card.attack ? 'defense' : 'attack')) : null;
+  const subtype = card.type === 'miracle' ? (['damage_enemy','draw','buff','sweep'].includes(kind) ? 'power' : 'regeneration') : card.type === 'gimmick' ? (['ambush','barrier'].includes(kind) ? 'reflection' : 'support') : null;
+  if (model) text += ' ' + MODEL_DESCRIPTIONS[model];
+  return Object.freeze({ ...card, ...(model ? { model } : {}), ...(subtype ? { subtype } : {}), series: card.element, element: origin, origin, attack: card.attack * POINT_SCALE, hp: card.hp * POINT_SCALE, effect, text, keywords: Object.freeze(card.keywords) });
+};
 const TIER_RARITIES = Object.freeze(['N', 'N', 'R', 'KR', 'KR', 'KKR', 'GR', 'GGR']);
 const rarityForTier = tier => TIER_RARITIES[tier];
 
@@ -133,17 +168,17 @@ function beastText(kind, value, keywords) {
   const rules = {
     none: '召喚時の効果はない。',
     draw: `召喚時、カードを${value}枚引く。手札が4枚に達したら、それ以上は引かない。`,
-    heal: `召喚時、自分のコアを${value}回復する。`,
-    damage_core: `召喚時、相手のコアに${value}ダメージ。`,
+    heal: `召喚時、自分のハートポイントを${value}回復する。`,
+    damage_core: `召喚時、相手のハートポイントに${value}ダメージ。`,
     buff_all: `召喚時、自身を含む味方の魔獣すべての攻撃力を${value}上げる。`,
-    shield: `召喚時、自分のコアに結界${value}を加える。結界はコアへのダメージを吸収する。`,
+    shield: `召喚時、自分のハートポイントに結界${value}を加える。結界はハートポイントへのダメージを吸収する（魔獣への攻撃で持ち主が受けるダメージを除く）。`,
   };
   return [rules[kind], ...keywords.map(k => KEYWORD_TEXT[k])].join(' ');
 }
 
 function makeBeasts() {
   const result = [];
-  ELEMENTS.forEach((element, e) => {
+  CARD_SERIES.forEach((element, e) => {
     const realm = REALMS[e];
     for (let tier = 0; tier < 8; tier++) for (let variant = 0; variant < 8; variant++) {
       const local = tier * 8 + variant;
@@ -160,7 +195,7 @@ function makeBeasts() {
       const hp = clamp(cost + 2 - (variant % 3) - (tax % 2) - (keywords.includes('rush') ? 1 : 0) + (keywords.includes('guard') ? 1 : 0), 1, 10);
       let card = {
         id: idFor('B', index), index: index + 1, name: `${realm.tiers[tier]}${realm.breeds[variant]} ${realm.names[variant]}`,
-        type: 'beast', element: element.id, cost, rarity: rarityForTier(tier, variant), attack, hp,
+        type: 'beast', category: 'beast', element: element.id, cost, rarity: rarityForTier(tier, variant), attack, hp,
         effect: { kind, value }, keywords, text: beastText(kind, value, keywords),
         flavor: realm.lore, art: e * 2 + (variant % 2),
       };
@@ -173,10 +208,16 @@ function makeBeasts() {
           effect: { kind: championKind, value: championValue }, keywords: championKeywords[e],
           text: beastText(championKind, championValue, championKeywords[e]), art: e * 2 };
       }
-      result.push(freezeCard(card));
+      result.push(card);
     }
   });
-  return result;
+  const defenseIds = new Set();
+  for (let series = 0; series < 8; series++) {
+    const score = c => (c.keywords.includes('guard') ? 1000 : 0) + (c.hp - c.attack) * 100 + c.hp * 10;
+    const ordered = result.slice(series * 64, (series + 1) * 64).sort((a,b) => score(b) - score(a) || a.index - b.index);
+    ordered.slice(0,32).forEach(c => defenseIds.add(c.id));
+  }
+  return result.map(card => freezeCard({ ...card, model: defenseIds.has(card.id) ? 'defense' : 'attack' }));
 }
 
 const MIRACLE_KINDS = ['damage_enemy', 'heal', 'draw', 'buff', 'sweep', 'shield', 'drain', 'renew'];
@@ -195,28 +236,34 @@ function miracleStats(kind, rank, element) {
 }
 function miracleText(kind, value) {
   return {
-    damage_enemy: `敵の魔獣1体、または相手のコアに${value}ダメージ。`,
-    heal: `自分のコアを${value}回復する。コアの上限は30。`,
+    damage_enemy: `敵の魔獣1体の守備力を${value}減らすか、相手のハートポイントに${value}ダメージ。`,
+    heal: `自分のハートポイントを${value}回復する。ハートポイントの上限は5000。`,
     draw: `カードを${value}枚引く。手札が4枚に達したら、それ以上は引かない。`,
-    buff: `味方の魔獣1体の攻撃力・現在体力・最大体力をそれぞれ${value}上げる。`,
-    sweep: `敵の魔獣すべてに${value}ダメージ。`,
-    shield: `自分のコアに結界${value}を加える。結界はコアへのダメージを吸収する。`,
-    drain: `相手のコアに${value}ダメージ。実際に与えたダメージ分、自分のコアを回復する。`,
-    renew: `味方の魔獣すべての体力を${value}回復する。それぞれの最大体力を超えない。`,
+    buff: `味方の魔獣1体の攻撃力・現在守備力・最大守備力をそれぞれ${value}上げる。`,
+    sweep: `敵の魔獣すべての守備力を${value}減らす。`,
+    shield: `自分のハートポイントに結界${value}を加える。結界はハートポイントへのダメージを吸収する（魔獣への攻撃で持ち主が受けるダメージを除く）。`,
+    shield_heal: `自分のハートポイントを${value}回復し、結界${value}を加える。回復上限は5000。結界はハートポイントへのダメージを吸収する（魔獣への攻撃で持ち主が受けるダメージを除く）。`,
+    drain: `相手のハートポイントに${value}ダメージ。実際に与えたダメージ分、自分のハートポイントを回復する。`,
+    renew: `味方の魔獣すべての守備力を${value}回復する。それぞれの最大守備力を超えない。`,
   }[kind];
 }
 function makeMiracles() {
   const result = [];
-  ELEMENTS.forEach((element, e) => {
+  CARD_SERIES.forEach((element, e) => {
     const realm = REALMS[e];
     for (let rank = 0; rank < 4; rank++) MIRACLE_KINDS.forEach((kind, k) => {
       const index = e * 32 + rank * 8 + k;
       const { cost, value } = miracleStats(kind, rank, element.id);
+      const id = idFor('M', index);
+      const fusionSpell = id === FUSION_CARD_ID;
+      const resolvedKind = kind === 'shield' ? 'shield_heal' : kind;
       result.push(freezeCard({
-        id: idFor('M', index), index: 513 + index, name: `${realm.prefixes[rank]}の${realm.miracle[k]}`,
-        type: 'miracle', element: element.id, cost, rarity: rank === 3 && k >= 6 ? (k === 6 ? 'GR' : 'GGR') : ['N', 'R', 'KR', 'KKR'][rank], attack: 0, hp: 0,
-        effect: { kind, value }, keywords: [], text: miracleText(kind, value),
-        flavor: `${element.name}の願いが、一瞬を奇跡に変える。`, art: 16 + (k % 4),
+        id, index: 513 + index, name: fusionSpell ? '合成' : `${realm.prefixes[rank]}の${realm.miracle[k]}`,
+        type: 'miracle', element: element.id, cost: fusionSpell ? 3 : cost,
+        rarity: fusionSpell ? 'R' : rank === 3 && k >= 6 ? (k === 6 ? 'GR' : 'GGR') : ['N', 'R', 'KR', 'KKR'][rank], attack: 0, hp: 0,
+        effect: fusionSpell ? { kind: 'fusion', value: 0 } : { kind: resolvedKind, value }, keywords: [],
+        text: fusionSpell ? '自分の手持ち・出場ゾーン・お墓ゾーンから魔獣カード（合成魔獣を含む）を1枚以上選び、すべて異世界ゾーンへ送る。1つのゾーンだけでも、混合でもよい。特殊ゾーンの特殊デッキから合成魔獣1体を召喚する。素材2枚目以降、1枚につき攻撃力・守備力+100。追加エーテルは不要。' : miracleText(resolvedKind, value),
+        flavor: fusionSpell ? '重ねた命の記憶が、まだ見ぬ姿を結ぶ。' : `${element.name}の願いが、一瞬を奇跡に変える。`, art: fusionSpell ? 18 : 16 + (k % 4),
       }));
     });
   });
@@ -226,20 +273,21 @@ function makeMiracles() {
 const GIMMICK_KINDS = ['ambush', 'barrier', 'spring', 'fountain'];
 function gimmickStats(kind, rank, element) {
   const bonus = kind === 'ambush' && element === 'dusk' || kind === 'barrier' && element === 'dawn' ? 1 : 0;
-  const value = kind === 'ambush' ? 2 + rank + bonus : kind === 'barrier' ? 3 + rank * 2 + bonus : kind === 'spring' ? 2 + rank * 2 : 4 + rank * 2;
+  const value = kind === 'ambush' ? 2 + rank + bonus : kind === 'barrier' ? 3 + rank * 2 + bonus : kind === 'spring' ? 1 + Math.floor(rank / 3) : 4 + rank * 2;
   return { cost: kind === 'spring' ? Math.min(8, 1 + rank) : 1 + rank, value };
 }
 function gimmickText(kind, value) {
   return {
-    ambush: `相手の魔獣が攻撃した時、攻撃した魔獣に${value}ダメージ。倒した場合はその攻撃を止める。発動後、墓地へ送る。`,
-    barrier: `自分のコアが攻撃された時、その攻撃のダメージを${value}軽減する。発動後、墓地へ送る。`,
-    spring: `次の自分のターン開始時、自分のコアに結界${value}を加える。結界はコアへのダメージを吸収する。発動後、墓地へ送る。`,
-    fountain: `次の自分のターン開始時、自分のコアを${value}回復する。発動後、墓地へ送る。`,
+    ambush: `相手の魔獣が攻撃した時、攻撃した魔獣に${value}の反射ダメージ。消滅させた場合はその攻撃を止める。発動後、お墓ゾーンへ送る。`,
+    barrier: `自分のハートポイントが直接攻撃された時、そのダメージを${value}軽減し、軽減した分を攻撃した魔獣へ反射する。攻撃した魔獣が消滅した場合、残りの攻撃も止める。発動後、お墓ゾーンへ送る。`,
+    spring: `次の自分のターン開始時、味方の魔獣すべての攻撃力・現在守備力・最大守備力をそれぞれ${value}上げる。発動後、お墓ゾーンへ送る。`,
+    fountain: `次の自分のターン開始時、味方の魔獣すべての守備力を${value}回復する。それぞれの最大守備力を超えない。発動後、お墓ゾーンへ送る。`,
   }[kind];
 }
+
 function makeGimmicks() {
   const result = [];
-  ELEMENTS.forEach((element, e) => {
+  CARD_SERIES.forEach((element, e) => {
     const realm = REALMS[e];
     for (let rank = 0; rank < 8; rank++) GIMMICK_KINDS.forEach((kind, k) => {
       const index = e * 32 + rank * 4 + k;
@@ -255,40 +303,83 @@ function makeGimmicks() {
   return result;
 }
 
-export const CARDS = Object.freeze([...makeBeasts(), ...makeMiracles(), ...makeGimmicks()]);
+const FUSION_REALMS = [
+  { tiers: ['双星', '聖環', '天穹', '極光'], breeds: ['双翼竜', '冠獅鷲', '星詠獣', '天輪凰'], names: ['アステリオン', 'レオセレス', 'ミラルシア', 'フェリオル'] },
+  { tiers: ['澄潮', '蒼環', '海淵', '悠洋'], breeds: ['潮牙竜', '海麟鯨', '珊翼獣', '渦冠蛇'], names: ['マレノア', 'ネレクシス', 'リュアネア', 'オルセイア'] },
+  { tiers: ['双炎', '赫環', '灼天', '恒焔'], breeds: ['熔牙獅', '焔翼竜', '紅蓮凰', '火冠狼'], names: ['ヴァルセオ', 'イグネリア', 'フェニオル', 'グレンシア'] },
+  { tiers: ['双嵐', '風環', '天翔', '蒼極'], breeds: ['翼角獣', '雷冠鷲', '雲駆竜', '風輪馬'], names: ['シルヴェリア', 'ライオルネ', 'アエルディス', 'スフィリア'] },
+  { tiers: ['双芽', '翠環', '万緑', '永樹'], breeds: ['花冠鹿', '樹翼竜', '森羅獅', '命輪獣'], names: ['フィオルネ', 'アルヴェリア', 'セレヴァン', 'フロレティア'] },
+  { tiers: ['双晶', '鋼環', '山岳', '万象'], breeds: ['鉱翼竜', '地冠亀', '晶角牛', '岩輪獅'], names: ['バサルディア', 'ジオグラン', 'クォルディス', 'ガルゼリア'] },
+  { tiers: ['双月', '幽環', '冥夜', '永宵'], breeds: ['夜翼豹', '影冠竜', '月蝕狐', '夢輪鴉'], names: ['ノクレシア', 'ヴェスティア', 'ツキハルカ', 'ソムネリス'] },
+  { tiers: ['双軸', '霊環', '天律', '無窮'], breeds: ['機翼竜', '星炉獣', '響冠兵', '時輪鳥'], names: ['オルフィリア', 'クロネルガ', 'ギアレシス', 'ティクノア'] },
+];
+const FUSION_RARITIES = ['N', 'N', 'R', 'R', 'KR', 'KR', 'KR', 'KKR', 'KKR', 'KKR', 'GR', 'GR', 'GGR', 'GGR', 'GGR', 'GGR'];
+function makeFusions() {
+  const result = [];
+  CARD_SERIES.forEach((element, e) => {
+    const realm = REALMS[e], fusion = FUSION_REALMS[e];
+    for (let rank = 0; rank < 4; rank++) for (let variant = 0; variant < 4; variant++) {
+      const local = rank * 4 + variant, index = e * 16 + local;
+      const kind = realm.effects[(rank * 2 + variant) % 8];
+      const value = kind === 'none' ? 0 : kind === 'heal' || kind === 'shield' ? 2 + rank : kind === 'damage_core' ? 1 + Math.floor(rank / 2) : 1;
+      const keywords = variant === 1 || (rank === 3 && variant === 0) ? ['guard'] : variant === 2 && (e === 2 || e === 3) ? ['rush'] : variant === 3 && e === 6 ? ['drain'] : [];
+      result.push(freezeCard({
+        id: idFor('F', index), index: 1025 + index,
+        name: `${fusion.tiers[rank]}${fusion.breeds[variant]} ${fusion.names[variant]}`,
+        type: 'fusion', category: 'beast', element: element.id, cost: 0, rarity: FUSION_RARITIES[local],
+        attack: 4 + rank, hp: 4 + (rank + variant + 1) % 4,
+        effect: { kind, value }, keywords,
+        text: '特殊デッキから「合成」で召喚。素材2枚目以降、1枚につき攻撃力・守備力+100。' + beastText(kind, value, keywords),
+        flavor: `${element.name}の記憶がひとつになり、新たな王獣の名を刻む。`, art: 24 + e * 2 + (variant % 2),
+      }));
+    }
+  });
+  return result;
+}
+
+export const CARDS = Object.freeze([...makeBeasts(), ...makeMiracles(), ...makeGimmicks(), ...makeFusions()]);
 export const CARD_MAP = new Map(CARDS.map(card => [card.id, card]));
 export const getCard = id => CARD_MAP.get(id);
-export const DECK_MIN = 32;
-export const DECK_MAX = CARDS.length * 3;
+export const DECK_SIZE = 32;
+export const DECK_MIN = DECK_SIZE;
+export const DECK_MAX = DECK_SIZE;
+export const SPECIAL_DECK_SIZE = 4;
 
-export function validateDeck(ids) {
+function validateCardList(ids, size, types, label) {
   const errors = [];
-  if (!Array.isArray(ids)) return { valid: false, errors: ['デッキの形式が正しくありません。'] };
-  if (ids.length < DECK_MIN) errors.push(`デッキには最低${DECK_MIN}枚必要です（現在${ids.length}枚）。`);
+  if (!Array.isArray(ids)) return { valid: false, errors: [`${label}の形式が正しくありません。`] };
+  if (ids.length !== size) errors.push(`${label}は${size}枚ちょうどで構成してください（現在${ids.length}枚）。`);
   const counts = new Map();
   for (const id of ids) {
-    if (typeof id !== 'string' || !CARD_MAP.has(id)) {
+    const card = typeof id === 'string' ? CARD_MAP.get(id) : undefined;
+    if (!card) {
       if (!errors.includes('収録されていないカードが含まれています。')) errors.push('収録されていないカードが含まれています。');
       continue;
+    }
+    if (!types.includes(card.type)) {
+      const error = label === '特殊デッキ' ? '特殊デッキには合成魔獣だけを入れてください。' : '合成魔獣は特殊デッキに入れてください。';
+      if (!errors.includes(error)) errors.push(error);
     }
     counts.set(id, (counts.get(id) || 0) + 1);
   }
   for (const [id, count] of counts) if (count > 3) errors.push(`${getCard(id).name}は3枚までです（現在${count}枚）。`);
   return { valid: errors.length === 0, errors };
 }
+export const validateDeck = ids => validateCardList(ids, DECK_SIZE, ['beast', 'miracle', 'gimmick'], 'メインデッキ');
+export const validateSpecialDeck = ids => validateCardList(ids, SPECIAL_DECK_SIZE, ['fusion'], '特殊デッキ');
 
 const STARTER_INFO = [
-  ['star-crown', '星冠の契約', '守護と結界で、星冠竜へつなぐ', '守護の魔獣と結界でコアを守り、星冠竜 アストレイアと共に攻め返す。迷ったらこのデッキから。'],
+  ['star-crown', '星冠の契約', '守護と結界で、星冠竜へつなぐ', '守護の魔獣と結界でハートポイントを守り、星冠竜 アストレイアと共に攻め返す。迷ったらこのデッキから。'],
   ['azure-memory', '蒼海の記憶', '手札を整え、波を味方に', '海詠鯨 ネレシアが手札を補充。豊富な選択肢で相手の攻勢を受け流す。'],
-  ['crimson-pulse', '紅炎の鼓動', '烈火と速攻で、一気に攻める', '速攻の魔獣とコアへの火力が主役。焔帝狼 ヴェルガで最後の一撃を狙う。'],
+  ['crimson-pulse', '紅炎の鼓動', '烈火と速攻で、一気に攻める', '速攻の魔獣とハートポイントへの火力が主役。焔帝狼 ヴェルガで最後の一撃を狙う。'],
   ['sky-promise', '風嵐の約束', '速さと手数で、先手を取る', '小さな魔獣で道を開き、空翔鷹 シルファが追撃。軽快な展開を楽しめる。'],
   ['verdant-pact', '翠樹の盟約', '癒やし、育てる、生命の連携', '回復と魔獣強化で盤面を維持。森霊鹿 フィオリアと長い勝負を制する。'],
-  ['crystal-oath', '地晶の誓約', '揺るがない砦から反撃する', '高体力の守護と結界で耐える。晶砦亀 バサルガが戦線を支える堅守型。'],
+  ['crystal-oath', '地晶の誓約', '揺るがない砦から攻勢に出る', '高守備力の守護と結界で耐える。晶砦亀 バサルガが戦線を支える堅守型。'],
   ['moon-shadow', '宵闇の密約', '吸収と奇襲で、形勢を変える', '月影豹 ノクシアの吸収と伏せた罠が切り札。相手の攻撃を逆転のきっかけに。'],
   ['aether-future', '霊機の共鳴', '知恵を重ね、連携を組み上げる', 'ドローで手札を回し、霊機兵 オルフェンで味方を一斉強化。展開を重視する。'],
 ];
 
-export const STARTER_DECKS = Object.freeze(ELEMENTS.map((element, e) => {
+export const STARTER_DECKS = Object.freeze(CARD_SERIES.map((element, e) => {
   const b = local => idFor('B', e * 64 + local);
   const m = local => idFor('M', e * 32 + local);
   const g = local => idFor('G', e * 32 + local);
@@ -296,12 +387,14 @@ export const STARTER_DECKS = Object.freeze(ELEMENTS.map((element, e) => {
   const ids = beastLocals.flatMap(n => [b(n), b(n)]).concat(b(0), b(47));
   // Low-cost answers, one draw tool, and a faction-flavoured second-rank option.
   const themeSpell = [5, 1, 0, 4, 7, 5, 6, 3][e];
-  for (const local of [0, 2, 3, 8 + themeSpell]) ids.push(m(local), m(local));
+  for (const local of [0, 3, 8 + themeSpell]) ids.push(m(local), m(local));
+  ids.push(FUSION_CARD_ID, FUSION_CARD_ID);
   // Every starter follows the requested 16 beasts / 8 miracles / 8 gimmicks.
   ids.push(g(0), g(0));
   for (const local of [1, 2, 3]) ids.push(g(local), g(local));
   const [id, name, subtitle, description] = STARTER_INFO[e];
-  return Object.freeze({ id, name, subtitle, description, element: element.id, ids: Object.freeze(ids) });
+  const specialIds = [0, 4, 8, 12].map(local => idFor('F', e * 16 + local));
+  return Object.freeze({ id, name, subtitle, description, series: element.id, element: ORIGIN_MAP[element.id], origin: ORIGIN_MAP[element.id], ids: Object.freeze(ids), specialIds: Object.freeze(specialIds) });
 }));
 
-export const CATALOG_VERSION = 1;
+export const CATALOG_VERSION = 2;

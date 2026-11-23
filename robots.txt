@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://uni-tadayasu.github.io/beast-king/sitemap.xml
+Sitemap: https://www.beast-king.com/sitemap.xml
