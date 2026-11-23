@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1795454343767,
+      "tag": "0000_beast_king_online",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1795455819337,
+      "tag": "0001_profile_origin",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1795458592710,
+      "tag": "0002_accounts_and_operator",
+      "breakpoints": true
+    }
+  ]
+}

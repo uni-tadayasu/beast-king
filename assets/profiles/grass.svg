@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <title>草のプロフィールアイコン</title>
+  <defs>
+    <radialGradient id="bg"><stop stop-color="#2e6540"/><stop offset="1" stop-color="#122d24"/></radialGradient>
+    <linearGradient id="metal" x2=".8" y2="1"><stop stop-color="#f5e4ae"/><stop offset=".45" stop-color="#a98d51"/><stop offset=".7" stop-color="#e7c985"/><stop offset="1" stop-color="#806d45"/></linearGradient>
+    <linearGradient id="blades" x2="0" y2="1"><stop stop-color="#d1edab"/><stop offset=".45" stop-color="#a0d588"/><stop offset="1" stop-color="#6aa36b"/></linearGradient>
+  </defs>
+  <path d="m128 9 103 59v120l-103 59-103-59V68Z" fill="url(#bg)" stroke="url(#metal)" stroke-width="4" stroke-linejoin="round"/>
+  <path d="m128 20 93 54v108l-93 54-93-54V74Z" fill="none" stroke="#d8c690" stroke-opacity=".3" stroke-width="1.5"/>
+  <circle cx="128" cy="127" r="82" fill="#113c2b" fill-opacity=".35" stroke="#a8d6a3" stroke-opacity=".16"/>
+  <g fill="url(#blades)" stroke="#d2eab3" stroke-opacity=".55" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M125 196c-13-48-12-91 15-135 4 55-8 93-8 135Z"/>
+    <path d="M119 196c-17-20-39-64-47-102 34 23 49 57 54 102Z"/>
+    <path d="M136 196c4-44 20-81 54-112-7 46-26 81-45 112Z"/>
+    <path d="M113 196c-23-7-42-23-54-46 29 8 46 24 60 46ZM145 196c17-28 35-41 55-45-13 28-30 43-55 45Z"/>
+  </g>
+  <path d="M103 198h49" stroke="#dfd8a1" stroke-opacity=".7" stroke-width="3" stroke-linecap="round"/>
+  <path d="m128 35 5 7-5 7-5-7Zm0 173 5 7-5 7-5-7Z" fill="#dcca91"/>
+</svg>

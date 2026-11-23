@@ -1,0 +1,145 @@
+/* The throne room: one continuous scene, with upright cards and a central battle seat. */
+.throne-home{--throne-ink:#081521;--throne-line:#6c82744d;--throne-gold:#d7bd87;--throne-glow:#a4e2d2;position:relative;min-width:0;color:#e4eae9}
+.throne-home .throne-scene{position:relative;isolation:isolate;overflow:hidden;min-width:0;padding:32px 30px 0;border:1px solid #75847740;border-radius:3px 34px 3px 34px;background:#0b1b28}
+.throne-home .throne-scene:before{content:'';position:absolute;inset:9px;border:1px solid #abb48e1a;border-radius:2px 26px 2px 26px;pointer-events:none;z-index:-1}
+.throne-home .throne-scenery{position:absolute;inset:0;z-index:-2;background:radial-gradient(ellipse at 50% 35%,#09212b30 0,#091927b8 56%,#0b1824 93%),linear-gradient(180deg,#07172530,#0a1b29c9 60%,#0c1b28),url('assets/hero-wide.webp') center top/auto 740px no-repeat;opacity:.9}
+.throne-home .throne-heading{position:absolute;left:34px;top:37px;width:238px;z-index:2}
+.throne-home .throne-overline{display:flex;align-items:center;gap:9px;color:#c8b785;font-size:9px;font-weight:600;letter-spacing:.19em;line-height:1.5}
+.throne-home .throne-overline>span{display:block;width:18px;height:1px;background:#bda875}
+.throne-home .throne-heading h1{margin-top:17px;font:500 clamp(30px,3.1vw,46px)/1.45 var(--serif);letter-spacing:.09em;color:#eeecdd;text-shadow:0 3px 28px #07131b}
+.throne-home .throne-heading h1 em{font-style:normal;color:#e5d3ab}
+.throne-home .throne-introduction{margin-top:15px;color:#a9bfc4;font-size:12px;line-height:1.85;letter-spacing:.04em}
+.throne-home .throne-folio{position:absolute;top:40px;right:35px;width:196px;padding-left:20px;border-left:1px solid #bba77452;z-index:2}
+.throne-home .throne-folio>span{display:block;color:#a6b8b9;font-size:8px;letter-spacing:.15em}
+.throne-home .throne-folio>strong{display:block;font:400 38px/1.25 Georgia,serif;letter-spacing:.02em;color:#e4d5b3;margin:8px 0}
+.throne-home .throne-folio small{font:500 8px/1.5 system-ui,sans-serif;margin-left:9px;letter-spacing:.15em;color:#8dabae}
+.throne-home .throne-folio p{font-size:10px;color:#9ab0b6;line-height:1.7}
+.throne-home .throne-constellation{position:relative;width:min(600px,100%);height:564px;margin:6px auto 0}
+.throne-home .throne-orbit{position:absolute;left:50%;top:50%;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
+.throne-home .throne-orbit-outer{width:504px;height:504px;border:1px solid #b5b38342;background:radial-gradient(circle,#10333b2b 25%,#8ec8a50a 62%,transparent 63%);box-shadow:inset 0 0 0 12px #53877e05,0 0 0 8px #d3be7f06,0 0 80px #65bcb60d}
+.throne-home .throne-orbit-outer:before{content:'';position:absolute;inset:17px;border:1px dashed #9ac9b328;border-radius:50%}
+.throne-home .throne-orbit-outer:after{content:'';position:absolute;inset:52px;border:1px solid #9ac9b31a;border-radius:50%}
+.throne-home .throne-orbit-inner{width:348px;height:348px;border:1px solid #b7b7931f;background:radial-gradient(circle,#09212b8c,transparent 72%)}
+.throne-home .throne-battle{position:absolute;left:50%;top:91px;transform:translateX(-50%);width:292px;text-align:center;z-index:2}
+.throne-home .throne-crest{position:relative;width:70px;height:70px;margin:0 auto 12px;color:var(--throne-deck-color,#d7bd87);filter:drop-shadow(0 0 16px #d5c68522)}
+.throne-home .throne-crest svg{display:block;width:100%;height:100%;overflow:visible}
+.throne-home .crest-outer{stroke:#c6be8f;stroke-width:1;fill:#17313988}
+.throne-home .crest-inner{stroke:#8da99a;stroke-width:.5}
+.throne-home .crest-crown{stroke:#dfcea1;stroke-width:1.6;fill:#bcad7024;stroke-linejoin:round}
+.throne-home .crest-rule{stroke:#b7c5a6;stroke-width:1}
+.throne-home .throne-crest i{position:absolute;left:50%;top:-5px;width:4px;height:4px;border-radius:50%;background:#f2dfaf;box-shadow:0 0 12px #e6d0a6}
+.throne-home .throne-battle-label{font-size:8px;letter-spacing:.22em;color:#98b6b6;line-height:1.5}
+.throne-home .throne-battle h2{margin:9px 0 8px;font:500 23px/1.4 var(--serif);letter-spacing:.06em;color:#f1e6cd;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.throne-home .throne-deck-subtitle{color:#9eb5be;font-size:11px;line-height:1.7;min-height:18px;max-width:270px;margin:auto;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.throne-home .throne-deck-measure{display:flex;justify-content:center;align-items:center;gap:10px;margin:15px 0 18px;font-size:10px;color:#a6bbc1;white-space:nowrap}
+.throne-home .throne-deck-measure b{font:400 19px Georgia,serif;color:#ecdfc2;margin-left:4px}
+.throne-home .throne-deck-measure i{font-size:11px;font-style:normal;color:#798f98}
+.throne-home .throne-deck-total{border-left:1px solid #65817a52;padding-left:10px;font-size:10px}
+.throne-home .throne-duel-button{position:relative;display:grid;grid-template-columns:32px minmax(0,1fr) 16px;align-items:center;gap:9px;width:100%;min-height:65px;padding:12px 16px;border:1px solid #edd7a5;border-radius:2px 15px 2px 15px;background:linear-gradient(118deg,#e5cea0,#c2a16a);color:#16272a;box-shadow:0 8px 35px #c0a86720,inset 0 0 0 3px #bc985b35;transition:background .2s,box-shadow .2s,transform .2s}
+.throne-home .throne-duel-button:hover{background:linear-gradient(118deg,#f4e1b9,#d8bc88);box-shadow:0 8px 35px #d1b77338;transform:translateY(-2px)}
+.throne-home .throne-duel-button>span:nth-child(2){font-size:15px;font-weight:700;letter-spacing:.025em;text-align:left;white-space:nowrap}
+.throne-home .throne-duel-button small{display:block;font-size:7px;font-weight:500;letter-spacing:.18em;margin-top:5px;color:#52634e}
+.throne-home .throne-duel-icon{display:flex;align-items:center;justify-content:center;width:31px;height:34px;border-right:1px solid #30483a40;padding-right:8px}
+.throne-home .throne-duel-icon .icon{width:22px;height:22px}
+.throne-home .throne-arrow{font-size:21px;font-weight:300;align-self:center}
+.throne-home .throne-battle-note{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:12px;font-size:9px;color:#9bb3b9;line-height:1.6}
+.throne-home .throne-battle-note i{width:3px;height:3px;border-radius:50%;background:#9b986f}
+.throne-home .throne-origins{position:absolute;inset:0;pointer-events:none}
+.throne-home .throne-origin{position:absolute;transform:translate(-50%,-50%);width:72px;height:78px;padding:7px 5px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #849d815c;border-radius:36px 36px 13px 13px;background:linear-gradient(150deg,#18333df5,#0b202cf5);box-shadow:0 7px 24px #04101875;color:var(--origin-color,#d7bd87);pointer-events:auto;transition:border-color .2s,background .2s,box-shadow .2s}
+.throne-home .throne-origin:hover{background:#213f46;border-color:var(--origin-color);box-shadow:0 0 24px #b2d4a818}
+.throne-home .throne-origin-number{font:400 8px Georgia,serif;letter-spacing:.12em;opacity:.68;margin-bottom:3px}
+.throne-home .throne-origin-glyph{font-size:21px;line-height:1.1;height:24px}
+.throne-home .throne-origin strong{font-family:var(--serif);font-size:14px;font-weight:500;line-height:1.3;margin-top:4px;color:#dae1d9}
+.throne-home .throne-origin-1{left:50%;top:29px}
+.throne-home .throne-origin-2{left:86%;top:25%}
+.throne-home .throne-origin-3{left:86%;top:75%}
+.throne-home .throne-origin-4{left:50%;top:95%}
+.throne-home .throne-origin-5{left:14%;top:75%}
+.throne-home .throne-origin-6{left:14%;top:25%}
+.throne-home .throne-orbit-caption{position:absolute;bottom:-29px;left:50%;transform:translateX(-50%);width:330px;display:flex;align-items:center;gap:11px;justify-content:center;color:#96b3b2;font-size:8px;letter-spacing:.07em;white-space:nowrap}
+.throne-home .throne-orbit-caption>span{height:1px;width:34px;background:linear-gradient(90deg,transparent,#8eae9455)}
+.throne-home .throne-orbit-caption>span:last-child{transform:scaleX(-1)}
+.throne-home .throne-portal{position:absolute;width:219px;text-align:left;padding:18px 18px 16px;border:1px solid #7e8e784f;border-radius:1px 17px 1px 17px;background:linear-gradient(125deg,#17303ad9,#112633aa);box-shadow:0 10px 30px #05121c20;z-index:3;transition:background .2s,border-color .2s,transform .2s}
+.throne-home .throne-portal:hover{border-color:#b5c39599;background:linear-gradient(125deg,#21414ad9,#18313ed9);transform:translateY(-3px)}
+.throne-home .throne-portal-archive{left:32px;top:326px}
+.throne-home .throne-portal-deck{right:32px;top:284px;border-color:#c4ad7652;background:linear-gradient(135deg,#223237cf,#142a34bf)}
+.throne-home .throne-portal-mark{position:absolute;top:-16px;right:16px;display:flex;align-items:center;justify-content:center;width:33px;height:33px;border:1px solid #8b9b7e69;border-radius:50%;background:#19333d;color:#cfc9a6}
+.throne-home .throne-portal-mark .icon{width:17px;height:17px}
+.throne-home .throne-portal-eyebrow{display:block;color:#8babae;font-size:8px;letter-spacing:.16em;line-height:1.5}
+.throne-home .throne-portal>strong{display:block;font:500 22px/1.45 var(--serif);letter-spacing:.06em;margin-top:8px;color:#dce4d8}
+.throne-home .throne-portal-copy{display:block;margin-top:7px;color:#9eb5bd;font-size:11px;line-height:1.8}
+.throne-home .throne-portal-composition{display:block;margin-top:6px;color:#9caeae;font-size:8px;line-height:1.7}
+.throne-home .throne-portal-bottom{display:flex;align-items:center;gap:5px;border-top:1px solid #83947a30;padding-top:10px;margin-top:13px;font-size:9px;color:#a1b9bd}
+.throne-home .throne-portal-bottom b{font:400 19px Georgia,serif;color:#cddccf}
+.throne-home .throne-portal-bottom i{margin-left:auto;font-size:20px;font-style:normal;color:#bea97c}
+.throne-home .throne-ways{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:700px;margin:59px auto 0;z-index:2}
+.throne-home .throne-way{display:grid;grid-template-columns:34px minmax(0,1fr) 16px;gap:13px;align-items:center;text-align:left;padding:18px 21px;border-top:1px solid #8aa4934a;border-bottom:1px solid #8aa4934a;background:#14303970;min-height:86px;transition:background .2s,border-color .2s}
+.throne-home .throne-way:hover{border-color:#b3c8a290;background:#25444d90}
+.throne-home .throne-way>.icon{width:27px;height:27px;color:#bdb17d}
+.throne-home .throne-way-copy{min-width:0}
+.throne-home .throne-way-copy strong{display:block;font:500 18px/1.4 var(--serif);color:#dce9e1;letter-spacing:.03em}
+.throne-home .throne-way-copy small{display:block;margin-top:5px;font-size:9px;line-height:1.7;color:#9bb9c0}
+.throne-home .throne-way-copy em{font:500 9px/1.7 system-ui,sans-serif;color:#c5b68e;margin-left:6px;white-space:nowrap}
+.throne-home .throne-way>i{font-style:normal;font-size:19px;color:#b8c8b9}
+.throne-home .throne-featured{position:relative;max-width:570px;margin:34px auto 0;padding:0 14px}
+.throne-home .throne-featured-heading{display:flex;gap:20px;align-items:center;justify-content:center;margin:0 auto 31px}
+.throne-home .throne-featured-heading>span{height:1px;max-width:87px;flex:1;background:linear-gradient(90deg,transparent,#92a48358)}
+.throne-home .throne-featured-heading>span:last-child{transform:scaleX(-1)}
+.throne-home .throne-featured-heading h2{font:500 13px/1.6 var(--serif);color:#c9d2c5;letter-spacing:.08em;text-align:center;white-space:nowrap}
+.throne-home .throne-featured-heading small{display:block;font:500 7px/1.7 system-ui,sans-serif;color:#839c9e;letter-spacing:.18em;margin-top:4px}
+.throne-home .throne-relics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:start;max-width:510px;margin:auto}
+.throne-home .throne-relic{position:relative;min-width:0;margin:0;isolation:isolate}
+.throne-home .throne-relic:after{content:'';position:absolute;bottom:24px;height:30px;left:-10px;right:-10px;background:radial-gradient(ellipse,#99bfa331,transparent 70%);z-index:-1}
+.throne-home .throne-relic-1,.throne-home .throne-relic-3{padding-top:15px}
+.throne-home .throne-display-card{border-radius:5px;box-shadow:0 13px 30px #020b15a6;transition:transform .2s,box-shadow .2s}
+.throne-home .throne-display-card:hover{transform:translateY(-5px);box-shadow:0 14px 36px #020b15bb,0 0 20px #c8c79925}
+.throne-home .throne-display-card .card-top{padding:7px}
+.throne-home .throne-display-card .card-bottom{padding:9px 8px 8px;min-height:31%;background:linear-gradient(0deg,#101e2dfc 75%,#101e2d00)}
+.throne-home .throne-display-card .card-kind{font-size:7px;letter-spacing:0;gap:4px;line-height:1.4}
+.throne-home .throne-display-card .rarity{font-size:6px;letter-spacing:0}
+.throne-home .throne-display-card .card-name{font-size:11px;letter-spacing:0;line-height:1.5}
+.throne-home .throne-display-card .card-effect{display:none}
+.throne-home .throne-display-card .card-stats{font-size:12px;padding-top:7px;margin-top:6px}
+.throne-home .throne-display-card .card-model{font-size:6px}
+.throne-home .throne-display-card .card-stats .icon{width:10px;height:10px}
+.throne-home .throne-display-card .cost-gem{width:24px;height:29px;font-size:17px}
+.throne-home .throne-display-card .element-badge{width:22px;height:22px;font-size:10px}
+.throne-home .throne-relic figcaption{display:flex;flex-direction:column;align-items:center;gap:5px;margin-top:14px;text-align:center;line-height:1.4}
+.throne-home .throne-relic figcaption span{font-size:7px;letter-spacing:.15em;color:#839eaa}
+.throne-home .throne-relic figcaption b{font-size:10px;font-weight:500;color:#b6c9c5;letter-spacing:.07em}
+.throne-home .throne-floor-rule{display:flex;align-items:center;gap:16px;max-width:860px;margin:27px auto 22px;color:#9caa82}
+.throne-home .throne-floor-rule>span{flex:1;height:1px;background:linear-gradient(90deg,transparent,#b4bc8d4a)}
+.throne-home .throne-floor-rule>span:last-child{transform:scaleX(-1)}
+.throne-home .throne-floor-rule .icon{width:17px;height:17px;opacity:.7}
+.throne-home .throne-ledger{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:22px 0 0;border-top:1px solid #6d827242;border-bottom:1px solid #6d827242;background:#10202b40}
+.throne-home .throne-ledger-entry{display:flex;gap:13px;align-items:start;min-width:0;padding:20px 17px}
+.throne-home .throne-ledger-entry+.throne-ledger-entry{border-left:1px solid #6d82722e}
+.throne-home .throne-ledger-icon{padding-top:5px;color:#9ec6b7}
+.throne-home .throne-ledger-icon .icon{width:22px;height:22px}
+.throne-home .throne-ledger-miracle .throne-ledger-icon{color:#b7abd2}
+.throne-home .throne-ledger-gimmick .throne-ledger-icon{color:#c3b285}
+.throne-home .throne-ledger-fusion .throne-ledger-icon{color:#c8acd9}
+.throne-home .throne-ledger h2{font-size:10px;font-weight:500;letter-spacing:.04em;color:#acbfbe;line-height:1.6}
+.throne-home .throne-ledger p{display:flex;align-items:baseline;gap:8px;margin:5px 0}
+.throne-home .throne-ledger p strong{font:400 28px/1 Georgia,serif;color:#dae4d8}
+.throne-home .throne-ledger p span{font-size:7px;letter-spacing:.13em;color:#809aa4}
+.throne-home .throne-ledger small{display:block;font-size:8px;line-height:1.8;color:#90a7b1}
+.throne-home .throne-footer{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:25px 3px 4px}
+.throne-home .throne-guide-link{display:flex;align-items:center;gap:12px;text-align:left;color:#c6ceb7;flex-shrink:0}
+.throne-home .throne-guide-link>.icon{width:25px;height:25px;color:#a6bbad}
+.throne-home .throne-guide-link span{font-size:9px;line-height:1.7;color:#91a8b1}
+.throne-home .throne-guide-link strong{display:block;font-size:12px;font-weight:500;color:#c4d5c7}
+.throne-home .throne-guide-link i{font-style:normal;margin-left:8px;color:#c7b283}
+.throne-home .throne-record{display:flex;align-items:center;gap:17px;color:#8fa7b3;font-size:10px;white-space:nowrap}
+.throne-home .throne-record b{color:#cbbf9d;font-weight:500;margin-left:3px}
+.throne-home .throne-footer>p{font-size:10px;text-align:right;line-height:1.8}
+.throne-home .throne-footer>p a{color:#b4c7bf}
+.throne-home .throne-footer>p a:hover,.throne-home .throne-guide-link:hover strong{color:#ebd9aa}
+.throne-home .throne-footer>p span{display:block;font-size:8px;color:#7f99a6;margin-top:5px}
+@media(min-width:1500px){.throne-home .throne-scene{padding-top:44px}.throne-home .throne-heading{left:52px;top:48px}.throne-home .throne-folio{right:52px;top:52px}.throne-home .throne-portal-archive{left:52px}.throne-home .throne-portal-deck{right:52px}.throne-home .throne-portal{width:245px;padding:22px}.throne-home .throne-featured{max-width:600px}.throne-home .throne-relics{max-width:540px}}
+@media(max-width:1150px){.throne-home .throne-scene{padding:28px 22px 0}.throne-home .throne-heading{left:25px;top:32px;width:190px}.throne-home .throne-heading h1{font-size:34px}.throne-home .throne-introduction{font-size:11px}.throne-home .throne-folio{width:158px;right:25px;padding-left:14px}.throne-home .throne-folio>strong{font-size:33px}.throne-home .throne-folio p{font-size:9px}.throne-home .throne-portal{width:180px;padding:16px 14px}.throne-home .throne-portal-archive{left:25px;top:342px}.throne-home .throne-portal-deck{right:25px;top:300px}.throne-home .throne-portal>strong{font-size:20px}.throne-home .throne-portal-copy{font-size:10px}.throne-home .throne-portal-composition{font-size:7px}.throne-home .throne-constellation{width:540px}.throne-home .throne-orbit-outer{width:454px;height:504px}.throne-home .throne-origin-2,.throne-home .throne-origin-3{left:87%}.throne-home .throne-origin-5,.throne-home .throne-origin-6{left:13%}.throne-home .throne-ledger-entry{gap:9px;padding:18px 12px}.throne-home .throne-ledger-icon .icon{width:18px;height:18px}.throne-home .throne-ledger small{font-size:7px}.throne-home .throne-footer{gap:15px}.throne-home .throne-record{gap:10px}}
+@media(max-width:930px){.throne-home .throne-scene{padding:28px 25px 0}.throne-home .throne-heading{position:relative;inset:auto;width:auto;text-align:center}.throne-home .throne-overline{justify-content:center}.throne-home .throne-overline>span{display:none}.throne-home .throne-heading h1{font-size:36px;margin-top:11px;line-height:1.45}.throne-home .throne-heading h1 br{display:none}.throne-home .throne-introduction{font-size:12px;margin-top:9px;line-height:1.8}.throne-home .throne-desktop-break{display:none}.throne-home .throne-folio{display:none}.throne-home .throne-constellation{margin:43px auto 0;width:min(600px,100%);height:548px}.throne-home .throne-orbit-outer{width:490px;height:490px}.throne-home .throne-origin-2,.throne-home .throne-origin-3{left:86%}.throne-home .throne-origin-5,.throne-home .throne-origin-6{left:14%}.throne-home .throne-battle{top:83px}.throne-home .throne-portals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:66px auto 0;max-width:600px}.throne-home .throne-portal{position:relative;inset:auto;width:auto;padding:19px 20px}.throne-home .throne-portal-copy{font-size:11px}.throne-home .throne-portal-composition{font-size:8px}.throne-home .throne-portal-bottom{margin-top:12px}.throne-home .throne-ways{max-width:600px;margin-top:20px;gap:20px}.throne-home .throne-way{padding:17px 17px;gap:10px;grid-template-columns:26px minmax(0,1fr) 14px}.throne-home .throne-way-copy strong{font-size:17px}.throne-home .throne-way-copy small{font-size:8px}.throne-home .throne-featured{margin-top:32px}.throne-home .throne-ledger{grid-template-columns:repeat(2,minmax(0,1fr))}.throne-home .throne-ledger-entry{padding:17px 20px}.throne-home .throne-ledger-entry:nth-child(3){border-left:0;border-top:1px solid #6d82722e}.throne-home .throne-ledger-entry:nth-child(4){border-top:1px solid #6d82722e}.throne-home .throne-ledger small{font-size:9px}.throne-home .throne-footer{flex-wrap:wrap}.throne-home .throne-footer>p{width:100%;text-align:left;border-top:1px solid #61796c29;padding-top:17px;display:flex;justify-content:space-between;align-items:center;gap:10px}.throne-home .throne-footer>p span{margin:0}}
+@media(max-width:600px){.throne-home .throne-scene{padding:25px 18px 0;border-radius:2px 25px 2px 25px}.throne-home .throne-scene:before{inset:7px;border-radius:2px 19px 2px 19px}.throne-home .throne-scenery{background:radial-gradient(ellipse at 50% 20%,#09212b35 0,#091927b3 52%,#0b1824 83%),linear-gradient(180deg,#07172545,#0a1b29cc 47%,#0c1b28),url('assets/hero-wide.webp') 58% top/auto 720px no-repeat}.throne-home .throne-overline{font-size:8px;letter-spacing:.2em}.throne-home .throne-heading h1{font-size:31px;line-height:1.4;letter-spacing:.06em;margin-top:10px}.throne-home .throne-heading h1 br{display:block}.throne-home .throne-introduction{font-size:10px;line-height:1.75;margin-top:9px}.throne-home .throne-introduction>br:first-child{display:block}.throne-home .throne-introduction{max-width:260px;margin-left:auto;margin-right:auto}.throne-home .throne-constellation{display:flex;flex-direction:column;align-items:center;height:auto;width:100%;margin:25px auto 0}.throne-home .throne-orbit-outer{width:calc(100% + 74px);height:350px;top:169px;opacity:.55}.throne-home .throne-orbit-inner{width:calc(100% + 10px);height:310px;top:168px;opacity:.4}.throne-home .throne-battle{position:relative;inset:auto;transform:none;width:min(100%,300px)}.throne-home .throne-crest{width:58px;height:58px;margin-bottom:11px}.throne-home .throne-battle-label{font-size:7px}.throne-home .throne-battle h2{font-size:21px;line-height:1.35;margin:8px 0 6px}.throne-home .throne-deck-subtitle{font-size:10px;line-height:1.6;max-width:248px}.throne-home .throne-deck-measure{margin:13px 0 15px;gap:9px}.throne-home .throne-duel-button{min-height:61px;padding:12px 14px;grid-template-columns:29px minmax(0,1fr) 16px;gap:8px}.throne-home .throne-duel-button>span:nth-child(2){font-size:14px}.throne-home .throne-duel-button small{font-size:6px;letter-spacing:.16em}.throne-home .throne-duel-icon{width:28px;padding-right:6px}.throne-home .throne-duel-icon .icon{width:20px;height:20px}.throne-home .throne-battle-note{font-size:8px;margin-top:10px}.throne-home .throne-origins{position:relative;inset:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;width:100%;margin:28px 0 0;pointer-events:auto}.throne-home .throne-origin{position:relative;inset:auto;transform:none;display:grid;grid-template-columns:25px minmax(0,1fr);gap:7px;width:100%;height:auto;min-height:57px;padding:12px 10px;border-radius:2px 13px 2px 13px;text-align:left;box-shadow:0 5px 14px #04101835}.throne-home .throne-origin-number{position:absolute;top:4px;right:6px;font-size:7px;margin:0;opacity:.5}.throne-home .throne-origin-glyph{height:auto;font-size:22px;line-height:1.3;text-align:center}.throne-home .throne-origin strong{font-size:15px;line-height:1.4;margin:0}.throne-home .throne-orbit-caption{position:relative;inset:auto;transform:none;width:auto;max-width:100%;font-size:7px;gap:8px;margin-top:13px;white-space:normal;text-align:center;line-height:1.5}.throne-home .throne-orbit-caption>span{width:20px;flex-shrink:0}.throne-home .throne-portals{gap:11px;margin:27px auto 0}.throne-home .throne-portal{padding:17px 12px 12px;border-radius:2px 12px 2px 12px}.throne-home .throne-portal-mark{width:27px;height:27px;right:10px;top:-13px}.throne-home .throne-portal-mark .icon{width:14px;height:14px}.throne-home .throne-portal-eyebrow{font-size:7px;letter-spacing:.1em}.throne-home .throne-portal>strong{font-size:18px;letter-spacing:.025em;margin-top:7px}.throne-home .throne-portal-copy{font-size:9px;line-height:1.8;margin-top:6px;max-width:120px}.throne-home .throne-portal-composition{font-size:7px;line-height:1.8;margin-top:5px}.throne-home .throne-portal-bottom{padding-top:9px;margin-top:10px;font-size:8px;gap:3px}.throne-home .throne-portal-bottom b{font-size:17px}.throne-home .throne-portal-bottom i{font-size:17px}.throne-home .throne-ways{grid-template-columns:1fr;gap:10px;margin-top:18px}.throne-home .throne-way{min-height:72px;padding:14px 16px;grid-template-columns:29px minmax(0,1fr) 16px;gap:12px}.throne-home .throne-way-copy strong{font-size:17px}.throne-home .throne-way-copy small{font-size:9px}.throne-home .throne-way-copy em{font-size:9px}.throne-home .throne-featured{padding:0;margin-top:28px}.throne-home .throne-featured-heading{margin-bottom:19px;gap:11px}.throne-home .throne-featured-heading h2{font-size:11px}.throne-home .throne-featured-heading small{font-size:6px}.throne-home .throne-relics{gap:11px}.throne-home .throne-relic-1,.throne-home .throne-relic-3{padding-top:10px}.throne-home .throne-display-card .card-top{padding:5px}.throne-home .throne-display-card .card-bottom{padding:9px 5px 7px;min-height:31%}.throne-home .throne-display-card .card-name{font-size:9px;line-height:1.4}.throne-home .throne-display-card .card-kind{font-size:6px;line-height:1.4;margin-bottom:4px}.throne-home .throne-display-card .rarity,.throne-home .throne-display-card .card-model{display:none}.throne-home .throne-display-card .card-stats{font-size:9px;padding-top:4px;margin-top:5px;gap:4px}.throne-home .throne-display-card .card-stats span{gap:2px}.throne-home .throne-display-card .card-stats .icon{width:8px;height:8px}.throne-home .throne-display-card .cost-gem{width:19px;height:23px;font-size:14px}.throne-home .throne-display-card .element-badge{width:17px;height:17px;font-size:8px}.throne-home .throne-display-card:before{inset:3px}.throne-home .throne-relic figcaption{margin-top:10px;gap:3px}.throne-home .throne-relic figcaption span{font-size:5px;letter-spacing:.1em}.throne-home .throne-relic figcaption b{font-size:8px}.throne-home .throne-floor-rule{margin:20px auto 16px;gap:10px}.throne-home .throne-floor-rule .icon{width:14px;height:14px}.throne-home .throne-ledger{margin-top:16px}.throne-home .throne-ledger-entry{padding:15px 10px;gap:8px}.throne-home .throne-ledger-icon .icon{width:16px;height:16px}.throne-home .throne-ledger h2{font-size:9px}.throne-home .throne-ledger p{gap:6px;margin:6px 0}.throne-home .throne-ledger p strong{font-size:24px}.throne-home .throne-ledger p span{font-size:6px}.throne-home .throne-ledger small{font-size:7px;line-height:1.9}.throne-home .throne-footer{padding:20px 1px 3px;gap:18px 10px}.throne-home .throne-guide-link{gap:8px}.throne-home .throne-guide-link>.icon{width:20px;height:20px}.throne-home .throne-guide-link span{font-size:8px}.throne-home .throne-guide-link strong{font-size:10px}.throne-home .throne-record{gap:8px;font-size:8px}.throne-home .throne-footer>p{display:block;font-size:9px;padding-top:13px}.throne-home .throne-footer>p span{font-size:8px;margin-top:5px}}
+@media(max-width:360px){.throne-home .throne-scene{padding:23px 13px 0}.throne-home .throne-heading h1{font-size:28px}.throne-home .throne-introduction{font-size:9px;max-width:225px}.throne-home .throne-battle h2{font-size:19px}.throne-home .throne-deck-subtitle{font-size:9px}.throne-home .throne-deck-measure{font-size:9px;gap:7px}.throne-home .throne-deck-measure b{font-size:17px}.throne-home .throne-deck-total{font-size:9px;padding-left:7px}.throne-home .throne-duel-button{padding:11px 10px;gap:7px;min-height:58px}.throne-home .throne-duel-button>span:nth-child(2){font-size:13px;letter-spacing:0}.throne-home .throne-origin{padding:11px 8px;gap:4px;grid-template-columns:22px minmax(0,1fr);min-height:53px}.throne-home .throne-origin-glyph{font-size:20px}.throne-home .throne-origin strong{font-size:14px}.throne-home .throne-origins{gap:7px}.throne-home .throne-portal{padding:17px 10px 12px}.throne-home .throne-portal>strong{font-size:16px}.throne-home .throne-portal-copy{font-size:8px}.throne-home .throne-portal-composition{font-size:6px}.throne-home .throne-relics{gap:8px}.throne-home .throne-display-card .card-name{font-size:8px}.throne-home .throne-display-card .card-stats{font-size:8px}.throne-home .throne-display-card .card-kind{font-size:5px}.throne-home .throne-ledger-entry{padding:13px 8px;gap:6px}.throne-home .throne-ledger-icon .icon{width:13px;height:13px}.throne-home .throne-ledger small{font-size:6px}.throne-home .throne-record{gap:7px;font-size:7px}}
+@media(prefers-reduced-motion:reduce){.throne-home *,.throne-home *:before,.throne-home *:after{animation:none!important;transition:none!important}}
+.reduce-motion .throne-home *,.reduce-motion .throne-home *:before,.reduce-motion .throne-home *:after{animation:none!important;transition:none!important}

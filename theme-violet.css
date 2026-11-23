@@ -1,0 +1,265 @@
+/* Global blue-violet palette. Load last; geometry, card art, origin colours and rarity cues stay owned by their existing styles. */
+:root {
+  --bg: #101329;
+  --surface: #191c37;
+  --surface2: #252447;
+  --line: #514c765e;
+  --text: #f0eff7;
+  --muted: #b2b5cb;
+  --violet-ink: #101329;
+  --violet-panel: #1b1c39;
+  --violet-lift: #302454;
+  --violet-line: #8173b14d;
+  --violet-copy: #b8bad0;
+  color: var(--text);
+  background: var(--bg);
+}
+body, .royal-shell { background-color: var(--bg); }
+.royal-shell { background-image: radial-gradient(ellipse at 50% 0, #3024549c, transparent 72%); }
+::selection { background: #62518b; color: #fff7ff; }
+.site-header, .topbar { background: #14172fee; border-bottom-color: var(--violet-line); }
+.site-brand small { color: #b2b3cb; }
+.sidebar { background: linear-gradient(165deg, #20213e, #12162d 65%); border-color: var(--violet-line); }
+.icon-btn { background: #1d203e; border-color: #71628f5e; color: #c6c4dd; }
+.nav-btn:hover { background: #2a284b; }
+.nav-btn.active { background: linear-gradient(100deg, #47345f8c, #28224255); }
+.navigation-dock { background: #1a1b38f2; border-color: #9180b76b; box-shadow: 0 9px 36px #08091bc9, 0 1px 0 #c7b8ec16 inset; }
+.dock-link { color: #b0b1cb; }
+.dock-link:hover { background: #3d315c85; }
+.dock-link.active { background: linear-gradient(125deg, #5a3d745c, #48336d40); }
+.mobile-nav { background: #171a34f5; border-top-color: var(--violet-line); }
+.mobile-nav button.active { background: #5c43834d; }
+.treasure-wallet { background: #c4a8e910; border-color: #a18eae45; }
+.progress-line { background: #2c2b4f; }
+
+/* General controls and information surfaces. Preserve select-arrow images and semantic accents. */
+input:not([type='range']):not([type='checkbox']):not([type='radio']), select { background-color: #14172f; border-color: #79739973; color: #eeebf6; }
+input::placeholder { color: #9e9db9; }
+.btn { background: #292547; border-color: #85749c66; color: #e0dbee; }
+.btn:hover { background: #3b2d5d; }
+.btn.primary { color: #25203a; }
+.btn.teal { background: #3e345c; border-color: #a3a2c17d; color: #e8e3f4; }
+.btn.ghost { background: #1f1e3dba; }
+.btn.danger { background: #482b46; color: #f1c8d4; }
+.text-button { color: #d5c3ec; }
+.filter-bar, .type-stats, .rules-detail { background: #1a1c36; border-color: var(--violet-line); }
+.tab.active { background: #4c356a78; }
+.deck-summary, .deck-panel, .rule-card { background: linear-gradient(140deg, #292747, #191d39); border-color: var(--violet-line); }
+.qty-btn { background: #322b4d; }
+.quick-add { background: #312846; }
+.quick-add:hover { background: #5a3e70; }
+.owned-count { background: #15152edb; }
+.difficulty { background: #1e203c; border-color: #786b985c; }
+.difficulty.active { background: #4b365c94; }
+.tag { background: #3e2d555e; }
+.toggle { background: #393351; }
+.toggle.on { background: #69568b; }
+.toggle.on span { background: #e0ceff; }
+.intro-badge { background: #4a355c6b; }
+.modal-backdrop { background: #090b20db; }
+.modal { background: linear-gradient(145deg, #30264b, #171b36 78%); border-color: #9381b66b; }
+.fusion-modal { background: radial-gradient(ellipse at top right, #43305e, #191c39 68%) !important; }
+.toast { background: #2a284bf5; border-color: #84739d88; }
+.toast.error { background: #472a44f5; }
+.special-deck-panel { background: linear-gradient(130deg, #45345c55, #1d203e); }
+.zone-card-row, .fusion-choice, .material-option { background: #222440; }
+.fusion-choice.chosen { background: #4c3562; }
+.material-zone { background: #14182fc7; }
+.material-option.chosen { background: #3b3557; }
+.hidden-special { background: radial-gradient(ellipse, #57437b66, #1a1d38); }
+
+/* Name/profile entry retains its dragon illustration under a violet light wash. */
+.entry-screen { --entry-ink: #101329; color: #f1eef6; }
+.entry-vignette { background: linear-gradient(90deg, #101329fa 0%, #17152cf0 23%, #251c46bf 45%, #30245454 73%, #15183130), linear-gradient(0deg, #101329ed, #3024540d 40%, #24204254); }
+.entry-title { text-shadow: 0 5px 25px #11112a; }
+.entry-invitation { color: #c1bdd5; }
+.entry-start-panel { background: linear-gradient(135deg, #302b4ddd, #1a1b38ed); border-color: #9f89bd60; box-shadow: 0 18px 55px #08081d66, inset 0 1px #dec8f31a; }
+#entry-player-name { background: #10152cce; border-color: #8b7b9d8c; color: #f4effa; }
+#entry-player-name::placeholder { color: #aaa4bc; }
+#entry-player-name:focus { border-color: #c5b1f0; box-shadow: 0 0 0 3px #bca1ed21; }
+.entry-name-heading > span, .entry-name-note, .entry-footer { color: #b1adc5; }
+.entry-audio .bgm-button { background: #1d1b38ce; border-color: #a99bb15e; }
+#entry-profile-label { color: #d0c8e1; }
+.entry-profile-option { background: #151a328f; }
+.entry-profile-option:hover { background: #3b3156b3; }
+.entry-profile-option[aria-pressed='true'] { background: #49385cbd; }
+.entry-deck-rule { color: #c1bed5; }
+.entry-rule-divider { background: #9682ac66; }
+.profile-name-label, .profile-choice-label { color: #beb9d1; }
+.profile-option { background: #1b1e3a; border-color: #76658c77; color: #bcb5ce; }
+.profile-option:hover { background: #392d51; }
+.profile-option.selected { background: #4a345d; color: #f0e5f5; }
+.profile-button:focus-visible, .profile-option:focus-visible { outline-color: #d6bcf7; }
+
+/* Main menu: retain the observatory scene and its six distinct origin signs. */
+.throne-home { --throne-ink: #101329; --throne-line: #9a83b84d; --throne-glow: #c1adef; color: #eeedf6; }
+.throne-home .throne-scene { background: #15162e; border-color: #9987af4a; }
+.throne-home .throne-scene::before { border-color: #bca0db21; }
+.throne-home .throne-scenery { background-color: #15162e; background-image: radial-gradient(ellipse at 50% 35%, #30245447 0, #1b193abf 56%, #14162f 93%), linear-gradient(180deg, #34235c40, #191a38d6 60%, #15162f), url('assets/hero-wide.webp'); }
+.throne-home .throne-orbit-outer { background: radial-gradient(circle, #4c32652b 25%, #ba97ef0a 62%, transparent 63%); border-color: #b5a0c74a; box-shadow: inset 0 0 0 12px #a783ce08, 0 0 0 8px #d3be7f06, 0 0 80px #9970e01a; }
+.throne-home .throne-orbit-outer::before { border-color: #b59acb38; }
+.throne-home .throne-orbit-outer::after { border-color: #b59acb26; }
+.throne-home .throne-orbit-inner { background: radial-gradient(circle, #28203f8f, transparent 72%); border-color: #b9a5c92b; }
+.throne-home .crest-outer { fill: #2c244988; }
+.throne-home .throne-origin { background: linear-gradient(150deg, #302849f5, #191d39f5); }
+.throne-home .throne-origin:hover { background: #423258; }
+.throne-home .throne-portal, .throne-home .throne-portal-deck { background: linear-gradient(125deg, #302a4bdc, #1b1d39d6); border-color: #a18bb35c; }
+.throne-home .throne-portal:hover { background: linear-gradient(125deg, #46315ee8, #2b2447df); }
+.throne-home .throne-portal-mark { background: #2e2749; border-color: #b29abe73; }
+.throne-home .throne-way { background: #2b244966; border-top-color: #a18bb34f; border-bottom-color: #a18bb34f; }
+.throne-home .throne-way:hover { background: #46345e94; }
+.throne-home .throne-ledger { background: #201c3c73; }
+.throne-home .throne-introduction, .throne-home .throne-folio p, .throne-home .throne-deck-subtitle, .throne-home .throne-battle-note, .throne-home .throne-portal-copy, .throne-home .throne-way-copy small, .throne-home .throne-ledger small, .throne-home .throne-guide-link span, .throne-home .throne-record { color: #b9b8cf; }
+.throne-home .throne-battle-label, .throne-home .throne-portal-eyebrow, .throne-home .throne-portal-composition, .throne-home .throne-featured-heading small, .throne-home .throne-folio small, .throne-home .throne-ledger p span, .throne-home .throne-footer > p span { color: #a9a6c1; }
+.mode-pair button { background: #282343f0; border-color: #9880b15f; }
+.mode-pair button:hover { background: #45325d; }
+.mode-pair small { color: #b7b1cd; }
+.hero { background-color: #15172e; }
+.hero::after { background: linear-gradient(90deg, #11142af2, #251c46bf 43%, #30245447 80%), linear-gradient(0deg, #14172eeb, transparent 65%); }
+.hero-meta { background: #12152b8c; }
+.deck-summary-art { background-image: linear-gradient(90deg, #292145b5, #30245432), url('assets/hero-wide.webp'); }
+
+/* Deck building, collection and shop surfaces share the same ink and raised panels. */
+.deck-workshop-summary > article, .deck-workshop-summary > article:nth-child(2), .deck-workshop-summary > article:nth-child(3) { background: linear-gradient(125deg, #302649, #1b1e39); }
+.deck-workshop .deck-editor .filter-bar { background: linear-gradient(130deg, #292640, #1a1c35); border-color: #9079aa54; }
+.deck-workshop .tab { background: #17182f70; border-color: #89739738; }
+.deck-workshop .tab.active { background: #563a6a8c; border-color: #b99dc280; color: #eee3f3; }
+.deck-workshop .filters-secondary select, .deck-workshop .deck-panel-head input, .deck-workshop .deck-panel-head select { background-color: #171a32; border-color: #8b769f73; color: #e5e0f0; }
+.deck-workshop .quick-add { background: #3a2b50; border-color: #c1a5c88c; }
+.deck-workshop .quick-add:hover { background: #58406b; }
+.deck-workshop .deck-panel, .royal-shell .deck-workshop .deck-panel { background: linear-gradient(150deg, #2d2646, #1a1e3a); border-color: #8b76a35c; }
+.deck-workshop .deck-section-label { background: #45305745; color: #d2c4df; }
+.deck-workshop .deck-row { border-color: #9f86b12b; }
+.deck-workshop .deck-row .qty-btn { background: #3b2c50; border-color: #a185b66b; color: #eadcf4; }
+.deck-workshop .deck-row .qty-btn:hover { background: #58406c; }
+.deck-workshop .special-deck-panel { background: linear-gradient(120deg, #49315d5c, #20203d); }
+.deck-workshop .special-deck-panel .deck-section-label { background: #51356340; }
+.deck-workshop .special-deck-list .qty-btn { background: #473357; }
+.deck-workshop .deck-panel-foot { background: #1e1d38; border-color: #937da34d; }
+.deck-workshop .deck-panel-foot .btn.small { background: transparent; border-color: #9b84ad55; color: #bfb2ce; }
+.deck-workshop-summary small, .deck-workshop .results-meta, .deck-workshop .deck-composition, .deck-workshop .deck-total > span { color: #b0adc7; }
+.shop-stage { background: radial-gradient(ellipse at 25% 45%, #77518b40, transparent 60%), linear-gradient(130deg, #2b2549, #171c38); border-color: #8e76a85e; }
+.pack-display { background: radial-gradient(ellipse, #bd9de425, transparent 65%); }
+.pack-foil { background-image: linear-gradient(140deg, #4b3276db, #20264be0 55%, #6b4b6c94), url('assets/hero-wide.webp'); }
+.pack-collection > i { background: #7663924d; }
+.shop-notes article { border-color: #a58db85c; }
+.shop-notes p, .pack-collection, .pack-balance > span { color: #bab3ce; }
+
+/* Mode colours remain small accents; all three rooms use blue-violet surfaces. */
+.solo-resume { background: linear-gradient(100deg, #302848, #1b1f39); border-color: #9a89b163; }
+.solo-resume .btn { background: #3a2f52; border-color: #b0a7bb; color: #eee4f3; }
+.solo-stage { background: #17182f; border-color: #9685ad6b; }
+.solo-stage::after { border-color: #baa2d021; }
+.solo-landscape { background-color: #17182f; background-image: linear-gradient(180deg, #322351b8, #25204355 40%, #161b36dc 90%), url('assets/fields/solo.svg'); background-blend-mode: color, normal; }
+.solo-landscape::after { background: linear-gradient(90deg, transparent 65%, #1c1a367d); }
+.solo-stone-seal { background: #302747b8; }
+.solo-preparation { background: linear-gradient(125deg, #302747f0, #1c1e3cf5 65%, #20203d); border-left-color: #987da252; }
+.solo-level { background: #211f3b; border-color: #8e7a9a63; color: #d1c7dc; }
+.solo-level:hover { background: #3d2e51; }
+.solo-level.selected { background: linear-gradient(145deg, #4e3863, #322846); box-shadow: inset 0 0 20px #c6a9ea12, 0 0 18px #c4a3e91a; }
+.solo-opponent-choice select { background-color: #171a32; border-color: #947f9f73; color: #e7e0f0; }
+.solo-deck-symbol { background: #56406842; }
+.solo-resume p, .solo-landscape-heading > p, .solo-arena-measures span, .solo-arena-measures small, .solo-level small, .solo-deck-copy > small, .solo-deck-copy > p, .solo-start-note, .solo-bottom-note { color: #b4b0c8; }
+.solo-level.selected small { color: #d3c9df; }
+.mode-lobby, .mode-lobby.mode-rank { --mode-muted: #bbb5ce; --mode-ink: #eee9f7; }
+.mode-lobby .online-profile, .mode-lobby.mode-rank .online-profile, .online-profile { background: linear-gradient(110deg, #302948ed, #1d203c); }
+.online-panel { background: linear-gradient(145deg, #30294ce0, #1b1e3b); }
+.mode-lobby .online-panel, .mode-lobby .online-grid.single-mode > .online-panel, .mode-lobby.mode-rank .online-panel, .mode-lobby.mode-rank .online-grid.single-mode > .online-panel { background-color: #1b1d38; background-image: linear-gradient(180deg, #352357c2, #211d43df 76%), var(--mode-scene); background-blend-mode: color, normal; }
+.mode-lobby .online-panel > .panel-symbol, .mode-lobby.mode-rank .online-grid.single-mode > .online-panel > .panel-symbol { background: #3a2c528a; }
+.mode-lobby .online-profile > .icon-btn { background: #211f3d85; }
+.mode-lobby .room-join, .mode-lobby .online-grid.single-mode .room-join { background: linear-gradient(130deg, #3a2b52d9, #25203bd9); }
+.mode-lobby .room-join input { background-color: #15182e; border-color: #9681b085; }
+.mode-lobby .room-join input::placeholder { color: #b1a6c3; }
+.mode-lobby .room-join .btn { background: #514066; border-color: #b099c3; color: #f0e5f8; }
+.mode-lobby .room-join .btn:hover { background: #685080; }
+.online-waiting { background: radial-gradient(ellipse at top, #5f3f785e, #1c1e3b 75%); }
+.mode-lobby .online-waiting, .mode-lobby.mode-rank .online-waiting { background-color: #191c36; background-image: linear-gradient(#392758b8, #1e1b3de6), var(--mode-scene); background-blend-mode: color, normal; }
+.mode-lobby .waiting-orbit { background: #3b2a508f; }
+.room-code, .mode-lobby .room-code { background: #171630d9; }
+.online-error { background: #4b2c434d; }
+.online-connection-note { background: #42304f; color: #edcce7; }
+.duel-top .duel-hint-line:has(.online-turn-clock) { background-color: #221c3d; }
+.online-rules, .mode-lobby .online-rules { color: #bab4cb; }
+
+/* Each arena keeps its own SVG and accent, with common violet stone beneath it. */
+.duel-shell[data-field='solo'], .duel-shell[data-field='multi'], .duel-shell[data-field='rank'] {
+  --field-base: #14172e;
+  --field-top: #181a33f5;
+  --field-side: #1b1b36f5;
+  --field-cell: #32264c80;
+  --field-wash: #30245480;
+  background: #14172e;
+}
+.duel-shell[data-field] .arena { background-color: var(--field-base); background-image: linear-gradient(180deg, #34245c96, #2b225077 48%, #171b35d6), var(--field-art); background-blend-mode: color, normal; }
+.duel-shell[data-field] .duel-top, .duel-shell > .mobile-action { background-color: #191b35; }
+.duel-shell[data-field] .field-slot.empty { background: linear-gradient(145deg, #3c2e555c, #1b1e3b80); }
+.duel-shell .field-slot:not(.empty) { background: #11172d94; box-shadow: inset 0 0 0 3px #493c5e33; }
+.duel-shell .duel-help { background: #2c254780; border-color: #9781ad66; }
+.duel-shell .core-button { background: #26213eaf; }
+.duel-shell .core-bar { background: #43364c; }
+.duel-shell .card-back-mini { background: linear-gradient(135deg, #443152, #1c203b); }
+.duel-shell .unit-stats { background: #181b35eb; }
+.duel-shell .unit-badge { background: #17192fd9; }
+.duel-shell .zone-strip button { background: #1d1c36cf; }
+.duel-shell .zone-strip button:hover { background: #4c345f; }
+.duel-shell .zone-strip .special-zone { background: linear-gradient(120deg, #493158a8, #24233e); }
+.duel-shell .zone-stack i { background: #1b1b32; }
+.duel-shell .zone-stack i.filled { background: linear-gradient(145deg, #6a4381, #2d2c50); }
+.duel-shell .arcana-frame { background: #16182d9c; }
+.duel-shell .arcana-card > span { background: #16172fe6; }
+.duel-shell .hidden-gimmick { background: repeating-linear-gradient(45deg, #3a2c4d 0 3px, #24213d 3px 6px); }
+.duel-shell[data-field='solo'] .midline { background: linear-gradient(90deg, transparent, #4a355c66 24%, #49365b4d 76%, transparent); }
+.duel-shell[data-field='multi'] .midline { background: linear-gradient(90deg, #23224514, #4a357052 30%, #46336345 70%, #23224514), repeating-linear-gradient(90deg, transparent 0 27px, #b59cde1a 28px 29px); }
+.duel-shell[data-field='rank'] .midline { background: linear-gradient(90deg, transparent, #51365152 20%, #64506036 50%, #51365152 80%, transparent), repeating-linear-gradient(135deg, transparent 0 8px, #c3a1580d 8px 9px); }
+.duel-shell .selection-text p, .duel-shell .duel-help p, .duel-shell .duelist-name { color: #c1bed5; }
+.battle-log-header p, .battle-log-turn, .battle-log-footer { color: #aba8c1; }
+.battle-log-event p { color: #c4bed5; }
+.battle-log-event.is-latest { background: linear-gradient(90deg, #b89ada14, transparent); }
+.battle-log-event.is-latest p { color: #efebf5; }
+.battle-log-close, .battle-log-return { background: #231c3f91; color: #e3d8f0; }
+.battle-log-close:hover, .battle-log-return:hover { background: #59407166; }
+.duel-shell .battle-log-trigger[aria-expanded='true'] { background: #4a33677d; }
+
+/* Global notices, profile settings and the mobile rotation prompt. */
+.news-ticker { background: #24203e; border-bottom-color: #9480b04d; color: #ddd3e8; }
+.news-open { background: #34274c; border-right-color: #b596c54a; color: #e3d0eb; }
+.news-open:hover { background: #4a335f; }
+.news-toggle { background: #24203e; border-left-color: #b596c547; color: #d0c4e0; }
+.news-dialog { background: linear-gradient(145deg, #30244a, #191c38); border-color: #a18aba73; color: #eee7f4; }
+.news-dialog::backdrop { background: #0c0b23d4; }
+.news-items article { border-top-color: #a58bb240; }
+.news-items p { color: #c1b9d2; }
+.news-close { color: #cbbce0; }
+.news-return { background: #4b345f; border-color: #b292c16b; color: #f1e2f3; }
+.orientation-gate { background: radial-gradient(ellipse at 50% 32%, #3a285f 0, #1d1c3e 50%, #101329 100%); color: #eee8f6; }
+.orientation-gate h1 { color: #f0e5f7; }
+.orientation-gate p { color: #c0b7d2; }
+
+/* The static introduction uses the same palette; origin headings retain --element. */
+body.about-page { background: #101329; color: #eeeaf5; }
+.about-page .about-header { background: #17192ff2; border-bottom-color: #8f7aa14f; }
+.about-page .about-hero { background-color: #17172f; background-image: linear-gradient(90deg, #11142af7 0%, #241a42e0 40%, #30245469 100%), url('assets/hero-wide.webp'); border-bottom-color: #9479a252; }
+.about-page .about-section { border-bottom-color: #8d79a33d; }
+.about-page .about-panel { background: linear-gradient(150deg, #2e2648, #1a1d37); border-color: #77648677; }
+.about-page .about-stat-grid { background: #6b567c6b; border-color: #8d76a359; }
+.about-page .about-stat, .about-page .about-flow li, .about-page .about-element { background: #211f3b; border-color: #86729759; }
+.about-page .about-note { background: #302447; color: #d2c8e1; }
+.about-page .about-keywords p { background: #1c1d3680; border-color: #89719f59; }
+.about-page .about-faq details { border-color: #88729d4d; }
+.about-page .about-panel p, .about-page .about-flow p, .about-page .about-element p, .about-page .about-faq details p, .about-page .about-section .about-intro, .about-page .about-end p { color: #c2b9d1; }
+.about-page .about-position-table { background: #211d39; }
+.about-page .about-position-table th, .about-page .about-position-table td { border-color: #88709c66; }
+.about-page .about-position-table thead th { background: #38284c; color: #e2cde9; }
+.about-page .about-position-table tbody th { color: #dfd1eb; }
+.about-page .about-position-table td { color: #c7bdd5; }
+.about-page .about-footer { background: #15172c; border-top-color: #947ba34f; color: #ada2bd; }
+
+@media (max-width: 720px) {
+  .entry-vignette { background: linear-gradient(90deg, #12142af2, #251c46ca 56%, #3024547d), linear-gradient(0deg, #101329f2, transparent 70%); }
+  .throne-home .throne-scenery { background-image: radial-gradient(ellipse at 50% 20%, #30245450 0, #1c193bbd 52%, #15162f 83%), linear-gradient(180deg, #39255d52, #1c193bd9 47%, #15162f), url('assets/hero-wide.webp'); }
+}
+@media (max-height: 560px) and (orientation: landscape) {
+  .duel-shell .duel-hint-line:has([data-online-clock]) { background-color: transparent; }
+  .duel-shell .arena > .hand-section { background: linear-gradient(150deg, #9873c817, transparent 45%), var(--field-side, #1b1b36f5); }
+  .duel-shell .midline > .turn-label { background: linear-gradient(90deg, transparent, #b596d11a, transparent); }
+}

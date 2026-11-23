@@ -1,0 +1,110 @@
+/* Board skins only: retain the existing arena, card, zone and interaction geometry. */
+.duel-shell[data-field='solo'] {
+  --field-art: url('assets/fields/solo.svg');
+  --field-base: #091a17;
+  --field-top: #0b1c19f2;
+  --field-side: #0b1d19ed;
+  --field-line: #63806461;
+  --field-empty: #52775b6b;
+  --field-cell: #16332857;
+  --field-accent: #b8d5aa;
+  --field-strong: #e2e1bb;
+  --field-wash: #071b1647;
+  background: #0a1b18;
+}
+.duel-shell[data-field='multi'] {
+  --field-art: url('assets/fields/multi.svg');
+  --field-base: #08182a;
+  --field-top: #0b1d31f2;
+  --field-side: #0b1c30ed;
+  --field-line: #5a96bb66;
+  --field-empty: #548eb078;
+  --field-cell: #1538514d;
+  --field-accent: #a4d4ed;
+  --field-strong: #dcf0fb;
+  --field-wash: #07182c40;
+  background: #09182c;
+}
+.duel-shell[data-field='rank'] {
+  --field-art: url('assets/fields/rank.svg');
+  --field-base: #171511;
+  --field-top: #191712f5;
+  --field-side: #191813ef;
+  --field-line: #9b814861;
+  --field-empty: #b2945270;
+  --field-cell: #332d204d;
+  --field-accent: #dbc384;
+  --field-strong: #f3dfac;
+  --field-wash: #16130b3d;
+  background: #171511;
+}
+.duel-shell[data-field] .arena {
+  background-color: var(--field-base);
+  background-image: linear-gradient(180deg, var(--field-wash), transparent 24%, transparent 65%, var(--field-base)), var(--field-art);
+  background-position: center, center;
+  background-size: 100% 100%, cover;
+  background-repeat: no-repeat;
+}
+.duel-shell[data-field] .arena::before {
+  /* Replace the old generic rotated square; do not stack it over the new motif. */
+  content: none;
+  pointer-events: none;
+}
+.duel-shell[data-field] .duel-top { background: var(--field-top); border-bottom-color: var(--field-line); }
+.duel-shell[data-field] .duel-sidebar { background: var(--field-side); border-left-color: var(--field-line); }
+.duel-shell[data-field] .field-slot.empty { border-color: var(--field-empty); background: var(--field-cell); }
+.duel-shell[data-field] .field-slot.empty::before { border-color: var(--field-empty); pointer-events: none; }
+.duel-shell[data-field] .midline { border-color: var(--field-line); }
+.duel-shell[data-field] .turn-label { color: var(--field-accent); text-shadow: 0 1px 5px var(--field-base); }
+.duel-shell[data-field] .turn-label strong { color: var(--field-strong); }
+.duel-shell[data-field] .hand-section { background: linear-gradient(0deg, var(--field-base) 18%, transparent); }
+
+/* Ancient tree: carved rings, softened stone seats and an organic green centre band. */
+.duel-shell[data-field='solo'] .field-slot.empty { border-radius: 10px; box-shadow: inset 0 0 0 3px #8bad7220; }
+.duel-shell[data-field='solo'] .field-slot.empty::before {
+  transform: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, #a6bd672e 0 3px, transparent 4px);
+  box-shadow: inset 0 0 0 5px #67865317, 0 0 0 5px #63875b0b;
+}
+.duel-shell[data-field='solo'] .midline { background: linear-gradient(90deg, transparent, #344d2d4d 24%, #4564433b 50%, #344d2d4d 76%, transparent); }
+
+/* Twin mirror arrays: nested diamonds and a luminous gridded bridge. */
+.duel-shell[data-field='multi'] .field-slot.empty { border-radius: 5px; box-shadow: inset 0 0 0 3px #8ecfed0c, 0 0 16px #3d91d00b; }
+.duel-shell[data-field='multi'] .field-slot.empty::before {
+  border-radius: 2px;
+  background: linear-gradient(45deg, transparent 47%, #8cd2eb29 48% 52%, transparent 53%);
+  box-shadow: inset 0 0 0 5px #7cbed015, 0 0 0 4px #74b4dd0b;
+}
+.duel-shell[data-field='multi'] .midline {
+  background: linear-gradient(90deg, #12334a12, #2867903d 30%, #397aa02e 50%, #2867903d 70%, #12334a12), repeating-linear-gradient(90deg, transparent 0 27px, #7ac3dd14 28px 29px);
+}
+
+/* Golden throne: squared royal frames and a crown in every unoccupied seat. */
+.duel-shell[data-field='rank'] .field-slot.empty { border-radius: 2px; box-shadow: inset 0 0 0 3px #c8a85e10, inset 0 0 0 4px #b5944c12; }
+.duel-shell[data-field='rank'] .field-slot.empty::before {
+  transform: none;
+  border: 0;
+  border-radius: 0;
+  clip-path: polygon(0 20%, 25% 36%, 50% 0, 75% 36%, 100% 20%, 86% 100%, 14% 100%);
+  background: linear-gradient(#d4b76836, #8e723c26);
+  box-shadow: none;
+}
+.duel-shell[data-field='rank'] .midline {
+  background: linear-gradient(90deg, transparent, #a4833429 20%, #d1a84e21 50%, #a4833429 80%, transparent), repeating-linear-gradient(135deg, transparent 0 8px, #c3a1580d 8px 9px);
+}
+
+@media (max-width: 720px) {
+  .duel-shell[data-field] .arena {
+    background-image: linear-gradient(var(--field-wash), var(--field-wash)), var(--field-art);
+    background-position: center, center 42%;
+    background-size: 100% 100%, auto 100%;
+  }
+  .duel-shell[data-field] .field-slot.empty { background-color: var(--field-cell); }
+  .duel-shell[data-field] .field-slot.empty::before { opacity: .72; }
+  .duel-shell[data-field] .midline { background-blend-mode: normal; }
+}
+@media (max-height: 560px) and (orientation: landscape) {
+  .duel-shell[data-field] .arena { background-size: 100% 100%, cover; }
+  .duel-shell[data-field] .field-slot.empty::before { opacity: .5; }
+}

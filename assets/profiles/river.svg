@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <title>川のプロフィールアイコン</title>
+  <defs>
+    <radialGradient id="bg"><stop stop-color="#275a77"/><stop offset="1" stop-color="#10263b"/></radialGradient>
+    <linearGradient id="metal" x2=".8" y2="1"><stop stop-color="#f5e4ae"/><stop offset=".45" stop-color="#a98d51"/><stop offset=".7" stop-color="#e7c985"/><stop offset="1" stop-color="#806d45"/></linearGradient>
+    <linearGradient id="water" x2="0" y2="1"><stop stop-color="#e1f8f7"/><stop offset=".55" stop-color="#9fe0ed"/><stop offset="1" stop-color="#68b7d6"/></linearGradient>
+  </defs>
+  <path d="m128 9 103 59v120l-103 59-103-59V68Z" fill="url(#bg)" stroke="url(#metal)" stroke-width="4" stroke-linejoin="round"/>
+  <path d="m128 20 93 54v108l-93 54-93-54V74Z" fill="none" stroke="#d8c690" stroke-opacity=".3" stroke-width="1.5"/>
+  <circle cx="128" cy="127" r="82" fill="#10304b" fill-opacity=".35" stroke="#a1d7e6" stroke-opacity=".16"/>
+  <path d="M115 62c47 18 67 45 23 67-43 22-52 43 2 68" fill="none" stroke="url(#water)" stroke-width="19" stroke-linecap="round"/>
+  <path d="M87 69c45 20 62 39 23 60-39 20-48 39-6 65M149 61c46 25 57 53 18 73-33 17-40 32 4 54" fill="none" stroke="#8ed0e2" stroke-opacity=".8" stroke-width="5" stroke-linecap="round"/>
+  <path d="M56 150h18m109-54h17M55 159h13m119-54h14" stroke="#c0dfe5" stroke-opacity=".45" stroke-width="2" stroke-linecap="round"/>
+  <path d="m128 35 5 7-5 7-5-7Zm0 173 5 7-5 7-5-7Z" fill="#dcca91"/>
+</svg>

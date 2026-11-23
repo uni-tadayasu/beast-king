@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMidYMid slice">
+  <title>古代樹の闘域</title>
+  <desc>深緑の石造りの闘域。中央の古代樹から樹根が伸び、割れた石環と葉の紋様が周囲を囲む。</desc>
+  <defs>
+    <radialGradient id="ground"><stop stop-color="#1c3c2d"/><stop offset=".6" stop-color="#102a22"/><stop offset="1" stop-color="#081915"/></radialGradient>
+    <linearGradient id="tree" x2="0" y2="1"><stop stop-color="#86a96a" stop-opacity=".5"/><stop offset="1" stop-color="#4e7654" stop-opacity=".19"/></linearGradient>
+    <radialGradient id="moss"><stop stop-color="#507143" stop-opacity=".28"/><stop offset="1" stop-color="#284d35" stop-opacity="0"/></radialGradient>
+    <pattern id="stone" width="180" height="140" patternUnits="userSpaceOnUse"><path d="M0 0h180v140H0ZM0 70h90V0m0 70h90M90 70v70" fill="none" stroke="#72916c" stroke-opacity=".065" stroke-width="2"/><path d="m12 8 13 13-5 17m139 77-12-9-6 15" fill="none" stroke="#071c18" stroke-opacity=".4"/></pattern>
+    <path id="leaf" d="M0 0C-27-12-31-38-25-59C-3-53 19-30 0 0ZM0 0-22-49" fill="#7b9b63" fill-opacity=".2" stroke="#97ac70" stroke-opacity=".3" stroke-width="2"/>
+  </defs>
+  <path fill="url(#ground)" d="M0 0h1200v1000H0z"/>
+  <path fill="url(#stone)" d="M0 0h1200v1000H0z"/>
+  <ellipse cx="600" cy="400" rx="440" ry="380" fill="url(#moss)"/>
+  <g fill="#263d2d" fill-opacity=".35" stroke="#84956a" stroke-opacity=".2" stroke-width="2">
+    <path d="m123 157 91-24 41 63-31 82-95-9-26-58zM949 152l97-14 50 67-28 68-103 4-30-66zM120 716l113-11 31 88-49 62-104-23-17-65zM961 715l105-13 39 73-32 69-113-9-24-67z"/>
+    <path d="m338 100 111-30 32 58-91 48-67-22zM733 81l116 24 25 53-73 23-103-46zM350 806l90-36 41 61-44 75-101-32zM744 775l93 27 29 69-105 33-43-71z"/>
+  </g>
+  <g fill="none" stroke="#8ca371">
+    <circle cx="600" cy="420" r="275" stroke-opacity=".19" stroke-width="8" stroke-dasharray="261 23 163 31 280 27 140 38"/>
+    <circle cx="600" cy="420" r="255" stroke-opacity=".24" stroke-width="1.5"/>
+    <circle cx="600" cy="420" r="235" stroke-opacity=".11" stroke-width="2" stroke-dasharray="3 19"/>
+    <path d="M301 420h-50m698 0h-50M600 121V83m0 674v-38" stroke-opacity=".2" stroke-width="3"/>
+  </g>
+  <g fill="none" stroke="url(#tree)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M604 652c-27-74-31-127-18-189 10-53 27-82 17-153M588 521c-44-28-76-55-110-114-25-44-55-58-93-68M603 464c61-32 109-77 124-136M591 410c-46-26-72-59-75-107M606 364c29-37 41-73 35-124" stroke-width="10"/>
+    <path d="M479 408c-45-8-75-34-96-63m106 83c-13-46-11-76 5-104m230 14c38-15 66-40 83-76m-84 81c-1-45-9-76-32-108m-171 90c-32-9-52-30-64-64m184-24c-29-20-41-47-38-81m-10 291c-37-5-65-19-85-47m-99-16c-16-31-37-51-67-56" stroke-width="5"/>
+    <path d="M601 611c-29 48-66 66-109 87s-76 25-100 63M592 622c-8 63-18 109-46 149m61-156c27 51 64 66 106 79s72 39 91 71m-203-96c21 43 23 86 16 122M532 679c-47-7-83-3-120 21m274-17c39-13 76-15 112-3" stroke-width="7"/>
+  </g>
+  <g>
+    <use href="#leaf" transform="translate(385 341) rotate(-43)"/><use href="#leaf" transform="translate(416 345) rotate(44)"/>
+    <use href="#leaf" transform="translate(496 324) rotate(22)"/><use href="#leaf" transform="translate(459 263) rotate(-24)"/>
+    <use href="#leaf" transform="translate(515 299) rotate(54)"/><use href="#leaf" transform="translate(602 157) rotate(-12)"/>
+    <use href="#leaf" transform="translate(640 239) rotate(39)"/><use href="#leaf" transform="translate(691 236) rotate(-40)"/>
+    <use href="#leaf" transform="translate(727 322) rotate(31)"/><use href="#leaf" transform="translate(805 264) rotate(55)"/>
+  </g>
+  <g fill="#a9ba7c" fill-opacity=".2"><circle cx="311" cy="255" r="2"/><circle cx="875" cy="569" r="2"/><circle cx="760" cy="138" r="2"/><circle cx="365" cy="667" r="2"/><circle cx="609" cy="207" r="3"/></g>
+  <path d="M0 935q260-110 466-73t734-2v140H0z" fill="#071713" fill-opacity=".5"/>
+</svg>

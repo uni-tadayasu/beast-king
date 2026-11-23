@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMidYMid slice">
+  <title>黄金の王座</title>
+  <desc>黒曜の王座を囲む金色の幾何学装飾。大きな王冠、重なる王座の階段、左右の月桂樹がランクの闘域を彩る。</desc>
+  <defs>
+    <radialGradient id="obsidian"><stop stop-color="#302b1f"/><stop offset=".65" stop-color="#1c1b17"/><stop offset="1" stop-color="#111310"/></radialGradient>
+    <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#e3c67d" stop-opacity=".44"/><stop offset="1" stop-color="#8a6a32" stop-opacity=".15"/></linearGradient>
+    <linearGradient id="seat" x2="0" y2="1"><stop stop-color="#c7a158" stop-opacity=".08"/><stop offset="1" stop-color="#9e793a" stop-opacity=".015"/></linearGradient>
+    <pattern id="tiles" width="120" height="120" patternUnits="userSpaceOnUse"><path d="m60 0 60 60-60 60L0 60Z" fill="none" stroke="#b59a5f" stroke-opacity=".07"/><path d="m60 48 12 12-12 12-12-12Z" fill="#a98b4c" fill-opacity=".055"/></pattern>
+    <path id="laurel" d="M0 0c-12-22-28-30-51-28C-44-6-26 4 0 0ZM0 0c3-24 15-39 36-43C36-20 23-3 0 0Z" fill="#ae9250" fill-opacity=".14" stroke="#bca15f" stroke-opacity=".2"/>
+  </defs>
+  <path fill="url(#obsidian)" d="M0 0h1200v1000H0z"/>
+  <path fill="url(#tiles)" d="M0 0h1200v1000H0z"/>
+  <g fill="none" stroke="url(#gold)">
+    <path d="M75 0v185l92 92v286l-92 92v345M1125 0v185l-92 92v286l92 92v345" stroke-width="3"/>
+    <path d="M95 0v177l92 92v302l-92 92v337M1105 0v177l-92 92v302l92 92v337"/>
+    <path d="M280 100h640v43H280ZM310 153h580v38H310Z" stroke-opacity=".5"/>
+    <path d="m600 151 234 135v270L600 691 366 556V286Z" stroke-width="2"/>
+    <path d="m600 177 211 122v244L600 665 389 543V299Z" stroke-opacity=".65"/>
+  </g>
+  <g fill="url(#seat)" stroke="#bca062" stroke-opacity=".18" stroke-width="2">
+    <path d="M448 218h304v359H448Z"/>
+    <path d="M410 577h380v42H410ZM373 619h454v44H373ZM333 663h534v47H333ZM288 710h624v50H288ZM238 760h724v54H238Z"/>
+    <path d="M448 218 410 255v322h38m304-359 38 37v322h-38" fill="none"/>
+  </g>
+  <g fill="none" stroke="#bfa365" stroke-opacity=".14">
+    <path d="M600 342 343 136m257 206L427 96m173 246V76m0 266L773 96M600 342l257-206M600 342 288 245m312 97 312-97"/>
+    <path d="M432 532c-81-63-123-152-102-242M768 532c81-63 123-152 102-242" stroke-width="3"/>
+  </g>
+  <g fill="url(#seat)" stroke="url(#gold)" stroke-linejoin="round">
+    <path d="m439 329 78 54 83-119 83 119 78-54-29 153H468Z" stroke-width="4"/>
+    <path d="M474 453h252v29H474Zm13 13h226M517 383l28 70m138-70-28 70m-55-189v189" stroke-width="1.5"/>
+    <path d="m600 336 25 34-25 34-25-34z" stroke-width="2"/>
+    <circle cx="439" cy="329" r="7"/><circle cx="600" cy="264" r="8"/><circle cx="761" cy="329" r="7"/>
+  </g>
+  <g>
+    <use href="#laurel" transform="translate(398 497) rotate(-28)"/><use href="#laurel" transform="translate(368 458) rotate(-45)"/><use href="#laurel" transform="translate(346 413) rotate(-63)"/><use href="#laurel" transform="translate(332 363) rotate(-76)"/>
+    <use href="#laurel" transform="translate(802 497) scale(-1 1) rotate(-28)"/><use href="#laurel" transform="translate(832 458) scale(-1 1) rotate(-45)"/><use href="#laurel" transform="translate(854 413) scale(-1 1) rotate(-63)"/><use href="#laurel" transform="translate(868 363) scale(-1 1) rotate(-76)"/>
+  </g>
+  <path d="M0 854h1200M238 814l-71 186m166-186-44 186m578-186 44 186m51-186 71 186" fill="none" stroke="#ad9052" stroke-opacity=".08"/>
+  <path d="m600 897 18 18-18 18-18-18z" fill="#b89b58" fill-opacity=".15"/>
+</svg>

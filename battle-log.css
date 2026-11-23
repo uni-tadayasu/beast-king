@@ -1,0 +1,155 @@
+/* Read-only battle history. Field colours are inherited from the current duel. */
+.battle-log {
+  --log-accent: var(--field-accent, #b5d2c4);
+  --log-strong: var(--field-strong, #e1dfbc);
+  --log-line: var(--field-line, #66857a66);
+  color: #b8caca;
+  min-width: 0;
+  min-height: 0;
+}
+.battle-log-panel {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--log-line);
+}
+.battle-log-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex: none;
+  padding-bottom: 13px;
+}
+.battle-log-title-group { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.battle-log-mark { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 34px; flex: none; border: 1px solid var(--log-line); border-radius: 4px 9px 4px 9px; color: var(--log-accent); background: #b5d9b209; }
+.battle-log-mark .icon { width: 17px; height: 17px; }
+.battle-log-header h2 { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--log-strong); font-size: 14px; line-height: 1.5; font-weight: 500; letter-spacing: .05em; }
+.battle-log-count { padding: 1px 5px; border: 1px solid var(--log-line); border-radius: 4px; color: var(--log-accent); font: 400 10px/1.4 ui-monospace, monospace; letter-spacing: 0; }
+.battle-log-header p { margin: 5px 0 0; color: #8da9aa; font-size: 9px; line-height: 1.5; letter-spacing: .02em; }
+.battle-log-scroll {
+  min-height: 0;
+  flex: 1 1 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--log-line) transparent;
+  scrollbar-gutter: stable;
+  padding-right: 7px;
+  scroll-behavior: auto;
+}
+.battle-log-scroll:focus-visible { outline: 1px solid var(--log-accent); outline-offset: -1px; border-radius: 3px; }
+.battle-log-entries { list-style: none; padding: 0; margin: 0; }
+.battle-log-event { --event-color: #9fbab9; position: relative; padding: 12px 0 13px 12px; border-bottom: 1px solid #67877c26; }
+.battle-log-event::before { content: ''; position: absolute; left: 0; top: 18px; width: 4px; height: 4px; border-radius: 50%; background: var(--event-color); }
+.battle-log-event.is-latest { background: linear-gradient(90deg, #b9d7b509, transparent); }
+.battle-log-event.is-latest p { color: #e1e9df; }
+.battle-log-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 9px; margin-bottom: 6px; font-size: 9px; line-height: 1.4; }
+.battle-log-kind { color: var(--event-color); font-weight: 600; }
+.battle-log-turn { color: #91a8ac; font: 400 9px/1.4 ui-monospace, monospace; letter-spacing: .04em; }
+.battle-log-latest { margin-left: auto; color: var(--log-accent); font-size: 8px; padding: 1px 4px; border: 1px solid var(--log-line); border-radius: 3px; }
+.battle-log-event p { margin: 0; color: #b5c6c7; font-size: 11px; line-height: 1.9; overflow-wrap: anywhere; white-space: pre-line; }
+.battle-log-tone-turn { --event-color: var(--log-strong); }
+.battle-log-tone-summon { --event-color: #a5ccc1; }
+.battle-log-tone-miracle { --event-color: #c7b0e2; }
+.battle-log-tone-gimmick { --event-color: #d6bc87; }
+.battle-log-tone-damage { --event-color: #daa5a2; }
+.battle-log-tone-heal { --event-color: #a5ccaa; }
+.battle-log-tone-result { --event-color: #ead393; }
+.battle-log-tone-result p { color: #e8d9aa; }
+.battle-log-footer { display: flex; align-items: center; justify-content: space-between; gap: 6px; flex: none; padding-top: 12px; color: #819b9e; font-size: 8px; line-height: 1.5; }
+.battle-log-scroll-hint { white-space: nowrap; color: #97b3ac; }
+.battle-log-empty { min-height: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 22px 8px; text-align: center; }
+.battle-log-empty > span { display: inline-flex; color: var(--log-accent); opacity: .6; margin-bottom: 12px; }
+.battle-log-empty .icon { width: 29px; height: 29px; }
+.battle-log-empty strong { color: #c6d5ca; font-size: 12px; line-height: 1.7; font-weight: 500; }
+.battle-log-empty p { margin: 9px 0 0; color: #91a9ae; font-size: 11px; line-height: 1.9; }
+
+/* The desktop panel is always available; the compact trigger only opens a drawer. */
+.duel-shell .battle-log-trigger,
+.battle-log-drawer { display: none; }
+.battle-log-drawer[hidden] { display: none; }
+.duel-shell .battle-log-trigger {
+  width: auto;
+  height: auto;
+  min-width: 44px;
+  min-height: 36px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 9px;
+  border: 1px solid var(--field-line, #66857a66);
+  border-radius: 5px;
+  color: var(--field-accent, #b5d2c4);
+  background: var(--field-side, #10252a);
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.duel-shell .battle-log-trigger .icon { width: 15px; height: 15px; }
+.duel-shell .battle-log-trigger[aria-expanded='true'] { color: var(--field-strong, #e1dfbc); border-color: var(--field-accent, #b5d2c4); background: #3e574a80; }
+.duel-shell .battle-log-trigger:focus-visible,
+.battle-log-close:focus-visible,
+.battle-log-return:focus-visible { outline: 2px solid var(--field-accent, #b5d2c4); outline-offset: 2px; }
+.battle-log-close { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 44px; min-width: 68px; flex: none; padding: 8px; border: 1px solid var(--log-line); border-radius: 5px; background: #07151244; color: #d6dfcf; font-size: 11px; cursor: pointer; }
+.battle-log-close > span:first-child { display: inline-flex; }
+.battle-log-close .icon { width: 15px; height: 15px; }
+.battle-log-close:hover, .battle-log-return:hover { border-color: var(--log-accent); background: #526b5133; }
+.battle-log-return { min-height: 44px; padding: 8px 15px; border: 1px solid var(--log-line); border-radius: 4px; background: #7c9c6b12; color: var(--log-strong); font-size: 11px; cursor: pointer; }
+
+@media (max-width: 980px), (max-height: 560px) and (orientation: landscape) {
+  .battle-log-panel { display: none; }
+  .duel-shell .battle-log-trigger { display: inline-flex; }
+  .battle-log-drawer:not([hidden]) {
+    position: fixed;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    top: calc(var(--news-height, 0px) + 66px);
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+    width: min(380px, calc(100vw - 32px));
+    max-height: calc(100svh - var(--news-height, 0px) - 78px);
+    padding: 17px 17px 13px;
+    border: 1px solid var(--log-line);
+    border-top-color: var(--log-accent);
+    border-radius: 7px 7px 7px 17px;
+    background: var(--field-side, #10232af5);
+    box-shadow: -14px 15px 45px #020c0fcc, 0 0 0 1px #08161388;
+    backdrop-filter: blur(16px);
+  }
+  .battle-log-drawer .battle-log-header { border-bottom: 1px solid var(--log-line); margin-bottom: 3px; }
+  .battle-log-drawer .battle-log-scroll { padding-right: 9px; }
+  .battle-log-drawer .battle-log-event { padding: 14px 0 15px 13px; }
+  .battle-log-drawer .battle-log-event::before { top: 20px; }
+  .battle-log-drawer .battle-log-event p { font-size: 12px; }
+  .battle-log-drawer .battle-log-meta { font-size: 10px; }
+  .battle-log-drawer .battle-log-turn { font-size: 10px; }
+  .battle-log-drawer .battle-log-footer { border-top: 1px solid var(--log-line); padding-top: 12px; font-size: 9px; }
+}
+@media (max-width: 720px) {
+  .duel-shell .battle-log-trigger { gap: 4px; padding: 5px 7px; min-height: 34px; }
+  .duel-shell .battle-log-trigger .icon { width: 14px; height: 14px; }
+  .battle-log-drawer:not([hidden]) { top: calc(var(--news-height, 0px) + 55px); max-height: calc(100svh - var(--news-height, 0px) - 67px); }
+}
+@media (max-width: 360px) {
+  .duel-shell .battle-log-trigger { font-size: 9px; padding: 5px 6px; }
+  .duel-shell .battle-log-trigger .icon { display: none; }
+  .battle-log-drawer:not([hidden]) { padding-inline: 13px; }
+  .battle-log-header h2 { font-size: 13px; }
+  .battle-log-title-group { gap: 7px; }
+  .battle-log-mark { width: 26px; }
+  .battle-log-close { min-width: 62px; padding: 6px; }
+}
+@media (max-height: 560px) and (orientation: landscape) {
+  .duel-shell .battle-log-trigger { min-height: 30px; padding-block: 3px; }
+  .battle-log-drawer:not([hidden]) { top: calc(var(--news-height, 0px) + 44px); right: max(8px, env(safe-area-inset-right)); bottom: max(8px, env(safe-area-inset-bottom)); width: min(360px, calc(100vw - 32px)); max-height: calc(100svh - var(--news-height, 0px) - 52px); padding: 10px 15px; }
+  .battle-log-drawer .battle-log-header { padding-bottom: 7px; }
+  .battle-log-drawer .battle-log-footer { padding-top: 7px; }
+  .battle-log-drawer .battle-log-event { padding-block: 10px; }
+  .battle-log-drawer .battle-log-event::before { top: 16px; }
+}

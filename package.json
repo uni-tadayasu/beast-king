@@ -1,1 +1,12 @@
-{"name":"beast-king","private":true,"version":"1.0.0","type":"module","scripts":{"test":"node --test tests/*.test.mjs"}}
+{
+  "name": "beast-king",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "build": "node scripts/build-online.mjs",
+    "build:online": "node scripts/build-online.mjs",
+    "db:check": "node scripts/build-online.mjs --check-schema"
+  }
+}

@@ -1,8 +1,9 @@
-import { getCard, STARTER_DECKS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS } from './catalog.js';
+import { getCard, STARTER_DECKS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js';
 
 export const MAX_HEART_POINTS = 5000;
 // Internal .core and MAX_CORE remain compatible with saved games and callers.
 export const MAX_CORE = MAX_HEART_POINTS;
+export const MAX_LOG_ENTRIES = 1000;
 const battleUnits = value => value / POINT_SCALE;
 export const RULES = Object.freeze({deck:DECK_SIZE, deckMin:DECK_MIN, specialDeck:SPECIAL_DECK_SIZE, copies:3, hand:4, field:4, traps:2, maxEnergy:10, startingHand:4, heartPoints:MAX_HEART_POINTS, core:MAX_CORE});
 const TARGETED = new Set(['damage_enemy', 'buff']);
@@ -10,6 +11,7 @@ const LEVELS = new Set(['easy','normal','hard']);
 const label = p => p.name || 'プレイヤー';
 const ok = events => ({ok:true, events});
 const fail = error => ({ok:false, error, events:[]});
+const isAttackOnlyBeast = card => card?.type==='beast' && card.model==='attack';
 
 function seedNumber(value) {
   if (typeof value === 'number' && Number.isFinite(value)) return (value >>> 0) || 0x6d2b79f5;
@@ -32,10 +34,10 @@ function shuffle(state, ids) {
   return result;
 }
 function emit(state, events, text, type='info') {
-  const event = {text, type};
+  const event = {text, type, turn:state.turn};
   events.push(event);
   state.log.push(event);
-  if (state.log.length > 100) state.log.splice(0, state.log.length-100);
+  if (state.log.length > MAX_LOG_ENTRIES) state.log.splice(0, state.log.length-MAX_LOG_ENTRIES);
 }
 function checkWinner(state, events) {
   if (state.winner !== null) return true;
@@ -48,59 +50,75 @@ function checkWinner(state, events) {
   }
   return false;
 }
-function cleanup(state, events) {
+function cleanup(state, events, source='') {
   for (const player of state.players) {
     const dead = player.field.filter(unit => unit.hp <= 0);
     if (!dead.length) continue;
     player.field = player.field.filter(unit => unit.hp > 0);
     for (const unit of dead) {
       player.grave.push(unit.cardId);
-      emit(state, events, `${getCard(unit.cardId)?.name || '魔獣'}が消滅。`, 'destroy');
+      emit(state, events, `${source ? '「'+source+'」：' : ''}${label(player)}の「${getCard(unit.cardId)?.name || '魔獣'}」が消滅し、お墓ゾーンへ移動。`, 'destroy');
     }
   }
 }
-function healCore(state, who, value, events) {
+function healCore(state, who, value, events, source='') {
   const player = state.players[who];
+  const before = player.core;
   const healed = Math.min(Math.max(0, value), MAX_CORE-player.core);
   player.core += healed;
-  if (healed > 0) emit(state, events, `${label(player)}のハートポイントが${healed}回復。`, 'heal');
+  if (healed > 0 || source) emit(state, events, `${source ? '「'+source+'」：' : ''}${label(player)}のハートポイントを${healed}回復（${before}→${player.core}）。${healed<value?'回復上限は'+MAX_CORE+'。':''}`, 'heal');
   return healed;
 }
 function damageCore(state, who, value, events, source='', {bypassShield=false}={}) {
   const player = state.players[who];
+  const before = player.core, shieldBefore = player.shield, prefix = source ? '「'+source+'」：' : '';
   let damage = Math.max(0, value);
   const blocked = bypassShield ? 0 : Math.min(damage, player.shield);
   player.shield -= blocked;
   damage -= blocked;
-  if (blocked) emit(state, events, `${label(player)}の結界が${blocked}ダメージを防いだ。`, 'shield');
-  if (bypassShield && damage>0 && player.shield>0) emit(state, events, '魔獣との戦闘によるハートポイントへのダメージは、結界を消費せずに通る。', 'info');
+  if (blocked) emit(state, events, `${prefix}${label(player)}の結界が${blocked}ダメージを防いだ（結界${shieldBefore}→${player.shield}）。`, 'shield');
+  if (bypassShield && damage>0 && player.shield>0) emit(state, events, `${prefix}魔獣との戦闘によるハートポイントへのダメージは、結界を消費せずに通る。`, 'info');
   const actual = Math.min(Math.max(0, player.core), damage);
   player.core = Math.max(0, player.core-damage);
-  if (damage) emit(state, events, `${source ? source+'：' : ''}${label(player)}のハートポイントに${damage}ダメージ。`, 'damage');
+  if (value>0 || source) emit(state, events, `${prefix}${label(player)}のハートポイントに${actual}ダメージ（${before}→${player.core}）。`, 'damage');
   return actual;
 }
 function damageUnit(state, unit, value, events, source='') {
+  const before = unit.hp;
   const damage = Math.max(0, value);
   const actual = Math.min(Math.max(0, unit.hp), damage);
   unit.hp = Math.max(0, unit.hp-damage);
-  if (damage) emit(state, events, `${source ? source+'：' : ''}${getCard(unit.cardId)?.name || '魔獣'}に${damage}ダメージ。`, 'damage');
+  if (damage || source) emit(state, events, `${source ? '「'+source+'」：' : ''}「${getCard(unit.cardId)?.name || '魔獣'}」の守備力に${actual}ダメージ（${before}→${unit.hp}）。`, 'damage');
   return actual;
 }
-function draw(state, who, count, events, opening=false) {
+function draw(state, who, count, events, opening=false, source='') {
   const player = state.players[who];
   for (let i=0; i<count; i++) {
-    if (state.winner !== null || player.hand.length >= RULES.hand) break;
+    if (state.winner !== null) break;
+    if (player.hand.length >= RULES.hand) {
+      if(source) emit(state,events,`「${source}」：${label(player)}の手札が${RULES.hand}枚のため、残りのドローは行わなかった。`,'info');
+      break;
+    }
     if (!player.deck.length) {
       player.fatigue++;
-      emit(state, events, `${label(player)}は山札切れ。疲弊${player.fatigue}。`, 'fatigue');
+      emit(state, events, `${source ? '「'+source+'」：' : ''}${label(player)}は山札切れ。疲弊${player.fatigue}。`, 'fatigue');
       damageCore(state, who, player.fatigue*POINT_SCALE, events, '疲弊');
       if (checkWinner(state, events)) break;
       continue;
     }
     const id = player.deck.shift();
     player.hand.push(id);
-    if (!opening) emit(state, events, `${label(player)}がカードを1枚引いた。`, 'draw');
+    if (!opening) emit(state, events, `${source ? '「'+source+'」：' : ''}${label(player)}がカードを1枚引いた（手札${player.hand.length}/${RULES.hand}枚）。`, 'draw');
   }
+}
+function restoreDefense(state, who, value, events, source) {
+  const player=state.players[who];let total=0;
+  for(const unit of player.field){
+    const before=unit.hp,amount=Math.min(value,Math.max(0,unit.maxHp-unit.hp));unit.hp+=amount;total+=amount;
+    if(amount>0)emit(state,events,`「${source}」：${label(player)}の「${getCard(unit.cardId).name}」の守備力を${amount}回復（${before}→${unit.hp}）。`,'heal');
+  }
+  if(total===0)emit(state,events,`「${source}」：守備力の回復は0。${player.field.length?'場の魔獣はすでに最大守備力。':'場に回復対象の魔獣がいない。'}`,'heal');
+  return total;
 }
 function activateStartTraps(state, who, events) {
   const player = state.players[who];
@@ -113,11 +131,9 @@ function activateStartTraps(state, who, events) {
     emit(state, events, `${label(player)}のギミック「${card.name}」が発動！`, 'gimmick');
     if (card.effect.kind === 'spring') {
       for (const unit of player.field) {unit.attack+=card.effect.value;unit.hp+=card.effect.value;unit.maxHp+=card.effect.value;}
-      emit(state, events, `${label(player)}の場の魔獣${player.field.length}体すべての攻撃力・現在守備力・最大守備力が${card.effect.value}上昇。`, 'buff');
+      emit(state, events, `「${card.name}」：${player.field.length?`${label(player)}の場の魔獣${player.field.length}体すべての攻撃力・現在守備力・最大守備力が${card.effect.value}上昇。`:'場に対象の魔獣がいないため、能力の変化は0。'}`, 'buff');
     } else {
-      let healed=0;
-      for (const unit of player.field) {const amount=Math.min(card.effect.value,Math.max(0,unit.maxHp-unit.hp));unit.hp+=amount;healed+=amount;}
-      emit(state, events, `${label(player)}の場の魔獣すべての守備力を合計${healed}回復。`, 'heal');
+      restoreDefense(state,who,card.effect.value,events,card.name);
     }
   }
 }
@@ -154,7 +170,7 @@ export function newGame({playerDeck, cpuDeck, playerSpecialDeck, cpuSpecialDeck,
     if (!validation.valid) throw new Error(`${i?'CPU':'あなた'}の特殊デッキを確認してください：${validation.errors.join('／')}`);
   });
   const state = {rulesVersion:2, turn:1, active:0, winner:null, players:[], log:[], nextUid:1, seed:seedNumber(seed), difficulty:LEVELS.has(difficulty)?difficulty:'normal'};
-  state.players = [first, second].map((ids,i)=>({name:i?'CPU':'あなた', core:MAX_CORE, shield:0, energy:0, maxEnergy:0, deckSize:ids.length, specialSize:specials[i].length, special:[...specials[i]], banished:[], deck:shuffle(state,ids), hand:[], field:[], traps:[], grave:[], fatigue:0}));
+  state.players = [first, second].map((ids,i)=>({name:i?'CPU':'あなた', core:MAX_CORE, shield:0, energy:0, maxEnergy:0, deckSize:ids.length, specialSize:specials[i].length, special:[...specials[i]], banished:[], deck:shuffle(state,ids), hand:[], field:[], traps:[], grave:[], fatigue:0, lastMiracle:null}));
   const events=[];
   emit(state,events,`契約成立。${MAX_HEART_POINTS}のハートポイントで対戦を始めます。`,'start');
   draw(state,0,RULES.startingHand,events,true);
@@ -243,13 +259,14 @@ function resolveFusion(state, handIndex, selection) {
   player.banished??=[];
   player.banished.push(...materials.map(m=>m.cardId));
   player.grave.push(spell.id);
+  player.lastMiracle=spell.id;
   player.special.splice(selection.specialIndex,1);
   const bonus=(materials.length-1)*FUSION_MATERIAL_BONUS, events=[];
   player.field.push({uid:`u${state.nextUid++}`,cardId:card.id,attack:card.attack+bonus,hp:card.hp+bonus,maxHp:card.hp+bonus,ready:card.keywords.includes('rush'),keywords:[...card.keywords],owner:state.active,fusionMaterialCount:materials.length});
   emit(state,events,`${label(player)}が「合成」を発動。素材の魔獣${materials.length}枚を異世界ゾーンへ送った。`,'miracle');
-  emit(state,events,`特殊ゾーンから「${card.name}」を合成召喚！ 素材${materials.length}枚（攻撃力・守備力 +${bonus}）。`,'fusion');
+  emit(state,events,`${label(player)}が特殊ゾーンから「${card.name}」を合成召喚！ 素材${materials.length}枚、攻撃力${card.attack+bonus}・守備力${card.hp+bonus}（素材効果 +${bonus}）。`,'fusion');
   summonEffect(state,card,events);
-  cleanup(state,events);checkWinner(state,events);
+  cleanup(state,events,spell.name);checkWinner(state,events);
   return ok(events);
 }
 
@@ -277,15 +294,16 @@ export function getPlayableCards(state) {
 function summonEffect(state, card, events) {
   const own=state.active, enemy=1-own, player=state.players[own];
   const {kind,value=0}=card.effect;
-  if (kind==='draw') draw(state,own,value,events);
-  else if (kind==='heal') healCore(state,own,value,events);
+  if (kind!=='none') emit(state,events,`${label(player)}の「${card.name}」の召喚時効果が発動。`,'info');
+  if (kind==='draw') draw(state,own,value,events,false,card.name);
+  else if (kind==='heal') healCore(state,own,value,events,card.name);
   else if (kind==='damage_core') damageCore(state,enemy,value,events,card.name);
   else if (kind==='buff_all') {
     for (const unit of player.field) unit.attack += value;
-    emit(state,events,`味方の魔獣すべての攻撃力が${value}上昇。`,'buff');
+    emit(state,events,`「${card.name}」：${label(player)}の場の魔獣${player.field.length}体すべての攻撃力が${value}上昇。`,'buff');
   } else if (kind==='shield') {
     player.shield+=value;
-    emit(state,events,`${label(player)}のハートポイントに結界${value}を付与。`,'shield');
+    emit(state,events,`「${card.name}」：${label(player)}のハートポイントに結界${value}を付与（合計${player.shield}）。`,'shield');
   }
 }
 function miracleEffect(state, card, target, events) {
@@ -294,25 +312,24 @@ function miracleEffect(state, card, target, events) {
   if (kind==='damage_enemy') {
     if (target.core) damageCore(state,enemy,value,events,card.name);
     else damageUnit(state,state.players[enemy].field.find(u=>u.uid===target.uid),value,events,card.name);
-  } else if (kind==='heal') healCore(state,own,value,events);
-  else if (kind==='draw') draw(state,own,value,events);
+  } else if (kind==='heal') healCore(state,own,value,events,card.name);
+  else if (kind==='draw') draw(state,own,value,events,false,card.name);
   else if (kind==='buff') {
     const unit=player.field.find(u=>u.uid===target.uid);
     unit.attack+=value; unit.hp+=value; unit.maxHp+=value;
-    emit(state,events,`${getCard(unit.cardId).name}の攻撃力と守備力が${value}上昇。`,'buff');
+    emit(state,events,`「${card.name}」：「${getCard(unit.cardId).name}」の攻撃力・現在守備力・最大守備力が${value}上昇。`,'buff');
   } else if (kind==='sweep') {
     for (const unit of state.players[enemy].field) damageUnit(state,unit,value,events,card.name);
+    if(!state.players[enemy].field.length)emit(state,events,`「${card.name}」：相手の場に対象の魔獣がいないため、守備力へのダメージは0。`,'info');
   } else if (kind==='shield' || kind==='shield_heal') {
-    if (kind==='shield_heal') healCore(state,own,value,events);
+    if (kind==='shield_heal') healCore(state,own,value,events,card.name);
     player.shield+=value;
-    emit(state,events,`${label(player)}のハートポイントに結界${value}を付与。`,'shield');
+    emit(state,events,`「${card.name}」：${label(player)}のハートポイントに結界${value}を付与（合計${player.shield}）。`,'shield');
   } else if (kind==='drain') {
     const dealt=damageCore(state,enemy,value,events,card.name);
-    healCore(state,own,dealt,events);
+    healCore(state,own,dealt,events,card.name);
   } else if (kind==='renew') {
-    let healed=0;
-    for (const unit of player.field) {const n=Math.min(value,unit.maxHp-unit.hp);unit.hp+=n;healed+=n;}
-    emit(state,events,`味方の魔獣の守備力を合計${healed}回復。`,'heal');
+    restoreDefense(state,own,value,events,card.name);
   }
 }
 export function playCard(state, handIndex, target) {
@@ -335,6 +352,7 @@ export function playCard(state, handIndex, target) {
     summonEffect(state,card,events);
   } else if (card.type==='miracle') {
     player.grave.push(card.id);
+    player.lastMiracle=card.id;
     emit(state,events,`${label(player)}がミラクル「${card.name}」を発動！`,'miracle');
     miracleEffect(state,card,target,events);
   } else if (card.type==='gimmick') {
@@ -342,7 +360,7 @@ export function playCard(state, handIndex, target) {
     // The identity remains hidden in public history until activation.
     emit(state,events,`${label(player)}がギミックを1枚設置。`,'set');
   }
-  cleanup(state,events);
+  cleanup(state,events,card.name);
   checkWinner(state,events);
   return ok(events);
 }
@@ -366,9 +384,10 @@ export function attack(state, attackerUid, target) {
   const own=state.active, enemy=1-own, player=state.players[own], defender=state.players[enemy];
   const chosen=target ?? {player:enemy,core:true};
   if (!getAttackTargets(state,attackerUid).some(t=>targetMatches(t,chosen))) return fail(defender.field.some(u=>u.keywords.includes('guard'))?'守護を持つ魔獣を先に攻撃してください。':'相手の魔獣かハートポイントを選んでください。');
-  const unit=player.field.find(u=>u.uid===attackerUid), events=[];
+  const unit=player.field.find(u=>u.uid===attackerUid), events=[],source=getCard(unit.cardId).name;
   unit.ready=false;
-  emit(state,events,`${getCard(unit.cardId).name}が攻撃！`,'attack');
+  const targetLabel=chosen.core?`${label(defender)}のハートポイント`:`${label(defender)}の「${getCard(defender.field.find(u=>u.uid===chosen.uid).cardId).name}」`;
+  emit(state,events,`${label(player)}の「${source}」が${targetLabel}へ攻撃（攻撃力${unit.attack}）。`,'attack');
   let attackPower=unit.attack;
   for (const trap of [...defender.traps]) {
     const card=getCard(trap.cardId);
@@ -378,46 +397,49 @@ export function attack(state, attackerUid, target) {
       emit(state,events,`${label(defender)}のギミック「${card.name}」が発動！`,'gimmick');
       if (card.effect.kind==='ambush') {
         damageUnit(state,unit,card.effect.value,events,card.name);
-        if (unit.hp<=0) {cleanup(state,events);emit(state,events,'攻撃した魔獣が消滅し、攻撃は止められた。','cancel');return ok(events);}
+        if (unit.hp<=0) {cleanup(state,events,card.name);emit(state,events,`「${card.name}」：攻撃した魔獣が消滅し、攻撃は止められた。`,'cancel');return ok(events);}
       } else {
         const blocked=Math.min(attackPower,card.effect.value);
         attackPower-=blocked;
-        emit(state,events,`ギミックが${blocked}ダメージを防ぎ、攻撃した魔獣へ反射。`,'shield');
+        emit(state,events,`「${card.name}」：${blocked}ダメージを防ぎ、攻撃した魔獣へ反射。`,'shield');
         damageUnit(state,unit,blocked,events,card.name);
-        if (unit.hp<=0) {cleanup(state,events);emit(state,events,'反射で攻撃した魔獣が消滅し、攻撃は止められた。','cancel');return ok(events);}
+        if (unit.hp<=0) {cleanup(state,events,card.name);emit(state,events,`「${card.name}」：反射で攻撃した魔獣が消滅し、攻撃は止められた。`,'cancel');return ok(events);}
       }
     }
   }
   if (chosen.core) {
-    const dealt=damageCore(state,enemy,attackPower,events,getCard(unit.cardId).name);
-    if (unit.keywords.includes('drain')) healCore(state,own,dealt,events);
+    const dealt=damageCore(state,enemy,attackPower,events,source);
+    if (unit.keywords.includes('drain')) healCore(state,own,dealt,events,source+'の吸収');
   } else {
     const targetUnit=defender.field.find(u=>u.uid===chosen.uid);
-    if (getCard(targetUnit.cardId)?.model==='attack') {
-      // An attacked attack-model beast vanishes regardless of its statistics.
+    const targetCard=getCard(targetUnit.cardId);
+    if (isAttackOnlyBeast(targetCard)) {
+      // Only a normal attack-model beast vanishes regardless of its statistics.
       // Its owner takes the attacker's full attack directly; no counterattack or
       // shield consumption occurs. Ambush cancellation already resolved above.
       targetUnit.hp=0;
-      emit(state,events,`アタック型「${getCard(targetUnit.cardId).name}」は攻撃を受け、強制的に消滅した。`,'destroy');
-      const dealt=damageCore(state,enemy,unit.attack,events,'アタック型への攻撃',{bypassShield:true});
-      if (unit.keywords.includes('drain')) healCore(state,own,dealt,events);
+      emit(state,events,`「${source}」：アタック型「${targetCard.name}」は攻撃を受け、強制的に消滅した。`,'destroy');
+      const dealt=damageCore(state,enemy,unit.attack,events,source+'のアタック型への攻撃',{bypassShield:true});
+      if (unit.keywords.includes('drain')) healCore(state,own,dealt,events,source+'の吸収');
     } else {
-      // Current hp is the defense value. Equal or lower attacks do not erode
+      // Defense-model normal beasts and all hybrid fusion beasts use current
+      // hp as their defense value. Equal or lower attacks do not erode
       // it; a strictly higher attack makes the defender vanish and deals only
-      // the excess to its owner's heart points. Neither model counterattacks.
+      // the excess to its owner's heart points. There is no counterattack.
       const defense=Math.max(0,targetUnit.hp);
+      const modelLabel=MODEL_LABELS[targetCard.model] || MODEL_LABELS.defense;
       if (unit.attack<=defense) {
-        emit(state,events,`ディフェンス型「${getCard(targetUnit.cardId).name}」は守備力${defense}で攻撃力${unit.attack}を防いだ。場に残り、ハートポイントへのダメージは0。`,'defend');
+        emit(state,events,`「${source}」：${modelLabel}「${targetCard.name}」は守備力${defense}で攻撃力${unit.attack}を防いだ。場に残り、ハートポイントへのダメージは0。`,'defend');
       } else {
         const excess=unit.attack-defense;
         targetUnit.hp=0;
-        emit(state,events,`ディフェンス型「${getCard(targetUnit.cardId).name}」は攻撃力${unit.attack}が守備力${defense}を上回り、消滅した。`,'destroy');
-        const dealt=damageCore(state,enemy,excess,events,'ディフェンス型の超過ダメージ',{bypassShield:true});
-        if (unit.keywords.includes('drain')) healCore(state,own,dealt,events);
+        emit(state,events,`「${source}」：${modelLabel}「${targetCard.name}」は攻撃力${unit.attack}が守備力${defense}を上回り、消滅した。`,'destroy');
+        const dealt=damageCore(state,enemy,excess,events,`${source}の${modelLabel}への超過ダメージ`,{bypassShield:true});
+        if (unit.keywords.includes('drain')) healCore(state,own,dealt,events,source+'の吸収');
       }
     }
   }
-  cleanup(state,events);
+  cleanup(state,events,source);
   checkWinner(state,events);
   return ok(events);
 }
@@ -534,11 +556,11 @@ function chooseAttackTarget(state,uid,difficulty) {
   const core=targets.find(t=>t.core);
   const scored=targets.filter(t=>t.uid).map(t=>{
     const foe=enemy.field.find(u=>u.uid===t.uid);
-    const attackModel=getCard(foe.cardId)?.model==='attack';
+    const attackModel=isAttackOnlyBeast(getCard(foe.cardId));
     const excess=attackModel?unit.attack:Math.max(0,unit.attack-foe.hp);
     const vanishes=attackModel || unit.attack>foe.hp;
-    // Both models deal damage to heart points without a counterattack. A
-    // defense value that cannot be exceeded must not appear to be chipped away.
+    // Defense and hybrid targets take only excess heart-point damage. A defense
+    // value that cannot be exceeded must not appear to be chipped away.
     let score=vanishes?battleUnits(foe.attack)*0.8+battleUnits(foe.hp)*0.25+3+battleUnits(Math.min(excess,enemy.core))*0.7:-10;
     if (vanishes && foe.keywords.includes('guard')) score+=2;
     if (vanishes && player.core<MAX_HEART_POINTS*.4) score+=battleUnits(foe.attack)*0.35;

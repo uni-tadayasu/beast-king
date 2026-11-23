@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CARDS, getCard, STARTER_DECKS, DECK_MIN, DECK_SIZE, SPECIAL_DECK_SIZE, FUSION_CARD_ID, POINT_SCALE, FUSION_MATERIAL_BONUS } from '../catalog.js';
-import { newGame, playCard, attack, endTurn, runCpuTurn, getLegalTargets, getAttackTargets, canAttack, getPlayableCards, getFusionMaterials, validateFusionSelection, MAX_HEART_POINTS, MAX_CORE, RULES } from '../engine.js';
+import { newGame, playCard, attack, endTurn, runCpuTurn, getLegalTargets, getAttackTargets, canAttack, getPlayableCards, getFusionMaterials, validateFusionSelection, MAX_HEART_POINTS, MAX_CORE, MAX_LOG_ENTRIES, RULES } from '../engine.js';
 
 const N = value => value * POINT_SCALE;
 const find = (type,kind) => CARDS.find(c=>c.type===type && c.effect.kind===kind);
@@ -31,7 +31,8 @@ function conserved(s) {
     assert.ok(p.special.length<=SPECIAL_DECK_SIZE);
     assert.equal(new Set(p.field.map(u=>u.uid)).size,p.field.length);
   }
-  assert.ok(s.log.length<=100);
+  assert.ok(s.log.length<=MAX_LOG_ENTRIES);
+  assert.ok(s.log.every(event=>Number.isInteger(event.turn)&&event.turn>0&&event.turn<=s.turn));
 }
 
 test('seeded setup is reproducible and decks are defensively copied',()=>{
@@ -44,6 +45,17 @@ test('seeded setup is reproducible and decks are defensively copied',()=>{
   assert.equal(a.players[0].energy,1);assert.equal(a.players[1].energy,0);
   assert.equal(a.active,0);assert.equal(a.turn,1);assert.equal(a.players[0].deckSize,DECK_MIN);assert.equal(a.players[0].specialSize,4);assert.equal(a.players[0].special.length,4);conserved(a);
   assert.throws(()=>newGame({playerDeck:[ids[0]]}),/デッキ/);
+});
+
+test('new games accept two identical cards but reject a third in either deck',()=>{
+  const ids=[...STARTER_DECKS[0].ids],third=[...ids],duplicate=ids[0];
+  third[third.findIndex(id=>id!==duplicate)]=duplicate;
+  assert.throws(()=>newGame({playerDeck:third}),/2枚まで/);
+  assert.throws(()=>newGame({cpuDeck:third}),/2枚まで/);
+  assert.throws(()=>newGame({playerSpecialDeck:['F0001','F0001','F0001','F0002']}),/2枚まで/);
+  assert.throws(()=>newGame({cpuSpecialDeck:['F0001','F0001','F0001','F0002']}),/2枚まで/);
+  const s=newGame({playerDeck:ids,playerSpecialDeck:['F0001','F0001','F0002','F0002'],seed:12});
+  assert.deepEqual(s.players[0].special,['F0001','F0001','F0002','F0002']);conserved(s);
 });
 
 test('all rejected plays and attacks preserve the complete state',()=>{
@@ -235,7 +247,7 @@ test('CPU plays complete legal games across all starter decks and difficulties',
         conserved(s);
       }
       assert.ok(s.winner!==null,`${difficulty} ${n} must terminate`);
-      assert.ok(s.turn<160);assert.ok(s.log.length<=100);
+      assert.ok(s.turn<160);assert.ok(s.log.length<=MAX_LOG_ENTRIES);
     }
   }
 });
@@ -490,11 +502,50 @@ test('miracle damage does not trigger the attack-model forced-destruction rule',
   assert.equal(b.hp,1000-spell.effect.value);assert.equal(s.players[1].field.length,1);assert.equal(s.players[1].core,5000);
 });
 
-test('fusion attack-model beasts obey forced destruction and enter the grave as reusable materials',()=>{
-  const s=state(),fusion=CARDS.find(c=>c.type==='fusion'&&c.model==='attack'),a=unit(0,{attack:6}),b=unit(1,{cardId:fusion.id,hp:99,maxHp:99});
-  s.players[0].field=[a];s.players[1].field=[b];assert.ok(attack(s,a.uid,{player:1,uid:b.uid}).ok);
-  assert.equal(s.players[1].core,4400);assert.deepEqual(s.players[1].grave,[fusion.id]);
-  assert.ok(getFusionMaterials(s,1).some(m=>m.zone==='grave'&&m.cardId===fusion.id));
+test('all fusion beasts are hybrid and compare defense for weaker, equal and stronger attacks',()=>{
+  for(const fusion of CARDS.filter(c=>c.type==='fusion')) {
+    assert.equal(fusion.model,'hybrid');
+    for(const [power,damage,vanishes] of [[4,0,false],[6,0,false],[8,200,true]]) {
+      const s=state(),a=unit(0,{attack:power,hp:3,maxHp:3});
+      // Restored per-unit legacy model fields cannot override current card rules.
+      const b=unit(1,{cardId:fusion.id,model:'attack',attack:99,hp:6,maxHp:9});
+      s.players[0].field=[a];s.players[1].field=[b];s.players[1].shield=2000;
+      const result=attack(s,a.uid,{player:1,uid:b.uid});assert.ok(result.ok,fusion.id);
+      assert.equal(s.players[1].core,5000-damage,fusion.id);
+      assert.equal(s.players[1].shield,2000);assert.equal(a.hp,300,'hybrid defense does not counterattack');
+      assert.equal(s.players[1].field.length,vanishes?0:1);
+      assert.deepEqual(s.players[1].grave,vanishes?[fusion.id]:[]);
+      assert.equal(b.hp,vanishes?0:600);
+      assert.ok(result.events.some(e=>e.text.includes('アタック・ディフェンス型')));
+      assert.ok(!result.events.some(e=>e.text.includes('強制的に消滅')));
+      if(vanishes) assert.ok(getFusionMaterials(s,1).some(m=>m.zone==='grave'&&m.cardId===fusion.id));
+    }
+  }
+});
+
+test('a hybrid fusion uses attack offensively and defense when the opponent attacks',()=>{
+  const s=state(),fusion=fusionCard(),a=unit(0,{cardId:fusion.id,attack:6,hp:7,maxHp:7});
+  const b=unit(1,{attack:5,hp:10,maxHp:10});
+  s.players[0].field=[a];s.players[1].field=[b];
+  assert.ok(attack(s,a.uid,{player:1,core:true}).ok);
+  assert.equal(s.players[1].core,4400,'the fusion attacks for600, not its700 defense');
+  s.active=1;
+  assert.ok(attack(s,b.uid,{player:0,uid:a.uid}).ok);
+  assert.equal(s.players[0].core,5000);assert.equal(a.hp,700);assert.equal(b.hp,1000);
+  assert.ok(s.players[0].field.includes(a));
+});
+
+test('hard CPU distinguishes durable hybrid fusion from a vulnerable normal attack-model beast',()=>{
+  const s=state();s.active=1;
+  const cpu=unit(1,{attack:4,hp:5,maxHp:5});
+  const durable=unit(0,{cardId:fusionCard().id,attack:50,hp:20,maxHp:20});
+  const vulnerable=unit(0,{cardId:attackBeast().id,attack:3,hp:10,maxHp:10});
+  s.players[1].field=[cpu];s.players[0].field=[durable,vulnerable];
+  assert.ok(runCpuTurn(s,'hard').ok);
+  assert.ok(s.players[0].field.some(u=>u.uid===durable.uid));assert.equal(durable.hp,2000);
+  assert.ok(!s.players[0].field.some(u=>u.uid===vulnerable.uid));
+  assert.ok(s.players[0].grave.includes(vulnerable.cardId));
+  assert.equal(s.players[0].core,4600);assert.equal(cpu.hp,500);
 });
 
 
@@ -559,4 +610,90 @@ test('support gimmicks buff or restore allied normal and fusion beasts without m
     else {assert.equal(normal.hp,Math.min(600,100+c.effect.value));assert.equal(fused.hp,700);assert.equal(normal.attack,200);}
     const once=kind==='spring'?normal.attack:normal.hp;endTurn(s);endTurn(s);assert.equal(kind==='spring'?normal.attack:normal.hp,once,'support activates once');
   }
+});
+
+test('lastMiracle starts empty, tracks successful miracles for either player and remains display-only',()=>{
+  const countCards=p=>p.deck.length+p.hand.length+p.field.length+p.traps.length+p.grave.length+p.special.length+p.banished.length;
+  for(const who of [0,1]) {
+    const s=state();s.active=who;const p=s.players[who];
+    assert.equal(p.lastMiracle,null);assert.equal(s.players[1-who].lastMiracle,null);
+    const spell=hand(s,find('miracle','heal')),before=countCards(p);
+    assert.ok(playCard(s,0).ok);assert.equal(p.lastMiracle,spell.id);
+    assert.deepEqual(p.grave,[spell.id]);assert.equal(p.field.length,0);assert.equal(countCards(p),before);
+    assert.equal(s.players[1-who].lastMiracle,null);
+    p.energy=10;hand(s,beast());assert.ok(playCard(s,0).ok);assert.equal(p.lastMiracle,spell.id);
+    p.energy=10;hand(s,find('gimmick','ambush'));assert.ok(playCard(s,0).ok);assert.equal(p.lastMiracle,spell.id);
+    p.energy=10;const next=hand(s,find('miracle','damage_enemy'));
+    assert.ok(playCard(s,0,{player:1-who,core:true}).ok);assert.equal(p.lastMiracle,next.id);
+  }
+});
+
+test('lastMiracle records M0256 after successful fusion without adding a physical card',()=>{
+  const s=fusionState(),p=s.players[0];delete p.lastMiracle;
+  const countCards=()=>p.deck.length+p.hand.length+p.field.length+p.traps.length+p.grave.length+p.special.length+p.banished.length;
+  const before=countCards();
+  assert.ok(playCard(s,0,{specialIndex:0,materials:[{zone:'hand',index:1}]}).ok);
+  assert.equal(p.lastMiracle,FUSION_CARD_ID);assert.equal(countCards(),before);
+  assert.deepEqual(p.grave,[FUSION_CARD_ID]);assert.equal(p.field.length,1);
+  assert.equal(getCard(p.field[0].cardId).type,'fusion');assert.equal(s.players[1].lastMiracle,null);
+});
+
+test('lastMiracle stays unchanged when target, energy, or fusion selection is rejected',()=>{
+  const prior=find('miracle','heal').id;
+  for(const failure of ['target','energy','fusion']) {
+    const s=failure==='fusion'?fusionState():state(),p=s.players[0];p.lastMiracle=prior;
+    if(failure!=='fusion') hand(s,find('miracle','damage_enemy'));
+    if(failure==='energy') p.energy=0;
+    const target=failure==='fusion'?{specialIndex:0,materials:[]}:failure==='target'?{player:0,core:true}:{player:1,core:true};
+    const before=structuredClone(s);
+    assert.equal(playCard(s,0,target).ok,false);assert.deepEqual(s,before);assert.equal(p.lastMiracle,prior);
+  }
+});
+
+test('effect events carry turn numbers and retain the newest 1000 records without changing their shape',()=>{
+  const s=state();s.turn=7;
+  s.log=Array.from({length:MAX_LOG_ENTRIES},(_,i)=>({type:'info',text:`retained-${i}`,turn:1}));
+  assert.equal(MAX_LOG_ENTRIES,1000);
+  const card=hand(s,find('miracle','heal')),result=playCard(s,0);
+  assert.ok(result.ok);assert.ok(result.events.every(event=>event.turn===7&&typeof event.text==='string'&&typeof event.type==='string'));
+  assert.equal(s.log.length,1000);assert.equal(s.log[0].text,`retained-${result.events.length}`);
+  assert.deepEqual(s.log.slice(-result.events.length),result.events);assert.ok(result.events.some(event=>event.text.includes(card.name)&&event.text.includes('0回復')));
+});
+
+test('damage and healing logs name the source and report actual point changes including caps and shielded zero damage',()=>{
+  const s=state(),damage=hand(s,find('miracle','damage_enemy'));s.players[1].core=50;
+  const dealt=playCard(s,0,{player:1,core:true});assert.ok(dealt.ok);
+  assert.ok(dealt.events.some(event=>event.type==='damage'&&event.text.includes(damage.name)&&event.text.includes('50ダメージ（50→0）')));
+  const h=state(),heal=hand(h,find('miracle','heal'));h.players[0].core=4950;
+  const healed=playCard(h,0);assert.ok(healed.ok);
+  assert.ok(healed.events.some(event=>event.type==='heal'&&event.text.includes(heal.name)&&event.text.includes('50回復（4950→5000）')));
+  const shielded=state();hand(shielded,damage);shielded.players[1].shield=damage.effect.value;
+  const blocked=playCard(shielded,0,{player:1,core:true});assert.ok(blocked.ok);
+  assert.ok(blocked.events.some(event=>event.type==='damage'&&event.text.includes(damage.name)&&event.text.includes('0ダメージ（5000→5000）')));
+  assert.ok(blocked.events.some(event=>event.type==='shield'&&event.text.includes(`結界${damage.effect.value}→0`)));
+});
+
+test('unit effect logs report actual defense damage, grave movement and per-beast defense recovery',()=>{
+  const s=state(),victim=unit(1,{hp:.5,maxHp:.5});s.players[1].field=[victim];
+  const card=hand(s,find('miracle','damage_enemy')),result=playCard(s,0,{player:1,uid:victim.uid});assert.ok(result.ok);
+  assert.ok(result.events.some(event=>event.type==='damage'&&event.text.includes(card.name)&&event.text.includes('守備力に50ダメージ（50→0）')));
+  assert.ok(result.events.some(event=>event.type==='destroy'&&event.text.includes(card.name)&&event.text.includes(getCard(victim.cardId).name)&&event.text.includes('お墓ゾーン')));
+  const healState=state(),ally=unit(0,{hp:1,maxHp:2});healState.players[0].field=[ally];
+  const recovery=hand(healState,find('miracle','renew')),healed=playCard(healState,0);assert.ok(healed.ok);
+  assert.ok(healed.events.some(event=>event.type==='heal'&&event.text.includes(recovery.name)&&event.text.includes(getCard(ally.cardId).name)&&event.text.includes('100回復（100→200）')));
+});
+
+test('summon effects and fusion logs identify their revealed sources while draws and untriggered gimmicks stay private',()=>{
+  const s=state(),drawer=find('beast','draw'),hidden=CARDS.find(card=>card.type==='beast'&&card.id!==drawer.id&&!drawer.name.includes(card.name));
+  hand(s,drawer);s.players[0].deck=[hidden.id];
+  const drawn=playCard(s,0);assert.ok(drawn.ok);
+  assert.ok(drawn.events.some(event=>event.text.includes(drawer.name)&&event.text.includes('召喚時効果')));
+  assert.ok(drawn.events.some(event=>event.type==='draw'&&event.text.includes(drawer.name)));
+  assert.ok(drawn.events.every(event=>!event.text.includes(hidden.name)));
+  const t=state(),trap=hand(t,find('gimmick','ambush'));assert.ok(playCard(t,0).ok);assert.ok(t.log.every(event=>!event.text.includes(trap.name)));
+  const f=state(),fusion=CARDS.find(card=>card.type==='fusion'&&card.effect.kind==='none');f.turn=9;
+  f.players[0].special=[fusion.id];f.players[0].hand=[FUSION_CARD_ID,beast().id];
+  const summoned=playCard(f,0,{specialIndex:0,materials:[{zone:'hand',index:1}]});assert.ok(summoned.ok);
+  assert.ok(summoned.events.some(event=>event.type==='fusion'&&event.turn===9&&event.text.includes(fusion.name)&&event.text.includes(`攻撃力${fusion.attack}・守備力${fusion.hp}`)));
+  assert.ok(summoned.events.some(event=>event.text.includes('素材の魔獣1枚を異世界ゾーン')));
 });

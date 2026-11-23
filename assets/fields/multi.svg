@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMidYMid slice">
+  <title>星鏡の双陣</title>
+  <desc>上下で向かい合う二つの青い魔法陣。中央の鏡の結晶と直線的な星図が二者の対戦を結ぶ。</desc>
+  <defs>
+    <radialGradient id="sky"><stop stop-color="#173d59"/><stop offset=".65" stop-color="#0c233b"/><stop offset="1" stop-color="#071426"/></radialGradient>
+    <linearGradient id="beam" x2="0" y2="1"><stop stop-color="#97ddf4" stop-opacity=".08"/><stop offset=".5" stop-color="#75c9f1" stop-opacity=".38"/><stop offset="1" stop-color="#97ddf4" stop-opacity=".08"/></linearGradient>
+    <radialGradient id="mirror"><stop stop-color="#98d4ef" stop-opacity=".18"/><stop offset="1" stop-color="#23547d" stop-opacity=".03"/></radialGradient>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0v80" fill="none" stroke="#82bee0" stroke-opacity=".065"/><path d="m0 0 80 80m0-80L0 80" fill="none" stroke="#82bee0" stroke-opacity=".025"/></pattern>
+    <g id="array" fill="none" stroke="#8bcae5">
+      <circle r="193" stroke-opacity=".3" stroke-width="2"/><circle r="181" stroke-opacity=".16" stroke-width="7" stroke-dasharray="166 25 110 18"/>
+      <circle r="159" stroke-opacity=".29"/><circle r="150" stroke-opacity=".12" stroke-dasharray="2 12" stroke-width="4"/>
+      <path d="M0-147 128 74H-128ZM0 147-128-74h256Z" stroke-opacity=".13" stroke-width="2"/>
+      <path d="M0-211v31m0 360v31M-211 0h31m360 0h31M-149-149l22 22m254 254 22 22m-298 0 22-22m254-254 22-22" stroke-opacity=".24" stroke-width="2"/>
+      <path d="M0-43 43 0 0 43-43 0Z" fill="#75c7e6" fill-opacity=".055" stroke-opacity=".25"/>
+    </g>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1200v1000H0z"/>
+  <path fill="url(#grid)" d="M0 0h1200v1000H0z"/>
+  <g fill="none" stroke="#76b4d8" stroke-opacity=".13">
+    <path d="M80 0v325l150 95L80 515v485M1120 0v325l-150 95 150 95v485" stroke-width="2"/>
+    <path d="M150 0v280l210 140-210 140v440M1050 0v280L840 420l210 140v440"/>
+    <path d="M0 120h353l67 110m780-110H847l-67 110M0 720h355l65-110m780 110H845l-65-110" stroke-width="2"/>
+    <path d="M0 420h1200M600 0v1000" stroke-dasharray="3 11"/>
+  </g>
+  <g transform="translate(600 230)"><circle r="191" fill="url(#mirror)"/><use href="#array"/></g>
+  <g transform="translate(600 610) rotate(180)"><circle r="191" fill="url(#mirror)"/><use href="#array"/></g>
+  <path d="m600 313 94 107-94 107-94-107z" fill="#173b54" fill-opacity=".55" stroke="url(#beam)" stroke-width="3"/>
+  <path d="m600 347 64 73-64 73-64-73zM600 347v146m-64-73h128" fill="none" stroke="#9ad8ec" stroke-opacity=".33" stroke-width="1.5"/>
+  <path d="m600 375 39 45-39 45-39-45z" fill="#8cc4df" fill-opacity=".07" stroke="#c0e5f0" stroke-opacity=".25"/>
+  <g fill="#a5d7eb" fill-opacity=".38"><circle cx="80" cy="420" r="4"/><circle cx="1120" cy="420" r="4"/><circle cx="353" cy="120" r="3"/><circle cx="847" cy="120" r="3"/><circle cx="355" cy="720" r="3"/><circle cx="845" cy="720" r="3"/><circle cx="320" cy="610" r="2"/><circle cx="880" cy="230" r="2"/></g>
+  <g fill="none" stroke="#74a9cb" stroke-opacity=".12"><path d="M0 850h1200M0 910h1200M0 980h1200M270 810l-90 190m250-190-35 190m375-190 35 190m160-190 90 190"/></g>
+</svg>

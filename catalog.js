@@ -33,11 +33,12 @@ export const FUSION_MATERIAL_BONUS = 100;
 export const RARITY_ORDER = Object.freeze(['N', 'R', 'KR', 'KKR', 'GR', 'GGR']);
 export const RARITY_LABELS = Object.freeze({ N: 'ノーマル', R: 'レア', KR: 'キラレア', KKR: 'キラキラレア', GR: 'ギラレア', GGR: 'ギラギラレア' });
 export const KEYWORD_LABELS = Object.freeze({ guard: '守護', rush: '速攻', drain: '吸収' });
-export const MODEL_LABELS = Object.freeze({ attack: 'アタック型', defense: 'ディフェンス型' });
+export const MODEL_LABELS = Object.freeze({ attack: 'アタック型', defense: 'ディフェンス型', hybrid: 'アタック・ディフェンス型' });
 export const SUBTYPE_LABELS = Object.freeze({ power: '威力カード', regeneration: '再生カード', reflection: '反射カード', support: '魔獣サポートカード' });
 export const MODEL_DESCRIPTIONS = Object.freeze({
   attack: 'アタック型：相手の魔獣の攻撃を受けると、守備力にかかわらず消滅してお墓ゾーンへ移動する。持ち主のハートポイントは相手の攻撃力分を全て受ける。結界では軽減できず、反撃もしない。',
   defense: 'ディフェンス型：相手の攻撃力が守備力以下なら生存し、守備力も持ち主のハートポイントも減らない。攻撃力が守備力を上回ると消滅してお墓ゾーンへ移動し、持ち主のハートポイントは超過分だけ減る。結界では軽減できず、反撃もしない。',
+  hybrid: 'アタック・ディフェンス型：攻撃するときは攻撃力を使い、攻撃を受けるときは守備力で判定する。相手の攻撃力が守備力以下なら生存し、守備力も持ち主のハートポイントも減らない。攻撃力が守備力を上回ると消滅してお墓ゾーンへ移動し、持ち主のハートポイントは超過分だけ減る。結界では軽減できず、反撃もしない。',
 });
 
 const REALMS = [
@@ -156,7 +157,7 @@ const freezeCard = card => {
   else if (card.type === 'miracle' && kind !== 'fusion') text = miracleText(kind, value);
   else if (card.type === 'gimmick') text = gimmickText(kind, value);
   const origin = ORIGIN_MAP[card.element];
-  const model = card.type === 'beast' || card.type === 'fusion' ? (card.model || (card.keywords.includes('guard') || card.hp > card.attack ? 'defense' : 'attack')) : null;
+  const model = card.type === 'fusion' ? 'hybrid' : card.type === 'beast' ? (card.model || (card.keywords.includes('guard') || card.hp > card.attack ? 'defense' : 'attack')) : null;
   const subtype = card.type === 'miracle' ? (['damage_enemy','draw','buff','sweep'].includes(kind) ? 'power' : 'regeneration') : card.type === 'gimmick' ? (['ambush','barrier'].includes(kind) ? 'reflection' : 'support') : null;
   if (model) text += ' ' + MODEL_DESCRIPTIONS[model];
   return Object.freeze({ ...card, ...(model ? { model } : {}), ...(subtype ? { subtype } : {}), series: card.element, element: origin, origin, attack: card.attack * POINT_SCALE, hp: card.hp * POINT_SCALE, effect, text, keywords: Object.freeze(card.keywords) });
@@ -326,7 +327,7 @@ function makeFusions() {
       result.push(freezeCard({
         id: idFor('F', index), index: 1025 + index,
         name: `${fusion.tiers[rank]}${fusion.breeds[variant]} ${fusion.names[variant]}`,
-        type: 'fusion', category: 'beast', element: element.id, cost: 0, rarity: FUSION_RARITIES[local],
+        type: 'fusion', category: 'beast', model: 'hybrid', element: element.id, cost: 0, rarity: FUSION_RARITIES[local],
         attack: 4 + rank, hp: 4 + (rank + variant + 1) % 4,
         effect: { kind, value }, keywords,
         text: '特殊デッキから「合成」で召喚。素材2枚目以降、1枚につき攻撃力・守備力+100。' + beastText(kind, value, keywords),
@@ -344,6 +345,7 @@ export const DECK_SIZE = 32;
 export const DECK_MIN = DECK_SIZE;
 export const DECK_MAX = DECK_SIZE;
 export const SPECIAL_DECK_SIZE = 4;
+export const DECK_COPY_LIMIT = 2;
 
 function validateCardList(ids, size, types, label) {
   const errors = [];
@@ -362,7 +364,7 @@ function validateCardList(ids, size, types, label) {
     }
     counts.set(id, (counts.get(id) || 0) + 1);
   }
-  for (const [id, count] of counts) if (count > 3) errors.push(`${getCard(id).name}は3枚までです（現在${count}枚）。`);
+  for (const [id, count] of counts) if (count > DECK_COPY_LIMIT) errors.push(`${getCard(id).name}は${DECK_COPY_LIMIT}枚までです（現在${count}枚）。`);
   return { valid: errors.length === 0, errors };
 }
 export const validateDeck = ids => validateCardList(ids, DECK_SIZE, ['beast', 'miracle', 'gimmick'], 'メインデッキ');

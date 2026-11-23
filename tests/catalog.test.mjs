@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   CARDS, CARD_MAP, ELEMENTS, ORIGINS, STARTER_DECKS, DECK_SIZE, DECK_MIN, DECK_MAX,
-  SPECIAL_DECK_SIZE, FUSION_CARD_ID, POINT_SCALE, FUSION_MATERIAL_BONUS, RARITY_ORDER, RARITY_LABELS, MODEL_LABELS, SUBTYPE_LABELS,
+  SPECIAL_DECK_SIZE, DECK_COPY_LIMIT, FUSION_CARD_ID, POINT_SCALE, FUSION_MATERIAL_BONUS, RARITY_ORDER, RARITY_LABELS, MODEL_LABELS, MODEL_DESCRIPTIONS, SUBTYPE_LABELS,
   getCard, validateDeck, validateSpecialDeck,
 } from '../catalog.js';
 
@@ -12,8 +12,10 @@ test('expanded catalog contains 1152 unique cards with the original core intact'
   assert.equal(new Set(CARDS.map(c => c.name)).size, 1152);
   assert.equal(CARD_MAP.size, 1152);
   assert.equal(CARDS.filter(c=>c.category==='beast').length,640);
-  assert.deepEqual(MODEL_LABELS,{attack:'アタック型',defense:'ディフェンス型'});
+  assert.deepEqual(MODEL_LABELS,{attack:'アタック型',defense:'ディフェンス型',hybrid:'アタック・ディフェンス型'});
   for(const model of ['attack','defense']) assert.equal(CARDS.filter(c=>c.type==='beast'&&c.model===model).length,256);
+  assert.equal(CARDS.filter(c=>c.type==='fusion'&&c.model==='hybrid').length,128);
+  assert.equal(CARDS.filter(c=>c.type==='beast'&&c.model==='hybrid').length,0);
   for(const [type,subtypes] of [['miracle',['power','regeneration']],['gimmick',['reflection','support']]]) {
     for(const subtype of subtypes) assert.equal(CARDS.filter(c=>c.type===type&&c.subtype===subtype).length,128);
   }
@@ -42,7 +44,7 @@ test('all cards have supported effects, costs, art keys and usable rules text', 
     assert.ok(c.flavor.length>5, c.id);
     assert.ok(c.art>=0 && c.art<40, c.id);
     assert.ok(c.keywords.every(k => ['guard','rush','drain'].includes(k)), c.id);
-    if (c.category === 'beast') assert.ok(['attack','defense'].includes(c.model),c.id);
+    if (c.category === 'beast') assert.ok((c.type==='fusion'?['hybrid']:['attack','defense']).includes(c.model),c.id);
     if(c.type === 'beast') { assert.ok(c.attack>0 && c.hp>0 && c.art<16,c.id); assert.equal(c.category,'beast',c.id); }
     if(c.type === 'miracle') {
       assert.ok(c.art>=16 && c.art<20,c.id);
@@ -55,6 +57,9 @@ test('all cards have supported effects, costs, art keys and usable rules text', 
     }
     if(c.type === 'fusion') {
       assert.equal(c.category,'beast',c.id);
+      assert.equal(c.model,'hybrid',c.id);
+      assert.ok(c.text.includes(MODEL_DESCRIPTIONS.hybrid),c.id);
+      assert.ok(!c.text.includes('守備力にかかわらず消滅'),c.id);
       assert.ok(c.art>=24 && c.art<40,c.id);
       assert.ok(c.attack>=400 && c.attack<=700 && c.hp>=400 && c.hp<=700,c.id);
       assert.ok(c.text.startsWith('特殊デッキから「合成」で召喚。素材2枚目以降、1枚につき攻撃力・守備力+100。'),c.id);
@@ -94,6 +99,7 @@ test('eight starters each provide exactly 32 main plus 4 special cards', () => {
     assert.equal(deck.ids.filter(id=>getCard(id).type==='miracle').length,8);
     assert.equal(deck.ids.filter(id=>getCard(id).type==='gimmick').length,8);
     assert.equal(deck.ids.filter(id=>id===FUSION_CARD_ID).length,2);
+    for(const ids of [deck.ids,deck.specialIds])assert.ok(ids.every(id=>ids.filter(other=>other===id).length<=DECK_COPY_LIMIT));
     assert.ok(deck.ids.every(id=>id===FUSION_CARD_ID||getCard(id).element===deck.element));
     assert.ok(deck.ids.filter(id=>getCard(id).cost<=2).length>=12);
     assert.ok(deck.ids.some(id=>getCard(id).rarity==='GGR'));
@@ -102,16 +108,23 @@ test('eight starters each provide exactly 32 main plus 4 special cards', () => {
   }
 });
 
-test('main-deck validation enforces exact 32 cards, card types and at most three copies', () => {
+test('main-deck validation enforces exact 32 cards, card types and at most two copies', () => {
   assert.equal(DECK_SIZE,32);
   assert.equal(DECK_MIN,32);
   assert.equal(DECK_MAX,32);
+  assert.equal(DECK_COPY_LIMIT,2);
   assert.equal(validateDeck(null).valid,false);
   assert.equal(validateDeck([]).valid,false);
   const base=STARTER_DECKS[0].ids.slice();
   const more=CARDS.filter(c=>c.type==='beast'&&!base.includes(c.id)).slice(0,13).map(c=>c.id);
   assert.equal(validateDeck(base.slice(0,31)).valid,false);
   assert.equal(validateDeck(base).valid,true);
+  const third=[...base],duplicated=base[0];
+  assert.equal(base.filter(id=>id===duplicated).length,2);
+  third[third.findIndex(id=>id!==duplicated)]=duplicated;
+  assert.equal(validateDeck(third).valid,false);
+  assert.ok(validateDeck(third).errors.some(error=>error.includes('2枚まで')));
+  assert.deepEqual(base,STARTER_DECKS[0].ids);
   assert.equal(validateDeck([...base,more[0]]).valid,false);
   assert.equal(validateDeck([...base,...more]).valid,false);
   assert.equal(validateDeck(['F0001',...base.slice(1)]).valid,false);
@@ -133,7 +146,8 @@ test('special-deck validation requires exactly four fusion cards and enforces co
   assert.equal(validateSpecialDeck([...special,'F0002']).valid,false);
   assert.equal(validateSpecialDeck(['B0001',...special.slice(1)]).valid,false);
   assert.equal(validateSpecialDeck(['UNKNOWN',...special.slice(1)]).valid,false);
-  assert.equal(validateSpecialDeck(['F0001','F0001','F0001','F0002']).valid,true);
+  assert.equal(validateSpecialDeck(['F0001','F0001','F0002','F0002']).valid,true);
+  assert.equal(validateSpecialDeck(['F0001','F0001','F0001','F0002']).valid,false);
   assert.equal(validateSpecialDeck(['F0001','F0001','F0001','F0001']).valid,false);
   assert.deepEqual(special,STARTER_DECKS[0].specialIds);
 });
