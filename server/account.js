@@ -1,3 +1,5 @@
+import {KIRAHARA_RECIPE,requiredCards} from '../rebuild/operator-deck.js';
+import {OPERATOR_REGALIA_ID} from '../rebuild/catalog.js';
 import {CARDS,ORIGINS,STARTER_DECKS,DECK_COPY_LIMIT,getCard,validateDeck,validateSpecialDeck} from '../catalog.js';
 import {MAX_HEART_POINTS,MAX_LOG_ENTRIES} from '../engine.js';
 import {normalizeCampaignProgress,getCampaignBattle} from '../campaign.js';
@@ -296,15 +298,51 @@ async function claimReward(c,player,kind,id){
 }
 
 /** Returns null for existing matchmaking routes, otherwise the account payload. */
+
+// Rebuild-only entitlement. Reuses existing operator audit table, so no destructive
+// migration or change to the production save format is required. The grant is
+// permanent for the verified operator account, not for the device or bearer.
+const REBUILD_GRANT_ACTION='rebuild.regalia.granted';
+async function rebuildEntitled(db,playerId){
+  const row=await first(db,'SELECT a.id FROM bk_operator_audit a JOIN bk_operator o ON o.player_id=a.player_id WHERE o.singleton=1 AND a.player_id=? AND a.action=? LIMIT 1',playerId,REBUILD_GRANT_ACTION);
+  return !!row;
+}
+export async function assertRebuildDeckEntitlement({db,playerId,main,special,problem}){
+  const restricted=[...(Array.isArray(main)?main:[]),...(Array.isArray(special)?special:[])].filter(id=>id===OPERATOR_REGALIA_ID);
+  if(restricted.length&&!await rebuildEntitled(db,playerId))noAccess(problem);
+  return true;
+}
+async function rebuildOperatorDeck(c,player){
+  const {db,request,env,now,fail,bodyJSON,method}=c;
+  await requireOperator(c,player);
+  if(!['GET','POST'].includes(method))fail(405,'method_not_allowed','この操作は利用できません。');
+  let granted=await rebuildEntitled(db,player.id);
+  if(method==='POST'&&!granted){
+    if(!await rateLimit(db,request,player.id,'rebuild-regalia',now,{ip:10,player:5,window:900_000}))noAccess(fail);
+    const body=await bodyJSON(request);
+    const configured=typeof env.BK_OPERATOR_REGALIA_CODE==='string'&&env.BK_OPERATOR_REGALIA_CODE.length>0;
+    const candidate=typeof body.code==='string'&&body.code.length<=1024?body.code:'';
+    const matches=await equalSecret(candidate,configured?env.BK_OPERATOR_REGALIA_CODE:'unconfigured-regalia');
+    if(!configured||!candidate||!matches)noAccess(fail);
+    // One INSERT statement with an existence predicate is atomic in SQLite/D1.
+    // Repeat requests and concurrent devices cannot grant twice.
+    await run(db,"INSERT INTO bk_operator_audit (id,player_id,action,payload_json,created_at) SELECT ?,?,?,?,? WHERE EXISTS (SELECT 1 FROM bk_operator WHERE singleton=1 AND player_id=?) AND NOT EXISTS (SELECT 1 FROM bk_operator_audit WHERE player_id=? AND action=?)",uuid(),player.id,REBUILD_GRANT_ACTION,'{}',now,player.id,player.id,REBUILD_GRANT_ACTION);
+    granted=await rebuildEntitled(db,player.id);
+    if(!granted)noAccess(fail);
+  }
+  return {ok:true,entitled:granted,...(granted?{deck:KIRAHARA_RECIPE,collection:requiredCards()}: {})};
+}
+
 export async function handleAccountRoute(options){
   const c={...options,fail:options.problem}, {path,method,db,now,fail}=c;
-  const paths=['/api/public-status','/api/cloud-save','/api/account/link-code','/api/account/link-claim','/api/account/sessions','/api/operator','/api/operator/activate','/api/operator/settings','/api/operator/messages','/api/operator/gifts','/api/operator/events','/api/inbox','/api/events','/api/presence'];
+  const paths=['/api/rebuild/operator-deck','/api/public-status','/api/cloud-save','/api/account/link-code','/api/account/link-claim','/api/account/sessions','/api/operator','/api/operator/activate','/api/operator/settings','/api/operator/messages','/api/operator/gifts','/api/operator/events','/api/inbox','/api/events','/api/presence'];
   const sessionPath=path.match(/^\/api\/account\/sessions\/([A-Za-z0-9_-]{8,100})$/),inboxPath=path.match(/^\/api\/inbox\/([A-Za-z0-9_-]{8,100})\/(read|claim)$/),eventPath=path.match(/^\/api\/events\/([A-Za-z0-9_-]{8,100})\/claim$/);
   if(!paths.includes(path)&&!sessionPath&&!inboxPath&&!eventPath)return null;
   const expect=verb=>{if(method!==verb)fail(405,'method_not_allowed','この操作は利用できません。');};
   if(path==='/api/public-status'){expect('GET');return publicStatus(db);}
   if(path==='/api/account/link-claim'){expect('POST');return linkClaim(c);}
   const player=await authenticateAccount(db,c.request,now,fail);
+  if(path==='/api/rebuild/operator-deck')return rebuildOperatorDeck(c,player);
   if(path==='/api/presence'){expect('POST');return presence(c,player);}
   if(path==='/api/cloud-save')return saveRoute(c,player);
   if(path==='/api/account/link-code'){expect('POST');return linkCreate(c,player);}
