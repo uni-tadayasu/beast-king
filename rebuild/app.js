@@ -1,6 +1,6 @@
-import {CARDS,ORIGINS,TYPE_LABELS,RARITY_LABELS,MODEL_LABELS,STARTER_DECKS,getCard} from '../catalog.js';
+import {CARDS,ORIGINS,TYPE_LABELS,RARITY_LABELS,MODEL_LABELS,STARTER_DECKS,PACKS,getCard} from './catalog.js';
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
-import {newGame,playCard,attack,endTurn,runCpuTurn,getLegalTargets,getAttackTargets,getPlayableCards,getFusionMaterials,canAttack} from '../engine.js';
+import {newGame,playCard,attack,endTurn,runCpuTurn,getLegalTargets,getAttackTargets,getPlayableCards,getFusionMaterials,canAttack} from './engine.js';
 import {CAMPAIGN_BATTLES} from '../campaign.js';
 import {STARTERS,initialProfile,loadProfile,persistProfile,checkDeck,saveDeck,chooseStarter,counts,purchase,settle} from './profile.js';
 const root=document.querySelector('#app'),dialog=document.querySelector('#detail');
@@ -9,8 +9,8 @@ const fmt=n=>Number(n).toLocaleString('ja-JP');
 const origin=id=>ORIGINS.find(x=>x.id===id);
 const byType=Object.entries(TYPE_LABELS);
 const label=id=>getCard(id)?.name||id;
-let profile=loadProfile(localStorage),page='home',message='',draft=null,match=null,selection=null,cpuBusy=false,filter={q:'',type:'',origin:'',rarity:'',page:0};
-let shopPage=0;
+let profile=loadProfile(localStorage),page='home',message='',draft=null,match=null,selection=null,cpuBusy=false,filter={q:'',type:'',origin:'',rarity:'',pack:'',page:0};
+let shopPage=0,shopPack='BK01';
 const nav=[['home','王庭'],['solo','ソロ対戦'],['deck','デッキ工房'],['catalog','カード図鑑'],['shop','秘宝ショップ'],['rules','遊び方']];
 function save(next){persistProfile(localStorage,next);profile=next}
 function setMessage(s){message=s;const node=document.querySelector('#status');if(node)node.textContent=s}
@@ -18,10 +18,11 @@ function act(action,text,extra='',cls=''){return '<button type="button" class="'
 function setPage(p){
  if(match&&match.game.winner===null&&p!=='battle'){setMessage('対戦を終了してから移動してください。');return}
  if(p==='deck'&&!draft)draft={main:[...profile.main],special:[...profile.special]};
- if(page!==p){filter={q:'',type:'',origin:'',rarity:'',page:0};shopPage=0}
+ if(page!==p){filter={q:'',type:'',origin:'',rarity:'',pack:'',page:0};shopPage=0}
  page=p;message='';render();
 }
 function art(c){
+ if(c.artStatus==='pending')return 'background:radial-gradient(ellipse at 50% 30%,'+(origin(c.origin)?.color||'#afc2b9')+'33,#0a201e 80%)';
  if(c.id==='B0512')return "background-image:url('../assets/design-v2/cards/individual/king.webp');background-position:center;background-size:cover";
  const n=Number(c.id.slice(1))-1,b=String(Math.floor(n/16)+1).padStart(2,'0'),cell=n%16;
  const base="background-image:url('../assets/design-v2/cards/individual/"+c.type+"-"+b+".webp');",crop=CARD_ART_CROPS[c.id];
@@ -31,7 +32,7 @@ function art(c){
 function card(c,{action='detail',data='',className='',unit=null,owned=null}={}){
  if(!c)return '';
  const attrs=action?'data-act="'+action+'" data-id="'+esc(c.id)+'" '+data:'disabled';
- return '<button type="button" class="card '+c.type+' '+c.rarity+' '+className+'" '+attrs+' title="'+esc(c.name)+'"><span class="cardtop"><span class="cost">'+(c.type==='fusion'?'合':c.cost)+'</span><span class="cardname">'+esc(c.name)+'</span></span><span class="art" aria-hidden="true" style="'+art(c)+'"></span><span class="cardtop"><span>'+TYPE_LABELS[c.type]+' · '+esc(origin(c.origin)?.name)+'</span><span class="rarity">'+RARITY_LABELS[c.rarity]+'</span></span><span class="effect">'+esc(c.text)+'</span><span class="cardbottom">'+(['beast','fusion'].includes(c.type)?'<b>攻 '+(unit?.attack??c.attack)+'</b><b>守 '+(unit?.hp??c.hp)+'</b>':esc(c.id))+(owned!==null?'<span>所持 '+owned+'</span>':'')+'</span></button>';
+ return '<button type="button" class="card '+c.type+' '+c.rarity+' '+className+'" '+attrs+' title="'+esc(c.name)+'"><span class="cardtop"><span class="cost">'+(c.type==='fusion'?'合':c.cost)+'</span><span class="cardname">'+esc(c.name)+'</span></span><span class="art '+(c.artStatus==='pending'?'pending-art':'')+'" aria-hidden="true" style="'+art(c)+'">'+(c.artStatus==='pending'?'<span class="art-placeholder">'+(c.operatorOnly?'専用イラスト制作前':'イラスト制作前')+'</span>':'')+'</span><span class="cardtop"><span>'+TYPE_LABELS[c.type]+' · '+esc(origin(c.origin)?.name)+'</span><span class="rarity">'+RARITY_LABELS[c.rarity]+'</span></span><span class="effect">'+esc(c.text)+'</span><span class="cardbottom">'+(['beast','fusion'].includes(c.type)?'<b>攻 '+(unit?.attack??c.attack)+'</b><b>守 '+(unit?.hp??c.hp)+'</b>':esc(c.id))+(owned!==null?'<span>所持 '+owned+'</span>':'')+'</span></button>';
 }
 function onboard(){
  root.innerHTML='<div class="onboard"><form id="onboard" class="panel"><div class="intro"><img src="../assets/icon.svg" alt=""><div><small>THE FIRST CHRONICLE · 新生版</small><h1>BEAST KING</h1><p>最初の契約を結ぶ</p></div></div><label>プレイヤー名<input name="name" type="text" maxlength="32" required autocomplete="nickname" placeholder="1〜16文字"></label><section><h3>プロフィールアイコン</h3><div class="origins">'+ORIGINS.map((o,i)=>'<label><input type="radio" name="origin" value="'+o.id+'" '+(!i?'checked':'')+'><span style="color:'+o.color+'"> '+o.glyph+' '+o.name+'</span></label>').join('')+'</div></section><section><h3>最初のスターター</h3><div class="starter-grid">'+STARTERS.map((s,i)=>'<label><input type="radio" name="starter" value="'+s.id+'" '+(!i?'checked':'')+'><span>'+esc(s.name)+'</span><p>'+esc(s.subtitle)+'</p></label>').join('')+'</div></section><p class="muted">名前とアイコンはこの端末で初回のみ設定します。スターター4種類を利用できます。開発版の保存は現行版と独立しています。</p><button type="submit" class="primary">契約してゲームを開始</button><p id="status" role="status"></p></form></div>';
@@ -42,7 +43,7 @@ function shell(body){
 }
 function home(){
  const s=STARTERS.find(x=>x.id===profile.starterId);
- return '<div class="home"><section class="panel hero"><p class="eyebrow">THE FIRST CHRONICLE</p><h1>六源の覚醒</h1><p>獣の契約を結び、ハートポイントを巡る決闘へ。自分だけの36枚で王冠を目指す。</p>'+act('nav','ソロの冒険へ','data-page="solo"','primary')+'<small>第一弾 1,152枚 · 7オリジン · 6段階のレアリティ</small></section><div class="home-side"><section class="panel"><div class="panel-head"><h2>戦績</h2><span class="sub">'+esc(s?.name||'カスタムデッキ')+'</span></div><div class="summary"><div><small>所持種類</small><strong>'+Object.keys(profile.collection).length+'</strong></div><div><small>勝利</small><strong>'+profile.wins+'</strong></div><div><small>章の進行</small><strong>'+profile.completed+' / 20</strong></div><div><small>デッキ</small><strong>32 + 4</strong></div></div></section><section class="panel modes">'+[['solo','ソロ','全20戦と練習戦'],['deck','デッキ工房','36枚の編成'],['catalog','図鑑','全カードを確認'],['shop','ショップ','12枚入りパック']].map(([id,t,d])=>'<button class="mode" data-act="nav" data-page="'+id+'"><b>'+t+'</b><span>'+d+'</span></button>').join('')+'</section></div></div>';
+ return '<div class="home"><section class="panel hero"><p class="eyebrow">THE FIRST CHRONICLE</p><h1>六源の覚醒</h1><p>獣の契約を結び、ハートポイントを巡る決闘へ。自分だけの36枚で王冠を目指す。</p>'+act('nav','ソロの冒険へ','data-page="solo"','primary')+'<small>第一弾・第二弾 2,304枚 · 7オリジン · 6段階のレアリティ</small></section><div class="home-side"><section class="panel"><div class="panel-head"><h2>戦績</h2><span class="sub">'+esc(s?.name||'カスタムデッキ')+'</span></div><div class="summary"><div><small>所持種類</small><strong>'+Object.keys(profile.collection).length+'</strong></div><div><small>勝利</small><strong>'+profile.wins+'</strong></div><div><small>章の進行</small><strong>'+profile.completed+' / 20</strong></div><div><small>デッキ</small><strong>32 + 4</strong></div></div></section><section class="panel modes">'+[['solo','ソロ','全20戦と練習戦'],['deck','デッキ工房','36枚の編成'],['catalog','図鑑','全カードを確認'],['shop','ショップ','12枚入りパック']].map(([id,t,d])=>'<button class="mode" data-act="nav" data-page="'+id+'"><b>'+t+'</b><span>'+d+'</span></button>').join('')+'</section></div></div>';
 }
 function solo(){
  const next=CAMPAIGN_BATTLES[profile.completed];
@@ -51,10 +52,10 @@ function solo(){
 function pageSize(){return innerWidth<=600&&innerHeight>innerWidth?9:innerWidth<900?8:12}
 function opts(items,val){return items.map(([id,t])=>'<option value="'+esc(id)+'" '+(id===val?'selected':'')+'>'+esc(t)+'</option>').join('')}
 function catalog(edit){
- const list=CARDS.filter(c=>(!edit||profile.collection[c.id])&&(!filter.q||(c.name+' '+c.text+' '+c.id).toLowerCase().includes(filter.q.toLowerCase()))&&(!filter.type||c.type===filter.type)&&(!filter.origin||c.origin===filter.origin)&&(!filter.rarity||c.rarity===filter.rarity));
+ const list=CARDS.filter(c=>(!edit||profile.collection[c.id])&&(!filter.q||(c.name+' '+c.text+' '+c.id).toLowerCase().includes(filter.q.toLowerCase()))&&(!filter.type||c.type===filter.type)&&(!filter.origin||c.origin===filter.origin)&&(!filter.rarity||c.rarity===filter.rarity)&&(!filter.pack||c.pack===filter.pack));
  const size=pageSize(),total=Math.max(1,Math.ceil(list.length/size));filter.page=Math.min(filter.page,total-1);
  const shown=list.slice(filter.page*size,(filter.page+1)*size);
- return '<section class="panel catalog-layout"><div><div class="panel-head"><h2>'+(edit?'所持カード':'第一弾 · カード図鑑')+'</h2><span class="sub">'+fmt(list.length)+'種類</span></div><form class="filters" id="filters"><input name="q" aria-label="カード検索" placeholder="カード名・効果・ID" value="'+esc(filter.q)+'"><select name="type" aria-label="種類">'+opts([['','全種類'],...byType],filter.type)+'</select><select name="origin" aria-label="オリジン">'+opts([['','全オリジン'],...ORIGINS.map(o=>[o.id,o.name])],filter.origin)+'</select><select name="rarity" aria-label="レアリティ">'+opts([['','全レア'],...Object.entries(RARITY_LABELS)],filter.rarity)+'</select><button>検索</button></form></div><div class="card-grid">'+shown.map(c=>card(c,{action:edit?'add-detail':'detail',owned:profile.collection[c.id]||0})).join('')+(shown.length?'':'<p class="muted">カードが見つかりません。</p>')+'</div><div class="pagination">'+act('prev','前へ',filter.page===0?'disabled':'')+'<span>'+(filter.page+1)+' / '+total+'</span>'+act('next','次へ',filter.page+1===total?'disabled':'')+'</div></section>';
+ return '<section class="panel catalog-layout"><div><div class="panel-head"><h2>'+(edit?'所持カード':'全カード図鑑')+'</h2><span class="sub">'+fmt(list.length)+'種類</span></div><form class="filters" id="filters"><input name="q" aria-label="カード検索" placeholder="カード名・効果・ID" value="'+esc(filter.q)+'"><select name="type" aria-label="種類">'+opts([['','全種類'],...byType],filter.type)+'</select><select name="origin" aria-label="オリジン">'+opts([['','全オリジン'],...ORIGINS.map(o=>[o.id,o.name])],filter.origin)+'</select><select name="rarity" aria-label="レアリティ">'+opts([['','全レア'],...Object.entries(RARITY_LABELS)],filter.rarity)+'</select><select name="pack" aria-label="収録弾">'+opts([['','全収録弾'],...PACKS.map(p=>[p.id,p.name])],filter.pack)+'</select><button>検索</button></form></div><div class="card-grid">'+shown.map(c=>card(c,{action:edit?'add-detail':'detail',owned:profile.collection[c.id]||0})).join('')+(shown.length?'':'<p class="muted">カードが見つかりません。</p>')+'</div><div class="pagination">'+act('prev','前へ',filter.page===0?'disabled':'')+'<span>'+(filter.page+1)+' / '+total+'</span>'+act('next','次へ',filter.page+1===total?'disabled':'')+'</div></section>';
 }
 function deck(){
  const valid=checkDeck(profile,draft.main,draft.special);
@@ -62,10 +63,11 @@ function deck(){
  return '<div class="deck-layout">'+catalog(true)+'<section class="panel deck-list"><div><h2>編成中のデッキ</h2><p>メイン '+draft.main.length+'/32 · 特殊 '+draft.special.length+'/4</p><small>同名2枚まで · 所持枚数以内</small></div><div class="deck-rows">'+sections.map(([zone,t,ids,n])=>'<h3>'+t+' '+ids.length+'/'+n+'</h3>'+Object.entries(counts(ids)).map(([id,k])=>'<button data-act="remove" data-zone="'+zone+'" data-id="'+id+'"><span>'+esc(label(id))+' ×'+k+'</span><span>−</span></button>').join('')).join('')+'</div><div class="actions"><select id="starter-select" aria-label="スターター">'+opts(STARTERS.map(s=>[s.id,s.name]),profile.starterId)+'</select>'+act('preset','適用')+act('discard','元に戻す')+act('save-deck','保存',valid.valid?'':'disabled','primary')+'</div></section></div>';
 }
 function shop(){
+ const pack=PACKS.find(p=>p.id===shopPack)||PACKS[0],last=PACKS.find(p=>p.id===(profile.lastPackId||'BK01'));
  const pulls=profile.lastPack||[],size=pageSize(),total=Math.max(1,Math.ceil(pulls.length/size));shopPage=Math.min(shopPage,total-1);
- return '<section class="panel shop"><div class="shop-info"><div><h2>六源の覚醒</h2><p>1パック 100秘宝 · 12枚 · レア以上1枚保証</p><small>同じカードの4枚目から5秘宝に変換。</small></div>'+act('purchase','パックを開封',profile.treasure<100?'disabled':'','primary')+'</div><div class="card-grid">'+(pulls.length?pulls.slice(shopPage*size,(shopPage+1)*size).map(x=>card(getCard(x.cardId),{owned:profile.collection[x.cardId]||0,className:x.converted?'converted':''})).join(''):'<p class="muted">ここに開封結果が表示されます。</p>')+'</div><div class="pagination">'+act('shop-prev','前へ',shopPage===0?'disabled':'')+'<span>'+(shopPage+1)+' / '+total+'</span>'+act('shop-next','次へ',shopPage+1===total?'disabled':'')+'</div></section>';
+ return '<section class="panel shop"><div class="shop-info"><div><h2>'+esc(pack.name)+'</h2><p>1パック 100秘宝 · 12枚 · レア以上1枚保証</p><small>各弾1,152枚。通常のパックから運営専用イラストは排出されません。</small><div class="pack-tabs">'+PACKS.map(p=>'<button data-act="select-pack" data-pack="'+p.id+'" aria-pressed="'+(p.id===pack.id)+'">'+(p.number===1?'第一弾':'第二弾')+'</button>').join('')+'</div></div>'+act('purchase','パックを開封',profile.treasure<100?'disabled':'','primary')+'</div><div class="card-grid">'+(pulls.length?pulls.slice(shopPage*size,(shopPage+1)*size).map(x=>card(getCard(x.cardId),{owned:profile.collection[x.cardId]||0,className:x.converted?'converted':''})).join(''):'<p class="muted">ここに開封結果が表示されます。</p>')+'</div><div class="pagination">'+act('shop-prev','前へ',shopPage===0?'disabled':'')+'<span>'+(pulls.length?'開封結果：'+esc(last?.name||'')+' · ':'')+(shopPage+1)+' / '+total+'</span>'+act('shop-next','次へ',shopPage+1===total?'disabled':'')+'</div></section>';
 }
-function rules(){return '<section class="panel rules"><h2>基本ルール</h2><h3>デッキと勝利条件</h3><p>メイン32枚＋合成魔獣4枚。同名2枚まで。ハートポイント5,000で開始し、相手を0にすると勝利します。</p><h3>ターンと出場ゾーン</h3><p>最大エーテルが自分のターンごとに1増加（最大10）。手札は最大4枚、出場魔獣は4体、ギミックは2枚。魔獣は通常、召喚した次の自分のターンから攻撃できます。</p><h3>攻撃と守護</h3><p>守護がある場合は優先して攻撃。通常アタック型は攻撃を受けると消滅し、持ち主に攻撃力分のダメージ。ディフェンス型・合成魔獣は攻撃力が守備力を上回ると消滅し、超過分のみダメージ。通常戦闘で反撃はありません。</p><h3>合成召喚</h3><p>コスト3のミラクル「合成」で特殊デッキから合成魔獣を選び、手札・場・お墓の魔獣を1枚以上異世界へ。素材2枚目以降、攻撃力・守備力が各100上昇します。</p><h3>開発版について</h3><p>第一弾とCPU対戦の独立した新画面です。オンライン対戦、クラウド同期、第二弾、運営認証は未接続です。現行公開版のデータには影響しません。</p></section>'}
+function rules(){return '<section class="panel rules"><h2>基本ルール</h2><h3>デッキと勝利条件</h3><p>メイン32枚＋合成魔獣4枚。同名2枚まで。ハートポイント5,000で開始し、相手を0にすると勝利します。</p><h3>ターンと出場ゾーン</h3><p>最大エーテルが自分のターンごとに1増加（最大10）。手札は最大4枚、出場魔獣は4体、ギミックは2枚。魔獣は通常、召喚した次の自分のターンから攻撃できます。</p><h3>攻撃と守護</h3><p>守護がある場合は優先して攻撃。通常アタック型は攻撃を受けると消滅し、持ち主に攻撃力分のダメージ。ディフェンス型・合成魔獣は攻撃力が守備力を上回ると消滅し、超過分のみダメージ。通常戦闘で反撃はありません。</p><h3>合成召喚</h3><p>コスト3のミラクル「合成」で特殊デッキから合成魔獣を選び、手札・場・お墓の魔獣を1枚以上異世界へ。素材2枚目以降、攻撃力・守備力が各100上昇します。</p><h3>開発版について</h3><p>第一弾・第二弾とCPU対戦の独立した新画面です。第二弾と運営専用版のイラストは制作前です。オンライン対戦、クラウド同期、運営認証は未接続です。現行公開版のデータには影響しません。</p></section>'}
 function targetList(){
  if(!selection||!match||match.game.active!==0||match.game.winner!==null)return [];
  return selection.kind==='attack'?getAttackTargets(match.game,selection.uid):getLegalTargets(match.game,selection.index);
@@ -136,7 +138,7 @@ document.addEventListener('submit',e=>{
  try{
   const d=new FormData(f);
   if(f.id==='onboard'){save(initialProfile(d.get('name'),d.get('origin'),d.get('starter')));page='home';render()}
-  if(f.id==='filters'){filter={q:String(d.get('q')||'').trim(),type:d.get('type'),origin:d.get('origin'),rarity:d.get('rarity'),page:0};render()}
+  if(f.id==='filters'){filter={q:String(d.get('q')||'').trim(),type:d.get('type'),origin:d.get('origin'),rarity:d.get('rarity'),pack:d.get('pack'),page:0};render()}
   if(f.id==='fusion-form'){
    const g=match.game,materials=getFusionMaterials(g),selected=d.getAll('material').map(i=>materials[Number(i)]).filter(Boolean);
    const r=playCard(g,Number(f.dataset.index),{specialIndex:Number(d.get('special')),materials:selected});
@@ -158,13 +160,14 @@ document.addEventListener('click',e=>{
   case 'add':{
    const c=getCard(id),zone=c.type==='fusion'?'special':'main',limit=zone==='special'?4:32;
    if(draft[zone].length>=limit)throw new Error('デッキが満杯です。先にカードを減らしてください。');
-   const n=counts(draft[zone])[id]||0;if(n>=2||n>=(profile.collection[id]||0))throw new Error('同名2枚または所持枚数の上限です。');
+   const n=counts(draft[zone])[id]||0,same=draft[zone].filter(x=>getCard(x)?.name===getCard(id)?.name).length;if(same>=2||n>=(profile.collection[id]||0))throw new Error('同名2枚または所持枚数の上限です。');
    draft[zone].push(id);closeDialog();render();break;}
   case 'remove':{const l=draft[el.dataset.zone],i=l.indexOf(id);if(i>=0)l.splice(i,1);render();break}
   case 'preset':{const s=STARTERS.find(x=>x.id===document.querySelector('#starter-select').value);draft={main:[...s.ids],special:[...s.specialIds]};render();break}
   case 'discard':draft={main:[...profile.main],special:[...profile.special]};render();break;
   case 'save-deck':save(saveDeck(profile,draft.main,draft.special));setMessage('デッキを保存しました。');break;
-  case 'purchase':save(purchase(profile));shopPage=0;render();setMessage('12枚のカードを開封しました。');break;
+  case 'select-pack':if(PACKS.some(p=>p.id===el.dataset.pack)){shopPack=el.dataset.pack;render()}break;
+  case 'purchase':save(purchase(profile,Math.random,shopPack));shopPage=0;render();setMessage('12枚のカードを開封しました。');break;
   case 'campaign':start('normal',idx);break;
   case 'replay':{const v=document.querySelector('#replay').value;if(v!=='')start('normal',Number(v));break}
   case 'practice':start(el.dataset.level);break;
