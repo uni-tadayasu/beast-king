@@ -121,7 +121,7 @@ const REALMS = [
 const KEYWORD_TEXT = {
   guard: '守護：相手は守護を持つ魔獣を先に攻撃しなければならない。',
   rush: '速攻：召喚したターンから攻撃できる。',
-  drain: '吸収：攻撃で実際に与えたダメージ分、自分のコアを回復する。',
+  drain: '吸収：戦闘で実際に与えたダメージ分、自分のコアを回復する。',
 };
 const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
 const idFor = (prefix, index) => `${prefix}${String(index + 1).padStart(4, '0')}`;

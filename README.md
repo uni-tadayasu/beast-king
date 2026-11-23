@@ -88,4 +88,4 @@ node scripts/configure-seo.mjs https://uni-tadayasu.github.io/beast-king/
 | `tests/` | カードデータと対戦処理の検証 |
 | `scripts/configure-seo.mjs` | 公開URLに合わせたSEOファイル更新 |
 
-© KASAI SOLUTIONS INC.
+© BEAST KING
