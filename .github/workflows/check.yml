@@ -25,3 +25,6 @@ jobs:
         run: npm run build
       - name: Check application syntax
         run: node --check app.js
+
+      - name: Test rebuilt game in Chrome
+        run: node scripts/rebuild-browser-smoke.mjs
