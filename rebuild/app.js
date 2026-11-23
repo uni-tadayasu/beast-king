@@ -31,10 +31,14 @@ function art(c){
  if(crop)return base+'background-position:'+crop.x*100/(crop.width-crop.size)+'% '+crop.y*100/(crop.height-crop.size)+'%;background-size:'+crop.width*100/crop.size+'% '+crop.height*100/crop.size+'%';
  return base+'background-position:'+((cell%4+.01)*100/3.02)+'% '+((Math.floor(cell/4)+.01)*100/3.02)+'%;background-size:408.163% 408.163%';
 }
+function cardArt(c){
+ if(c.operatorOnly)return '<span class="art operator-art" aria-hidden="true"><span class="art-placeholder">専用イラスト未登録</span><img class="operator-art-image" src="../'+esc(c.artAsset)+'" alt="" draggable="false"></span>';
+ return '<span class="art '+(c.artStatus==='pending'?'pending-art':'')+'" aria-hidden="true" style="'+art(c)+'">'+(c.artStatus==='pending'?'<span class="art-placeholder">イラスト制作前</span>':'')+'</span>';
+}
 function card(c,{action='detail',data='',className='',unit=null,owned=null}={}){
  if(!c)return '';
  const attrs=action?'data-act="'+action+'" data-id="'+esc(c.id)+'" '+data:'disabled';
- return '<button type="button" class="card '+c.type+' '+c.rarity+' '+className+'" '+attrs+' title="'+esc(c.name)+'"><span class="cardtop"><span class="cost">'+(c.type==='fusion'?'合':c.cost)+'</span><span class="cardname">'+esc(c.name)+'</span></span><span class="art '+(c.artStatus==='pending'?'pending-art':'')+'" aria-hidden="true" style="'+art(c)+'">'+(c.artStatus==='pending'?'<span class="art-placeholder">'+(c.operatorOnly?'専用イラスト制作前':'イラスト制作前')+'</span>':'')+'</span><span class="cardtop"><span>'+TYPE_LABELS[c.type]+' · '+esc(origin(c.origin)?.name)+'</span><span class="rarity">'+RARITY_LABELS[c.rarity]+'</span></span><span class="effect">'+esc(c.text)+'</span><span class="cardbottom">'+(['beast','fusion'].includes(c.type)?'<b>攻 '+(unit?.attack??c.attack)+'</b><b>守 '+(unit?.hp??c.hp)+'</b>':esc(c.id))+(owned!==null?'<span>所持 '+owned+'</span>':'')+'</span></button>';
+ return '<button type="button" class="card '+c.type+' '+c.rarity+' '+className+'" '+attrs+' title="'+esc(c.name)+'"><span class="cardtop"><span class="cost">'+(c.type==='fusion'?'合':c.cost)+'</span><span class="cardname">'+esc(c.name)+'</span></span>'+cardArt(c)+'<span class="cardtop"><span>'+TYPE_LABELS[c.type]+' · '+esc(origin(c.origin)?.name)+'</span><span class="rarity">'+RARITY_LABELS[c.rarity]+'</span></span><span class="effect">'+esc(c.text)+'</span><span class="cardbottom">'+(['beast','fusion'].includes(c.type)?'<b>攻 '+(unit?.attack??c.attack)+'</b><b>守 '+(unit?.hp??c.hp)+'</b>':esc(c.id))+(owned!==null?'<span>所持 '+owned+'</span>':'')+'</span></button>';
 }
 function onboard(){
  root.innerHTML='<div class="onboard"><form id="onboard" class="panel"><div class="intro"><img src="../assets/icon.svg" alt=""><div><small>THE FIRST CHRONICLE · 新生版</small><h1>BEAST KING</h1><p>最初の契約を結ぶ</p></div></div><label>プレイヤー名<input name="name" type="text" maxlength="32" required autocomplete="nickname" placeholder="1〜16文字"></label><section><h3>プロフィールアイコン</h3><div class="origins">'+ORIGINS.map((o,i)=>'<label><input type="radio" name="origin" value="'+o.id+'" '+(!i?'checked':'')+'><span style="color:'+o.color+'"> '+o.glyph+' '+o.name+'</span></label>').join('')+'</div></section><section><h3>最初のスターター</h3><div class="starter-grid">'+STARTERS.map((s,i)=>'<label><input type="radio" name="starter" value="'+s.id+'" '+(!i?'checked':'')+'><span>'+esc(s.name)+'</span><p>'+esc(s.subtitle)+'</p></label>').join('')+'</div></section><p class="muted">名前とアイコンはこの端末で初回のみ設定します。スターター4種類を利用できます。開発版の保存は現行版と独立しています。</p><button type="submit" class="primary">契約してゲームを開始</button><p id="status" role="status"></p></form></div>';
@@ -69,7 +73,7 @@ function shop(){
  const pulls=profile.lastPack||[],size=pageSize(),total=Math.max(1,Math.ceil(pulls.length/size));shopPage=Math.min(shopPage,total-1);
  return '<section class="panel shop"><div class="shop-info"><div><h2>'+esc(pack.name)+'</h2><p>1パック 100秘宝 · 12枚 · レア以上1枚保証</p><small>各弾1,152枚。同じカードの4枚目から5秘宝に変換します。</small><div class="pack-tabs">'+PACKS.map(p=>'<button data-act="select-pack" data-pack="'+p.id+'" aria-pressed="'+(p.id===pack.id)+'">'+(p.number===1?'第一弾':'第二弾')+'</button>').join('')+'</div></div>'+act('purchase','パックを開封',profile.treasure<100?'disabled':'','primary')+'</div><div class="card-grid">'+(pulls.length?pulls.slice(shopPage*size,(shopPage+1)*size).map(x=>card(getCard(x.cardId),{owned:profile.collection[x.cardId]||0,className:x.converted?'converted':''})).join(''):'<p class="muted">ここに開封結果が表示されます。</p>')+'</div><div class="pagination">'+act('shop-prev','前へ',shopPage===0?'disabled':'')+'<span>'+(pulls.length?'開封結果：'+esc(last?.name||'')+' · ':'')+(shopPage+1)+' / '+total+'</span>'+act('shop-next','次へ',shopPage+1===total?'disabled':'')+'</div></section>';
 }
-function rules(){return '<section class="panel rules"><h2>基本ルール</h2><h3>デッキと勝利条件</h3><p>メイン32枚＋合成魔獣4枚。同名2枚まで。ハートポイント5,000で開始し、相手を0にすると勝利します。</p><h3>ターンと出場ゾーン</h3><p>最大エーテルが自分のターンごとに1増加（最大10）。手札は最大4枚、出場魔獣は4体、ギミックは2枚。魔獣は通常、召喚した次の自分のターンから攻撃できます。</p><h3>攻撃と守護</h3><p>守護がある場合は優先して攻撃。通常アタック型は攻撃を受けると消滅し、持ち主に攻撃力分のダメージ。ディフェンス型・合成魔獣は攻撃力が守備力を上回ると消滅し、超過分のみダメージ。通常戦闘で反撃はありません。</p><h3>合成召喚</h3><p>コスト3のミラクル「合成」で特殊デッキから合成魔獣を選び、手札・場・お墓の魔獣を1枚以上異世界へ。素材2枚目以降、攻撃力・守備力が各100上昇します。</p><h3>開発版について</h3><p>第一弾・第二弾とCPU対戦の独立した新画面です。第二弾と運営専用版のイラストは制作前です。運営認証APIは開発ブランチに実装済みですが、本番配備前です。オンライン対戦とクラウド同期は未接続です。現行公開版のデータには影響しません。</p></section>'}
+function rules(){return '<section class="panel rules"><h2>基本ルール</h2><h3>デッキと勝利条件</h3><p>メイン32枚＋合成魔獣4枚。同名2枚まで。ハートポイント5,000で開始し、相手を0にすると勝利します。</p><h3>ターンと出場ゾーン</h3><p>最大エーテルが自分のターンごとに1増加（最大10）。手札は最大4枚、出場魔獣は4体、ギミックは2枚。魔獣は通常、召喚した次の自分のターンから攻撃できます。</p><h3>攻撃と守護</h3><p>守護がある場合は優先して攻撃。通常アタック型は攻撃を受けると消滅し、持ち主に攻撃力分のダメージ。ディフェンス型・合成魔獣は攻撃力が守備力を上回ると消滅し、超過分のみダメージ。通常戦闘で反撃はありません。</p><h3>合成召喚</h3><p>コスト3のミラクル「合成」で特殊デッキから合成魔獣を選び、手札・場・お墓の魔獣を1枚以上異世界へ。素材2枚目以降、攻撃力・守備力が各100上昇します。</p><h3>開発版について</h3><p>第一弾・第二弾とCPU対戦の独立した新画面です。第二弾のイラストは制作前です。運営限定版は専用素材を登録すると表示されます。運営認証APIは開発ブランチに実装済みですが、本番配備前です。オンライン対戦とクラウド同期は未接続です。現行公開版のデータには影響しません。</p></section>'}
 function targetList(){
  if(!selection||!match||match.game.active!==0||match.game.winner!==null)return [];
  return selection.kind==='attack'?getAttackTargets(match.game,selection.uid):getLegalTargets(match.game,selection.index);
@@ -97,6 +101,7 @@ async function inspectOperator(code){
  operatorBusy=true;
  try{
  const result=code===undefined?await operatorClient.status():await operatorClient.activate(code);
+ if(page==='battle')return;
  operatorGrant=result.entitled?result:null;
  if(!result.entitled){operatorSelected=false;openDialog('<form id="operator-form"><h2>限定デッキ認証</h2><p>運営用の専用コードを入力してください。</p><input type="password" name="code" autocomplete="off" maxlength="128" required><button class="primary">認証</button>'+act('close','閉じる')+'</form>');return;}
  const royal=getCard(result.deck.main.find(id=>getCard(id)?.operatorOnly));
@@ -104,7 +109,7 @@ async function inspectOperator(code){
  }catch(e){operatorGrant=null;operatorSelected=false;closeDialog();setMessage(e.message)}finally{operatorBusy=false}
 }
 function detail(c,action='',data=''){
- const own=profile.collection[c.id]||0;
+ const own=c.operatorOnly?(operatorGrant?.collection[c.id]||0):(profile.collection[c.id]||0);
  openDialog('<div class="detail"><div class="preview">'+card(c,{action:'',owned:own})+'</div><section><h2>'+esc(c.name)+'</h2><p>'+TYPE_LABELS[c.type]+' · '+RARITY_LABELS[c.rarity]+' · '+esc(origin(c.origin)?.name)+'</p><p>'+esc(MODEL_LABELS[c.model]||'')+'</p><p>'+esc(c.text)+'</p><p class="muted">'+esc(c.flavor)+'</p>'+(action?act(action,action==='add'?'デッキに追加':'カードを使用',data,'primary'):'')+act('close','閉じる')+'</section></div>');
 }
 async function start(level,index=null){
@@ -206,6 +211,7 @@ document.addEventListener('click',async e=>{
   case 'close':closeDialog();break;
  }}catch(err){if(dialog.open){const p=document.createElement('p');p.setAttribute('role','alert');p.textContent=err.message;dialog.appendChild(p)}else setMessage(err.message)}
 });
+document.addEventListener('error',e=>{if(e.target?.classList?.contains('operator-art-image'))e.target.remove()},true);
 document.addEventListener('contextmenu',e=>{if(e.target.closest('.card,.art'))e.preventDefault()});
 document.addEventListener('dragstart',e=>{if(e.target.closest('.card,.art,img'))e.preventDefault()});
 document.addEventListener('dblclick',e=>{if(!e.target.closest('input,textarea,select'))e.preventDefault()});
