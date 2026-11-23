@@ -34,7 +34,7 @@ export function normalizeCollection(raw) {
   const collection = {};
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return collection;
   for (const [id, value] of Object.entries(raw)) {
-    if (!CARD_MAP.has(id) || typeof value !== 'number' || !Number.isFinite(value)) continue;
+    if (!CARD_MAP.has(id) || CARD_MAP.get(id).operatorOnly || typeof value !== 'number' || !Number.isFinite(value)) continue;
     const count = Math.max(0, Math.min(MAX_CARD_COPIES, Math.trunc(value)));
     if (count > 0) collection[id] = count;
   }
@@ -47,7 +47,7 @@ export function grantDeckCollection(raw, ids) {
   if (!Array.isArray(ids)) return collection;
   const required = new Map();
   for (const id of ids) {
-    if (typeof id === 'string' && CARD_MAP.has(id)) {
+    if (typeof id === 'string' && CARD_MAP.has(id) && !CARD_MAP.get(id).operatorOnly) {
       required.set(id, Math.min(MAX_CARD_COPIES, (required.get(id) || 0) + 1));
     }
   }
