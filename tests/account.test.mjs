@@ -302,3 +302,35 @@ test('the recent login list excludes the exact twenty-four-hour boundary and hea
   const heartbeat=await f.api('POST','/api/presence',old.token,{online:true});assert.equal(heartbeat.data.presence.lastLoginAt,f.now()-86_400_000);
   const status=(await f.api('GET','/api/operator',operator.token)).data.operator;assert.equal(status.stats.recentLogins24h,1);assert.deepEqual(status.recentLogins.map(x=>x.id),[recent.id]);assert.equal(status.recentLogins[0].online,false);assert.equal(status.stats.onlinePlayers,1);assert.equal(status.onlinePlayers[0].id,old.id);
 });
+
+test('rebuild Regalia redemption requires the registered operator and server-only secret, survives device linking, and is idempotent',async t=>{
+ const f=fixture(t),p=await f.operator(),ordinary=await f.profile('一般テスト'),route='/api/rebuild/operator-deck',secret='fixture-regalia-secret-only';
+ f.env.BK_OPERATOR_REGALIA_CODE=secret;
+ assert.equal((await f.api('GET',route,null)).status,401);
+ assert.equal((await f.api('GET',route,ordinary.token)).status,404);
+ assert.equal((await f.api('POST',route,ordinary.token,{code:secret})).status,404);
+ assert.deepEqual((await f.api('GET',route,p.token)).data,{ok:true,entitled:false});
+ assert.equal((await f.api('POST',route,p.token,{code:'wrong-code'})).status,404);
+ delete f.env.BK_OPERATOR_REGALIA_CODE;
+ assert.equal((await f.api('POST',route,p.token,{code:secret})).status,404);
+ f.env.BK_OPERATOR_REGALIA_CODE=secret;
+ const results=await Promise.all([f.api('POST',route,p.token,{code:secret}),f.api('POST',route,p.token,{code:secret})]);
+ for(const r of results){
+  assert.equal(r.status,200,JSON.stringify(r.data));assert.equal(r.data.entitled,true);
+  assert.equal(r.data.deck.main.length,32);assert.equal(r.data.deck.special.length,4);
+  assert.equal(r.data.collection['B1024'],2);assert.equal(JSON.stringify(r.data).includes(secret),false);
+ }
+ assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_operator_audit WHERE action='rebuild.regalia.granted'").get().n,1);
+ assert.equal((await f.api('GET',route,ordinary.token)).status,404);
+ const linked=await f.link(p);f.reconnect();
+ assert.equal((await f.api('GET',route,linked.token)).data.collection['B1024'],2);
+ assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_cloud_saves").get().n,0);
+ assert.equal(JSON.stringify(f.sqlite.prepare("SELECT * FROM bk_operator_audit WHERE action='rebuild.regalia.granted'").all()).includes(secret),false);
+});
+test('rebuild Regalia incorrect code attempts are rate limited by player even if the IP changes',async t=>{
+ const f=fixture(t),p=await f.operator(),route='/api/rebuild/operator-deck';f.env.BK_OPERATOR_REGALIA_CODE='fixture-other-secret';
+ for(let i=0;i<5;i++)assert.equal((await f.api('POST',route,p.token,{code:'wrong'},{ip:'192.0.2.'+(40+i)})).status,404);
+ assert.equal((await f.api('POST',route,p.token,{code:f.env.BK_OPERATOR_REGALIA_CODE},{ip:'192.0.2.99'})).status,404);
+ assert.equal((await f.api('GET',route,p.token)).data.entitled,false);
+ f.advance(900_000);assert.equal((await f.api('POST',route,p.token,{code:f.env.BK_OPERATOR_REGALIA_CODE})).data.entitled,true);
+});
