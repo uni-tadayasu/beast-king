@@ -73,8 +73,13 @@ try{
  await send('Runtime.enable');await send('Page.enable');await send('Page.bringToFront');await viewport(1280,720);
  await send('Page.navigate',{url});await waitElement('#onboard');
  assert.equal(await evaluate('document.querySelectorAll("input[name=starter]").length'),4);
+ assert.equal(await evaluate('document.querySelectorAll(".origins img").length'),7);
+ assert.equal(await evaluate('document.querySelector("meta[name=robots]").content'),'noindex,follow');
+ assert.ok(await evaluate('document.querySelector("meta[property=\"og:image\"]")!==null'));
  await evaluate('document.querySelector("input[name=name]").value="ブラウザ検証";document.querySelector("#onboard").requestSubmit();true');await waitElement('.shell');await assertFits();
  assert.equal(await evaluate(saved+'.name'),'ブラウザ検証');
+ assert.equal(await evaluate('document.querySelectorAll("nav .bk-icon").length'),6);
+ assert.ok(await evaluate('document.querySelector("link[rel=manifest]").href.endsWith("/rebuild/manifest.webmanifest")'));
  await click('[data-act=bgm-toggle]');
  assert.equal(await evaluate(saved+'.bgm'),false);
  await evaluate('(()=>{const e=document.querySelector("#bgm-volume");e.value="35";e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));return true})()');
@@ -84,11 +89,14 @@ try{
  assert.equal(await evaluate('document.querySelectorAll(".card-grid .card").length'),1);
  assert.equal(await evaluate('document.querySelector(".card-grid .card").dataset.id'),'B1024');
  assert.ok((await evaluate('document.querySelector(".card-grid .art").style.backgroundImage')).includes('king.webp'));
+ const square=await evaluate('(()=>{const r=document.querySelector(".card-grid .art").getBoundingClientRect();return {w:r.width,h:r.height}})()');assert.ok(square.w>0&&Math.abs(square.w-square.h)<2,'Square art window '+JSON.stringify(square));
  await click('.card-grid .card');await waitElement('dialog[open]');await click('dialog [data-act=close]');
  await click('nav [data-page=shop]');await click('[data-act=select-pack][data-pack=BK02]');await click('[data-act=purchase]');
  assert.equal(await evaluate(saved+'.lastPack.length'),12);assert.equal(await evaluate(saved+'.lastPackId'),'BK02');
  await click('nav [data-page=deck]');assert.ok((await evaluate('document.querySelector(".deck-list").innerText')).includes('32/32'));
  await click('nav [data-page=solo]');await click('[data-act=practice][data-level=normal]');await waitElement('.arena');
+ assert.ok((await evaluate('getComputedStyle(document.querySelector(".table")).backgroundImage')).includes('solo.webp'));
+ await click('[data-act=zone-list][data-player="1"]');await waitElement('dialog[open]');assert.ok((await evaluate('document.querySelector("dialog").innerText')).includes('カードの内容は非公開'));await click('dialog [data-act=close]');
  const initial=await evaluate(saved+'.suspendedMatch');assert.equal(initial.game.players[0].core,5000);assert.equal(initial.game.players[0].hand.length,4);
  await click('[data-act=end-turn]');
  await until(async()=>{const m=await evaluate(saved+'.suspendedMatch');return m.game.active===0||m.game.winner!==null},'CPU finishes turn');

@@ -32,6 +32,6 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', ELEMENT
       </section>
       <div class="entry-art-caption" aria-hidden="true"><span class="entry-art-line"></span><span>王が目覚める庭<small>THE CROWN AWAITS</small></span></div>
     </div>
-    <footer class="entry-footer"><span>PC · スマホ · タブレット</span><span>© 2026 Beast King</span></footer>
+    <footer class="entry-footer"><span>PC · スマホ · タブレット</span><a href="rebuild/" title="ソロ対戦・独立保存の先行公開版">新生版・先行公開</a><span>© 2026 Beast King</span></footer>
   </main>`;
 }
