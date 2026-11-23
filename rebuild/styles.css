@@ -33,3 +33,5 @@ dialog{max-width:min(650px,96vw);max-height:90dvh;overflow:auto;background:#1126
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 
 .pack-tabs{display:flex;gap:6px;margin-top:6px}.pack-tabs button[aria-pressed="true"]{color:var(--gold);border-color:var(--gold)}.pending-art{display:grid;place-items:center}.art-placeholder{font-size:.68rem;color:var(--muted);text-align:center;padding:5px;border:1px solid #a9bbbc40;border-radius:4px}
+
+.brand-mark{padding:0;background:transparent;border:0;border-radius:50%;display:grid;place-items:center}.brand-mark img{display:block}.brand-mark:hover:not(:disabled){background:transparent}
