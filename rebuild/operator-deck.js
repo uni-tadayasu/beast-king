@@ -1,6 +1,6 @@
 // Server-side integration blueprint only. Not imported by the public UI.
 // Never use a local storage flag or client-supplied password to grant this recipe.
-import {CARDS,getCard,validateDeck,validateSpecialDeck,OPERATOR_REGALIA_ID} from './catalog.js';
+import {CARDS,getCard,validateDeck,validateSpecialDeck,SECOND_REGALIA_ID} from './catalog.js';
 const pick=(pack,type,predicate,n,score)=>CARDS.filter(c=>c.pack===pack&&c.type===type&&predicate(c))
  .sort((a,b)=>score(b)-score(a)||a.id.localeCompare(b.id)).slice(0,n).map(c=>c.id);
 const two=id=>[id,id];
@@ -10,7 +10,7 @@ const miracleScore=c=>c.effect.value/100-c.cost;
 const trapScore=c=>c.effect.value/100-c.cost*1.5;
 const fusionScore=c=>c.attack/100+c.hp/100+(c.keywords.includes('guard')?2:0);
 const firstBeasts=pick('BK01','beast',lowBeast,5,lowBeastScore).flatMap(two);
-const secondBeasts=[OPERATOR_REGALIA_ID,OPERATOR_REGALIA_ID,...pick('BK02','beast',lowBeast,2,lowBeastScore).flatMap(two)];
+const secondBeasts=[SECOND_REGALIA_ID,SECOND_REGALIA_ID,...pick('BK02','beast',lowBeast,2,lowBeastScore).flatMap(two)];
 const firstMiracles=['M0256',...pick('BK01','miracle',c=>c.effect.kind==='damage_enemy'&&c.cost<=4,1,miracleScore),...pick('BK01','miracle',c=>c.effect.kind==='heal'&&c.cost<=4,1,miracleScore),...pick('BK01','miracle',c=>c.effect.kind==='draw',1,miracleScore)];
 const secondMiracles=['M0512',...pick('BK02','miracle',c=>c.effect.kind==='damage_enemy'&&c.cost<=4,1,miracleScore),...pick('BK02','miracle',c=>c.effect.kind==='shield_heal'&&c.cost<=4,1,miracleScore),...pick('BK02','miracle',c=>c.effect.kind==='renew',1,miracleScore)];
 const traps=pack=>['ambush','barrier','spring','fountain'].flatMap(kind=>pick(pack,'gimmick',c=>c.effect.kind===kind&&c.cost<=4,1,trapScore));

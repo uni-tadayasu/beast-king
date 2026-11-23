@@ -56,7 +56,8 @@ const names=[
 const miracleNouns=['断光','息吹','導標','結束','流星','聖壁','魂環','生命泉'];
 const gimmickNouns=['逆刃陣','鏡壁陣','軍旗陣','湧命陣'];
 const fusionNouns=['双冠獣','極翼獣','天環獣','万象獣'];
-const first=LEGACY.map(c=>Object.freeze({...c,pack:'BK01',artStatus:'existing'}));
+export const REGALIA_ART_ASSET='assets/design-v2/cards/individual/king.webp';
+const first=LEGACY.map(c=>Object.freeze({...c,pack:'BK01',artStatus:'existing',...(c.id==='B0512'?{artAsset:REGALIA_ART_ASSET}:{})}));
 const byKind={beast:512,miracle:256,gimmick:256,fusion:128};
 const prefixes={beast:'B',miracle:'M',gimmick:'G',fusion:'F'};
 const newOrigins=['mountain','river','seed','grass','flower','tree','mountain','king'];
@@ -68,7 +69,7 @@ for(const [type,count] of Object.entries(byKind)){
   const width=type==='beast'?64:type==='fusion'?16:32;
   const realm=Math.floor(n/width),local=n%width,rank=Math.floor(local/(type==='beast'||type==='miracle'?8:4)),variant=local%(type==='beast'||type==='miracle'?8:4);
   let template=source[realm*width+((local+width/2)%width)];
-  // Reserve alternate print of the original Regalia at the end of the set.
+  // Preserve the original Regalia's stats and illustration in the second printing.
   if(type==='beast'&&(n===479||n===511))template=source[n];
   // Keep one synthesis spell in each expansion.
   if(type==='miracle'&&(n===239||n===255))template=source[n];
@@ -81,18 +82,15 @@ for(const [type,count] of Object.entries(byKind)){
   const origin=newOrigins[realm];
   second.push(Object.freeze({...template,id,index:1153+second.length,name,origin,element:origin,pack:'BK02',
    flavor:'王域の黎明 — '+domains[realm][rank]+'に伝わる新たな契約。',
-   artStatus:'pending',art:null}));
+   artStatus:id==='B1024'?'existing':'pending',art:null,...(id==='B1024'?{artAsset:REGALIA_ART_ASSET}:{})}));
  }
 }
 export const FIRST_CARDS=Object.freeze(first);
 export const SECOND_CARDS=Object.freeze(second);
 export const CARDS=Object.freeze([...first,...second]);
 export const SECOND_REGALIA_ID='B1024';
-export const OPERATOR_REGALIA_ID='OP-B1024';
-// An alternate art printing, not a new playable card type or a pack slot.
-const publicRegalia=SECOND_CARDS.find(c=>c.id===SECOND_REGALIA_ID);
-export const OPERATOR_REGALIA=Object.freeze({...publicRegalia,id:OPERATOR_REGALIA_ID,index:null,operatorOnly:true,artStatus:'pending',art:null,artVariant:'operator',artAsset:'assets/rebuild/operator-regalia.webp',baseId:SECOND_REGALIA_ID});
-export const CARD_MAP=new Map([...CARDS,OPERATOR_REGALIA].map(c=>[c.id,c]));
+// The discontinued exclusive print is not a valid card ID. All Regalia cards use the normal artwork.
+export const CARD_MAP=new Map(CARDS.map(c=>[c.id,c]));
 export const getCard=id=>CARD_MAP.get(id);
 export const SECOND_FUSION_CARD_ID='M0512';
 export function cardsInPack(id){

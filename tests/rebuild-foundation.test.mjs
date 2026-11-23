@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {getCard,CARDS,FIRST_CARDS,SECOND_CARDS,SECOND_REGALIA_ID,OPERATOR_REGALIA_ID,validateDeck,validateSpecialDeck} from '../rebuild/catalog.js';
+import {getCard,CARDS,FIRST_CARDS,SECOND_CARDS,SECOND_REGALIA_ID,REGALIA_ART_ASSET,validateDeck,validateSpecialDeck} from '../rebuild/catalog.js';
 import {PACK_CARD_IDS_BY_SET,openPack,normalizeCollection,grantDeckCollection} from '../rebuild/shop.js';
 import {KIRAHARA_RECIPE,requiredCards} from '../rebuild/operator-deck.js';
 import {newGame,runCpuTurn,endTurn} from '../rebuild/engine.js';
@@ -51,11 +51,11 @@ test('two independent 1152-card expansions preserve types, model counts and ID u
   for(const rarity of ['N','R','KR','KKR','GR','GGR'])assert.ok(list.some(c=>c.rarity===rarity));
  }
 });
-test('both packs contain every public card in their own set, never the operator print',()=>{
+test('both packs contain every public card in their own set, exclude the retired print',()=>{
  const p=fresh();
  for(const pack of ['BK01','BK02']){
   const ids=PACK_CARD_IDS_BY_SET[pack];
-  assert.equal(ids.length,1152);assert.ok(!ids.includes(OPERATOR_REGALIA_ID));
+  assert.equal(ids.length,1152);assert.ok(!ids.includes('OP-B1024'));
   const pull=openPack(p,()=>0.9999,pack);assert.equal(pull.ok,true);
   assert.equal(pull.pulls.length,12);assert.ok(pull.pulls.every(x=>getCard(x.cardId).pack===pack));
   assert.notEqual(getCard(pull.pulls[11].cardId).rarity,'N');
@@ -63,26 +63,29 @@ test('both packs contain every public card in their own set, never the operator 
  assert.ok(PACK_CARD_IDS_BY_SET.BK02.includes(SECOND_REGALIA_ID));
  assert.equal(openPack(p,Math.random,'OP').ok,false);
 });
-test('exclusive Regalia is same rules, distinct artwork identity, not a public collectible',()=>{
- const a=getCard(SECOND_REGALIA_ID),b=getCard(OPERATOR_REGALIA_ID);
- for(const prop of ['name','type','origin','cost','rarity','attack','hp','model','effect','text','keywords'])assert.deepEqual(b[prop],a[prop]);
- assert.equal(b.operatorOnly,true);assert.notEqual(a.id,b.id);assert.equal(b.artVariant,'operator');assert.ok(b.artAsset);
- assert.equal(CARDS.some(c=>c.id===b.id),false);
- assert.deepEqual(normalizeCollection({[a.id]:2,[b.id]:2}),{[a.id]:2});
- assert.deepEqual(grantDeckCollection({},[b.id]),{});
- const p=fresh(),main=[b.id,...p.main.slice(1)];
- assert.equal(checkDeck({...p,collection:{...p.collection,[b.id]:2}},main,p.special).valid,false);
- const storage=memory();persistProfile(storage,{...p,collection:{...p.collection,[b.id]:2}});
- assert.equal(loadProfile(storage).collection[b.id],undefined);
+test('normal Regalia has the original artwork, is collectible, and the old alternate print is invalid',()=>{
+ const first=getCard('B0512'),normal=getCard(SECOND_REGALIA_ID);
+ for(const prop of ['name','type','origin','cost','rarity','attack','hp','model','effect','text','keywords'])assert.deepEqual(normal[prop],first[prop]);
+ assert.equal(first.artAsset,REGALIA_ART_ASSET);assert.equal(normal.artAsset,REGALIA_ART_ASSET);assert.equal(normal.artStatus,'existing');
+ assert.equal(getCard('OP-B1024'),undefined);assert.equal(CARDS.length,2304);
+ assert.deepEqual(normalizeCollection({[normal.id]:2,'OP-B1024':2}),{[normal.id]:2});
+ assert.deepEqual(grantDeckCollection({},[normal.id,normal.id]),{[normal.id]:2});
+ assert.deepEqual(grantDeckCollection({},['OP-B1024']),{});
+ const p=fresh(),main=[normal.id,...p.main.slice(1)],owned={...p,collection:{...p.collection,[normal.id]:2}};
+ assert.equal(checkDeck(owned,main,p.special).valid,true);
+ assert.equal(checkDeck(p,main,p.special).valid,false);
+ assert.equal(validateDeck(['OP-B1024',...p.main.slice(1)]).valid,false);
+ const storage=memory();persistProfile(storage,{...owned,collection:{...owned.collection,'OP-B1024':2}});
+ assert.equal(loadProfile(storage).collection[normal.id],2);assert.equal(loadProfile(storage).collection['OP-B1024'],undefined);
 });
-test('Kirahara recipe has two exclusive Regalia prints, legal 20/16 expansion split, and mixed duel support',()=>{
+test('Kirahara recipe has two normal Regalia cards, legal 20/16 expansion split, and mixed duel support',()=>{
  const {main,special}=KIRAHARA_RECIPE,all=[...main,...special];
  assert.equal(main.length,32);assert.equal(special.length,4);
  assert.equal(all.filter(id=>getCard(id).pack==='BK01').length,20);
  assert.equal(all.filter(id=>getCard(id).pack==='BK02').length,16);
- assert.equal(requiredCards()[OPERATOR_REGALIA_ID],2);assert.equal(requiredCards()[SECOND_REGALIA_ID],undefined);
+ assert.equal(requiredCards()[SECOND_REGALIA_ID],2);assert.equal(requiredCards()['OP-B1024'],undefined);
  assert.equal(validateDeck(main).valid,true);assert.equal(validateSpecialDeck(special).valid,true);
- const i=main.findIndex(id=>id!==OPERATOR_REGALIA_ID),excess=[...main];excess[i]=SECOND_REGALIA_ID;assert.equal(validateDeck(excess).valid,false);
+ const i=main.findIndex(id=>id!==SECOND_REGALIA_ID),excess=[...main];excess[i]='B0512';assert.equal(validateDeck(excess).valid,false);
  const p=fresh(),g=newGame({playerDeck:main,playerSpecialDeck:special,cpuDeck:p.main,cpuSpecialDeck:p.special,seed:122});
  assert.equal(g.players[0].core,5000);assert.equal(endTurn(g).ok,true);assert.equal(runCpuTurn(g).ok,true);
 });
@@ -95,7 +98,7 @@ test('operator transport rechecks the server, rejects fake local flags and never
  const client=createOperatorClient({storage,fetchImpl:async(url,init)=>{calls.push({url,init});return {ok:true,json:async()=>({ok:true,entitled:true,deck:KIRAHARA_RECIPE,collection:requiredCards()})}}});
  await assert.rejects(client.status());assert.equal(calls.length,0);
  storage.setItem(ONLINE_STORAGE_KEY,JSON.stringify({token}));
- const granted=await client.status();assert.equal(granted.entitled,true);assert.equal(granted.collection[OPERATOR_REGALIA_ID],2);
+ const granted=await client.status();assert.equal(granted.entitled,true);assert.equal(granted.collection[SECOND_REGALIA_ID],2);
  assert.equal(calls[0].url,ONLINE_API_BASE+'/rebuild/operator-deck');assert.equal(calls[0].init.headers.Authorization,'Bearer '+token);assert.equal(calls[0].init.method,'GET');
  await client.activate('fixture-code');assert.equal(JSON.parse(calls[1].init.body).code,'fixture-code');
  assert.equal(storage.getItem(ONLINE_STORAGE_KEY),JSON.stringify({token}));

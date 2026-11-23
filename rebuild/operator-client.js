@@ -1,7 +1,7 @@
 // Entitlement transport: uses an existing authenticated account session.
 // Never store a grant, activation code, or entitlement in the local save.
 import {ONLINE_API_BASE,ONLINE_STORAGE_KEY} from '../online.js';
-import {getCard,OPERATOR_REGALIA_ID,validateDeck,validateSpecialDeck} from './catalog.js';
+import {getCard,SECOND_REGALIA_ID,validateDeck,validateSpecialDeck} from './catalog.js';
 export function createOperatorClient({storage=globalThis.localStorage,fetchImpl=globalThis.fetch?.bind(globalThis)}={}){
  const credential=()=>{
   try{
@@ -25,7 +25,7 @@ export function createOperatorClient({storage=globalThis.localStorage,fetchImpl=
   const deck=data.deck,collection=data.collection;
   if(deck?.id!=='kirahara'||!validateDeck(deck.main).valid||!validateSpecialDeck(deck.special).valid||!collection||typeof collection!=='object')throw Error('運営デッキの応答が無効です。');
   const needed={};for(const id of [...deck.main,...deck.special])needed[id]=(needed[id]||0)+1;
-  if(needed[OPERATOR_REGALIA_ID]!==2||Object.keys(needed).some(id=>!getCard(id)||collection[id]!==needed[id])||Object.keys(collection).length!==Object.keys(needed).length)throw Error('限定カードの所持情報が無効です。');
+  if(needed[SECOND_REGALIA_ID]!==2||Object.keys(needed).some(id=>!getCard(id)||collection[id]!==needed[id])||Object.keys(collection).length!==Object.keys(needed).length)throw Error('運営デッキのカード情報が無効です。');
   return Object.freeze({entitled:true,deck:Object.freeze({id:deck.id,name:'𠮷良原デッキ',main:Object.freeze([...deck.main]),special:Object.freeze([...deck.special])}),collection:Object.freeze({...needed})});
  }
  return Object.freeze({status:()=>request('GET'),activate:code=>request('POST',String(code??''))});

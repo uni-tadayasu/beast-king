@@ -1,5 +1,4 @@
 import {KIRAHARA_RECIPE,requiredCards} from '../rebuild/operator-deck.js';
-import {OPERATOR_REGALIA_ID} from '../rebuild/catalog.js';
 import {CARDS,ORIGINS,STARTER_DECKS,DECK_COPY_LIMIT,getCard,validateDeck,validateSpecialDeck} from '../catalog.js';
 import {MAX_HEART_POINTS,MAX_LOG_ENTRIES} from '../engine.js';
 import {normalizeCampaignProgress,getCampaignBattle} from '../campaign.js';
@@ -307,9 +306,9 @@ async function rebuildEntitled(db,playerId){
   const row=await first(db,'SELECT a.id FROM bk_operator_audit a JOIN bk_operator o ON o.player_id=a.player_id WHERE o.singleton=1 AND a.player_id=? AND a.action=? LIMIT 1',playerId,REBUILD_GRANT_ACTION);
   return !!row;
 }
-export async function assertRebuildDeckEntitlement({db,playerId,main,special,problem}){
-  const restricted=[...(Array.isArray(main)?main:[]),...(Array.isArray(special)?special:[])].filter(id=>id===OPERATOR_REGALIA_ID);
-  if(restricted.length&&!await rebuildEntitled(db,playerId))noAccess(problem);
+// Access to the prebuilt deck requires entitlement, not possession of any normal card.
+export async function assertRebuildDeckEntitlement({db,playerId,deckId,problem}){
+  if(deckId===KIRAHARA_RECIPE.id&&!await rebuildEntitled(db,playerId))noAccess(problem);
   return true;
 }
 async function rebuildOperatorDeck(c,player){

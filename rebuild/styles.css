@@ -36,4 +36,3 @@ dialog{max-width:min(650px,96vw);max-height:90dvh;overflow:auto;background:#1126
 
 .brand-mark{padding:0;background:transparent;border:0;border-radius:50%;display:grid;place-items:center}.brand-mark img{display:block}.brand-mark:hover:not(:disabled){background:transparent}
 
-.operator-art{display:grid;place-items:center;isolation:isolate}.operator-art-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}.operator-art:after{z-index:1}

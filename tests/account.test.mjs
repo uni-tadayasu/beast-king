@@ -318,12 +318,12 @@ test('rebuild Regalia redemption requires the registered operator and server-onl
  for(const r of results){
   assert.equal(r.status,200,JSON.stringify(r.data));assert.equal(r.data.entitled,true);
   assert.equal(r.data.deck.main.length,32);assert.equal(r.data.deck.special.length,4);
-  assert.equal(r.data.collection['OP-B1024'],2);assert.equal(JSON.stringify(r.data).includes(secret),false);
+  assert.equal(r.data.collection['B1024'],2);assert.equal(JSON.stringify(r.data).includes(secret),false);
  }
  assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_operator_audit WHERE action='rebuild.regalia.granted'").get().n,1);
  assert.equal((await f.api('GET',route,ordinary.token)).status,404);
  const linked=await f.link(p);f.reconnect();
- assert.equal((await f.api('GET',route,linked.token)).data.collection['OP-B1024'],2);
+ assert.equal((await f.api('GET',route,linked.token)).data.collection['B1024'],2);
  assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_cloud_saves").get().n,0);
  assert.equal(JSON.stringify(f.sqlite.prepare("SELECT * FROM bk_operator_audit WHERE action='rebuild.regalia.granted'").all()).includes(secret),false);
 });
