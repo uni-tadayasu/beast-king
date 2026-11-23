@@ -2,14 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {getCard,CARDS} from '../catalog.js';
-import {newGame,runCpuTurn,endTurn} from '../engine.js';
+import {getCard,CARDS,FIRST_CARDS,SECOND_CARDS,SECOND_REGALIA_ID,OPERATOR_REGALIA_ID,validateDeck,validateSpecialDeck} from '../rebuild/catalog.js';
+import {PACK_CARD_IDS_BY_SET,openPack,normalizeCollection,grantDeckCollection} from '../rebuild/shop.js';
+import {KIRAHARA_RECIPE,requiredCards} from '../rebuild/operator-deck.js';
+import {newGame,runCpuTurn,endTurn} from '../rebuild/engine.js';
 import {STARTERS,STORAGE_KEY,validateName,initialProfile,loadProfile,persistProfile,checkDeck,saveDeck,chooseStarter,purchase,settle} from '../rebuild/profile.js';
 const fresh=()=>initialProfile('新しい王','king',STARTERS[0].id);
 const memory=()=>{const m=new Map();return {getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v)}};
-test('rebuild source syntax',()=>{for(const p of ['app.js','profile.js'])execFileSync(process.execPath,['--check',fileURLToPath(new URL('../rebuild/'+p,import.meta.url))])});
-test('four starters, 1152 compatible cards, exact deck composition',()=>{
- assert.equal(CARDS.length,1152);assert.equal(STARTERS.length,4);
+test('rebuild source syntax',()=>{for(const p of ['app.js','profile.js','catalog.js','engine.js','shop.js','operator-deck.js'])execFileSync(process.execPath,['--check',fileURLToPath(new URL('../rebuild/'+p,import.meta.url))])});
+test('four starters, 2304 compatible cards, exact deck composition',()=>{
+ assert.equal(CARDS.length,2304);assert.equal(STARTERS.length,4);
  for(const s of STARTERS){const p=initialProfile('王','king',s.id);assert.equal(p.main.length,32);assert.equal(p.special.length,4);assert.equal(checkDeck(p,p.main,p.special).valid,true);
  for(const [t,n] of [['beast',16],['miracle',8],['gimmick',8]])assert.equal(p.main.filter(id=>getCard(id).type===t).length,n)}
 });
@@ -37,4 +39,50 @@ test('shared engine can initialize and advance a new-foundation duel',()=>{
  const p=fresh(),cpu=STARTERS[2],g=newGame({playerDeck:p.main,playerSpecialDeck:p.special,cpuDeck:cpu.ids,cpuSpecialDeck:cpu.specialIds,seed:99});
  assert.equal(g.players[0].core,5000);assert.equal(g.players[0].hand.length,4);assert.equal(g.players[0].special.length,4);
  assert.equal(endTurn(g).ok,true);assert.equal(runCpuTurn(g).ok,true);assert.ok(g.winner!==null||g.active===0);
+});
+
+test('two independent 1152-card expansions preserve types, model counts and ID uniqueness',()=>{
+ assert.equal(new Set(CARDS.map(c=>c.id)).size,2304);
+ for(const list of [FIRST_CARDS,SECOND_CARDS]){
+  assert.equal(list.length,1152);
+  for(const [type,n] of [['beast',512],['fusion',128],['miracle',256],['gimmick',256]])assert.equal(list.filter(c=>c.type===type).length,n);
+  for(const model of ['attack','defense'])assert.equal(list.filter(c=>c.type==='beast'&&c.model===model).length,256);
+  assert.equal(list.filter(c=>c.effect.kind==='fusion').length,1);
+  for(const rarity of ['N','R','KR','KKR','GR','GGR'])assert.ok(list.some(c=>c.rarity===rarity));
+ }
+});
+test('both packs contain every public card in their own set, never the operator print',()=>{
+ const p=fresh();
+ for(const pack of ['BK01','BK02']){
+  const ids=PACK_CARD_IDS_BY_SET[pack];
+  assert.equal(ids.length,1152);assert.ok(!ids.includes(OPERATOR_REGALIA_ID));
+  const pull=openPack(p,()=>0.9999,pack);assert.equal(pull.ok,true);
+  assert.equal(pull.pulls.length,12);assert.ok(pull.pulls.every(x=>getCard(x.cardId).pack===pack));
+  assert.notEqual(getCard(pull.pulls[11].cardId).rarity,'N');
+ }
+ assert.ok(PACK_CARD_IDS_BY_SET.BK02.includes(SECOND_REGALIA_ID));
+ assert.equal(openPack(p,Math.random,'OP').ok,false);
+});
+test('exclusive Regalia is same rules, distinct artwork identity, not a public collectible',()=>{
+ const a=getCard(SECOND_REGALIA_ID),b=getCard(OPERATOR_REGALIA_ID);
+ for(const prop of ['name','type','origin','cost','rarity','attack','hp','model','effect','text','keywords'])assert.deepEqual(b[prop],a[prop]);
+ assert.equal(b.operatorOnly,true);assert.notEqual(a.id,b.id);assert.equal(b.artVariant,'operator');assert.ok(b.artAsset);
+ assert.equal(CARDS.some(c=>c.id===b.id),false);
+ assert.deepEqual(normalizeCollection({[a.id]:2,[b.id]:2}),{[a.id]:2});
+ assert.deepEqual(grantDeckCollection({},[b.id]),{});
+ const p=fresh(),main=[b.id,...p.main.slice(1)];
+ assert.equal(checkDeck({...p,collection:{...p.collection,[b.id]:2}},main,p.special).valid,false);
+ const storage=memory();persistProfile(storage,{...p,collection:{...p.collection,[b.id]:2}});
+ assert.equal(loadProfile(storage).collection[b.id],undefined);
+});
+test('Kirahara recipe has two exclusive Regalia prints, legal 20/16 expansion split, and mixed duel support',()=>{
+ const {main,special}=KIRAHARA_RECIPE,all=[...main,...special];
+ assert.equal(main.length,32);assert.equal(special.length,4);
+ assert.equal(all.filter(id=>getCard(id).pack==='BK01').length,20);
+ assert.equal(all.filter(id=>getCard(id).pack==='BK02').length,16);
+ assert.equal(requiredCards()[OPERATOR_REGALIA_ID],2);assert.equal(requiredCards()[SECOND_REGALIA_ID],undefined);
+ assert.equal(validateDeck(main).valid,true);assert.equal(validateSpecialDeck(special).valid,true);
+ const i=main.findIndex(id=>id!==OPERATOR_REGALIA_ID),excess=[...main];excess[i]=SECOND_REGALIA_ID;assert.equal(validateDeck(excess).valid,false);
+ const p=fresh(),g=newGame({playerDeck:main,playerSpecialDeck:special,cpuDeck:p.main,cpuSpecialDeck:p.special,seed:122});
+ assert.equal(g.players[0].core,5000);assert.equal(endTurn(g).ok,true);assert.equal(runCpuTurn(g).ok,true);
 });
