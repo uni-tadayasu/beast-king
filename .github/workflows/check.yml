@@ -21,5 +21,7 @@ jobs:
           node-version: '24'
       - name: Check card data and battle rules
         run: npm test
+      - name: Verify Worker bundle and database migrations
+        run: npm run build
       - name: Check application syntax
         run: node --check app.js
