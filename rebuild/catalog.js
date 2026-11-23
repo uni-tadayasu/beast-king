@@ -51,10 +51,9 @@ for(const [type,count] of Object.entries(byKind)){
   const realm=Math.floor(n/width),local=n%width,rank=Math.floor(local/(type==='beast'||type==='miracle'?8:4)),variant=local%(type==='beast'||type==='miracle'?8:4);
   let template=source[realm*width+((local+width/2)%width)];
   // Reserve alternate print of the original Regalia at the end of the set.
-  if(type==='beast'&&n===511)template=source.find(c=>c.id==='B0512');
+  if(type==='beast'&&(n===479||n===511))template=source[n];
   // Keep one synthesis spell in each expansion.
-  if(type==='miracle'&&n===255)template=source.find(c=>c.id==='M0256');
-  else if(type==='miracle'&&template.effect.kind==='fusion')template=source[realm*width+((local+width/2-1)%width+width)%width];
+  if(type==='miracle'&&(n===239||n===255))template=source[n];
   const id=prefixes[type]+String(count+n+1).padStart(4,'0');
   let name=type==='beast'?domains[realm][rank]+creatures[realm][variant]+' '+names[realm][variant]:
    type==='fusion'?domains[realm][rank]+fusionNouns[variant]+' '+names[realm][variant]+'ル':
