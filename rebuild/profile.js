@@ -1,6 +1,6 @@
 // New local save boundary. The live game's storage is never read or modified.
-import {STARTER_DECKS,getCard,validateDeck,validateSpecialDeck} from '../catalog.js';
-import {grantDeckCollection,normalizeCollection,STARTING_TREASURE,openPack,getBattleReward} from '../shop.js';
+import {STARTER_DECKS,getCard,validateDeck,validateSpecialDeck} from './catalog.js';
+import {grantDeckCollection,normalizeCollection,STARTING_TREASURE,openPack,getBattleReward} from './shop.js';
 export const STORAGE_KEY='beast-king-rebuild-v1';
 export const STARTERS=Object.freeze(STARTER_DECKS.filter(s=>['star-crown','azure-memory','crimson-pulse','sky-promise'].includes(s.id)));
 export const ORIGIN_IDS=Object.freeze(['mountain','river','seed','grass','flower','tree','king']);
@@ -49,10 +49,10 @@ export function loadProfile(storage){
  }catch{return null}
 }
 export function persistProfile(storage,p){storage.setItem(STORAGE_KEY,JSON.stringify(p));return p;}
-export function purchase(profile,random=Math.random){
- const result=openPack(profile,random);
+export function purchase(profile,random=Math.random,packId='BK01'){
+ const result=openPack(profile,random,packId);
  if(!result.ok)throw new Error(result.error);
- return {...profile,treasure:result.treasure,collection:result.collection,lastPack:result.pulls};
+ return {...profile,treasure:result.treasure,collection:result.collection,lastPack:result.pulls,lastPackId:packId};
 }
 export function settle(profile,matchId,outcome,chapter=null){
  if(typeof matchId!=='string'||!matchId||profile.settled.includes(matchId))return profile;
