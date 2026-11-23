@@ -69,9 +69,13 @@ for(const [type,count] of Object.entries(byKind)){
 export const FIRST_CARDS=Object.freeze(first);
 export const SECOND_CARDS=Object.freeze(second);
 export const CARDS=Object.freeze([...first,...second]);
-export const CARD_MAP=new Map(CARDS.map(c=>[c.id,c]));
-export const getCard=id=>CARD_MAP.get(id);
 export const SECOND_REGALIA_ID='B1024';
+export const OPERATOR_REGALIA_ID='OP-B1024';
+// An alternate art printing, not a new playable card type or a pack slot.
+const publicRegalia=SECOND_CARDS.find(c=>c.id===SECOND_REGALIA_ID);
+export const OPERATOR_REGALIA=Object.freeze({...publicRegalia,id:OPERATOR_REGALIA_ID,index:null,operatorOnly:true,artStatus:'pending',art:null,artVariant:'operator',artAsset:'assets/rebuild/operator-regalia.webp',baseId:SECOND_REGALIA_ID});
+export const CARD_MAP=new Map([...CARDS,OPERATOR_REGALIA].map(c=>[c.id,c]));
+export const getCard=id=>CARD_MAP.get(id);
 export const SECOND_FUSION_CARD_ID='M0512';
 export function cardsInPack(id){
  if(id==='BK01')return FIRST_CARDS;
