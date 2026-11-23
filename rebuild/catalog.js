@@ -1,6 +1,24 @@
 // Independent catalog boundary for the rebuilt game. Legacy main IDs stay intact.
-import {CARDS as LEGACY,ORIGINS,DECK_SIZE,SPECIAL_DECK_SIZE,DECK_COPY_LIMIT,MODEL_DESCRIPTIONS} from '../catalog.js';
-export {ORIGINS, ELEMENTS, TYPE_LABELS, RARITY_LABELS, KEYWORD_LABELS, MODEL_LABELS, SUBTYPE_LABELS, MODEL_DESCRIPTIONS, POINT_SCALE, FUSION_MATERIAL_BONUS, DECK_SIZE, DECK_MIN, DECK_MAX, SPECIAL_DECK_SIZE, DECK_COPY_LIMIT, STARTER_DECKS, RARITY_ORDER, FUSION_CARD_ID} from '../catalog.js';
+import {CARDS as LEGACY} from '../catalog.js';
+import {ORIGINS as legacy_ORIGINS,ELEMENTS as legacy_ELEMENTS,TYPE_LABELS as legacy_TYPE_LABELS,RARITY_LABELS as legacy_RARITY_LABELS,KEYWORD_LABELS as legacy_KEYWORD_LABELS,MODEL_LABELS as legacy_MODEL_LABELS,SUBTYPE_LABELS as legacy_SUBTYPE_LABELS,MODEL_DESCRIPTIONS as legacy_MODEL_DESCRIPTIONS,POINT_SCALE as legacy_POINT_SCALE,FUSION_MATERIAL_BONUS as legacy_FUSION_MATERIAL_BONUS,DECK_SIZE as legacy_DECK_SIZE,DECK_MIN as legacy_DECK_MIN,DECK_MAX as legacy_DECK_MAX,SPECIAL_DECK_SIZE as legacy_SPECIAL_DECK_SIZE,DECK_COPY_LIMIT as legacy_DECK_COPY_LIMIT,STARTER_DECKS as legacy_STARTER_DECKS,RARITY_ORDER as legacy_RARITY_ORDER,FUSION_CARD_ID as legacy_FUSION_CARD_ID} from '../catalog.js';
+export const ORIGINS=legacy_ORIGINS;
+export const ELEMENTS=legacy_ELEMENTS;
+export const TYPE_LABELS=legacy_TYPE_LABELS;
+export const RARITY_LABELS=legacy_RARITY_LABELS;
+export const KEYWORD_LABELS=legacy_KEYWORD_LABELS;
+export const MODEL_LABELS=legacy_MODEL_LABELS;
+export const SUBTYPE_LABELS=legacy_SUBTYPE_LABELS;
+export const MODEL_DESCRIPTIONS=legacy_MODEL_DESCRIPTIONS;
+export const POINT_SCALE=legacy_POINT_SCALE;
+export const FUSION_MATERIAL_BONUS=legacy_FUSION_MATERIAL_BONUS;
+export const DECK_SIZE=legacy_DECK_SIZE;
+export const DECK_MIN=legacy_DECK_MIN;
+export const DECK_MAX=legacy_DECK_MAX;
+export const SPECIAL_DECK_SIZE=legacy_SPECIAL_DECK_SIZE;
+export const DECK_COPY_LIMIT=legacy_DECK_COPY_LIMIT;
+export const STARTER_DECKS=legacy_STARTER_DECKS;
+export const RARITY_ORDER=legacy_RARITY_ORDER;
+export const FUSION_CARD_ID=legacy_FUSION_CARD_ID;
 export const PACKS=Object.freeze([
  Object.freeze({id:'BK01',name:'六源の覚醒',number:1}),
  Object.freeze({id:'BK02',name:'第二弾・王域の黎明（仮）',number:2})
