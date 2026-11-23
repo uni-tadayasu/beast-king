@@ -1,4 +1,6 @@
 import {KIRAHARA_RECIPE,requiredCards} from '../rebuild/operator-deck.js';
+import {validateRebuildBackup,MAX_REBUILD_BACKUP_BYTES} from '../rebuild/backup.js';
+import {verifyOperatorSnapshot} from '../rebuild/solo-save.js';
 import {CARDS,ORIGINS,STARTER_DECKS,DECK_COPY_LIMIT,getCard,validateDeck,validateSpecialDeck} from '../catalog.js';
 import {MAX_HEART_POINTS,MAX_LOG_ENTRIES} from '../engine.js';
 import {normalizeCampaignProgress,getCampaignBattle} from '../campaign.js';
@@ -332,16 +334,54 @@ async function rebuildOperatorDeck(c,player){
   return {ok:true,entitled:granted,...(granted?{deck:KIRAHARA_RECIPE,collection:requiredCards()}: {})};
 }
 
+// Rebuild is a separate, non-authoritative solo backup store. Nothing here writes
+// legacy saves, inventory, profile names, ranked ratings, or operator grants.
+async function rebuildBackupPublic(db,playerId){
+ return savePublic(await first(db,'SELECT revision,data_json,updated_at FROM bk_rebuild_saves WHERE player_id=?',playerId));
+}
+async function rebuildSaveRoute(c,player){
+ const {db,request,method,now,fail,bodyJSON}=c;
+ const result=async extra=>({ok:true,accountId:player.id,save:await rebuildBackupPublic(db,player.id),...extra});
+ if(method==='GET')return result({});
+ if(method!=='POST')fail(405,'method_not_allowed','この操作は利用できません。');
+ if(!await rateLimit(db,request,player.id,'rebuild-save',now,{ip:120,player:60,window:60000}))fail(429,'rate_limited','保存が続いています。少し待って再試行してください。');
+ const body=await bodyJSON(request,MAX_REBUILD_BACKUP_BYTES+16384);
+ check(plain(body)&&body.accountId===player.id&&integer(body.revision,0,Number.MAX_SAFE_INTEGER-1)&&identifier(body.mutationId),fail,'invalid_save','保存先のアカウントを確認してください。');
+ let data;try{data=validateRebuildBackup(body.data)}catch{fail(400,'invalid_save','新生版の保存データを確認してください。')}
+ if(data.suspendedMatch?.mode==='kirahara'){
+  await assertRebuildDeckEntitlement({db,playerId:player.id,deckId:'kirahara',problem:fail});
+  check(verifyOperatorSnapshot(data.suspendedMatch,{entitled:true,deck:KIRAHARA_RECIPE}),fail,'invalid_save','運営デッキの対戦状態を確認してください。');
+ }
+ const requestHash=await hash(canonical({revision:body.revision,data})),next=body.revision+1,writeToken=uuid(),encoded=JSON.stringify(data);
+ const replay=async()=>{
+  const old=await first(db,'SELECT request_hash,revision FROM bk_rebuild_save_mutations WHERE player_id=? AND mutation_id=?',player.id,body.mutationId);
+  if(!old)return null;
+  if(old.request_hash!==requestHash)fail(409,'mutation_id_reused','同じ保存番号を異なるデータに使用できません。');
+  return result({replayed:true,appliedRevision:old.revision});
+ };
+ const prior=await replay();if(prior)return prior;
+ const guard='EXISTS (SELECT 1 FROM bk_rebuild_saves WHERE player_id=? AND write_token=?)';
+ const changes=await db.batch([
+  statement(db,'INSERT INTO bk_rebuild_saves (player_id,revision,data_json,write_token,updated_at) SELECT ?,1,?,?,? WHERE ?=0 AND NOT EXISTS (SELECT 1 FROM bk_rebuild_saves WHERE player_id=?) AND NOT EXISTS (SELECT 1 FROM bk_rebuild_save_mutations WHERE player_id=? AND mutation_id=?)',player.id,encoded,writeToken,now,body.revision,player.id,player.id,body.mutationId),
+  statement(db,'UPDATE bk_rebuild_saves SET revision=?,data_json=?,write_token=?,updated_at=? WHERE player_id=? AND revision=? AND ?>0 AND NOT EXISTS (SELECT 1 FROM bk_rebuild_save_mutations WHERE player_id=? AND mutation_id=?)',next,encoded,writeToken,now,player.id,body.revision,body.revision,player.id,body.mutationId),
+  statement(db,'INSERT INTO bk_rebuild_save_mutations (player_id,mutation_id,request_hash,revision,created_at) SELECT ?,?,?,?,? WHERE '+guard,player.id,body.mutationId,requestHash,next,now,player.id,writeToken)
+ ]);
+ if(!changed(changes[0])&&!changed(changes[1])){const again=await replay();if(again)return again;fail(409,'save_conflict','別の端末で更新されています。保存先を再確認してください。');}
+ return result({appliedRevision:next});
+}
+
 export async function handleAccountRoute(options){
   const c={...options,fail:options.problem}, {path,method,db,now,fail}=c;
-  const paths=['/api/rebuild/operator-deck','/api/public-status','/api/cloud-save','/api/account/link-code','/api/account/link-claim','/api/account/sessions','/api/operator','/api/operator/activate','/api/operator/settings','/api/operator/messages','/api/operator/gifts','/api/operator/events','/api/inbox','/api/events','/api/presence'];
+  const paths=['/api/rebuild/status','/api/rebuild/cloud-save','/api/rebuild/operator-deck','/api/public-status','/api/cloud-save','/api/account/link-code','/api/account/link-claim','/api/account/sessions','/api/operator','/api/operator/activate','/api/operator/settings','/api/operator/messages','/api/operator/gifts','/api/operator/events','/api/inbox','/api/events','/api/presence'];
   const sessionPath=path.match(/^\/api\/account\/sessions\/([A-Za-z0-9_-]{8,100})$/),inboxPath=path.match(/^\/api\/inbox\/([A-Za-z0-9_-]{8,100})\/(read|claim)$/),eventPath=path.match(/^\/api\/events\/([A-Za-z0-9_-]{8,100})\/claim$/);
   if(!paths.includes(path)&&!sessionPath&&!inboxPath&&!eventPath)return null;
   const expect=verb=>{if(method!==verb)fail(405,'method_not_allowed','この操作は利用できません。');};
   if(path==='/api/public-status'){expect('GET');return publicStatus(db);}
   if(path==='/api/account/link-claim'){expect('POST');return linkClaim(c);}
+  if(path==='/api/rebuild/status'){expect('GET');await first(db,'SELECT revision FROM bk_rebuild_saves LIMIT 1');await first(db,'SELECT revision FROM bk_rebuild_save_mutations LIMIT 1');return {ok:true,cloudSaveVersion:1};}
   const player=await authenticateAccount(db,c.request,now,fail);
   if(path==='/api/rebuild/operator-deck')return rebuildOperatorDeck(c,player);
+  if(path==='/api/rebuild/cloud-save')return rebuildSaveRoute(c,player);
   if(path==='/api/presence'){expect('POST');return presence(c,player);}
   if(path==='/api/cloud-save')return saveRoute(c,player);
   if(path==='/api/account/link-code'){expect('POST');return linkCreate(c,player);}

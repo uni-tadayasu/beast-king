@@ -7,6 +7,7 @@ import {STARTER_DECKS,getCard} from '../catalog.js';
 import {newGame} from '../engine.js';
 import {createStarterCollection} from '../shop.js';
 import {createCampaignProgress} from '../campaign.js';
+import {initialProfile,STARTERS,purchase} from '../rebuild/profile.js';
 
 const BASE='https://beast-king.hisa-0128-1996.chatgpt.site';
 const schema=readFileSync(new URL('../server/schema.sql',import.meta.url),'utf8');
@@ -333,4 +334,27 @@ test('rebuild Regalia incorrect code attempts are rate limited by player even if
  assert.equal((await f.api('POST',route,p.token,{code:f.env.BK_OPERATOR_REGALIA_CODE},{ip:'192.0.2.99'})).status,404);
  assert.equal((await f.api('GET',route,p.token)).data.entitled,false);
  f.advance(900_000);assert.equal((await f.api('POST',route,p.token,{code:f.env.BK_OPERATOR_REGALIA_CODE})).data.entitled,true);
+});
+
+test('Rebuild cloud backup is isolated, authenticated, revision checked, and restorable on a linked device',async t=>{
+ const f=fixture(t),a=await f.profile('新生版検証'),b=await f.profile('別の人'),linked=await f.link(a);
+ const path='/api/rebuild/cloud-save',data=purchase(initialProfile('新生版検証','king',STARTERS[0].id),()=>.2,'BK02');
+ const legacy=await f.save(a);assert.equal(legacy.status,200);
+ const status=await f.api('GET','/api/rebuild/status');assert.equal(status.status,200);assert.equal(status.data.cloudSaveVersion,1);
+ assert.equal((await f.api('GET',path)).status,401);
+ assert.equal((await f.api('GET',path,a.token)).data.save,null);
+ const body={accountId:a.id,revision:0,mutationId:'rebuild-save-test-1',data:{...data,operator:true,token:'must-not-persist'}};
+ const saved=await f.api('POST',path,a.token,body);assert.equal(saved.status,200,JSON.stringify(saved.data));assert.equal(saved.data.save.revision,1);
+ assert.equal(saved.data.save.data.lastPackId,'BK02');assert.equal(saved.data.save.data.token,undefined);assert.equal(saved.data.save.data.operator,undefined);
+ assert.equal((await f.api('POST',path,a.token,body)).data.replayed,true);
+ assert.deepEqual((await f.api('GET',path,linked.token)).data.save,saved.data.save);
+ assert.equal((await f.api('GET',path,b.token)).data.save,null);
+ assert.equal((await f.api('POST',path,b.token,body)).status,400);
+ assert.equal((await f.api('POST',path,linked.token,{...body,mutationId:'rebuild-save-test-2'})).status,409);
+ assert.equal((await f.api('POST',path,a.token,{...body,revision:1,mutationId:'rebuild-save-test-3',data:{...data,collection:{...data.collection,OP_B1024:2}}})).status,400);
+ const updated=await f.api('POST',path,linked.token,{...body,revision:1,mutationId:'rebuild-save-test-4',data:{...data,treasure:1234}});
+ assert.equal(updated.status,200,JSON.stringify(updated.data));assert.equal(updated.data.save.revision,2);
+ assert.equal(updated.data.save.data.treasure,1234);
+ assert.deepEqual((await f.api('GET','/api/cloud-save',a.token)).data.save,legacy.data.save);
+ assert.equal((await f.api('GET','/api/profile',a.token)).data.profile.nickname,'新生版検証');
 });

@@ -3,11 +3,13 @@ import {ARTWORK_OVERRIDES} from './artwork-manifest.js';
 import {createMusicController} from '../music.js';
 import {normalizeSoloSnapshot,verifyOperatorSnapshot,musicScene} from './solo-save.js';
 import {createOperatorClient} from './operator-client.js';
+import {createRebuildCloudClient} from './cloud-client.js';
+import {validateRebuildBackup,ROLLBACK_KEY} from './backup.js';
 import {CARDS,ORIGINS,TYPE_LABELS,RARITY_LABELS,MODEL_LABELS,STARTER_DECKS,PACKS,SECOND_REGALIA_ID,getCard} from './catalog.js';
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
 import {newGame,playCard,attack,endTurn,runCpuTurn,getLegalTargets,getAttackTargets,getPlayableCards,getFusionMaterials,canAttack} from './engine.js';
 import {CAMPAIGN_BATTLES} from '../campaign.js';
-import {STARTERS,initialProfile,loadProfile,persistProfile,checkDeck,saveDeck,chooseStarter,counts,purchase,recordSolo,endSuspendedSolo} from './profile.js';
+import {STARTERS,STORAGE_KEY,initialProfile,loadProfile,persistProfile,checkDeck,saveDeck,chooseStarter,counts,purchase,recordSolo,endSuspendedSolo} from './profile.js';
 const root=document.querySelector('#app'),dialog=document.querySelector('#detail');
 const esc=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const fmt=n=>Number(n).toLocaleString('ja-JP');
@@ -17,10 +19,10 @@ const label=id=>getCard(id)?.name||id;
 let profile=loadProfile(localStorage),page='home',message='',draft=null,match=null,selection=null,cpuBusy=false,filter={q:'',type:'',origin:'',rarity:'',pack:'',page:0};
 let shopPage=0,shopPack='BK01',cpuTimer=null;
 const music=createMusicController({idPrefix:'beastking-rebuild-bgm',sources:{menu:'../assets/audio/menu.mp3',battle:'../assets/audio/battle.mp3','battle-danger':'../assets/audio/battle-danger.mp3'}});
-const operatorClient=createOperatorClient();let operatorGrant=null,operatorSelected=false,operatorBusy=false,brandTaps=0,brandAt=0,starting=false;
+const operatorClient=createOperatorClient(),cloudClient=createRebuildCloudClient();let cloudView=null;let operatorGrant=null,operatorSelected=false,operatorBusy=false,brandTaps=0,brandAt=0,starting=false;
 const nav=[['home','王庭','home'],['solo','ソロ対戦','sword'],['deck','デッキ工房','cards'],['catalog','カード図鑑','book'],['shop','秘宝ショップ','treasure'],['rules','遊び方','info']];
 const typeIcons={beast:'beast',fusion:'fusion',miracle:'spark',gimmick:'trap'};
-const actionIcons={'resume':'clock','pause-match':'pause','end-turn':'check','purchase':'treasure','save-deck':'check','close':'close','cancel-target':'back','leave':'home','discard-match':'close','forfeit':'back','campaign':'sword','replay':'sword'};
+const actionIcons={'resume':'clock','pause-match':'pause','end-turn':'check','purchase':'treasure','save-deck':'check','close':'close','cancel-target':'back','leave':'home','discard-match':'close','forfeit':'back','campaign':'sword','replay':'sword','cloud-open':'save','cloud-save':'save','cloud-restore':'history','cloud-recover':'history'};
 function icon(name){return '<svg class="bk-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">'+(BRAND_ICONS[name]||BRAND_ICONS.info)+'</svg>'}
 function artOverride(c){return c.name==='王冠竜 レガリア'?null:ARTWORK_OVERRIDES[c.id]||null}
 function isPendingArt(c){return c.artStatus==='pending'&&!artOverride(c)}
@@ -63,7 +65,7 @@ function shell(body){
 }
 function home(){
  const s=STARTERS.find(x=>x.id===profile.starterId);
- return '<div class="home"><section class="panel hero"><p class="eyebrow">THE FIRST CHRONICLE</p><h1>六源の覚醒</h1><p>獣の契約を結び、ハートポイントを巡る決闘へ。自分だけの36枚で王冠を目指す。</p>'+(profile.suspendedMatch?resumeControls():act('nav','ソロの冒険へ','data-page="solo"','primary'))+'<small>第一弾・第二弾 2,304枚 · 7オリジン · 6段階のレアリティ</small><div class="edition-links"><a href="about.html">新生版の紹介</a><a href="../">従来版（オンライン対戦）</a></div></section><div class="home-side"><section class="panel"><div class="panel-head"><h2>戦績</h2><span class="sub">'+esc(s?.name||'カスタムデッキ')+'</span></div><div class="summary"><div><small>所持種類</small><strong>'+Object.keys(profile.collection).length+'</strong></div><div><small>勝利</small><strong>'+profile.wins+'</strong></div><div><small>章の進行</small><strong>'+profile.completed+' / 20</strong></div><div><small>デッキ</small><strong>32 + 4</strong></div></div></section><section class="panel modes">'+[['solo','ソロ','全20戦と練習戦'],['deck','デッキ工房','36枚の編成'],['catalog','図鑑','全カードを確認'],['shop','ショップ','12枚入りパック']].map(([id,t,d])=>'<button class="mode" data-mode="'+id+'" data-act="nav" data-page="'+id+'">'+icon(nav.find(n=>n[0]===id)?.[2]||'spark')+'<b>'+t+'</b><span>'+d+'</span></button>').join('')+'</section></div></div>';
+ return '<div class="home"><section class="panel hero"><p class="eyebrow">THE FIRST CHRONICLE</p><h1>六源の覚醒</h1><p>獣の契約を結び、ハートポイントを巡る決闘へ。自分だけの36枚で王冠を目指す。</p>'+(profile.suspendedMatch?resumeControls():act('nav','ソロの冒険へ','data-page="solo"','primary'))+'<small>第一弾・第二弾 2,304枚 · 7オリジン · 6段階のレアリティ</small><div class="edition-links"><a href="about.html">新生版の紹介</a><a href="../">従来版（オンライン対戦）</a></div>'+act('cloud-open','クラウド保存・端末間復元','','cloud-entry')+'</section><div class="home-side"><section class="panel"><div class="panel-head"><h2>戦績</h2><span class="sub">'+esc(s?.name||'カスタムデッキ')+'</span></div><div class="summary"><div><small>所持種類</small><strong>'+Object.keys(profile.collection).length+'</strong></div><div><small>勝利</small><strong>'+profile.wins+'</strong></div><div><small>章の進行</small><strong>'+profile.completed+' / 20</strong></div><div><small>デッキ</small><strong>32 + 4</strong></div></div></section><section class="panel modes">'+[['solo','ソロ','全20戦と練習戦'],['deck','デッキ工房','36枚の編成'],['catalog','図鑑','全カードを確認'],['shop','ショップ','12枚入りパック']].map(([id,t,d])=>'<button class="mode" data-mode="'+id+'" data-act="nav" data-page="'+id+'">'+icon(nav.find(n=>n[0]===id)?.[2]||'spark')+'<b>'+t+'</b><span>'+d+'</span></button>').join('')+'</section></div></div>';
 }
 function solo(){
  const next=CAMPAIGN_BATTLES[profile.completed];
@@ -87,7 +89,7 @@ function shop(){
  const pulls=profile.lastPack||[],size=pageSize(),total=Math.max(1,Math.ceil(pulls.length/size));shopPage=Math.min(shopPage,total-1);
  return '<section class="panel shop"><div class="shop-info"><div><h2>'+esc(pack.name)+'</h2><p>1パック 100秘宝 · 12枚 · レア以上1枚保証</p><small>各弾1,152枚。同じカードの4枚目から5秘宝に変換します。</small><div class="pack-tabs">'+PACKS.map(p=>'<button data-act="select-pack" data-pack="'+p.id+'" aria-pressed="'+(p.id===pack.id)+'">'+(p.number===1?'第一弾':'第二弾')+'</button>').join('')+'</div></div>'+act('purchase','パックを開封',profile.treasure<100?'disabled':'','primary')+'</div><div class="card-grid">'+(pulls.length?pulls.slice(shopPage*size,(shopPage+1)*size).map(x=>card(getCard(x.cardId),{owned:profile.collection[x.cardId]||0,className:x.converted?'converted':''})).join(''):'<p class="muted">ここに開封結果が表示されます。</p>')+'</div><div class="pagination">'+act('shop-prev','前へ',shopPage===0?'disabled':'')+'<span>'+(pulls.length?'開封結果：'+esc(last?.name||'')+' · ':'')+(shopPage+1)+' / '+total+'</span>'+act('shop-next','次へ',shopPage+1===total?'disabled':'')+'</div></section>';
 }
-function rules(){return '<section class="panel rules"><h2>基本ルール</h2><h3>デッキと勝利条件</h3><p>メイン32枚＋合成魔獣4枚。同名2枚まで。ハートポイント5,000で開始し、相手を0にすると勝利します。</p><h3>ターンと出場ゾーン</h3><p>最大エーテルが自分のターンごとに1増加（最大10）。手札は最大4枚、出場魔獣は4体、ギミックは2枚。魔獣は通常、召喚した次の自分のターンから攻撃できます。</p><h3>攻撃と守護</h3><p>守護がある場合は優先して攻撃。通常アタック型は攻撃を受けると消滅し、持ち主に攻撃力分のダメージ。ディフェンス型・合成魔獣は攻撃力が守備力を上回ると消滅し、超過分のみダメージ。通常戦闘で反撃はありません。</p><h3>合成召喚</h3><p>コスト3のミラクル「合成」で特殊デッキから合成魔獣を選び、手札・場・お墓の魔獣を1枚以上異世界へ。素材2枚目以降、攻撃力・守備力が各100上昇します。</p><h3>先行公開版について</h3><p>第一弾・第二弾とCPU対戦の独立した新画面です。第二弾のレガリア以外のイラストは制作前です。ソロ対戦は自動保存と中断・再開に対応します。レガリアは従来の通常イラストを使用します。運営認証APIは開発ブランチに実装済みですが、本番配備前です。オンライン対戦とクラウド同期は未接続です。従来版のデータには影響しません。</p><p class="edition-links"><a href="about.html">新生版の詳細</a><a href="../">従来版へ戻る</a></p></section>'}
+function rules(){return '<section class="panel rules"><h2>基本ルール</h2><h3>デッキと勝利条件</h3><p>メイン32枚＋合成魔獣4枚。同名2枚まで。ハートポイント5,000で開始し、相手を0にすると勝利します。</p><h3>ターンと出場ゾーン</h3><p>最大エーテルが自分のターンごとに1増加（最大10）。手札は最大4枚、出場魔獣は4体、ギミックは2枚。魔獣は通常、召喚した次の自分のターンから攻撃できます。</p><h3>攻撃と守護</h3><p>守護がある場合は優先して攻撃。通常アタック型は攻撃を受けると消滅し、持ち主に攻撃力分のダメージ。ディフェンス型・合成魔獣は攻撃力が守備力を上回ると消滅し、超過分のみダメージ。通常戦闘で反撃はありません。</p><h3>合成召喚</h3><p>コスト3のミラクル「合成」で特殊デッキから合成魔獣を選び、手札・場・お墓の魔獣を1枚以上異世界へ。素材2枚目以降、攻撃力・守備力が各100上昇します。</p><h3>先行公開版について</h3><p>第一弾・第二弾とCPU対戦の独立した新画面です。第二弾のレガリア以外のイラストは制作前です。ソロ対戦は自動保存と中断・再開に対応します。レガリアは従来の通常イラストを使用します。運営認証・クラウド保存APIは本番サーバーの更新が必要です。王庭のクラウド保存から端末間復元を確認できます。新生版のオンライン対戦は開発中です。従来版のデータには影響しません。</p><p class="edition-links"><a href="about.html">新生版の詳細</a><a href="../">従来版へ戻る</a></p></section>'}
 function targetList(){
  if(!selection||!match||match.game.active!==0||match.game.winner!==null)return [];
  return selection.kind==='attack'?getAttackTargets(match.game,selection.uid):getLegalTargets(match.game,selection.index);
@@ -115,6 +117,57 @@ function zoneList(i){
 }
 function closeDialog(){if(dialog.open)dialog.close()}
 function openDialog(html){closeDialog();dialog.innerHTML=html;dialog.showModal()}
+function cloudStillOpen(v){return cloudView===v&&dialog.open&&!!dialog.querySelector('.cloud-panel')&&page!=='battle'}
+function rollbackData(){try{return validateRebuildBackup(JSON.parse(localStorage.getItem(ROLLBACK_KEY)||'null'))}catch{return null}}
+function backupSummary(p){return '<b>'+esc(p.name)+'</b><small>秘宝 '+fmt(p.treasure)+' · 所持 '+Object.keys(p.collection).length+'種類 · 章 '+p.completed+'/20'+(p.suspendedMatch?' · 中断対戦あり':'')+'</small>'}
+function paintCloud(v){
+ const remote=v.remote?.save;
+ const ready=!!v.remote&&!v.busy;
+ const saved=rollbackData();
+ openDialog('<section class="cloud-panel"><h2>クラウド保存・端末間復元</h2><p>新生版のソロデータ専用です。従来版・オンライン戦績は変更しません。自動上書きは行いません。</p><div class="cloud-compare"><article><h3>この端末</h3>'+backupSummary(profile)+'</article><article><h3>クラウド</h3>'+(remote?backupSummary(remote.data)+'<small>更新 '+esc(new Date(remote.updatedAt).toLocaleString('ja-JP'))+' · 版 '+remote.revision+'</small>':v.remote?'<p>保存なし</p>':'<p>未確認</p>')+'</article></div><p class="cloud-status" role="status">'+esc(v.message||'')+'</p><div class="cloud-actions">'+act('cloud-refresh','最新状態を確認',v.busy?'disabled':'')+act('cloud-save','端末からクラウドへ',ready?'':'disabled','primary')+act('cloud-restore','クラウドから端末へ',ready&&remote?'':'disabled')+(saved?act('cloud-recover','復元前のデータへ戻す',v.busy?'disabled':''):'')+act('close','閉じる')+'</div><p class="muted">他端末では従来版の端末連携を先に完了してください。<a href="../">従来版の設定へ</a></p></section>');
+}
+async function showCloud(){
+ if(page==='battle'||starting||!profile)return;
+ const v={remote:null,busy:true,message:'確認中…',local:localStorage.getItem(STORAGE_KEY)};
+ cloudView=v;paintCloud(v);
+ try{v.remote=await cloudClient.read();v.message=v.remote.save?'保存する方向を選択してください。':'このアカウントには新生版のバックアップがありません。'}catch(e){v.message=e.message}
+ v.busy=false;if(cloudStillOpen(v))paintCloud(v);
+}
+function assertLocalUnchanged(v){
+ if(v.local!==localStorage.getItem(STORAGE_KEY))throw Error('別のタブで端末データが変更されました。ページを再読み込みしてください。');
+}
+function applyCloudRestore(data){
+ const previous=validateRebuildBackup(profile),next=validateRebuildBackup(data);
+ localStorage.setItem(ROLLBACK_KEY,JSON.stringify(previous));
+ save(next);clearCpu();match=null;selection=null;draft=null;operatorGrant=null;operatorSelected=false;page='home';render();closeDialog();setMessage('端末データを復元しました。復元前のデータも保持しています。');
+}
+async function cloudAction(action){
+ const v=cloudView;if(!v||!cloudStillOpen(v)||v.busy)return;
+ assertLocalUnchanged(v);
+ if(action==='recover'){
+  const previous=rollbackData();if(previous&&confirm('復元前の端末データに戻しますか？'))applyCloudRestore(previous);
+  return;
+ }
+ if(!v.remote)return;
+ const before=v.remote;
+ if(action==='save'&&!confirm(before.save?'確認したクラウドの保存を、この端末のデータで更新しますか？':'この端末のデータをクラウドに保存しますか？'))return;
+ if(action==='restore'&&(!before.save||!confirm('クラウドのデータをこの端末に復元しますか？ 復元前のデータは別に保持します。')))return;
+ v.busy=true;v.message='処理中…';paintCloud(v);
+ try{
+  if(action==='save'){
+   v.remote=await cloudClient.write({accountId:before.accountId,revision:before.save?.revision??0,data:profile});
+   v.message='クラウド保存が完了しました。';
+  }else{
+   const latest=await cloudClient.read();v.remote=latest;
+   if(!cloudStillOpen(v))return;
+   assertLocalUnchanged(v);
+   if(latest.accountId!==before.accountId||latest.save?.revision!==before.save.revision){v.message='保存先が変わったため復元を中止しました。内容を確認してください。';return}
+   applyCloudRestore(latest.save.data);return;
+  }
+ }catch(e){v.message=e.message;if(e.code==='conflict'){v.remote=null;v.message+=' 「最新状態を確認」を押してください。';}}
+ finally{v.busy=false;if(cloudStillOpen(v))paintCloud(v)}
+}
+
 async function inspectOperator(code){
  if(operatorBusy||starting||page==='battle')return;
  operatorBusy=true;
@@ -223,6 +276,10 @@ document.addEventListener('click',async e=>{
  if(starting&&a!=='bgm-toggle')return;
  try{switch(a){
   case 'nav':if(!starting)setPage(el.dataset.page);break;
+  case 'cloud-open':case 'cloud-refresh':await showCloud();break;
+  case 'cloud-save':await cloudAction('save');break;
+  case 'cloud-restore':await cloudAction('restore');break;
+  case 'cloud-recover':await cloudAction('recover');break;
   case 'zone-list':if(page==='battle')zoneList(Number(el.dataset.player));break;
   case 'bgm-toggle':save({...profile,bgm:!profile.bgm});syncMusic();if(profile.bgm)music.unlock();render();break;
   case 'resume':await resumeMatch();break;
