@@ -9,7 +9,7 @@ import {newGame,runCpuTurn,endTurn} from '../rebuild/engine.js';
 import {STARTERS,STORAGE_KEY,validateName,initialProfile,loadProfile,persistProfile,checkDeck,saveDeck,chooseStarter,purchase,settle} from '../rebuild/profile.js';
 const fresh=()=>initialProfile('新しい王','king',STARTERS[0].id);
 const memory=()=>{const m=new Map();return {getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v)}};
-test('rebuild source syntax',()=>{for(const p of ['app.js','profile.js','catalog.js','engine.js','shop.js','operator-deck.js'])execFileSync(process.execPath,['--check',fileURLToPath(new URL('../rebuild/'+p,import.meta.url))])});
+test('rebuild source syntax',()=>{for(const p of ['app.js','profile.js','catalog.js','engine.js','shop.js','operator-deck.js','operator-client.js'])execFileSync(process.execPath,['--check',fileURLToPath(new URL('../rebuild/'+p,import.meta.url))])});
 test('four starters, 2304 compatible cards, exact deck composition',()=>{
  assert.equal(CARDS.length,2304);assert.equal(STARTERS.length,4);
  for(const s of STARTERS){const p=initialProfile('王','king',s.id);assert.equal(p.main.length,32);assert.equal(p.special.length,4);assert.equal(checkDeck(p,p.main,p.special).valid,true);
@@ -85,4 +85,19 @@ test('Kirahara recipe has two exclusive Regalia prints, legal 20/16 expansion sp
  const i=main.findIndex(id=>id!==OPERATOR_REGALIA_ID),excess=[...main];excess[i]=SECOND_REGALIA_ID;assert.equal(validateDeck(excess).valid,false);
  const p=fresh(),g=newGame({playerDeck:main,playerSpecialDeck:special,cpuDeck:p.main,cpuSpecialDeck:p.special,seed:122});
  assert.equal(g.players[0].core,5000);assert.equal(endTurn(g).ok,true);assert.equal(runCpuTurn(g).ok,true);
+});
+
+test('operator transport rechecks the server, rejects fake local flags and never stores grants',async()=>{
+ const {createOperatorClient}=await import('../rebuild/operator-client.js');
+ const {ONLINE_STORAGE_KEY,ONLINE_API_BASE}=await import('../online.js');
+ const storage=memory(),token='a'.repeat(43),calls=[];
+ storage.setItem('beast-king-rebuild-v1',JSON.stringify({operator:true,entitled:true}));
+ const client=createOperatorClient({storage,fetchImpl:async(url,init)=>{calls.push({url,init});return {ok:true,json:async()=>({ok:true,entitled:true,deck:KIRAHARA_RECIPE,collection:requiredCards()})}}});
+ await assert.rejects(client.status());assert.equal(calls.length,0);
+ storage.setItem(ONLINE_STORAGE_KEY,JSON.stringify({token}));
+ const granted=await client.status();assert.equal(granted.entitled,true);assert.equal(granted.collection[OPERATOR_REGALIA_ID],2);
+ assert.equal(calls[0].url,ONLINE_API_BASE+'/rebuild/operator-deck');assert.equal(calls[0].init.headers.Authorization,'Bearer '+token);assert.equal(calls[0].init.method,'GET');
+ await client.activate('fixture-code');assert.equal(JSON.parse(calls[1].init.body).code,'fixture-code');
+ assert.equal(storage.getItem(ONLINE_STORAGE_KEY),JSON.stringify({token}));
+ storage.setItem(ONLINE_STORAGE_KEY,JSON.stringify({token,authInvalidated:true}));await assert.rejects(client.status());
 });
