@@ -75,7 +75,7 @@ try{
  assert.equal(await evaluate('document.querySelectorAll("input[name=starter]").length'),4);
  assert.equal(await evaluate('document.querySelectorAll(".origins img").length'),7);
  assert.equal(await evaluate('document.querySelector("meta[name=robots]").content'),'noindex,follow');
- assert.ok(await evaluate('document.querySelector("meta[property=\"og:image\"]")!==null'));
+ assert.ok(await evaluate('Array.from(document.querySelectorAll("meta[property]")).some(m=>m.getAttribute("property")==="og:image")'));
  await evaluate('document.querySelector("input[name=name]").value="ブラウザ検証";document.querySelector("#onboard").requestSubmit();true');await waitElement('.shell');await assertFits();
  assert.equal(await evaluate(saved+'.name'),'ブラウザ検証');
  assert.equal(await evaluate('document.querySelectorAll("nav .bk-icon").length'),6);
