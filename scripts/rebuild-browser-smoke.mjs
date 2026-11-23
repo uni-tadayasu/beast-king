@@ -98,7 +98,7 @@ try{
  assert.deepEqual(await evaluate(saved+'.suspendedMatch'),checkpoint);
  await click('[data-act=resume]');await waitElement('.arena');assert.deepEqual(await evaluate(saved+'.suspendedMatch'),checkpoint);
  if(checkpoint.game.winner===null)await click('[data-act=pause-match]');else await click('[data-act=leave]');
- if(checkpoint.game.winner===null){await waitElement('[data-act=resume]');await click('[data-act=discard-match]');await waitElement('nav [data-page=home]');assert.equal(await evaluate(saved+'.suspendedMatch'),null)}
+ if(checkpoint.game.winner===null){await waitElement('[data-act=resume]');await click('[data-act=discard-match]');await until(()=>evaluate(saved+'.suspendedMatch===null'),'abandoned match is cleared');assert.equal(await evaluate(saved+'.suspendedMatch'),null)}
  for(const [width,height] of [[390,844],[844,390],[1280,720]]){
   await viewport(width,height);await click('nav [data-page=catalog]');await assertFits();
   assert.ok(await evaluate('document.querySelectorAll(".card-grid .card").length>0'));

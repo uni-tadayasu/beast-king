@@ -68,6 +68,7 @@ test('normal Regalia has the original artwork, is collectible, and the old alter
  for(const prop of ['name','type','origin','cost','rarity','attack','hp','model','effect','text','keywords'])assert.deepEqual(normal[prop],first[prop]);
  assert.equal(first.artAsset,REGALIA_ART_ASSET);assert.equal(normal.artAsset,REGALIA_ART_ASSET);assert.equal(normal.artStatus,'existing');
  assert.equal(getCard('OP-B1024'),undefined);assert.equal(CARDS.length,2304);
+ assert.deepEqual(CARDS.filter(c=>c.name.includes('レガリア')).map(c=>c.id).sort(),['B0512','B1024']);
  assert.deepEqual(normalizeCollection({[normal.id]:2,'OP-B1024':2}),{[normal.id]:2});
  assert.deepEqual(grantDeckCollection({},[normal.id,normal.id]),{[normal.id]:2});
  assert.deepEqual(grantDeckCollection({},['OP-B1024']),{});
