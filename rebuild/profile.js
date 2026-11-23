@@ -58,5 +58,5 @@ export function settle(profile,matchId,outcome,chapter=null){
  if(typeof matchId!=='string'||!matchId||profile.settled.includes(matchId))return profile;
  if(!['win','loss','draw','forfeit'].includes(outcome))throw new Error('不明な対戦結果');
  const key=outcome==='win'?'wins':outcome==='draw'?'draws':'losses';
- return {...profile,treasure:profile.treasure+getBattleReward(outcome),[key]:profile[key]+1,completed:outcome==='win'&&chapter===profile.completed?Math.min(20,profile.completed+1):profile.completed,settled:[...profile.settled,matchId].slice(-200)};
+ return {...profile,treasure:profile.treasure+getBattleReward({winner:outcome==='win'?0:outcome==='draw'?'draw':1,forfeited:outcome==='forfeit'}),[key]:profile[key]+1,completed:outcome==='win'&&chapter===profile.completed?Math.min(20,profile.completed+1):profile.completed,settled:[...profile.settled,matchId].slice(-200)};
 }
