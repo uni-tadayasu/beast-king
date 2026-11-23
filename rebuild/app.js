@@ -1,3 +1,4 @@
+import {createOperatorClient} from './operator-client.js';
 import {CARDS,ORIGINS,TYPE_LABELS,RARITY_LABELS,MODEL_LABELS,STARTER_DECKS,PACKS,getCard} from './catalog.js';
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
 import {newGame,playCard,attack,endTurn,runCpuTurn,getLegalTargets,getAttackTargets,getPlayableCards,getFusionMaterials,canAttack} from './engine.js';
@@ -11,6 +12,7 @@ const byType=Object.entries(TYPE_LABELS);
 const label=id=>getCard(id)?.name||id;
 let profile=loadProfile(localStorage),page='home',message='',draft=null,match=null,selection=null,cpuBusy=false,filter={q:'',type:'',origin:'',rarity:'',pack:'',page:0};
 let shopPage=0,shopPack='BK01';
+const operatorClient=createOperatorClient();let operatorGrant=null,operatorSelected=false,operatorBusy=false,brandTaps=0,brandAt=0,starting=false;
 const nav=[['home','王庭'],['solo','ソロ対戦'],['deck','デッキ工房'],['catalog','カード図鑑'],['shop','秘宝ショップ'],['rules','遊び方']];
 function save(next){persistProfile(localStorage,next);profile=next}
 function setMessage(s){message=s;const node=document.querySelector('#status');if(node)node.textContent=s}
@@ -39,7 +41,7 @@ function onboard(){
 }
 function shell(body){
  const o=origin(profile.origin);
- root.innerHTML='<div class="shell"><header><div class="brand"><img src="../assets/icon.svg" alt=""><div><b>BEAST KING</b><small>新生版 · FOUNDATION</small></div></div><div class="identity"><span style="color:'+o.color+'">'+o.glyph+' '+esc(profile.name)+'</span><span class="balance">秘宝 '+fmt(profile.treasure)+'</span></div></header><nav aria-label="メインメニュー">'+nav.map(([id,name])=>act('nav',name,'data-page="'+id+'" '+(page===id?'aria-current="page"':'')+(page==='battle'&&match?.game.winner===null?' disabled':''))).join('')+'</nav><main>'+body+'</main><footer><span>© 2026 Beast King · 開発プレビュー</span><span id="status" role="status">'+esc(message)+'</span></footer></div>';
+ root.innerHTML='<div class="shell"><header><div class="brand"><button type="button" class="brand-mark" data-act="brand" aria-label="BEAST KING"><img src="../assets/icon.svg" alt=""></button><div><b>BEAST KING</b><small>新生版 · FOUNDATION</small></div></div><div class="identity"><span style="color:'+o.color+'">'+o.glyph+' '+esc(profile.name)+'</span><span class="balance">秘宝 '+fmt(profile.treasure)+'</span></div></header><nav aria-label="メインメニュー">'+nav.map(([id,name])=>act('nav',name,'data-page="'+id+'" '+(page===id?'aria-current="page"':'')+(page==='battle'&&match?.game.winner===null?' disabled':''))).join('')+'</nav><main>'+body+'</main><footer><span>© 2026 Beast King · 開発プレビュー</span><span id="status" role="status">'+esc(message)+'</span></footer></div>';
 }
 function home(){
  const s=STARTERS.find(x=>x.id===profile.starterId);
@@ -47,7 +49,7 @@ function home(){
 }
 function solo(){
  const next=CAMPAIGN_BATTLES[profile.completed];
- return '<div class="home"><section class="panel hero"><small>SOLO CHRONICLE</small><h1>'+(next?esc(next.chapterTitle):'全章クリア')+'</h1><p>'+(next?esc(next.title)+' — '+esc(next.description):'すべての試練を突破しました。')+'</p>'+(next?act('campaign','次の決闘へ','data-index="'+profile.completed+'"','primary'):'')+'<p>達成 '+profile.completed+' / 20</p><h3>クリア済みの戦い</h3><select id="replay"><option value="">再戦を選ぶ</option>'+CAMPAIGN_BATTLES.slice(0,profile.completed).map((b,i)=>'<option value="'+i+'">'+(i+1)+' · '+esc(b.title)+'</option>').join('')+'</select>'+act('replay','再戦を開始',profile.completed?'':'disabled')+'</section><section class="panel modes">'+[['easy','見習い'],['normal','策士'],['hard','覇王']].map(([id,t])=>'<button class="mode" data-act="practice" data-level="'+id+'"><b>'+t+'</b><span>自由な練習戦</span></button>').join('')+'<div class="panel"><h3>使用デッキ</h3><p>メイン '+profile.main.length+'枚</p><p>特殊 '+profile.special.length+'枚</p>'+act('nav','デッキ確認','data-page="deck"')+'</div></section></div>';
+ return '<div class="home"><section class="panel hero"><small>SOLO CHRONICLE</small><h1>'+(next?esc(next.chapterTitle):'全章クリア')+'</h1><p>'+(next?esc(next.title)+' — '+esc(next.description):'すべての試練を突破しました。')+'</p>'+(next?act('campaign','次の決闘へ','data-index="'+profile.completed+'"','primary'):'')+'<p>達成 '+profile.completed+' / 20</p><h3>クリア済みの戦い</h3><select id="replay"><option value="">再戦を選ぶ</option>'+CAMPAIGN_BATTLES.slice(0,profile.completed).map((b,i)=>'<option value="'+i+'">'+(i+1)+' · '+esc(b.title)+'</option>').join('')+'</select>'+act('replay','再戦を開始',profile.completed?'':'disabled')+'</section><section class="panel modes">'+[['easy','見習い'],['normal','策士'],['hard','覇王']].map(([id,t])=>'<button class="mode" data-act="practice" data-level="'+id+'"><b>'+t+'</b><span>自由な練習戦</span></button>').join('')+'<div class="panel"><h3>使用デッキ</h3><p>'+(operatorSelected?'𠮷良原デッキ · 運営限定':'通常デッキ')+'</p><p>メイン 32枚</p><p>特殊 4枚</p>'+act('nav','デッキ確認','data-page="deck"')+'</div></section></div>';
 }
 function pageSize(){return innerWidth<=600&&innerHeight>innerWidth?9:innerWidth<900?8:12}
 function opts(items,val){return items.map(([id,t])=>'<option value="'+esc(id)+'" '+(id===val?'selected':'')+'>'+esc(t)+'</option>').join('')}
@@ -60,14 +62,14 @@ function catalog(edit){
 function deck(){
  const valid=checkDeck(profile,draft.main,draft.special);
  const sections=[['main','メイン',draft.main,32],['special','特殊',draft.special,4]];
- return '<div class="deck-layout">'+catalog(true)+'<section class="panel deck-list"><div><h2>編成中のデッキ</h2><p>メイン '+draft.main.length+'/32 · 特殊 '+draft.special.length+'/4</p><small>同名2枚まで · 所持枚数以内</small></div><div class="deck-rows">'+sections.map(([zone,t,ids,n])=>'<h3>'+t+' '+ids.length+'/'+n+'</h3>'+Object.entries(counts(ids)).map(([id,k])=>'<button data-act="remove" data-zone="'+zone+'" data-id="'+id+'"><span>'+esc(label(id))+' ×'+k+'</span><span>−</span></button>').join('')).join('')+'</div><div class="actions"><select id="starter-select" aria-label="スターター">'+opts(STARTERS.map(s=>[s.id,s.name]),profile.starterId)+'</select>'+act('preset','適用')+act('discard','元に戻す')+act('save-deck','保存',valid.valid?'':'disabled','primary')+'</div></section></div>';
+ return '<div class="deck-layout">'+catalog(true)+'<section class="panel deck-list"><div><h2>編成中のデッキ</h2><p>メイン '+draft.main.length+'/32 · 特殊 '+draft.special.length+'/4</p><small>同名2枚まで · 所持枚数以内</small>'+(operatorGrant?.entitled?'<div>'+act('operator-select',operatorSelected?'𠮷良原デッキ使用中':'𠮷良原デッキを使用','','primary')+(operatorSelected?act('operator-off','通常デッキに戻す'):'')+'</div>':'')+'</div><div class="deck-rows">'+sections.map(([zone,t,ids,n])=>'<h3>'+t+' '+ids.length+'/'+n+'</h3>'+Object.entries(counts(ids)).map(([id,k])=>'<button data-act="remove" data-zone="'+zone+'" data-id="'+id+'"><span>'+esc(label(id))+' ×'+k+'</span><span>−</span></button>').join('')).join('')+'</div><div class="actions"><select id="starter-select" aria-label="スターター">'+opts(STARTERS.map(s=>[s.id,s.name]),profile.starterId)+'</select>'+act('preset','適用')+act('discard','元に戻す')+act('save-deck','保存',valid.valid?'':'disabled','primary')+'</div></section></div>';
 }
 function shop(){
  const pack=PACKS.find(p=>p.id===shopPack)||PACKS[0],last=PACKS.find(p=>p.id===(profile.lastPackId||'BK01'));
  const pulls=profile.lastPack||[],size=pageSize(),total=Math.max(1,Math.ceil(pulls.length/size));shopPage=Math.min(shopPage,total-1);
- return '<section class="panel shop"><div class="shop-info"><div><h2>'+esc(pack.name)+'</h2><p>1パック 100秘宝 · 12枚 · レア以上1枚保証</p><small>各弾1,152枚。通常のパックから運営専用イラストは排出されません。</small><div class="pack-tabs">'+PACKS.map(p=>'<button data-act="select-pack" data-pack="'+p.id+'" aria-pressed="'+(p.id===pack.id)+'">'+(p.number===1?'第一弾':'第二弾')+'</button>').join('')+'</div></div>'+act('purchase','パックを開封',profile.treasure<100?'disabled':'','primary')+'</div><div class="card-grid">'+(pulls.length?pulls.slice(shopPage*size,(shopPage+1)*size).map(x=>card(getCard(x.cardId),{owned:profile.collection[x.cardId]||0,className:x.converted?'converted':''})).join(''):'<p class="muted">ここに開封結果が表示されます。</p>')+'</div><div class="pagination">'+act('shop-prev','前へ',shopPage===0?'disabled':'')+'<span>'+(pulls.length?'開封結果：'+esc(last?.name||'')+' · ':'')+(shopPage+1)+' / '+total+'</span>'+act('shop-next','次へ',shopPage+1===total?'disabled':'')+'</div></section>';
+ return '<section class="panel shop"><div class="shop-info"><div><h2>'+esc(pack.name)+'</h2><p>1パック 100秘宝 · 12枚 · レア以上1枚保証</p><small>各弾1,152枚。同じカードの4枚目から5秘宝に変換します。</small><div class="pack-tabs">'+PACKS.map(p=>'<button data-act="select-pack" data-pack="'+p.id+'" aria-pressed="'+(p.id===pack.id)+'">'+(p.number===1?'第一弾':'第二弾')+'</button>').join('')+'</div></div>'+act('purchase','パックを開封',profile.treasure<100?'disabled':'','primary')+'</div><div class="card-grid">'+(pulls.length?pulls.slice(shopPage*size,(shopPage+1)*size).map(x=>card(getCard(x.cardId),{owned:profile.collection[x.cardId]||0,className:x.converted?'converted':''})).join(''):'<p class="muted">ここに開封結果が表示されます。</p>')+'</div><div class="pagination">'+act('shop-prev','前へ',shopPage===0?'disabled':'')+'<span>'+(pulls.length?'開封結果：'+esc(last?.name||'')+' · ':'')+(shopPage+1)+' / '+total+'</span>'+act('shop-next','次へ',shopPage+1===total?'disabled':'')+'</div></section>';
 }
-function rules(){return '<section class="panel rules"><h2>基本ルール</h2><h3>デッキと勝利条件</h3><p>メイン32枚＋合成魔獣4枚。同名2枚まで。ハートポイント5,000で開始し、相手を0にすると勝利します。</p><h3>ターンと出場ゾーン</h3><p>最大エーテルが自分のターンごとに1増加（最大10）。手札は最大4枚、出場魔獣は4体、ギミックは2枚。魔獣は通常、召喚した次の自分のターンから攻撃できます。</p><h3>攻撃と守護</h3><p>守護がある場合は優先して攻撃。通常アタック型は攻撃を受けると消滅し、持ち主に攻撃力分のダメージ。ディフェンス型・合成魔獣は攻撃力が守備力を上回ると消滅し、超過分のみダメージ。通常戦闘で反撃はありません。</p><h3>合成召喚</h3><p>コスト3のミラクル「合成」で特殊デッキから合成魔獣を選び、手札・場・お墓の魔獣を1枚以上異世界へ。素材2枚目以降、攻撃力・守備力が各100上昇します。</p><h3>開発版について</h3><p>第一弾・第二弾とCPU対戦の独立した新画面です。第二弾と運営専用版のイラストは制作前です。オンライン対戦、クラウド同期、運営認証は未接続です。現行公開版のデータには影響しません。</p></section>'}
+function rules(){return '<section class="panel rules"><h2>基本ルール</h2><h3>デッキと勝利条件</h3><p>メイン32枚＋合成魔獣4枚。同名2枚まで。ハートポイント5,000で開始し、相手を0にすると勝利します。</p><h3>ターンと出場ゾーン</h3><p>最大エーテルが自分のターンごとに1増加（最大10）。手札は最大4枚、出場魔獣は4体、ギミックは2枚。魔獣は通常、召喚した次の自分のターンから攻撃できます。</p><h3>攻撃と守護</h3><p>守護がある場合は優先して攻撃。通常アタック型は攻撃を受けると消滅し、持ち主に攻撃力分のダメージ。ディフェンス型・合成魔獣は攻撃力が守備力を上回ると消滅し、超過分のみダメージ。通常戦闘で反撃はありません。</p><h3>合成召喚</h3><p>コスト3のミラクル「合成」で特殊デッキから合成魔獣を選び、手札・場・お墓の魔獣を1枚以上異世界へ。素材2枚目以降、攻撃力・守備力が各100上昇します。</p><h3>開発版について</h3><p>第一弾・第二弾とCPU対戦の独立した新画面です。第二弾と運営専用版のイラストは制作前です。運営認証APIは開発ブランチに実装済みですが、本番配備前です。オンライン対戦とクラウド同期は未接続です。現行公開版のデータには影響しません。</p></section>'}
 function targetList(){
  if(!selection||!match||match.game.active!==0||match.game.winner!==null)return [];
  return selection.kind==='attack'?getAttackTargets(match.game,selection.uid):getLegalTargets(match.game,selection.index);
@@ -90,18 +92,36 @@ function render(){
 }
 function closeDialog(){if(dialog.open)dialog.close()}
 function openDialog(html){closeDialog();dialog.innerHTML=html;dialog.showModal()}
+async function inspectOperator(code){
+ if(operatorBusy||starting||page==='battle')return;
+ operatorBusy=true;
+ try{
+ const result=code===undefined?await operatorClient.status():await operatorClient.activate(code);
+ operatorGrant=result.entitled?result:null;
+ if(!result.entitled){operatorSelected=false;openDialog('<form id="operator-form"><h2>限定デッキ認証</h2><p>運営用の専用コードを入力してください。</p><input type="password" name="code" autocomplete="off" maxlength="128" required><button class="primary">認証</button>'+act('close','閉じる')+'</form>');return;}
+ const royal=getCard(result.deck.main.find(id=>getCard(id)?.operatorOnly));
+ openDialog('<div class="detail"><div class="preview">'+card(royal,{action:'',owned:2})+'</div><section><h2>𠮷良原デッキ</h2><p>運営アカウントの利用権を確認しました。</p><p>限定レガリア2枚 · メイン32枚＋特殊4枚</p>'+act('operator-select','このデッキを使用','','primary')+act('operator-off','通常デッキに戻す')+act('close','閉じる')+'</section></div>');
+ }catch(e){operatorGrant=null;operatorSelected=false;closeDialog();setMessage(e.message)}finally{operatorBusy=false}
+}
 function detail(c,action='',data=''){
  const own=profile.collection[c.id]||0;
  openDialog('<div class="detail"><div class="preview">'+card(c,{action:'',owned:own})+'</div><section><h2>'+esc(c.name)+'</h2><p>'+TYPE_LABELS[c.type]+' · '+RARITY_LABELS[c.rarity]+' · '+esc(origin(c.origin)?.name)+'</p><p>'+esc(MODEL_LABELS[c.model]||'')+'</p><p>'+esc(c.text)+'</p><p class="muted">'+esc(c.flavor)+'</p>'+(action?act(action,action==='add'?'デッキに追加':'カードを使用',data,'primary'):'')+act('close','閉じる')+'</section></div>');
 }
-function start(level,index=null){
- const status=checkDeck(profile,profile.main,profile.special);if(!status.valid)throw new Error(status.errors[0]);
+async function start(level,index=null){
+ if(starting||match?.game.winner===null)return;
+ starting=true;
+ try{
+ const useOperator=operatorSelected;
+ let main=profile.main,special=profile.special;
+ if(useOperator){const current=await operatorClient.status();if(!current.entitled){operatorGrant=null;operatorSelected=false;throw Error('運営限定版の利用権を確認できません。')};operatorGrant=current;main=current.deck.main;special=current.deck.special;}
+ else {const status=checkDeck(profile,main,special);if(!status.valid)throw new Error(status.errors[0]);}
  const chapter=index===null?null:CAMPAIGN_BATTLES[index];
  if(index!==null&&(!chapter||index>profile.completed))throw new Error('この回戦は未解放です。');
  const cpu=chapter?STARTER_DECKS.find(s=>s.id===chapter.cpuDeckId):STARTER_DECKS[2];
- const game=newGame({playerDeck:profile.main,playerSpecialDeck:profile.special,cpuDeck:cpu.ids,cpuSpecialDeck:cpu.specialIds,difficulty:chapter?.difficulty||level});
+ const game=newGame({playerDeck:main,playerSpecialDeck:special,cpuDeck:cpu.ids,cpuSpecialDeck:cpu.specialIds,difficulty:chapter?.difficulty||level});
  game.players[0].name=profile.name;if(chapter)game.players[1].name=chapter.opponentName;
  match={game,id:globalThis.crypto?.randomUUID?.()||Date.now()+'-'+Math.random(),chapter:index};selection=null;cpuBusy=false;page='battle';message='';render();
+ }finally{starting=false}
 }
 function finish(){
  if(match.game.winner===null)return;
@@ -133,10 +153,11 @@ function target(player,uid){
  const t=uid?{player,uid}:{player,core:true},g=match.game;
  apply(selection.kind==='attack'?attack(g,selection.uid,t):playCard(g,selection.index,t));return true;
 }
-document.addEventListener('submit',e=>{
- const f=e.target;if(!['onboard','filters','fusion-form'].includes(f.id))return;e.preventDefault();
+document.addEventListener('submit',async e=>{
+ const f=e.target;if(!['onboard','filters','fusion-form','operator-form'].includes(f.id))return;e.preventDefault();
  try{
   const d=new FormData(f);
+  if(f.id==='operator-form'){const code=String(d.get('code')||'');f.reset();await inspectOperator(code);return;}
   if(f.id==='onboard'){save(initialProfile(d.get('name'),d.get('origin'),d.get('starter')));page='home';render()}
   if(f.id==='filters'){filter={q:String(d.get('q')||'').trim(),type:d.get('type'),origin:d.get('origin'),rarity:d.get('rarity'),pack:d.get('pack'),page:0};render()}
   if(f.id==='fusion-form'){
@@ -146,11 +167,14 @@ document.addEventListener('submit',e=>{
   }
  }catch(err){setMessage(err.message)}
 });
-document.addEventListener('click',e=>{
+document.addEventListener('click',async e=>{
  const el=e.target.closest('[data-act]');if(!el||el.disabled)return;
  const a=el.dataset.act,id=el.dataset.id,idx=Number(el.dataset.index);
  try{switch(a){
-  case 'nav':setPage(el.dataset.page);break;
+  case 'nav':if(!starting)setPage(el.dataset.page);break;
+  case 'brand':{const now=Date.now();if(now-brandAt>2000)brandTaps=0;brandAt=now;if(++brandTaps>=7){brandTaps=0;if(profile&&page!=='battle')await inspectOperator();}break;}
+  case 'operator-select':{const grant=await operatorClient.status();if(!grant.entitled)throw Error('利用権を確認できません。');operatorGrant=grant;operatorSelected=true;closeDialog();render();setMessage('𠮷良原デッキを選択しました。');break;}
+  case 'operator-off':operatorSelected=false;closeDialog();render();break;
   case 'prev':filter.page=Math.max(0,filter.page-1);render();break;
   case 'next':filter.page++;render();break;
   case 'shop-prev':shopPage=Math.max(0,shopPage-1);render();break;
@@ -168,9 +192,9 @@ document.addEventListener('click',e=>{
   case 'save-deck':save(saveDeck(profile,draft.main,draft.special));setMessage('デッキを保存しました。');break;
   case 'select-pack':if(PACKS.some(p=>p.id===el.dataset.pack)){shopPack=el.dataset.pack;render()}break;
   case 'purchase':save(purchase(profile,Math.random,shopPack));shopPage=0;render();setMessage('12枚のカードを開封しました。');break;
-  case 'campaign':start('normal',idx);break;
-  case 'replay':{const v=document.querySelector('#replay').value;if(v!=='')start('normal',Number(v));break}
-  case 'practice':start(el.dataset.level);break;
+  case 'campaign':await start('normal',idx);break;
+  case 'replay':{const v=document.querySelector('#replay').value;if(v!=='')await start('normal',Number(v));break}
+  case 'practice':await start(el.dataset.level);break;
   case 'hand':{const g=match.game,c=getCard(g.players[0].hand[idx]);detail(c,g.active===0&&getPlayableCards(g).includes(idx)?'use':'','data-index="'+idx+'"');break}
   case 'use':use(idx);break;
   case 'core':target(Number(el.dataset.player));break;
