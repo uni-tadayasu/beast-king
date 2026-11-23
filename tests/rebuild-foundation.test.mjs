@@ -6,10 +6,10 @@ import {getCard,CARDS,FIRST_CARDS,SECOND_CARDS,SECOND_REGALIA_ID,REGALIA_ART_ASS
 import {PACK_CARD_IDS_BY_SET,openPack,normalizeCollection,grantDeckCollection} from '../rebuild/shop.js';
 import {KIRAHARA_RECIPE,requiredCards} from '../rebuild/operator-deck.js';
 import {newGame,runCpuTurn,endTurn} from '../rebuild/engine.js';
-import {STARTERS,STORAGE_KEY,validateName,initialProfile,loadProfile,persistProfile,checkDeck,saveDeck,chooseStarter,purchase,settle} from '../rebuild/profile.js';
+import {STARTERS,STORAGE_KEY,validateName,initialProfile,loadProfile,persistProfile,checkDeck,saveDeck,chooseStarter,purchase,settle,recordSolo,endSuspendedSolo} from '../rebuild/profile.js';
 const fresh=()=>initialProfile('新しい王','king',STARTERS[0].id);
 const memory=()=>{const m=new Map();return {getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v)}};
-test('rebuild source syntax',()=>{for(const p of ['app.js','profile.js','catalog.js','engine.js','shop.js','operator-deck.js','operator-client.js'])execFileSync(process.execPath,['--check',fileURLToPath(new URL('../rebuild/'+p,import.meta.url))])});
+test('rebuild source syntax',()=>{for(const p of ['app.js','profile.js','catalog.js','engine.js','shop.js','operator-deck.js','operator-client.js','solo-save.js'])execFileSync(process.execPath,['--check',fileURLToPath(new URL('../rebuild/'+p,import.meta.url))])});
 test('four starters, 2304 compatible cards, exact deck composition',()=>{
  assert.equal(CARDS.length,2304);assert.equal(STARTERS.length,4);
  for(const s of STARTERS){const p=initialProfile('王','king',s.id);assert.equal(p.main.length,32);assert.equal(p.special.length,4);assert.equal(checkDeck(p,p.main,p.special).valid,true);
@@ -103,4 +103,45 @@ test('operator transport rechecks the server, rejects fake local flags and never
  await client.activate('fixture-code');assert.equal(JSON.parse(calls[1].init.body).code,'fixture-code');
  assert.equal(storage.getItem(ONLINE_STORAGE_KEY),JSON.stringify({token}));
  storage.setItem(ONLINE_STORAGE_KEY,JSON.stringify({token,authInvalidated:true}));await assert.rejects(client.status());
+});
+
+test('solo checkpoint preserves the exact game and CPU turn across reload, rejecting corrupted or obsolete IDs',async()=>{
+ const {normalizeSoloSnapshot}=await import('../rebuild/solo-save.js');
+ const p=fresh(),cpu=STARTERS[2],g=newGame({playerDeck:p.main,playerSpecialDeck:p.special,cpuDeck:cpu.ids,cpuSpecialDeck:cpu.specialIds,seed:44});
+ assert.equal(endTurn(g).ok,true);const raw={id:'checkpoint-001',mode:'normal',chapter:null,game:g};
+ const storage=memory(),saved=recordSolo(p,raw);persistProfile(storage,saved);
+ const restored=loadProfile(storage).suspendedMatch;
+ assert.deepEqual(restored.game,g);assert.equal(restored.game.active,1);
+ assert.equal(runCpuTurn(restored.game).ok,true);assert.ok(recordSolo(saved,restored).suspendedMatch);
+ const malformed=structuredClone(raw);malformed.game.players[0].deck[0]='OP-B1024';assert.equal(normalizeSoloSnapshot(malformed,p),null);
+ const duplicate=structuredClone(raw);duplicate.game.players[0].grave.push(duplicate.game.players[0].deck[0]);assert.equal(normalizeSoloSnapshot(duplicate,p),null);
+ const unauthorized=structuredClone(raw);unauthorized.chapter=19;assert.equal(normalizeSoloSnapshot(unauthorized,p),null);
+ const privateData=structuredClone(raw);privateData.token='secret';privateData.game.credential='secret';privateData.game.players[0].admin=true;assert.equal(JSON.stringify(normalizeSoloSnapshot(privateData,p)).includes('secret'),false);
+});
+test('final battle snapshot settles rewards exactly once, and discard does not pay or double-count',()=>{
+ const p=fresh(),cpu=STARTERS[2],g=newGame({playerDeck:p.main,playerSpecialDeck:p.special,cpuDeck:cpu.ids,cpuSpecialDeck:cpu.specialIds,seed:24});
+ const raw={id:'settled-checkpoint-01',mode:'normal',chapter:null,game:g};
+ const ongoing=recordSolo(p,raw);const forfeited=endSuspendedSolo(ongoing);
+ assert.equal(forfeited.treasure,100);assert.equal(forfeited.losses,1);assert.equal(forfeited.suspendedMatch,null);
+ g.players[1].core=0;g.winner=0;
+ const won=recordSolo(ongoing,raw);assert.equal(won.treasure,160);assert.equal(won.wins,1);
+ const storage=memory();persistProfile(storage,won);const again=loadProfile(storage);
+ assert.equal(recordSolo(again,again.suspendedMatch).treasure,160);
+ const closed=endSuspendedSolo(again);assert.equal(closed.wins,1);assert.equal(closed.losses,0);assert.equal(closed.suspendedMatch,null);
+});
+test('operator checkpoint needs the current server grant for exactly that deck',async()=>{
+ const {normalizeSoloSnapshot,verifyOperatorSnapshot}=await import('../rebuild/solo-save.js');
+ const p=fresh(),cpu=STARTERS[2],g=newGame({playerDeck:KIRAHARA_RECIPE.main,playerSpecialDeck:KIRAHARA_RECIPE.special,cpuDeck:cpu.ids,cpuSpecialDeck:cpu.specialIds,seed:222});
+ const raw={id:'operator-checkpoint',mode:'kirahara',chapter:null,game:g,grant:{entitled:true}};
+ const s=normalizeSoloSnapshot(raw,p);assert.ok(s);assert.equal(s.grant,undefined);assert.equal(verifyOperatorSnapshot(s,{entitled:false}),false);
+ assert.equal(verifyOperatorSnapshot(s,{entitled:true,deck:KIRAHARA_RECIPE}),true);
+ assert.equal(verifyOperatorSnapshot(s,{entitled:true,deck:{id:'kirahara',main:p.main,special:p.special}}),false);
+ assert.equal(normalizeSoloSnapshot({...raw,mode:'normal'},p),null);
+});
+test('BGM settings survive save and danger threshold switches exactly at 2500 HP',async()=>{
+ const {musicScene,normalizeAudioSettings}=await import('../rebuild/solo-save.js');
+ const p=fresh(),storage=memory();assert.deepEqual(normalizeAudioSettings({bgm:'bad',bgmVolume:NaN}),{bgm:true,bgmVolume:.5});
+ persistProfile(storage,{...p,bgm:false,bgmVolume:.35});assert.equal(loadProfile(storage).bgm,false);assert.equal(loadProfile(storage).bgmVolume,.35);
+ const g=newGame();assert.equal(musicScene('home',g),'menu');assert.equal(musicScene('battle',g),'battle');
+ g.players[1].core=2500;assert.equal(musicScene('battle',g),'battle-danger');g.players[1].core=2501;assert.equal(musicScene('battle',g),'battle');g.winner=0;assert.equal(musicScene('battle',g),'menu');
 });

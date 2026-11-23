@@ -36,3 +36,6 @@ dialog{max-width:min(650px,96vw);max-height:90dvh;overflow:auto;background:#1126
 
 .brand-mark{padding:0;background:transparent;border:0;border-radius:50%;display:grid;place-items:center}.brand-mark img{display:block}.brand-mark:hover:not(:disabled){background:transparent}
 
+
+/* Compact persistent sound controls and resumable duel summary. */
+.audio-controls{display:flex;gap:6px;align-items:center;flex-shrink:0}.audio-controls button{font-size:.72rem;padding:3px 7px;white-space:nowrap}.volume-control{display:flex;align-items:center;gap:4px}.volume-control input{width:clamp(44px,7vw,96px);min-width:0;accent-color:var(--gold);padding:0}.volume-control output{min-width:3ch;text-align:right;font-variant-numeric:tabular-nums}.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.resume-panel{display:grid;gap:6px;padding:8px;border:1px solid #a89262;border-radius:6px;background:#142a25}.resume-panel>div{display:flex;gap:6px;flex-wrap:wrap}.resume-panel button{font-size:.85rem}.side .actions button{padding:5px 6px}@media(max-width:600px){footer{font-size:.62rem;gap:4px}footer>span:first-child{max-width:34%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.audio-controls{gap:2px}.volume-control{gap:2px}.volume-control input{width:48px}.audio-controls button{font-size:.65rem;padding:3px 4px}}
