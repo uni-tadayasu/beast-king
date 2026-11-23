@@ -21,6 +21,7 @@ export function initialProfile(name,origin,starterId){
 export function checkDeck(profile,main,special){
  const a=validateDeck(main),b=validateSpecialDeck(special),errors=[...a.errors,...b.errors];
  for(const [id,n] of Object.entries(counts([...(Array.isArray(main)?main:[]),...(Array.isArray(special)?special:[])]))){
+  if(getCard(id)?.operatorOnly)errors.push('運営限定版は運営認証が必要です。');
   if(n>(profile.collection[id]||0))errors.push((getCard(id)?.name||id)+'の所持枚数を超えています。');
  }
  return {valid:errors.length===0,errors};
@@ -39,7 +40,7 @@ export function loadProfile(storage){
  try{
   const raw=JSON.parse(storage.getItem(STORAGE_KEY)||'null');
   if(!raw||raw.version!==1||!validateName(raw.name)||!ORIGIN_IDS.includes(raw.origin))return null;
-  const p={...initialProfile(raw.name,raw.origin,STARTERS.some(s=>s.id===raw.starterId)?raw.starterId:STARTERS[0].id),...raw,collection:normalizeCollection(raw.collection),treasure:nonnegative(raw.treasure),wins:nonnegative(raw.wins),losses:nonnegative(raw.losses),draws:nonnegative(raw.draws),completed:Math.min(20,nonnegative(raw.completed)),settled:Array.isArray(raw.settled)?raw.settled.filter(v=>typeof v==='string').slice(-200):[],lastPack:Array.isArray(raw.lastPack)?raw.lastPack.filter(x=>x&&getCard(x.id||x.cardId)).slice(0,12):[]};
+  const p={...initialProfile(raw.name,raw.origin,STARTERS.some(s=>s.id===raw.starterId)?raw.starterId:STARTERS[0].id),...raw,collection:normalizeCollection(raw.collection),treasure:nonnegative(raw.treasure),wins:nonnegative(raw.wins),losses:nonnegative(raw.losses),draws:nonnegative(raw.draws),completed:Math.min(20,nonnegative(raw.completed)),settled:Array.isArray(raw.settled)?raw.settled.filter(v=>typeof v==='string').slice(-200):[],lastPack:Array.isArray(raw.lastPack)?raw.lastPack.filter(x=>x&&getCard(x.id||x.cardId)&&!getCard(x.id||x.cardId).operatorOnly).slice(0,12):[]};
   p.name=validateName(p.name);
   if(!checkDeck(p,p.main,p.special).valid){
    let collection=p.collection;for(const s of STARTERS)collection=grantDeckCollection(collection,[...s.ids,...s.specialIds]);
