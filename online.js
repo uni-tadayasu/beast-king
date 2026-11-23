@@ -23,7 +23,7 @@ const publicPayload = payload => {
   return Object.fromEntries(Object.entries(payload).filter(([key]) => !privateKeys.has(key.replace(/[_-]/g, '').toLowerCase())).map(([key, value]) => [key, publicPayload(value)]));
 };
 const cloneProfile = profile => profile ? publicPayload(profile) : null;
-const PROFILE_ORIGINS = new Set(['mountain','river','seed','grass','flower','tree']);
+const PROFILE_ORIGINS = new Set(['mountain','river','seed','grass','flower','tree','king']);
 const actionIdentifier = () => globalThis.crypto?.randomUUID?.() || `action-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
 
 /**

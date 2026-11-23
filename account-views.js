@@ -1,6 +1,6 @@
 /** Pure modal contents. Authentication, authorization, requests and confirmations belong to the caller. */
 const escapeDefault = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const ORIGINS = Object.freeze({ mountain: '山', river: '川', seed: '種', grass: '草', flower: '花', tree: '木' });
+const ORIGINS = Object.freeze({ mountain: '山', river: '川', seed: '種', grass: '草', flower: '花', tree: '木', king: '王' });
 const TYPE_STATUS = Object.freeze({ draft: '下書き', published: '公開中', ended: '終了' });
 const SYNC_STATUS = Object.freeze({
   idle: ['同期前', 'この端末の進行をクラウドに保存すると、連携した端末でも続きから遊べます。'],

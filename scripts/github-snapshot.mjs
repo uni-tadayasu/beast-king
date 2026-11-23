@@ -10,7 +10,7 @@ import {fileURLToPath} from 'node:url';
 
 assert(process.argv.length<=3,'Usage: node scripts/github-snapshot.mjs [target-directory]');
 const root=await realpath(resolve(dirname(fileURLToPath(import.meta.url)),'..'));
-const requested=resolve(process.argv[2]??'/workspace/scratch/b278b54ad857/beastking-github');
+const requested=resolve(process.argv[2]??join(dirname(root),'beast-king-pages'));
 const exists=async path=>lstat(path).then(()=>true).catch(error=>{if(error.code==='ENOENT')return false;throw error;});
 const beneath=(base,path)=>{const rel=relative(base,path);return rel===''||(!rel.startsWith('..')&&!isAbsolute(rel));};
 await mkdir(dirname(requested),{recursive:true});
@@ -47,6 +47,7 @@ async function collect(directory,prefix='',frontendTree=false){
 }
 await collect(frontend,'',true);
 for(const directory of ['server','tests','scripts','drizzle'])await collect(join(root,directory),directory);
+if(await exists(join(root,'design-kit')))await collect(join(root,'design-kit'),'design-kit');
 for(const file of ['package.json','package-lock.json','README.md','CONTRACT.md'])if(await exists(join(root,file)))files.set(file,join(root,file));
 files.set('.openai/hosting.json',join(root,'.openai/hosting.json'));
 for(const name of saved.keys())files.delete(name);
@@ -58,11 +59,15 @@ function rewriteSource(path,text){
   if(path==='scripts/configure-seo.mjs')text=text.replace("const dist = resolve(root, 'dist');",'const dist = root;');
   return text;
 }
+function rewriteReadme(text){
+  return text.replace(/`dist\/(?!server\/)([^`]+)`/g,'`$1`');
+}
 const stage=await mkdtemp(join(parent,'.beastking-snapshot-'));
 try{
   for(const [path,source] of files){
     let data=await readFile(source);
     if(/\.(?:mjs|js)$/.test(path)&&/^(?:server|tests|scripts)\//.test(path))data=Buffer.from(rewriteSource(path,data.toString('utf8')));
+    if(path==='README.md')data=Buffer.from(rewriteReadme(data.toString('utf8')));
     await mkdir(dirname(join(stage,path)),{recursive:true});await writeFile(join(stage,path),data);
   }
   if(!saved.has('.nojekyll')&&!files.has('.nojekyll'))await writeFile(join(stage,'.nojekyll'),'');
@@ -75,5 +80,5 @@ try{
     await rename(join(stage,name),join(target,name));
   }
   for(const [name,original] of saved)assert.deepEqual(await readFile(join(target,name)),original,`${name} changed`);
-  console.log(JSON.stringify({target,files:files.size,preserved:[...preserved].filter(name=>existing.includes(name)),layout:'GitHub Pages main/root',generatedWorkerCopied:false,readme:'Copied without path rewriting; review release documentation separately'},null,2));
+  console.log(JSON.stringify({target,files:files.size,preserved:[...preserved].filter(name=>existing.includes(name)),layout:'GitHub Pages main/root',generatedWorkerCopied:false,readme:'Frontend file links match the flattened repository'},null,2));
 }finally{await rm(stage,{recursive:true,force:true});}

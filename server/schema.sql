@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS bk_profiles (
   last_match_id TEXT,
   created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL,
-  origin TEXT NOT NULL DEFAULT 'mountain' CHECK (origin IN ('mountain','river','seed','grass','flower','tree'))
+  origin TEXT NOT NULL DEFAULT 'mountain' CHECK (origin IN ('mountain','river','seed','grass','flower','tree')),
+  origin_v2 TEXT CHECK (origin_v2 IN ('mountain','river','seed','grass','flower','tree','king'))
 );
 CREATE TABLE IF NOT EXISTS bk_occupancy (
   player_id TEXT PRIMARY KEY REFERENCES bk_profiles(id),

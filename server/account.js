@@ -127,7 +127,7 @@ async function saveRoute(c,player){
     statement(db,`INSERT INTO bk_cloud_saves (player_id,revision,data_json,write_token,updated_at) SELECT ?,1,?,?,? WHERE ?=0 AND NOT EXISTS (SELECT 1 FROM bk_cloud_saves WHERE player_id=?) AND NOT EXISTS (SELECT 1 FROM bk_save_mutations WHERE player_id=? AND mutation_id=?)`,player.id,JSON.stringify(data),writeToken,now,body.revision,player.id,player.id,body.mutationId),
     statement(db,`UPDATE bk_cloud_saves SET revision=?,data_json=?,write_token=?,updated_at=? WHERE player_id=? AND revision=? AND ?>0 AND NOT EXISTS (SELECT 1 FROM bk_save_mutations WHERE player_id=? AND mutation_id=?)`,next,JSON.stringify(data),writeToken,now,player.id,body.revision,body.revision,player.id,body.mutationId),
     statement(db,`INSERT INTO bk_save_mutations (player_id,mutation_id,request_hash,revision,created_at) SELECT ?,?,?,?,? WHERE ${guard}`,player.id,body.mutationId,requestHash,next,now,player.id,writeToken),
-    statement(db,`UPDATE bk_profiles SET nickname=?,origin=?,updated_at=? WHERE id=? AND ${guard}`,data.playerName,data.profileOrigin,now,player.id,player.id,writeToken)
+    statement(db,`UPDATE bk_profiles SET nickname=?,origin=?,origin_v2=?,updated_at=? WHERE id=? AND ${guard}`,data.playerName,data.profileOrigin==='king'?'mountain':data.profileOrigin,data.profileOrigin,now,player.id,player.id,writeToken)
   ]);
   if(!changed(result[0])&&!changed(result[1])){const again=await replay();if(again)return again;fail(409,'save_conflict','別の端末で保存データが更新されています。どちらを使うか確認してください。',{save:await currentSave(db,player.id)});}
   return {ok:true,save:await currentSave(db,player.id),profile:await profile(),appliedRevision:next};
@@ -182,10 +182,10 @@ const announcementPublic=row=>({id:row.id,title:row.title,body:row.body,target:r
 const eventPublic=row=>({id:row.id,title:row.title,body:row.body,startAt:row.start_at,endAt:row.end_at,status:row.status,treasure:row.treasure,cards:JSON.parse(row.cards_json),revision:row.revision,createdAt:row.created_at,updatedAt:row.updated_at,claimedAt:row.claimed_at??null});
 async function dashboard(db,now){
   const cutoff=now-86_400_000;
-  const players=`SELECT p.id,p.nickname,p.origin,p.rating,MAX(r.last_seen_at) AS lastSeenAt,MAX(r.last_login_at) AS lastLoginAt,MAX(CASE WHEN r.online_until>? AND s.revoked_at IS NULL THEN 1 ELSE 0 END) AS online FROM bk_profiles p JOIN bk_presence r ON r.player_id=p.id JOIN bk_sessions s ON s.id=r.session_id GROUP BY p.id`;
+  const players=`SELECT p.id,p.nickname,COALESCE(p.origin_v2,p.origin) AS origin,p.rating,MAX(r.last_seen_at) AS lastSeenAt,MAX(r.last_login_at) AS lastLoginAt,MAX(CASE WHEN r.online_until>? AND s.revoked_at IS NULL THEN 1 ELSE 0 END) AS online FROM bk_profiles p JOIN bk_presence r ON r.player_id=p.id JOIN bk_sessions s ON s.id=r.session_id GROUP BY p.id`;
   const [stats,recentPlayers,status,audit,items,events,onlineRows,recentRows]=await Promise.all([
     first(db,"SELECT (SELECT count(*) FROM bk_profiles) AS totalPlayers,(SELECT count(*) FROM bk_matches WHERE status='active') AS activeBattles,(SELECT count(*) FROM bk_announcements WHERE kind='message') AS totalMessages,(SELECT count(*) FROM bk_announcements WHERE kind='gift') AS totalGifts,(SELECT count(*) FROM bk_events) AS totalEvents,(SELECT count(DISTINCT r.player_id) FROM bk_presence r JOIN bk_sessions s ON s.id=r.session_id WHERE r.online_until>? AND s.revoked_at IS NULL) AS onlinePlayers,(SELECT count(DISTINCT player_id) FROM bk_presence WHERE last_login_at>?) AS recentLogins24h",now,cutoff),
-    all(db,'SELECT id,nickname,origin,rating FROM bk_profiles ORDER BY created_at DESC,id LIMIT 30'),publicStatus(db),
+    all(db,'SELECT id,nickname,COALESCE(origin_v2,origin) AS origin,rating FROM bk_profiles ORDER BY created_at DESC,id LIMIT 30'),publicStatus(db),
     all(db,'SELECT id,action,created_at AS createdAt FROM bk_operator_audit ORDER BY created_at DESC,id DESC LIMIT 50'),
     all(db,'SELECT * FROM bk_announcements ORDER BY created_at DESC,id DESC LIMIT 100'),
     all(db,'SELECT * FROM bk_events ORDER BY updated_at DESC,id DESC LIMIT 100'),

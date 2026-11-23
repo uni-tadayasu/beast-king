@@ -1,0 +1,52 @@
+/* Page gestures stay available for scrolling, while native selection and zoom
+   gestures are disabled on game content. Browser/OS controls remain outside this page. */
+html,
+body,
+body * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: pan-x pan-y;
+}
+
+/* Include scroll-container descendants so gesture handling does not depend on
+   whether the arena, a modal or the page is the nearest scrolling ancestor. */
+html body * {
+  touch-action: pan-x pan-y;
+}
+
+img,
+picture,
+svg,
+canvas,
+[data-protect-art] {
+  -webkit-user-drag: none;
+}
+
+/* Editable and readonly code fields retain selection, paste and native menus.
+   The 16px floor also avoids focus-driven zoom in mobile form controls. */
+[role="textbox"] *,
+[contenteditable] * {
+  -webkit-user-select: inherit;
+  user-select: inherit;
+  -webkit-touch-callout: inherit;
+}
+
+input,
+textarea,
+select,
+[role="textbox"],
+[contenteditable=""],
+[contenteditable="true" i],
+[contenteditable="plaintext-only" i] {
+  font-size: max(16px, 1em) !important;
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  -webkit-touch-callout: default;
+}
+
+[contenteditable="false" i]:not(input, textarea, select, [role="textbox"]) {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none;
+}

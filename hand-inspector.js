@@ -4,7 +4,7 @@
  * This renderer reads player 0's hand; it never reads an opponent's cards.
  */
 const defaultEscape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const ORIGIN_IDS = new Set(['mountain', 'river', 'seed', 'grass', 'flower', 'tree']);
+const ORIGIN_IDS = new Set(['mountain', 'river', 'seed', 'grass', 'flower', 'tree', 'king']);
 const FALLBACK_TYPES = Object.freeze({ beast: '魔獣', fusion: '合成魔獣', miracle: 'ミラクル', gimmick: 'ギミック' });
 
 export function handInspectorView({ game, selected, esc = defaultEscape, icon, getCard, elementMap = {}, TYPE_LABELS = {}, MODEL_LABELS = {}, open = false } = {}) {

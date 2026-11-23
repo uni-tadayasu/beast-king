@@ -71,7 +71,7 @@
   .duel-shell .duel-layout:has(> .hand-inspector) > .duel-sidebar { grid-column: 3; grid-row: 1; }
   .duel-shell .hand-effects-trigger { display: none; }
 }
-@media (max-width: 1330px), (max-height: 560px) {
+@media (max-width: 1330px), (max-height: 700px) {
   .hand-inspector[data-open='false'] { display: none; }
   .hand-inspector[data-open='true'] { position: fixed; z-index: 61; top: calc(var(--news-height, 0px) + 66px); left: max(12px, env(safe-area-inset-left)); bottom: max(12px, env(safe-area-inset-bottom)); width: min(352px, calc(100vw - 32px)); max-height: calc(100svh - var(--news-height, 0px) - 78px); padding: 15px 17px 12px; border: 1px solid #9c7bae80; border-top-color: #c4a5e1; border-radius: 7px 7px 17px 7px; box-shadow: 12px 16px 45px #08091bcc, 0 0 0 1px #100d2788; backdrop-filter: blur(16px); }
   .hand-inspector-close { display: inline-flex; }
@@ -85,7 +85,7 @@
   .duel-shell .hand-effects-trigger .icon { width: 14px; height: 14px; }
   .hand-inspector[data-open='true'] { top: calc(var(--news-height, 0px) + 55px); max-height: calc(100svh - var(--news-height, 0px) - 67px); }
 }
-@media (max-height: 560px) and (orientation: landscape) {
+@media (max-height: 700px) and (orientation: landscape) {
   .duel-shell .hand-effects-trigger { min-height: 30px; padding-block: 3px; }
   .duel-shell .hand-inspector[data-open='true'] { top: calc(var(--news-height, 0px) + 42px); left: max(8px, env(safe-area-inset-left)); bottom: calc(48px + env(safe-area-inset-bottom)); width: min(352px, calc(100vw - var(--landscape-hand-width, 200px) - env(safe-area-inset-left) - env(safe-area-inset-right) - 40px)); max-height: calc(100svh - var(--news-height, 0px) - 90px - env(safe-area-inset-bottom)); padding: 9px 13px 7px; }
   .hand-inspector-header { padding-bottom: 7px; }
@@ -108,7 +108,7 @@
 }
 
 /* On phone landscape, one header row leaves immediate room for the effect text. */
-@media (min-width: 560px) and (max-height: 560px) and (orientation: landscape) {
+@media (min-width: 560px) and (max-height: 700px) and (orientation: landscape) {
   .duel-shell .hand-inspector[data-open='true'] { display: grid; grid-template-columns: 56px minmax(0, 1fr) 44px; grid-template-rows: 44px minmax(0, 1fr) auto; gap: 7px 8px; }
   .hand-inspector-header { display: contents; }
   .hand-inspector-heading { grid-column: 1; grid-row: 1; }

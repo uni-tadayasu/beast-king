@@ -67,24 +67,31 @@ test('all cards have supported effects, costs, art keys and usable rules text', 
   }
 });
 
-test('six origins preserve all eight generated card series and their stable contents', () => {
-  assert.equal(ORIGINS.length,6);
+test('seven origins preserve the card counts with one maximum-cost King beast', () => {
+  assert.equal(ORIGINS.length,7);
   assert.equal(ELEMENTS,ORIGINS);
-  assert.deepEqual(ORIGINS.map(o=>o.id),['mountain','river','seed','grass','flower','tree']);
-  assert.deepEqual(ORIGINS.map(o=>o.name),['山','川','種','草','花','木']);
+  assert.deepEqual(ORIGINS.map(o=>o.id),['mountain','river','seed','grass','flower','tree','king']);
+  assert.deepEqual(ORIGINS.map(o=>o.name),['山','川','種','草','花','木','王']);
   const mapping={dawn:'flower',tide:'river',ember:'seed',gale:'grass',grove:'tree',stone:'mountain',dusk:'seed',aether:'grass'};
   assert.equal(new Set(CARDS.map(c=>c.series)).size,8);
   for (const [series,origin] of Object.entries(mapping)) {
     for (const [type,n] of [['beast',64],['miracle',32],['gimmick',32],['fusion',16]]) {
       const cards=CARDS.filter(c=>c.series===series&&c.type===type);
       assert.equal(cards.length,n,`${series}/${type}`);
-      assert.ok(cards.every(c=>c.origin===origin&&c.element===origin));
+      assert.ok(cards.every(c=>c.origin===(c.id==='B0512'?'king':origin)&&c.element===c.origin));
     }
   }
-  for (const origin of ORIGINS) {
+  for (const origin of ORIGINS.filter(o=>o.id!=='king')) {
     const multiplier=['seed','grass'].includes(origin.id)?2:1;
-    for (const [type,n] of [['beast',64],['miracle',32],['gimmick',32],['fusion',16]]) assert.equal(CARDS.filter(c=>c.origin===origin.id&&c.type===type).length,n*multiplier);
+    for (const [type,n] of [['beast',64],['miracle',32],['gimmick',32],['fusion',16]]) assert.equal(CARDS.filter(c=>c.origin===origin.id&&c.type===type).length,n*multiplier-(origin.id==='grass'&&type==='beast'?1:0));
   }
+});
+
+test('King representative remains a normal beast at the maximum cost', () => {
+  const king=getCard('B0512');
+  assert.equal(king.name,'王冠竜 レガリア');assert.equal(king.type,'beast');assert.equal(king.origin,'king');
+  assert.equal(king.cost,Math.max(...CARDS.filter(c=>c.type==='beast').map(c=>c.cost)));
+  assert.equal(king.cost,8);assert.equal(king.rarity,'GGR');assert.equal(CARDS.filter(c=>c.origin==='king').length,1);
 });
 
 test('eight starters each provide exactly 32 main plus 4 special cards', () => {

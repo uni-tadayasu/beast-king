@@ -114,7 +114,7 @@ test('guest profiles use 32 random bytes, store only token hashes, and reconnect
   assert.equal(renamed.data.profile.id,a.id);assert.equal(renamed.data.profile.nickname,'種の王');assert.equal(renamed.data.token,undefined);
 });
 
-test('profile origins default to mountain, persist all six choices, and reject invalid changes atomically',async t=>{
+test('profile origins default to mountain, persist all seven choices, and reject invalid changes atomically',async t=>{
   const f=fixture(t),person=await f.profile('山の旅人');assert.equal(person.origin,'mountain');
   for(const {id:origin} of ORIGINS){
     const changed=await f.api('POST','/api/profile',person.token,{origin});
@@ -126,7 +126,7 @@ test('profile origins default to mountain, persist all six choices, and reject i
     const rejected=await f.api('POST','/api/profile',person.token,{nickname:'変更しない',origin});
     assert.equal(rejected.status,400);assert.equal(rejected.data.code,'invalid_origin');
     const current=(await f.api('GET','/api/profile',person.token)).data.profile;
-    assert.equal(current.origin,'tree');assert.equal(current.nickname,person.nickname);
+    assert.equal(current.origin,'king');assert.equal(current.nickname,person.nickname);
   }
   const before=f.sqlite.prepare('SELECT count(*) AS n FROM bk_profiles').get().n;
   assert.equal((await f.api('POST','/api/profile',null,{nickname:'作成しない',origin:'invalid'})).status,400);
@@ -144,6 +144,20 @@ test('the appended origin migration preserves existing accounts and enforces its
   const updated=sqlite.prepare('SELECT * FROM bk_profiles WHERE id=?').get('legacy');
   assert.equal(updated.origin,'mountain');delete updated.origin;assert.deepEqual(updated,old);
   assert.throws(()=>sqlite.prepare('UPDATE bk_profiles SET origin=? WHERE id=?').run('aether','legacy'),/CHECK/i);
+});
+
+test('King migration keeps legacy accounts and ratings while adding a nullable origin override',t=>{
+  const sqlite=new DatabaseSync(':memory:');t.after(()=>sqlite.close());
+  for(const name of ['0000_beast_king_online','0001_profile_origin','0002_accounts_and_operator'])sqlite.exec(readFileSync(new URL('../drizzle/'+name+'.sql',import.meta.url),'utf8'));
+  sqlite.prepare('INSERT INTO bk_profiles (id,token_hash,nickname,origin,rating,created_at,updated_at) VALUES (?,?,?,?,?,?,?)').run('legacy-king','preserved-hash','保存済みの王','flower',1450,1,2);
+  sqlite.prepare('INSERT INTO bk_sessions (id,player_id,token_hash,label,kind,created_at,last_seen_at) VALUES (?,?,?,?,?,?,?)').run('legacy-session','legacy-king','session-hash','端末','original',1,2);
+  const old=sqlite.prepare('SELECT * FROM bk_profiles').get();
+  sqlite.exec(readFileSync(new URL('../drizzle/0003_king_origin.sql',import.meta.url),'utf8'));
+  const updated=sqlite.prepare('SELECT * FROM bk_profiles').get();assert.equal(updated.origin_v2,null);delete updated.origin_v2;assert.deepEqual(updated,old);
+  assert.equal(sqlite.prepare('SELECT count(*) AS n FROM bk_sessions').get().n,1);
+  sqlite.prepare('UPDATE bk_profiles SET origin_v2=?').run('king');
+  assert.equal(sqlite.prepare('SELECT COALESCE(origin_v2,origin) AS origin FROM bk_profiles').get().origin,'king');
+  assert.throws(()=>sqlite.prepare('UPDATE bk_profiles SET origin_v2=?').run('unknown'),/CHECK/i);
 });
 
 test('CORS is exact, preflight supports bearer requests, and authentication and nickname bounds are enforced',async t=>{
@@ -214,9 +228,9 @@ test('both match viewers see the opponent public origin without exposing private
   const {hostMatch,guestMatch}=await roomPair(f,host,guest);
   assert.equal(hostMatch.opponent.origin,'grass');assert.equal(guestMatch.opponent.origin,'flower');
   const board=f.sqlite.prepare('SELECT state_json FROM bk_matches WHERE id=?').get(hostMatch.id).state_json;
-  await f.api('POST','/api/profile',guest.token,{origin:'tree'});
+  await f.api('POST','/api/profile',guest.token,{origin:'king'});
   const refreshed=matchFrom(await f.api('GET',`/api/matches/${hostMatch.id}`,host.token));
-  assert.equal(refreshed.opponent.origin,'tree');assert.equal(refreshed.revision,hostMatch.revision);
+  assert.equal(refreshed.opponent.origin,'king');assert.equal(refreshed.revision,hostMatch.revision);
   assert.equal(f.sqlite.prepare('SELECT state_json FROM bk_matches WHERE id=?').get(hostMatch.id).state_json,board);
   assert.equal(JSON.stringify(refreshed).includes(guest.token),false);assert.equal(refreshed.opponent.token_hash,undefined);
   assert.ok(refreshed.state.players[1].hand.every(id=>id===null));assert.ok(refreshed.state.players[1].special.every(id=>id===null));

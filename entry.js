@@ -3,8 +3,8 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', ELEMENT
   const escape = typeof esc === 'function' ? esc : value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const glyph = name => typeof icon === 'function' ? icon(name) : '';
   const audioControl = typeof musicButton === 'function' ? musicButton() : '';
-  const originOrder = ['mountain', 'river', 'seed', 'grass', 'flower', 'tree'];
-  const originNames = { mountain: '山', river: '川', seed: '種', grass: '草', flower: '花', tree: '木' };
+  const originOrder = ['mountain', 'river', 'seed', 'grass', 'flower', 'tree', 'king'];
+  const originNames = { mountain: '山', river: '川', seed: '種', grass: '草', flower: '花', tree: '木', king: '王' };
   const origins = originOrder.map(id => (Array.isArray(ELEMENTS) && ELEMENTS.find(e => e.id === id)) || { id, name: originNames[id] });
   const selectedOrigin = originOrder.includes(profileOrigin) ? profileOrigin : 'mountain';
   const profileChoices = origins.map(e => `<button type="button" class="entry-profile-option${e.id === selectedOrigin ? ' selected' : ''}" data-action="profile-origin" data-origin="${e.id}" aria-pressed="${e.id === selectedOrigin}" aria-label="${escape(e.name + 'のプロフィールアイコン')}"><img src="assets/profiles/${e.id}.svg" alt="" width="40" height="40"><span>${escape(e.name)}</span></button>`).join('');
@@ -12,7 +12,7 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', ELEMENT
     <div class="entry-scene" aria-hidden="true"></div>
     <div class="entry-vignette" aria-hidden="true"></div>
     <header class="entry-header">
-      <div class="entry-mark" aria-hidden="true"><img src="assets/icon.svg" alt="" width="46" height="46"><span>THE FIRST CHRONICLE</span></div>
+      <div class="entry-mark" aria-hidden="true"><img src="assets/icon.svg" alt="" width="46" height="46"><span>THE GARDEN OF SEVEN ORIGINS</span></div>
       <div class="entry-audio">${audioControl}</div>
     </header>
     <div class="entry-layout">
@@ -30,8 +30,8 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', ELEMENT
         </form>
         <div class="entry-deck-rule" aria-label="通常デッキ32枚、特殊デッキ4枚"><span>${glyph('cards')}通常デッキ <b>32</b> 枚</span><span class="entry-rule-divider" aria-hidden="true"></span><span>${glyph('fusion')}特殊デッキ <b>4</b> 枚</span></div>
       </section>
-      <div class="entry-art-caption" aria-hidden="true"><span class="entry-art-line"></span><span>星冠の契約<small>THE CROWN AWAITS</small></span></div>
+      <div class="entry-art-caption" aria-hidden="true"><span class="entry-art-line"></span><span>王が目覚める庭<small>THE CROWN AWAITS</small></span></div>
     </div>
-    <footer class="entry-footer"><span>PC · スマホ · タブレット</span><span>BEAST KING</span></footer>
+    <footer class="entry-footer"><span>PC · スマホ · タブレット</span><span>© 2026 Beast King</span></footer>
   </main>`;
 }

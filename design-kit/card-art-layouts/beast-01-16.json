@@ -1,0 +1,3482 @@
+{
+  "schemaVersion": 1,
+  "range": "B0001-B0256",
+  "atlasCount": 16,
+  "illustrationCount": 256,
+  "tool": "builtin image_gen",
+  "copyright": "© 2026 Beast King",
+  "atlases": {
+    "beast-01.webp": {
+      "filename": "beast-01.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        627,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        313,
+        626,
+        940,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "e684a3b09454e0d14d391e51d1f5e1469f56ba47e30b2a9b7ea5124aec411655",
+      "cells": [
+        {
+          "id": "B0001",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "2f5e087330e07a3454dd0d361078f6939b9ea4b138343b16b7dd2557b7ade35d"
+        },
+        {
+          "id": "B0002",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "3770a5abfd901dc33ad6c23f3a44c1957910923a51fbd1dbbf6d1675ec8daac8"
+        },
+        {
+          "id": "B0003",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            630,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "529e0878d5be539cef19bbafe5c86896dfd88595996d4d4ff849cf2a1be8cac0"
+        },
+        {
+          "id": "B0004",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "5d27c64eff0fdf48be074025abf99c20f06fbb9fa65258743619ebccaa5209cf"
+        },
+        {
+          "id": "B0005",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "43c26a11b3810c9c5bff050315ad9a008cb60c085c2dfbff7ddea2e14cc41380"
+        },
+        {
+          "id": "B0006",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "c8fc8c86b0bf65f8f324cd7a545b6e16567777d15b6ad42423dd43bbaa60d206"
+        },
+        {
+          "id": "B0007",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            630,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "a464ac4b919893f554518884fdf67f2d9e869758b12b2d04a036951f568a51be"
+        },
+        {
+          "id": "B0008",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "a31d794ca332110d371b515a5d394fe9d11ca2cb031edb750c604db49bc7c60d"
+        },
+        {
+          "id": "B0009",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            308
+          ],
+          "nativePixelSha256": "4899dea626658ea234afc8fee2214459fa4c2c60aeea0e302bd4409b7ae16d63"
+        },
+        {
+          "id": "B0010",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            308,
+            308
+          ],
+          "nativePixelSha256": "664c5ecca7dee7aa2c3d54597769fc643d6ec25be9775fd464445c9f0909627b"
+        },
+        {
+          "id": "B0011",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            630,
+            629,
+            307,
+            308
+          ],
+          "nativePixelSha256": "40933b4822d6d5c681da15339beb4358b77b26fb7d07011a89a3f0acab61c8da"
+        },
+        {
+          "id": "B0012",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            629,
+            308,
+            308
+          ],
+          "nativePixelSha256": "e78fa8c1a21d8aea4faedc64d7dbbb86fbdb3c635b10783480330d351642232e"
+        },
+        {
+          "id": "B0013",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            943,
+            307,
+            308
+          ],
+          "nativePixelSha256": "9634bc44518d9f557a066c14214509a452ba50d9aba63acd2925f8490f9ff791"
+        },
+        {
+          "id": "B0014",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            943,
+            308,
+            308
+          ],
+          "nativePixelSha256": "aee647d344cd891b50b7aaa9ddf522a62ece3be60fb92fe5e73c7c19d347e797"
+        },
+        {
+          "id": "B0015",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            630,
+            943,
+            307,
+            308
+          ],
+          "nativePixelSha256": "efe223d5c1a2df2735ee38b0aa3a46febb11107462160a7a637daae5d052c1a5"
+        },
+        {
+          "id": "B0016",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            943,
+            308,
+            308
+          ],
+          "nativePixelSha256": "85902d13d0d74d412e0d2e3d0650fd664a92fd5c39a4a6f078968ea3e2e3e34c"
+        }
+      ]
+    },
+    "beast-02.webp": {
+      "filename": "beast-02.webp",
+      "width": 1263,
+      "height": 1246,
+      "columns": [
+        0,
+        315,
+        631,
+        947,
+        1263
+      ],
+      "rows": [
+        0,
+        312,
+        622,
+        933,
+        1246
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "57d599a041c5910ca1e37415268b44d13b786e2ce2087f793c378603bded22ca",
+      "cells": [
+        {
+          "id": "B0017",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            309,
+            306
+          ],
+          "nativePixelSha256": "36e4aec95e9bb0e38fa014614f16c69af90df9876ae9d3a65bd088dfae5c2ce9"
+        },
+        {
+          "id": "B0018",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            318,
+            3,
+            310,
+            306
+          ],
+          "nativePixelSha256": "0ce61fd9ccacc4104f71229c96465b5e04f349ec9cf476cedd48da0f671aea00"
+        },
+        {
+          "id": "B0019",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            634,
+            3,
+            310,
+            306
+          ],
+          "nativePixelSha256": "f626f4e0a7338fc02d23b3bbd9d272e2252c4e5d4625e3e92d1f2c997e0ec2e1"
+        },
+        {
+          "id": "B0020",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            950,
+            3,
+            310,
+            306
+          ],
+          "nativePixelSha256": "1dc3666b18c268ffbd80016c2c09ade6a1d6913c23859e00d63479f5d1e92963"
+        },
+        {
+          "id": "B0021",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            315,
+            309,
+            304
+          ],
+          "nativePixelSha256": "099e21a3cf5792032fa9d189fc34ed486f6fc4295c9eceed16f99927cf9fe7fe"
+        },
+        {
+          "id": "B0022",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            318,
+            315,
+            310,
+            304
+          ],
+          "nativePixelSha256": "a075acd751af9a4c5a8f4c3adabd048a98bbb99eee511d8372f2cdd602a4c976"
+        },
+        {
+          "id": "B0023",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            634,
+            315,
+            310,
+            304
+          ],
+          "nativePixelSha256": "68ea921b87ed169d767ed5ba321c655a52f2403777b4c574843e564146372a85"
+        },
+        {
+          "id": "B0024",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            950,
+            315,
+            310,
+            304
+          ],
+          "nativePixelSha256": "84c00630c40ac584ff555e33e97fba3c5127f7f578626a871cfb9aa0c9f9c59d"
+        },
+        {
+          "id": "B0025",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            625,
+            309,
+            305
+          ],
+          "nativePixelSha256": "d4c892d2c9cdb979f0034572541e799ab199067776911b578dab76b63123e422"
+        },
+        {
+          "id": "B0026",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            318,
+            625,
+            310,
+            305
+          ],
+          "nativePixelSha256": "f840d3b27d8b583007c386dfb2956aa0a69731d97ca03bf4c21112e8454ac17f"
+        },
+        {
+          "id": "B0027",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            634,
+            625,
+            310,
+            305
+          ],
+          "nativePixelSha256": "366893dc605839d80a1173807eeea96528e44417e9a431046dbfddc5ed70359b"
+        },
+        {
+          "id": "B0028",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            950,
+            625,
+            310,
+            305
+          ],
+          "nativePixelSha256": "8a4bdee50b551fee6b3c8177df263f7a5342d98b2152a85ea9cda59babe43ed3"
+        },
+        {
+          "id": "B0029",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            936,
+            309,
+            307
+          ],
+          "nativePixelSha256": "936c25662fb0ba4199b016cf22a8252e0436abf70827b0c2d6a39a4739bfb863"
+        },
+        {
+          "id": "B0030",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            318,
+            936,
+            310,
+            307
+          ],
+          "nativePixelSha256": "5d7a9a99d99a7980f8f7261c5df84ea6598c1dfdaf603c396037e752e20a91a7"
+        },
+        {
+          "id": "B0031",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            634,
+            936,
+            310,
+            307
+          ],
+          "nativePixelSha256": "9a9c1750c68439e9cc415827852320acf4fd2035baf598b310ddf1f6657feda2"
+        },
+        {
+          "id": "B0032",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            950,
+            936,
+            310,
+            307
+          ],
+          "nativePixelSha256": "869242906d35538a9e6ce2fc274b6d623b159941e5e65e8736c497543e68dc98"
+        }
+      ]
+    },
+    "beast-03.webp": {
+      "filename": "beast-03.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        627,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        313,
+        626,
+        940,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "0a8e12d4f19b9dac14d9b999d5f4c8905865fb1210ca3e3f62937c4ba4476261",
+      "cells": [
+        {
+          "id": "B0033",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "6c0370ac2dc9488c2f3202a668cac44ea5be04622091da998e98ae5b58573109"
+        },
+        {
+          "id": "B0034",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "805376b06f68994d40e7f716ba7e71a0e3d3d40c5ee6f0876c9a87307062e6cf"
+        },
+        {
+          "id": "B0035",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            630,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "25d0b85ba46eda3b8065196e97f1427eddb3ad52a3fc33ccdb725b5a2ae7f360"
+        },
+        {
+          "id": "B0036",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "ba4e3ff22df1508c5d2d3629d3919b7b22bec7327d66543e300f0c25b286b000"
+        },
+        {
+          "id": "B0037",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "5207cf3ca1b2e7b7c17001225e7982d7f2dd27e24e7252d763ce37f146bf0352"
+        },
+        {
+          "id": "B0038",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "76cea67c7aebcb19ddf2dc01695e41d4aab001ad857bd7f9a7d94558e19debea"
+        },
+        {
+          "id": "B0039",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            630,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "22679c54690ea8a8e7a0e1e28d8e50b48b76081528f9fd24215b390e0914ee2d"
+        },
+        {
+          "id": "B0040",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "9486b4a0c2085a7bbb0208b72aa3d1f521f97ad6478efdb561ba9fe5a9cb3022"
+        },
+        {
+          "id": "B0041",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            308
+          ],
+          "nativePixelSha256": "9671839df32ab7c208038fae75f95c5719d29152312278490b1d290cab43046d"
+        },
+        {
+          "id": "B0042",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            308,
+            308
+          ],
+          "nativePixelSha256": "83f09a811dad18f334560bc348335b28368c0d9c3e797899262dd402cff4c740"
+        },
+        {
+          "id": "B0043",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            630,
+            629,
+            307,
+            308
+          ],
+          "nativePixelSha256": "a8810d85839ab4d484641c9309a4deb0ffbff351e40ee7b5a811b6d360583708"
+        },
+        {
+          "id": "B0044",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            629,
+            308,
+            308
+          ],
+          "nativePixelSha256": "ad62f2d89e51604000077428551b590fb848fd4bff6ce217c1c671857a85dfaa"
+        },
+        {
+          "id": "B0045",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            943,
+            307,
+            308
+          ],
+          "nativePixelSha256": "dd4be94d0b5d2f0355892f17f7477d205bd8013e9f6d46d7a6e35087a3e755b7"
+        },
+        {
+          "id": "B0046",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            943,
+            308,
+            308
+          ],
+          "nativePixelSha256": "561717bd7aa2ba406477ce9c679cd2e3c937862bc70d365c857307a1f5a8c1e0"
+        },
+        {
+          "id": "B0047",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            630,
+            943,
+            307,
+            308
+          ],
+          "nativePixelSha256": "e40f2f0dbbe97b7c74639823eb53557fd6aa4b6b6fa0e6edbc3d7584387cabe2"
+        },
+        {
+          "id": "B0048",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            943,
+            308,
+            308
+          ],
+          "nativePixelSha256": "a9eb4b19dfe3ecc7c6c73408b802c7fd8afdc7dae619629c68e492b6f5449ff6"
+        }
+      ]
+    },
+    "beast-04.webp": {
+      "filename": "beast-04.webp",
+      "width": 1259,
+      "height": 1249,
+      "columns": [
+        0,
+        314,
+        629,
+        944,
+        1259
+      ],
+      "rows": [
+        0,
+        307,
+        616,
+        894,
+        1249
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": true,
+      "webpSha256": "a6b1d1a48ef733ed8eb3de06fdcfd31577a094136ac295e665832be4583009b9",
+      "cells": [
+        {
+          "id": "B0049",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            308,
+            301
+          ],
+          "nativePixelSha256": "412d98f0c7499b02b0c49dbc8821425acbbfb9820c5bca6200c608c13dcde001"
+        },
+        {
+          "id": "B0050",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            317,
+            3,
+            309,
+            301
+          ],
+          "nativePixelSha256": "5972eb96ff1d5c928cd0f182b748ec6bef21ba3e241a3d2e73ab6cd2a247683d"
+        },
+        {
+          "id": "B0051",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            632,
+            3,
+            309,
+            301
+          ],
+          "nativePixelSha256": "e69b5ab5441e3da932b51ace3008d81ec6890203de790631c16b6404b296a963"
+        },
+        {
+          "id": "B0052",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            947,
+            3,
+            309,
+            301
+          ],
+          "nativePixelSha256": "eade82c76d286c40420a1110e4a1ae75a277be5a8e6d5bdb0dab53fb529eb7ec"
+        },
+        {
+          "id": "B0053",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            310,
+            308,
+            303
+          ],
+          "nativePixelSha256": "fd69d24b40d57868395f899a332409a948d6e1ee3faff899ef6ac475c7b4d3c5"
+        },
+        {
+          "id": "B0054",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            317,
+            310,
+            309,
+            303
+          ],
+          "nativePixelSha256": "8fbd93b4f74f58a3bfb70b92d26f508204ecc9826239f202b5daafc1ef37b6bb"
+        },
+        {
+          "id": "B0055",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            632,
+            310,
+            309,
+            303
+          ],
+          "nativePixelSha256": "1b7eb8dfad864e5571cfff6364ae5a8e605e01d023fd9b4f2f5435d17d158041"
+        },
+        {
+          "id": "B0056",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            947,
+            310,
+            309,
+            303
+          ],
+          "nativePixelSha256": "a16bb1abfd4000ee9d883cd3dad19ca3124f92be29c735ae64f59281eff51020"
+        },
+        {
+          "id": "B0057",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            619,
+            308,
+            272
+          ],
+          "nativePixelSha256": "c9f58ee321ec720ff9d80974c8ced8fee8ab6f9713841fc78599ceed7a3228df"
+        },
+        {
+          "id": "B0058",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            317,
+            619,
+            309,
+            272
+          ],
+          "nativePixelSha256": "f9d56c63fc845630a470eed7d3b295fde6682ebea0a1dc21fc384ef5ccdcf63d"
+        },
+        {
+          "id": "B0059",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            632,
+            619,
+            309,
+            272
+          ],
+          "nativePixelSha256": "4d3b40018faa03b022ef44fbd09fa7ecf42348112f082052cfa5c4ed56bb9948"
+        },
+        {
+          "id": "B0060",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            947,
+            619,
+            309,
+            272
+          ],
+          "nativePixelSha256": "4e19cb23fe4e63908b94df771af4bf578ae59b191947f1aafbb4caf3978b18ff"
+        },
+        {
+          "id": "B0061",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            897,
+            308,
+            349
+          ],
+          "nativePixelSha256": "6e99fe5d35895fcdce1d9b6cb3daec69562e8c4d70c1db3392de2d559986d565"
+        },
+        {
+          "id": "B0062",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            317,
+            897,
+            309,
+            349
+          ],
+          "nativePixelSha256": "c1f856aefb41c13b18b1dfea196bdd1d88c0bfb7ddd2bac8b9b5de22457aed2c"
+        },
+        {
+          "id": "B0063",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            632,
+            897,
+            309,
+            349
+          ],
+          "nativePixelSha256": "f498822613fb153549477f41fe4593b78e993978791df98a363715c52dc3b97f"
+        },
+        {
+          "id": "B0064",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            947,
+            897,
+            309,
+            349
+          ],
+          "nativePixelSha256": "764391ab397c00bbc5f7e8b07b64f2931446ce6aa6f9c1a78ac709e9eb683fe2"
+        }
+      ]
+    },
+    "beast-05.webp": {
+      "filename": "beast-05.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        626,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        313,
+        626,
+        940,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "55e6bcccd407b524655da4e6e3d368532be7308d128ec91a0a28c86400f6b691",
+      "cells": [
+        {
+          "id": "B0065",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "cb7ae26e23d3b48dc45cec064703d4318e8800c108736969734fc477321dc1b8"
+        },
+        {
+          "id": "B0066",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "fcb4b318ff6dd0db1c381a7e8c89120a211bec4d29f24d411ee8e8def0d0819e"
+        },
+        {
+          "id": "B0067",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            629,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "1f69451207bc1552da1385707ca6e37b24bcd6046fc71316995e2ae6a4eaf619"
+        },
+        {
+          "id": "B0068",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "b83db112a505d75a3ba6cb7b7d56e690d3b4987ae4a0128c2085512cba4db8d4"
+        },
+        {
+          "id": "B0069",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "2a8e9b68b7a981018d2b9a46f8124d3a7941c39c0a895def22d11d7c36c531b3"
+        },
+        {
+          "id": "B0070",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "47036be5ba3fff7b5f48620065933842e5d36a73c2989370c7fc5035a076d446"
+        },
+        {
+          "id": "B0071",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            629,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "142bb8e14121c797dac93f3fe0dff4c656e0e714d6e56e94b6e8b8ef50aa40a8"
+        },
+        {
+          "id": "B0072",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "f090d6b6ce459c9e8a813bf802bc7d4bff14fa7a03d0dbe34a6004302ae8acb6"
+        },
+        {
+          "id": "B0073",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            308
+          ],
+          "nativePixelSha256": "5827fa5071d09068825a83b14b7129f2bf28c769763d453bf8474b86b7bf7657"
+        },
+        {
+          "id": "B0074",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            307,
+            308
+          ],
+          "nativePixelSha256": "78d5179d3e5c2e18ea8ff09f24a4696f6ce809f49db4bcea57fb3ddb8b87ebd6"
+        },
+        {
+          "id": "B0075",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            629,
+            629,
+            308,
+            308
+          ],
+          "nativePixelSha256": "aedaf46dbb899fb10da04e335ae9ca380f83b30a48974eed9132fa899501eca9"
+        },
+        {
+          "id": "B0076",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            629,
+            308,
+            308
+          ],
+          "nativePixelSha256": "03008cfe46af45d20a372328e9cc61343778d815b4a36ced4971cd30fe0fbf9a"
+        },
+        {
+          "id": "B0077",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            943,
+            307,
+            308
+          ],
+          "nativePixelSha256": "ddf8481594043b6c6b362da9eec7f5e28eccdedd276cf8c80f39abcd3f7d5edb"
+        },
+        {
+          "id": "B0078",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            943,
+            307,
+            308
+          ],
+          "nativePixelSha256": "dc8f9c563c86c9870d63fb4b4994b6d9795ff6594639ba6fae55b95a27278d6d"
+        },
+        {
+          "id": "B0079",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            629,
+            943,
+            308,
+            308
+          ],
+          "nativePixelSha256": "ae75e22c9d376099ec639c4871be6358e4e2f511fa8dc7e5d036678dc18abd91"
+        },
+        {
+          "id": "B0080",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            943,
+            308,
+            308
+          ],
+          "nativePixelSha256": "accb08dc153aaabae60d43ebf6188b3824347304a662f786ffee10400b03bce4"
+        }
+      ]
+    },
+    "beast-06.webp": {
+      "filename": "beast-06.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        627,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        312,
+        626,
+        940,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "4b6b109b7782737d07b6ba4d7790f82d720251e12791fe67fae7b33d3888a0d8",
+      "cells": [
+        {
+          "id": "B0081",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "b2086f250a81357495837a03b549e703a51a942897a609f8edb7f2ddde057fdf"
+        },
+        {
+          "id": "B0082",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            308,
+            306
+          ],
+          "nativePixelSha256": "68bb117d396650b3a98eca49ea16304d393f4ab87c63829a9ab7c85dc0ced3d1"
+        },
+        {
+          "id": "B0083",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            630,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "e7689246ccd20def7e4570767e12748fa5706e797b25d190f2926c37e0c79904"
+        },
+        {
+          "id": "B0084",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            306
+          ],
+          "nativePixelSha256": "953c31165d326f14e74283a7800d6ded517583145079681a3d39f9be8643fe28"
+        },
+        {
+          "id": "B0085",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "48cc3efecaa1819c96f3663c6e85416ba799ff089e17cafaa7adc2cab136ca7f"
+        },
+        {
+          "id": "B0086",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            315,
+            308,
+            308
+          ],
+          "nativePixelSha256": "bc26a08e55c2a4ae1df0e30d99ed06e0f98b99a11807c26a25a48e79c5aaa36e"
+        },
+        {
+          "id": "B0087",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            630,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "c6223756db1957fb80f2241cfacd9de3e84c6e2be7a40d39a416f1343ef3a21b"
+        },
+        {
+          "id": "B0088",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            315,
+            308,
+            308
+          ],
+          "nativePixelSha256": "750254c67f80437219fe589382a306a6ea0ebd66a14503e44abf80ba806909c9"
+        },
+        {
+          "id": "B0089",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            308
+          ],
+          "nativePixelSha256": "3a5e59b3c9a2cd3d31459242711b5ef2047e64ea4c8946981ddc312f755d9109"
+        },
+        {
+          "id": "B0090",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            308,
+            308
+          ],
+          "nativePixelSha256": "484de9a0de385522221889b32c85088ebb496fd561381e05ee3b9c784c7af511"
+        },
+        {
+          "id": "B0091",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            630,
+            629,
+            307,
+            308
+          ],
+          "nativePixelSha256": "1052250c48ff7947ed504b62aa7974078035ca1a1a291267880145b0d83fae15"
+        },
+        {
+          "id": "B0092",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            629,
+            308,
+            308
+          ],
+          "nativePixelSha256": "c92f18483c135ddc9119ed7acbbd5c003fce4ee100aa7cde888a362576bbede4"
+        },
+        {
+          "id": "B0093",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            943,
+            307,
+            308
+          ],
+          "nativePixelSha256": "53f77783110a0612602066cae71ba3ea0d6600b970dc86d9a454b70c7f05ad0d"
+        },
+        {
+          "id": "B0094",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            943,
+            308,
+            308
+          ],
+          "nativePixelSha256": "6bac896997743341a33006f76344668ccf38aa801224062d2ab80337d36433e0"
+        },
+        {
+          "id": "B0095",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            630,
+            943,
+            307,
+            308
+          ],
+          "nativePixelSha256": "221d31c23ca3069d4a4c52427906197ea1149fd64d27381b595ae302d7dc94de"
+        },
+        {
+          "id": "B0096",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            943,
+            308,
+            308
+          ],
+          "nativePixelSha256": "ca706c813f3e6d8ce7bc0a1c9184998ed4dba3e2e7547443f6b95bb527c73800"
+        }
+      ]
+    },
+    "beast-07.webp": {
+      "filename": "beast-07.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        626,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        313,
+        626,
+        939,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "1efcb322d1805eebfdd1bb997e3b7a1c28075043edaf6c0612cf34bb29ee7f34",
+      "cells": [
+        {
+          "id": "B0097",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "6844e2d4ee7291e94b3574c650330b9c5b80138f9aee02dafb683c0427a8c4c9"
+        },
+        {
+          "id": "B0098",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "a07593c711cd72000db5cfb8208ef9233456a021395695059f9b922aedf05a5f"
+        },
+        {
+          "id": "B0099",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            629,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "3d59ab8aecdc8e5680f157644e49372194400ae2f05c8f9bc740895f58eb9358"
+        },
+        {
+          "id": "B0100",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "2b26586bdad57f1b77a41646f296b6aa364bacf39a4f69695f881b187d459f8d"
+        },
+        {
+          "id": "B0101",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "3ffe0eab005894fb086496854e62b6349a4afde13a0c3044baed70217abfaa43"
+        },
+        {
+          "id": "B0102",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "8bf0666fb64e7df86762132e7aecc120ffab9e337e1aaeb8edd4583d082cbd6b"
+        },
+        {
+          "id": "B0103",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            629,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "fe27284882a3c2c1cd76df45f594e6a3deec826cc34a4921dd7f89c83d8550ff"
+        },
+        {
+          "id": "B0104",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "5edca8932a8381618226d20f48f07de4eace55c4b51ed3623b89f8f3ea1cd75f"
+        },
+        {
+          "id": "B0105",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "e825f01a9d43064ea23285fa80b747a3df9f3387a2e0e536b1f2affd6a173aa4"
+        },
+        {
+          "id": "B0106",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "42905a1d9684bf5842946d8e0a2e06a8ed9ce159cb3450fa3cdf806db0c30690"
+        },
+        {
+          "id": "B0107",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            629,
+            629,
+            308,
+            307
+          ],
+          "nativePixelSha256": "2cb2d3a9a53ef11dcc9f9c1a144032dc00c4b76e0f3f695a8db3e59a0525d76b"
+        },
+        {
+          "id": "B0108",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            629,
+            308,
+            307
+          ],
+          "nativePixelSha256": "32af9e6153def437c77cd0d2f2af1fc6dfd39a2bc50eca68b57bff76db28273f"
+        },
+        {
+          "id": "B0109",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "236760c508781b0e89a17e30a764964ea0cf3189bdd5913abe8dbbaa4b1fb001"
+        },
+        {
+          "id": "B0110",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "77b0f62ba65f47cf753e09ca8217d34254e771248f3f82b68fdea2f918bc6619"
+        },
+        {
+          "id": "B0111",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            629,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "95f7940322d452f8e94e4a37f4dc932ce8dec77a48cdc737a0e81ab422ecd04d"
+        },
+        {
+          "id": "B0112",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "5bde4faf87ba8dc640c019f9ad04ebd821ffe453144d93e744e03e1dd0fb08a3"
+        }
+      ]
+    },
+    "beast-08.webp": {
+      "filename": "beast-08.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        626,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        313,
+        626,
+        939,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "c30ea95228a096281bc9831c1658a0d2d9010fdbedf28f5b6a6a1ef9b61ca41b",
+      "cells": [
+        {
+          "id": "B0113",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "b4be19bb07870402a10221a0b3116fd93de5354179fb6f34a0b8c3a4395d6bab"
+        },
+        {
+          "id": "B0114",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "ecee9711829b2ab28b22120183432326e889f4c9a53ca3ce18dcf472523792cc"
+        },
+        {
+          "id": "B0115",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            629,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "0047966dca657e7c7408ca84ceaa47d6a1a85efeee1476d979aefb767de44c3e"
+        },
+        {
+          "id": "B0116",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "ee2972403e4e5378599846b4a093c86d06882bf3bc5b738086b4ee9693e082f6"
+        },
+        {
+          "id": "B0117",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "2907173e2ff7777bcdf13b78eceeda6c2d3331725e517c067a7bed6483ef4be5"
+        },
+        {
+          "id": "B0118",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "a0736178bb96c8a65e587750bc8be27fbbe916f9f7a9a320a57ea08a4e424b5e"
+        },
+        {
+          "id": "B0119",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            629,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "d1cd8a653cb88a7570a9de376c326590b850b2e388f5ba3e21f9708a8549db2b"
+        },
+        {
+          "id": "B0120",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "714f01e6782b4946af527362268c6c05da5eea7418a2e98b4808267d8e902d2f"
+        },
+        {
+          "id": "B0121",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "911b433b31053d8b0e55f93aa982f872d3c600a75e4205126040ec90491fa699"
+        },
+        {
+          "id": "B0122",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "9fe3122de8bd915f783eca8be25cdf579340de060aa5c184aefc522e7a3d671a"
+        },
+        {
+          "id": "B0123",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            629,
+            629,
+            308,
+            307
+          ],
+          "nativePixelSha256": "69f6e076830c2e421c0f3c0f5381d7d8c0d663cf9a8d88115a8279740adb3ad0"
+        },
+        {
+          "id": "B0124",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            629,
+            308,
+            307
+          ],
+          "nativePixelSha256": "26c5719518051f045732480c1af16ee98cbb04d81653a82db77d3fb08baf5a07"
+        },
+        {
+          "id": "B0125",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "3506b8e808aec0c1c05dea57b9004da0fa684594a21375997150d4966602ac73"
+        },
+        {
+          "id": "B0126",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "5bef11976f0b8d2e341c2f6f07b4853227d0b280c93cea63c080e099a03de543"
+        },
+        {
+          "id": "B0127",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            629,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "f21ea9553347d957e56fda9b6b3c200174ec2742c4bcf5b3f09aedca72660662"
+        },
+        {
+          "id": "B0128",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "7db6b81fa6777a869346b0fb38f298f1458649bd3ef977e12a79fec389ccca76"
+        }
+      ]
+    },
+    "beast-09.webp": {
+      "filename": "beast-09.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        627,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        312,
+        626,
+        939,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "24beb31fe9f0cf39acee0e3a552211d0e66f1ccd067e7974bc6e8a7dd24ed9d4",
+      "cells": [
+        {
+          "id": "B0129",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "67e43bcd463ef002208f191258c7ae3fe8ff5353498d9a4f78f4e59dfd8231ec"
+        },
+        {
+          "id": "B0130",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            308,
+            306
+          ],
+          "nativePixelSha256": "b5da4861d3d6387c398153dce5cbf95082a967a022447fbf2447001f6718f3c7"
+        },
+        {
+          "id": "B0131",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            630,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "bdc6aeaa12d0bebab7e9fb55751dc344fe775751b58424bdc65a573f734319b8"
+        },
+        {
+          "id": "B0132",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            306
+          ],
+          "nativePixelSha256": "7c958557d6dc04fab7db84df9275194f67ea874b5a24609d251dc4c3111e50a3"
+        },
+        {
+          "id": "B0133",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "e484e998a025140e55fdc0f2be3f1dfd84b351531a7d44066779cdc876ad4bd4"
+        },
+        {
+          "id": "B0134",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            315,
+            308,
+            308
+          ],
+          "nativePixelSha256": "03b0275a11ffb4bc18b66021888efc4084cfddf4a745230601b10914116aa3f4"
+        },
+        {
+          "id": "B0135",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            630,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "6d6fd478377b96fb0b0d60c3aa754e52e17c6fd4e0f8bf925016f29a013b0e61"
+        },
+        {
+          "id": "B0136",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            315,
+            308,
+            308
+          ],
+          "nativePixelSha256": "d53516f125593d7a9b1153b82e913a25f2a95a43b7bf3e15557e5ec0e0689248"
+        },
+        {
+          "id": "B0137",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "ab7c7214e36dd25ca6fff18de5e1f491ac8f5d0a1c4ca6f925bd76a2e82f5c2e"
+        },
+        {
+          "id": "B0138",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            308,
+            307
+          ],
+          "nativePixelSha256": "50652659f4eb38b44120decc8c2947bb207f637141e098d9b8bb8d8e4be11858"
+        },
+        {
+          "id": "B0139",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            630,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "2da53517608f77e1dd54d099e6402c0daaf7029dcc85badc8ffb97999dbc3ec4"
+        },
+        {
+          "id": "B0140",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            629,
+            308,
+            307
+          ],
+          "nativePixelSha256": "53d8035ba6b2b443b03a19cd91058e3b955ad85b269c5aaf23226ae3f9521565"
+        },
+        {
+          "id": "B0141",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "8ebe9bb87989d21d2691044336f780e7a25bdffafff81d1b22765f7e574fd3fc"
+        },
+        {
+          "id": "B0142",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "6d1445a8fb17e5daab75aae54cdfc1f50933e4b806a3db9420bdaeb3e5e5cf76"
+        },
+        {
+          "id": "B0143",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            630,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "c2394b8955d508e91673c7c0889a680576bc74e417f56cd2a0892ab55ca59892"
+        },
+        {
+          "id": "B0144",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "7000209fefd773b63d158aa1c3ee4303d6aaf47b662f9ef1d9f51ab6de82bca3"
+        }
+      ]
+    },
+    "beast-10.webp": {
+      "filename": "beast-10.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        626,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        312,
+        625,
+        939,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "cdafa1e7f4438b6aea28291589a002b0c02acacc0fa3c0cbb6c17716c0b898a0",
+      "cells": [
+        {
+          "id": "B0145",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "a024a9b0d66b14dbb1d4ea4a55e1a2a3ed8597a7896b1a2e0e642335fcef0893"
+        },
+        {
+          "id": "B0146",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "92745e66d816f9eab2302e4070950818e9719ec7dc53895d4e59aa4bab4ecfd7"
+        },
+        {
+          "id": "B0147",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            629,
+            3,
+            308,
+            306
+          ],
+          "nativePixelSha256": "d14c5a8a0e243c88fbedef3751183ad835fd4c7cc760b7e69565420e7823edb5"
+        },
+        {
+          "id": "B0148",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            306
+          ],
+          "nativePixelSha256": "1d633de9a06282a5d6ab8115c4786c454a6d6132a51dd4ed9213bf6c6e568550"
+        },
+        {
+          "id": "B0149",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            315,
+            307,
+            307
+          ],
+          "nativePixelSha256": "24d80f7abd9042c5471b07f9d74e595b1d3f88e356300e4a52ff44fe187face3"
+        },
+        {
+          "id": "B0150",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            315,
+            307,
+            307
+          ],
+          "nativePixelSha256": "094434729d7f2bf8bc07a5c820eb1ec4e0427b73501127448eea459e9efef01c"
+        },
+        {
+          "id": "B0151",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            629,
+            315,
+            308,
+            307
+          ],
+          "nativePixelSha256": "139d668607b64378b83cf2a38727c8e93f67f87a87bc842bca22c840cf7505fe"
+        },
+        {
+          "id": "B0152",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            315,
+            308,
+            307
+          ],
+          "nativePixelSha256": "6a36a30f0c5d0ab3eed91319fa76a5bf06d2718d15513998b3e2b47beb5d2cba"
+        },
+        {
+          "id": "B0153",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            628,
+            307,
+            308
+          ],
+          "nativePixelSha256": "64e955509d1b6660b959b5c41275c450ab1b514a2f02c4a56f8cd4a35b4436f1"
+        },
+        {
+          "id": "B0154",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            628,
+            307,
+            308
+          ],
+          "nativePixelSha256": "3cfc497d47bcac506ed4900986bee50b830fc20fe783630bd0eac74661c3c131"
+        },
+        {
+          "id": "B0155",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            629,
+            628,
+            308,
+            308
+          ],
+          "nativePixelSha256": "a0c22d0621d23add35047011469ae66650c6e2727bbe225e6bcd676a25b3e846"
+        },
+        {
+          "id": "B0156",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            628,
+            308,
+            308
+          ],
+          "nativePixelSha256": "833c2322288f47a4f183a27cb53f9d58f2ea119ac54216b2ba8c1b5b96f22398"
+        },
+        {
+          "id": "B0157",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "94dfd3e07d823e0b97b48d9d4f095897e9737a5f45e0115245e69b8b4b4f8414"
+        },
+        {
+          "id": "B0158",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "91fb2c741252c2c2bd9de1a6f371171dd4cace47ce43920e04cdb8340d0bf458"
+        },
+        {
+          "id": "B0159",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            629,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "f9ab64a0b4d74f748403a148e7825e5bbec6dd75d72fbfc05207d1761234cdc7"
+        },
+        {
+          "id": "B0160",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "e1c70bc8ab5ed61ac092dcfe467b335746643a34c5354e41777c3189790ddd31"
+        }
+      ]
+    },
+    "beast-11.webp": {
+      "filename": "beast-11.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        627,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        312,
+        626,
+        940,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "de8466c07e831e9d56e5dbd7176efeb150b7eaed2b741baa7f9fcb20944ba6ee",
+      "cells": [
+        {
+          "id": "B0161",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "e04f46634864a32977abe84b846ad5aaa534f78a04d2277d425d3d8cfd5760d5"
+        },
+        {
+          "id": "B0162",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            308,
+            306
+          ],
+          "nativePixelSha256": "8630ae500c7112b1d2a04fb7433a5f8e23b2ca6a0174fc5eb047dc21dbf143eb"
+        },
+        {
+          "id": "B0163",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            630,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "bfad4db664e46fb2ed128a6f55b71760e104ea12e84fd7720c4da5238504e981"
+        },
+        {
+          "id": "B0164",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            306
+          ],
+          "nativePixelSha256": "7c23d2ab265d4d7886e0127cdae322d451f8739d8b886fef34b775aebe59cea6"
+        },
+        {
+          "id": "B0165",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "a1738944f682ab468055539dc6af11b043c37e3e0ef90662f241ba653822ce14"
+        },
+        {
+          "id": "B0166",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            315,
+            308,
+            308
+          ],
+          "nativePixelSha256": "37fc5a9ae7ad99f324c5322f2750262c2c68cd09ff63d8328ae1d69c334afa34"
+        },
+        {
+          "id": "B0167",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            630,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "c00bcfa972071382718ed0d09cd641ee77b4bcd3638b6585bc0f19d4d68869d0"
+        },
+        {
+          "id": "B0168",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            315,
+            308,
+            308
+          ],
+          "nativePixelSha256": "2013fdc976e8e54908f57bd7ee595d73aa9dcc8416754be37ed68dbc9ce129b1"
+        },
+        {
+          "id": "B0169",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            308
+          ],
+          "nativePixelSha256": "bb44e293bc800afa96db2173bd7fa85e9b9c62552bb75873055206f263c41891"
+        },
+        {
+          "id": "B0170",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            308,
+            308
+          ],
+          "nativePixelSha256": "aef207b109f13fc86f321aafcf256f9ee5c96a72200bd072873f3b75ecd7873b"
+        },
+        {
+          "id": "B0171",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            630,
+            629,
+            307,
+            308
+          ],
+          "nativePixelSha256": "4d69e00226f9a93f79358d4edae9e7e4f863f6da872f8ebe90d66fb028a10303"
+        },
+        {
+          "id": "B0172",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            629,
+            308,
+            308
+          ],
+          "nativePixelSha256": "38d3b3eca9da0080b78ed750e50c816b61280bcd5fc61967e4969d33d8ad5451"
+        },
+        {
+          "id": "B0173",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            943,
+            307,
+            308
+          ],
+          "nativePixelSha256": "f6f31cf3b9d7aaeae43791733f0c3348cbe0c141ca72e6a8533c62ec99c692f0"
+        },
+        {
+          "id": "B0174",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            943,
+            308,
+            308
+          ],
+          "nativePixelSha256": "023fcff7f3d21c4f4418cb62de41ac7754e09e4e6b47137e32c26b612351cd8d"
+        },
+        {
+          "id": "B0175",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            630,
+            943,
+            307,
+            308
+          ],
+          "nativePixelSha256": "189ed7dc25022aa281aec30b14003bf7ddf502efb21bcf34c2cde318dcc1ef48"
+        },
+        {
+          "id": "B0176",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            943,
+            308,
+            308
+          ],
+          "nativePixelSha256": "db4f13e740b019066f345803bce49f15cb3f052ef3f675ef99df8e1ed65a8cb2"
+        }
+      ]
+    },
+    "beast-12.webp": {
+      "filename": "beast-12.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        626,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        312,
+        626,
+        939,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "19650633b8dfff41312918120ebe851ac299cdee90658cebb3f830b2f85a8bf9",
+      "cells": [
+        {
+          "id": "B0177",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "b68b804bfd387573ba1472d38ff4b5f81b55dcbad47b04005f9e540ea0239554"
+        },
+        {
+          "id": "B0178",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "8bc664b71570958a3db23c92fd8466a128d57199ab219538b4e97ced7a6fbcee"
+        },
+        {
+          "id": "B0179",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            629,
+            3,
+            308,
+            306
+          ],
+          "nativePixelSha256": "07b20d5e7504b1f66b273eec0125df0288215645c8126946afee0073926fdfa7"
+        },
+        {
+          "id": "B0180",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            306
+          ],
+          "nativePixelSha256": "9d98ed25bb4a18a4b91f3ba2ae6270ea7f93adb41b3ac2b7c6a5ed679d661bf4"
+        },
+        {
+          "id": "B0181",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "7056a16f3cb2ff5d3774d05baa83ab68fcf2188be90a7977992ae72c4129e1d0"
+        },
+        {
+          "id": "B0182",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "9e446db6a82b2bc584f469e2cb5e2b9930455ca9e8cc8c991d31ded7a94a04ac"
+        },
+        {
+          "id": "B0183",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            629,
+            315,
+            308,
+            308
+          ],
+          "nativePixelSha256": "61dccfaf71ba603c0c37c38d048c9a873361ad5839c8444eb841474b6f76d52d"
+        },
+        {
+          "id": "B0184",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            315,
+            308,
+            308
+          ],
+          "nativePixelSha256": "030d21987d9a0dd3f98b5b6cadeccf95a7f01c6e889b6af80e9cc88d15f0da1d"
+        },
+        {
+          "id": "B0185",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "92bf079b49e18f077db24396ac39576ee7b94dae6969f28be757c5fc6a78df09"
+        },
+        {
+          "id": "B0186",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "9443bb68704dbd39aa5e9edb917deedd1277502d5e0789804aaa3f70a9fbf9a5"
+        },
+        {
+          "id": "B0187",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            629,
+            629,
+            308,
+            307
+          ],
+          "nativePixelSha256": "78fa34b802df2fd3e2f45f8bbeaef3e8595672bc8b23476ee51c7bb07b0fab4f"
+        },
+        {
+          "id": "B0188",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            629,
+            308,
+            307
+          ],
+          "nativePixelSha256": "2b478dddb93bd4da7092686c25390ee931b9ca3a25d22cea7c92c1f98c5864e2"
+        },
+        {
+          "id": "B0189",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "01f8a4c465034f601d84acd3751bcfb5ad47219c7eebe5b404fcb68ef942d33a"
+        },
+        {
+          "id": "B0190",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "8e3bed89fefa253d4743d0dce4c67592821a3924272b173b1a03d394c4c0d12f"
+        },
+        {
+          "id": "B0191",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            629,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "ed0f763d27c645ab9ccb032a1dd537bc267a5390e6609cb5fbfea5da1631d7a8"
+        },
+        {
+          "id": "B0192",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "5883155fbea9cd3e7c5279add039919a1f641bdc7e60242d9cdccbcd22feba72"
+        }
+      ]
+    },
+    "beast-13.webp": {
+      "filename": "beast-13.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        626,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        313,
+        626,
+        939,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "0b510079a483f1ac314080915bb5d98f08a8a470fba5195d01ce0da78506f65c",
+      "cells": [
+        {
+          "id": "B0193",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "4eff127bead568ad82bc8a24ded46f811f8c0dbcd1eb41e283e587291f8c548a"
+        },
+        {
+          "id": "B0194",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "da3a8aee3899878e95f7197642de0ff7542a7fb48686be279033d180fec4021e"
+        },
+        {
+          "id": "B0195",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            629,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "e3889af081ac12cb0e541de963f3128c998ea73661af088efaac55b882efc17c"
+        },
+        {
+          "id": "B0196",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "d549505db93c5603b95c238d888e01b68b5a1381b343da89c7ea8f79078443af"
+        },
+        {
+          "id": "B0197",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "96c5893c9774abc24ad92c296e5a8ccf79e9c434bab87118494e0fc462d68a94"
+        },
+        {
+          "id": "B0198",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "0b7954d11c2744b35ed18b90ad9cdf9d6b6afff00b97a7beb344ec360f8f6e33"
+        },
+        {
+          "id": "B0199",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            629,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "257d3d7efc869b5f6ea2194950834a7ec9bc7dbf9c0322de9fe2fa6fd57b1879"
+        },
+        {
+          "id": "B0200",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "21572377353e27c4bc1a615063a0d456c7a857cec860a880a8c7729f4b5a5311"
+        },
+        {
+          "id": "B0201",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "23cc995825370d96b468f25cdefcd824b23887ee4352191225b8c61f441ea386"
+        },
+        {
+          "id": "B0202",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "3ea278d60afd2254bfd0f00a6edcb647a7650ffc887abc05e7eeb95e726abfd5"
+        },
+        {
+          "id": "B0203",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            629,
+            629,
+            308,
+            307
+          ],
+          "nativePixelSha256": "51b51c83390a568fd52f8cab7336c60facf6d2eefe198a194139093fe258b74b"
+        },
+        {
+          "id": "B0204",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            629,
+            308,
+            307
+          ],
+          "nativePixelSha256": "9d98fd0b49ca3936b4a53a8f94d5bbd9d2b9375fd33ae88ab5036e202cee22dc"
+        },
+        {
+          "id": "B0205",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "1b9927c85dfde805151c3578ccbb8b43482dec009988a0441579fb6237a1c4c9"
+        },
+        {
+          "id": "B0206",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "b0d42e79d6442aa1cb0a6775c46ece754afeadc242fc8b9fa2dd3eec62fcf1d5"
+        },
+        {
+          "id": "B0207",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            629,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "9aa79b73ef958ffa1071d66529af943472122327f8ef2a76d5f34679373229ce"
+        },
+        {
+          "id": "B0208",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "af073e0afa739da230dd170474351f7174309f825262b133b3a187d666630d4d"
+        }
+      ]
+    },
+    "beast-14.webp": {
+      "filename": "beast-14.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        626,
+        939,
+        1254
+      ],
+      "rows": [
+        0,
+        312,
+        626,
+        939,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "89e66d3311d060f61f64f50d0c109f245e38a752d7203d9ea1500eabdf78bfc1",
+      "cells": [
+        {
+          "id": "B0209",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "1b7a3fb354d169e1e8e8d61509e7dd45a6eaa09f11c02d7d4ff5ef09cc98c1cf"
+        },
+        {
+          "id": "B0210",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "b2a029576f1a7423ea5257e774c9b5e4d5e004f7585b61f228e1368aa17e31ed"
+        },
+        {
+          "id": "B0211",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            629,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "d9540b24370d30a7d0babdc06fe039d2f94a0d676b74e3a7cd65d058b33aaefc"
+        },
+        {
+          "id": "B0212",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            942,
+            3,
+            309,
+            306
+          ],
+          "nativePixelSha256": "6283f3dfd07334095f0911335e484d8e9f16380d340d50ba3c53891548de8edf"
+        },
+        {
+          "id": "B0213",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "b0b8937151ed11f8d621c02d7005c3e4970635ce97d46d2910913c576647328b"
+        },
+        {
+          "id": "B0214",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "3c19ef4a77feb9cebda8a5cc6e584a579c68b07953a63082b050be3de5ac0334"
+        },
+        {
+          "id": "B0215",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            629,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "6198ef79fb8e2f70b49c57ec060e64029cf84860c6c0b186799bfeb7bd9d81b8"
+        },
+        {
+          "id": "B0216",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            942,
+            315,
+            309,
+            308
+          ],
+          "nativePixelSha256": "1f42ddd04ca0fc9995e50b38beb31198c870ed22bb25dcc2d2ba1807d926c546"
+        },
+        {
+          "id": "B0217",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "68ceebc4bc501e6ef34411c249d2c17057c30de3acf3a502cb1ab04929ecf72c"
+        },
+        {
+          "id": "B0218",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "b54687a6bad7e9e9fdb22d85bdc952de7214739b8a46cd81e75ea6c5a69f421f"
+        },
+        {
+          "id": "B0219",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            629,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "aba2ed72953d21e3411194c942c3cd336da90ad8d0ee839079cabfbc22c52832"
+        },
+        {
+          "id": "B0220",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            942,
+            629,
+            309,
+            307
+          ],
+          "nativePixelSha256": "41c8bb6b088998073686377fde8dfc2a45a2cc4b0bf70d23aff07541c0eee81a"
+        },
+        {
+          "id": "B0221",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "f2f11037e3d70b6bbd7de0733a21a2086d3992c9c8b439465cf90e2c52b7f9b5"
+        },
+        {
+          "id": "B0222",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "0c4b59b95ae4aa1614aab67bb9f3cb188e3620ac49b242f77141802b8fdb5959"
+        },
+        {
+          "id": "B0223",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            629,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "fac6d292de51c570471e3d74b2e6b01224b818320f65fc20e2979eb7db8f3ac1"
+        },
+        {
+          "id": "B0224",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            942,
+            942,
+            309,
+            309
+          ],
+          "nativePixelSha256": "43cbba0668068d62fea4664eb24b8f142ad1d734e460abcfa3a79267894d2b54"
+        }
+      ]
+    },
+    "beast-15.webp": {
+      "filename": "beast-15.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        627,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        313,
+        626,
+        940,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "53e75eed636b5e9235940f1585c0de95fd2e4151b44fc49c9e3b035eb9a138aa",
+      "cells": [
+        {
+          "id": "B0225",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "4784f3c50c33af126dec6e6b75a7430b34d847066be532454c4e309f97783887"
+        },
+        {
+          "id": "B0226",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "9757f216523efa89e5ea4d14eefec0091822d3248ce421612d03dee331b28827"
+        },
+        {
+          "id": "B0227",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            630,
+            3,
+            307,
+            307
+          ],
+          "nativePixelSha256": "6aa7ae1db87d16490ce1115f1a219cbbd5cf6f59f74e9d54b2d5191a72d131ed"
+        },
+        {
+          "id": "B0228",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            307
+          ],
+          "nativePixelSha256": "50d774e72b422fbc138e68184346aac42a05a31f084cdcaba08a19ce01f8e132"
+        },
+        {
+          "id": "B0229",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "6bb408bb7e354c9d272a8fad02cbe4de18ce31363fffb1d5e90260f344c0ce1e"
+        },
+        {
+          "id": "B0230",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "824ffe77cbd930c107659ab22ff6706ccaf2e607dcf4ea5620a279c021f7b9ee"
+        },
+        {
+          "id": "B0231",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            630,
+            316,
+            307,
+            307
+          ],
+          "nativePixelSha256": "ae85b892ad7caaa8611fc4b9f326c1b2aefde345974f673c322666ac4ebd3c95"
+        },
+        {
+          "id": "B0232",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            316,
+            308,
+            307
+          ],
+          "nativePixelSha256": "076ff332f8aeb8e3068682085e819413aace0aa16eaab82ca174e6e761086334"
+        },
+        {
+          "id": "B0233",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            308
+          ],
+          "nativePixelSha256": "9553652f205f358769b223b4bbeddea486e7c339806b0702724d43f4a01a0f7a"
+        },
+        {
+          "id": "B0234",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            308,
+            308
+          ],
+          "nativePixelSha256": "4ea6a803ad643dbf80c8f311dc6696697200a8d4372062ac907a5400cb566433"
+        },
+        {
+          "id": "B0235",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            630,
+            629,
+            307,
+            308
+          ],
+          "nativePixelSha256": "186acb56a8d08a7b6b5d3715598386fea93d6eb6468e1909c59e79eb83a3496f"
+        },
+        {
+          "id": "B0236",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            629,
+            308,
+            308
+          ],
+          "nativePixelSha256": "0160ff3eae81a8c42d481fc162da8d27d62e03f7dbed08a7b6d18df429be75bf"
+        },
+        {
+          "id": "B0237",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            943,
+            307,
+            308
+          ],
+          "nativePixelSha256": "cb5b939e1f95bca49a4916704536b6e510d94e9f8bbd1c493bdf6e51fb8023d0"
+        },
+        {
+          "id": "B0238",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            943,
+            308,
+            308
+          ],
+          "nativePixelSha256": "bd1e5150ce5ef6fd3bbea8aaccac20ff3f360d18f9b28313f41a6e9546539903"
+        },
+        {
+          "id": "B0239",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            630,
+            943,
+            307,
+            308
+          ],
+          "nativePixelSha256": "f69cbce20a7ac448343a4860c57d239305778051063c06110ed82cda5dd8c24e"
+        },
+        {
+          "id": "B0240",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            943,
+            308,
+            308
+          ],
+          "nativePixelSha256": "68fa8c4482c62f1f828521387b299f8bbe6030306a07fbbbf85864f05edbfc56"
+        }
+      ]
+    },
+    "beast-16.webp": {
+      "filename": "beast-16.webp",
+      "width": 1254,
+      "height": 1254,
+      "columns": [
+        0,
+        313,
+        626,
+        940,
+        1254
+      ],
+      "rows": [
+        0,
+        312,
+        626,
+        939,
+        1254
+      ],
+      "safeInset": 0.01,
+      "reviewed": true,
+      "requiresExplicitLayout": false,
+      "webpSha256": "0d26cd81bf87daaa4e9fcfa03def9ca4dd222c90bb42191b20849a3c617195b8",
+      "cells": [
+        {
+          "id": "B0241",
+          "column": 0,
+          "row": 0,
+          "safeRect": [
+            3,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "37cc1141dcf86f2b0fa0ba63f9f824195586f48c6eda2a84ab183ac2e5970a18"
+        },
+        {
+          "id": "B0242",
+          "column": 1,
+          "row": 0,
+          "safeRect": [
+            316,
+            3,
+            307,
+            306
+          ],
+          "nativePixelSha256": "c88b946d62c4fac259f6060fb51bab30a6d9535c89983295b1230fce72092115"
+        },
+        {
+          "id": "B0243",
+          "column": 2,
+          "row": 0,
+          "safeRect": [
+            629,
+            3,
+            308,
+            306
+          ],
+          "nativePixelSha256": "04983794e752a29992ff8f1183b5c8a44b7f47be4fce04b7bd0f2719ff009dbc"
+        },
+        {
+          "id": "B0244",
+          "column": 3,
+          "row": 0,
+          "safeRect": [
+            943,
+            3,
+            308,
+            306
+          ],
+          "nativePixelSha256": "cd211556605f4147a18bb0522034fc9779e822ae0a4565f9e609368889cc5d9c"
+        },
+        {
+          "id": "B0245",
+          "column": 0,
+          "row": 1,
+          "safeRect": [
+            3,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "916339a8776e3f9c88d6bc4b719a3355ef8e9e74470bd6f88eefa760a83d0122"
+        },
+        {
+          "id": "B0246",
+          "column": 1,
+          "row": 1,
+          "safeRect": [
+            316,
+            315,
+            307,
+            308
+          ],
+          "nativePixelSha256": "07689fd85a28b2e4c6aceacd840f42bb72947536850927e05951a104fc1a6d65"
+        },
+        {
+          "id": "B0247",
+          "column": 2,
+          "row": 1,
+          "safeRect": [
+            629,
+            315,
+            308,
+            308
+          ],
+          "nativePixelSha256": "19f6cd8c21e034d55e70e935c5eb7d98a7b698d8b21d927f0a62b38c46beefb7"
+        },
+        {
+          "id": "B0248",
+          "column": 3,
+          "row": 1,
+          "safeRect": [
+            943,
+            315,
+            308,
+            308
+          ],
+          "nativePixelSha256": "2739a4f359f15c27db72f2a0d464ae8906119614179215d999a02db44d1706b0"
+        },
+        {
+          "id": "B0249",
+          "column": 0,
+          "row": 2,
+          "safeRect": [
+            3,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "d6ef3b47a63f5b8849db1cc91b37870da05a4f0e2807546f09f36eb114e7edfd"
+        },
+        {
+          "id": "B0250",
+          "column": 1,
+          "row": 2,
+          "safeRect": [
+            316,
+            629,
+            307,
+            307
+          ],
+          "nativePixelSha256": "fa5ed7f177e3a8b731a7826a5059f5d242685611508c3f2cd80eac003ec48d49"
+        },
+        {
+          "id": "B0251",
+          "column": 2,
+          "row": 2,
+          "safeRect": [
+            629,
+            629,
+            308,
+            307
+          ],
+          "nativePixelSha256": "0d9cbd7305bfcff9f96aefd1891e987ba5da0ff1f19c4df91ead44ef79236d04"
+        },
+        {
+          "id": "B0252",
+          "column": 3,
+          "row": 2,
+          "safeRect": [
+            943,
+            629,
+            308,
+            307
+          ],
+          "nativePixelSha256": "95079d2006000d9ce64f0a0109267f914904233eb26b94ad89aa23cc19e928e5"
+        },
+        {
+          "id": "B0253",
+          "column": 0,
+          "row": 3,
+          "safeRect": [
+            3,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "e118ff110c802a6f9a2259dd3cbfb12f1e92c85a63296279e0ea641b952a9899"
+        },
+        {
+          "id": "B0254",
+          "column": 1,
+          "row": 3,
+          "safeRect": [
+            316,
+            942,
+            307,
+            309
+          ],
+          "nativePixelSha256": "87dd2d6cda47992324e7602be98a42180ee25d1ae79db97cc3ce32f847a2b533"
+        },
+        {
+          "id": "B0255",
+          "column": 2,
+          "row": 3,
+          "safeRect": [
+            629,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "659d7dca0743f1821777237f04ad1fb11ece455255b572fa1eff36bbda182ea5"
+        },
+        {
+          "id": "B0256",
+          "column": 3,
+          "row": 3,
+          "safeRect": [
+            943,
+            942,
+            308,
+            309
+          ],
+          "nativePixelSha256": "6f625a11dd2c4da5597b758444bfc5bc8b41205ad7ebc496385f020f0e342b84"
+        }
+      ]
+    }
+  }
+}

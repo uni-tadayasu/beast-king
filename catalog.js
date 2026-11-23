@@ -22,8 +22,9 @@ export const ORIGINS = Object.freeze([
   { id: 'grass', name: '草', color: '#8dce89', glyph: '❧', description: '草のしなやかな生命力。速さと連携で、戦場の流れを動かす。' },
   { id: 'flower', name: '花', color: '#e6a4be', glyph: '✿', description: '花ひらく守りの力。守護と回復を組み合わせ、味方を支える。' },
   { id: 'tree', name: '木', color: '#a2bc7d', glyph: '♧', description: '木々が重ねる生命の力。回復と強化で、戦線を大きく育てる。' },
+  { id: 'king', name: '王', color: '#edbd65', glyph: '♛', description: '王冠を戴く魔獣の力。黄金の装甲と揺るがぬ意志で、戦いを導く。' },
 ].map(Object.freeze));
-// Preserve the existing UI/engine import while exposing exactly six origins.
+// Preserve the existing UI/engine import while exposing seven ordered origins.
 export const ELEMENTS = ORIGINS;
 
 export const TYPE_LABELS = Object.freeze({ beast: '魔獣', miracle: 'ミラクル', gimmick: 'ギミック', fusion: '合成魔獣' });
@@ -156,11 +157,12 @@ const freezeCard = card => {
   else if (card.type === 'fusion') text = `特殊デッキから「合成」で召喚。素材2枚目以降、1枚につき攻撃力・守備力+${FUSION_MATERIAL_BONUS}。` + beastText(kind, value, card.keywords);
   else if (card.type === 'miracle' && kind !== 'fusion') text = miracleText(kind, value);
   else if (card.type === 'gimmick') text = gimmickText(kind, value);
-  const origin = ORIGIN_MAP[card.element];
+  const royal = card.id === 'B0512';
+  const origin = royal ? 'king' : ORIGIN_MAP[card.element];
   const model = card.type === 'fusion' ? 'hybrid' : card.type === 'beast' ? (card.model || (card.keywords.includes('guard') || card.hp > card.attack ? 'defense' : 'attack')) : null;
   const subtype = card.type === 'miracle' ? (['damage_enemy','draw','buff','sweep'].includes(kind) ? 'power' : 'regeneration') : card.type === 'gimmick' ? (['ambush','barrier'].includes(kind) ? 'reflection' : 'support') : null;
   if (model) text += ' ' + MODEL_DESCRIPTIONS[model];
-  return Object.freeze({ ...card, ...(model ? { model } : {}), ...(subtype ? { subtype } : {}), series: card.element, element: origin, origin, attack: card.attack * POINT_SCALE, hp: card.hp * POINT_SCALE, effect, text, keywords: Object.freeze(card.keywords) });
+  return Object.freeze({ ...card, ...(royal ? { name: '王冠竜 レガリア', flavor: '王冠は与えられるものではない。守り抜いた誓いが、黄金の翼になる。' } : {}), ...(model ? { model } : {}), ...(subtype ? { subtype } : {}), series: card.element, element: origin, origin, attack: card.attack * POINT_SCALE, hp: card.hp * POINT_SCALE, effect, text, keywords: Object.freeze(card.keywords) });
 };
 const TIER_RARITIES = Object.freeze(['N', 'N', 'R', 'KR', 'KR', 'KKR', 'GR', 'GGR']);
 const rarityForTier = tier => TIER_RARITIES[tier];

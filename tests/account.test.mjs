@@ -51,6 +51,18 @@ const deck=()=>({deck:[...STARTER_DECKS[0].ids],special:[...STARTER_DECKS[0].spe
 const privateFields=['token','token_hash','tokenHash','_sessionId','role','operator'];
 function publicProfile(p){for(const key of privateFields)assert.equal(p[key],undefined);}
 
+test('King origin follows cloud saves and linked devices and remains correct in operator lists',async t=>{
+  const f=fixture(t),p=await f.profile('王の保存テスト'),operator=await f.operator();
+  const value=saveData(p);value.profileOrigin='king';
+  const saved=await f.save(p,value);assert.equal(saved.status,200);assert.equal(saved.data.profile.origin,'king');
+  const linked=await f.link(p);assert.equal(linked.profile.origin,'king');assert.equal(linked.save.data.profileOrigin,'king');
+  const restored=await f.api('GET','/api/cloud-save',linked.token);assert.equal(restored.data.profile.origin,'king');assert.equal(restored.data.save.data.profileOrigin,'king');
+  const dashboard=await f.api('GET','/api/operator',operator.token);assert.equal(dashboard.data.operator.recentPlayers.find(row=>row.id===p.id).origin,'king');
+  const reverted={...value,profileOrigin:'river'};assert.equal((await f.save(p,reverted,1)).data.profile.origin,'river');
+  assert.equal((await f.api('GET','/api/profile',linked.token)).data.profile.origin,'river');
+  const created=await f.api('POST','/api/profile',null,{nickname:'新規の王',origin:'king'});assert.equal(created.status,200);assert.equal(created.data.profile.origin,'king');
+});
+
 test('the additive account migration preserves pre-existing profiles and creates no default operator',t=>{
   const db=new DatabaseSync(':memory:');t.after(()=>db.close());
   db.exec(readFileSync(new URL('../drizzle/0000_beast_king_online.sql',import.meta.url),'utf8'));

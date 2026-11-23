@@ -1,6 +1,6 @@
 /* Compact landscape arena: both fields and all four hand cards remain visible.
    Keep this after interface.css and battle-log.css. No portrait or tall-screen changes. */
-@media (max-height: 560px) and (orientation: landscape) {
+@media (max-height: 700px) and (orientation: landscape) {
   .duel-shell {
     --landscape-hand-width: clamp(176px, 24vw, 208px);
     --landscape-arcana-width: 106px;
@@ -155,7 +155,7 @@
   .duel-shell .battle-log-drawer:not([hidden]) { right: calc(var(--landscape-hand-width) + var(--landscape-edge) + 18px); top: calc(var(--news-height, 0px) + 42px); bottom: calc(48px + env(safe-area-inset-bottom)); width: min(350px, calc(100vw - var(--landscape-hand-width) - env(safe-area-inset-left) - env(safe-area-inset-right) - 40px)); max-height: calc(100svh - var(--news-height, 0px) - 90px - env(safe-area-inset-bottom)); }
 }
 
-@media (max-width: 760px) and (max-height: 560px) and (orientation: landscape) {
+@media (max-width: 760px) and (max-height: 700px) and (orientation: landscape) {
   .duel-shell { --landscape-hand-width: 176px; --landscape-arcana-width: 99px; }
   .duel-shell .arena { column-gap: 8px; }
   .duel-shell .arena > .duelist { width: calc(100% - 174px); gap: 4px; }

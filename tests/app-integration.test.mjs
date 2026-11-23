@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import { webcrypto } from 'node:crypto';
+import {BRAND_ICONS} from '../brand-icons.js';
+import {CARD_ART_CROPS} from '../card-art-layouts.js';
 import * as catalog from '../catalog.js';
 import * as engine from '../engine.js';
 import * as shop from '../shop.js';
@@ -89,7 +91,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     sendAction: async () => ({ ok: true }),
   };
   const context = vm.createContext({
-    ...catalog, ...engine, ...shop, ...campaign, battleLogView, handInspectorView, soloView,
+    ...catalog, ...engine, ...shop, ...campaign, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS,
     createOnlineClient: options => { callbacks = options; return client; },
     createCloudSync: () => ({ getState: () => ({phase:'synced',revision:1,dirty:false}), start: async () => ({phase:'synced',revision:1,dirty:false}), markDirty() {}, flush: async () => ({revision:1}), refresh: async () => ({revision:1}) }),
     createAccountUi: () => ({onCloudState() {},handleAction:()=>false,touchBrand:()=>false,clearIdentity(){},onModalClosed(){}}),

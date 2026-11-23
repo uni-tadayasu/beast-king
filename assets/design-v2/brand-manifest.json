@@ -1,0 +1,89 @@
+{
+  "copyright": "© 2026 Beast King",
+  "origins": [
+    "mountain",
+    "river",
+    "seed",
+    "grass",
+    "flower",
+    "tree",
+    "king"
+  ],
+  "files": [
+    {
+      "path": "assets/icon.svg",
+      "bytes": 2252,
+      "sha256": "ef0dc3366c38a74557fcb780bbf5785d3d6f3602854a42a883a9100623102bb7"
+    },
+    {
+      "path": "assets/favicon-32.png",
+      "bytes": 1970,
+      "sha256": "01fffe14de04ee65003584bc2857f30dd4ff0f5ecafb606236ee84afeb3fa6b4"
+    },
+    {
+      "path": "assets/apple-touch-icon.png",
+      "bytes": 14717,
+      "sha256": "050f561ac5ddfe47124da1c260baa43b839a18764800192e60e819f42e6ab080"
+    },
+    {
+      "path": "assets/icon-192.png",
+      "bytes": 16111,
+      "sha256": "a728ad8ecd76470e81dae15a5aa1338bf6a6866d56fdab2a05aa7efe83657d9d"
+    },
+    {
+      "path": "assets/icon-512.png",
+      "bytes": 56519,
+      "sha256": "980b1a1f2cdbae2f2e5b2d4322ba8d289a7ffbdbae6477756b069d71879e6e93"
+    },
+    {
+      "path": "assets/social-ogp.jpg",
+      "bytes": 99404,
+      "sha256": "f457deca93caa0ddb4c011775168f3d1230c3d02aa4683fa5920f26b63bd6a1c"
+    },
+    {
+      "path": "assets/profiles/mountain.svg",
+      "bytes": 1100,
+      "sha256": "62271a90fbffbd417ceac850742fd93afddd86272539d960e8150838533f8f62"
+    },
+    {
+      "path": "assets/profiles/river.svg",
+      "bytes": 1100,
+      "sha256": "8a1e0f6e11956e62a4355c421cb1b32cddbf7c81c96c97a3d6d810edbd97b57b"
+    },
+    {
+      "path": "assets/profiles/seed.svg",
+      "bytes": 1121,
+      "sha256": "094d5dcef034864f1c204bd42a833700ce1997c2766df98d792774d1140ed506"
+    },
+    {
+      "path": "assets/profiles/grass.svg",
+      "bytes": 1139,
+      "sha256": "de6db8143fb64a798abe38d7ea074f6758e6b728fc3831cd3c5f3213cde6f6ff"
+    },
+    {
+      "path": "assets/profiles/flower.svg",
+      "bytes": 1515,
+      "sha256": "4422a32a289ccc32154f60e331ddd175ccc24c0b1e016c3c1833ecd47ffd0133"
+    },
+    {
+      "path": "assets/profiles/tree.svg",
+      "bytes": 1138,
+      "sha256": "000ee54475416c4f538d0e28dc52bff1a32dfc66b611a7c6a84653f1c58566bc"
+    },
+    {
+      "path": "assets/profiles/king.svg",
+      "bytes": 1128,
+      "sha256": "06ec21f1364185531aaf564e4b1b3271fee661bd2254fe5bf69a44f58ba5f7f8"
+    },
+    {
+      "path": "assets/design-v2/brand/app-icon.svg",
+      "bytes": 2373,
+      "sha256": "131e913453574536d1436f4de50bbf6c395f6be99d737b2b353578558bc26c66"
+    },
+    {
+      "path": "assets/design-v2/brand/social-ogp.svg",
+      "bytes": 10181,
+      "sha256": "1b4ae8ffdb5edc751fcadd33a5c934a7dee5c8e9a22e8adadb0589986872f89e"
+    }
+  ]
+}

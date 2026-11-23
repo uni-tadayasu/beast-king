@@ -27,7 +27,7 @@ function nickname(value){
   return name;
 }
 function profileOrigin(value){
-  if(!PROFILE_ORIGINS.has(value))problem(400,'invalid_origin','アイコンは山・川・種・草・花・木から選んでください。');
+  if(!PROFILE_ORIGINS.has(value))problem(400,'invalid_origin','アイコンは山・川・種・草・花・木・王から選んでください。');
   return value;
 }
 function decks(body){
@@ -57,7 +57,7 @@ function allowedOrigin(origin,url){
   if(PUBLIC_ORIGINS.has(origin)||origin===url.origin)return true;
   try{const u=new URL(origin);return ['http:','https:'].includes(u.protocol)&&['localhost','127.0.0.1','[::1]'].includes(u.hostname)&&u.origin===origin;}catch{return false;}
 }
-function profilePublic(row){return {id:row.id,nickname:row.nickname,origin:row.origin||'mountain',rating:row.rating,wins:row.wins,losses:row.losses,draws:row.draws,lastMatchId:row.last_match_id||null};}
+function profilePublic(row){return {id:row.id,nickname:row.nickname,origin:row.origin_v2||row.origin||'mountain',rating:row.rating,wins:row.wins,losses:row.losses,draws:row.draws,lastMatchId:row.last_match_id||null};}
 async function cleanWaiting(db,now,keepPlayer){
   await db.batch([
     statement(db,"UPDATE bk_rooms SET status='closed',updated_at=? WHERE status='waiting' AND expires_at<=?",now,now),
@@ -81,7 +81,7 @@ function publicState(row,viewer){
 async function snapshot(db,row,playerId,now){
   const seat=seatOf(row,playerId),state=publicState(row,seat),opponent=1-seat;
   const own=await first(db,'SELECT rating FROM bk_profiles WHERE id=?',playerId);
-  const other=row.bot?null:await first(db,'SELECT origin FROM bk_profiles WHERE id=?',row[`player${opponent}`]);
+  const other=row.bot?null:await first(db,'SELECT COALESCE(origin_v2,origin) AS origin FROM bk_profiles WHERE id=?',row[`player${opponent}`]);
   const avatar=row.bot?JSON.parse(row.state_json).botOrigin:other?.origin;
   return {id:row.id,mode:row.mode,roomCode:row.room_code||null,revision:row.revision,state,
     opponent:{name:row[`name${opponent}`],kind:row.bot?'bot':'human',origin:PROFILE_ORIGINS.has(avatar)?avatar:'mountain',rating:row[`rating${opponent}`]+row[`rating_delta${opponent}`]},
@@ -170,7 +170,7 @@ async function profileRoute(db,request,method,now){
     let player=await authenticateAccount(db,request,now,problem);
     if(method==='POST'){
       const name=body.nickname===undefined?null:nickname(body.nickname),origin=body.origin===undefined?null:profileOrigin(body.origin);
-      if(name!==null||origin!==null)await run(db,'UPDATE bk_profiles SET nickname=COALESCE(?,nickname),origin=COALESCE(?,origin),updated_at=? WHERE id=?',name,origin,now,player.id);
+      if(name!==null||origin!==null)await run(db,'UPDATE bk_profiles SET nickname=COALESCE(?,nickname),origin=COALESCE(?,origin),origin_v2=COALESCE(?,origin_v2),updated_at=? WHERE id=?',name,origin==='king'?'mountain':origin,origin,now,player.id);
     }
     await cleanWaiting(db,now,player.id);
     const current=await activity(db,player.id,now);
@@ -178,7 +178,7 @@ async function profileRoute(db,request,method,now){
     return {ok:true,profile:profilePublic(player),activity:current};
   }
   const name=nickname(body.nickname===undefined?'プレイヤー':body.nickname),origin=profileOrigin(body.origin===undefined?'mountain':body.origin),bearer=token(),id=uuid();
-  await run(db,'INSERT INTO bk_profiles (id,token_hash,nickname,origin,created_at,updated_at) VALUES (?,?,?,?,?,?)',id,await hash(bearer),name,origin,now,now);
+  await run(db,'INSERT INTO bk_profiles (id,token_hash,nickname,origin,origin_v2,created_at,updated_at) VALUES (?,?,?,?,?,?,?)',id,await hash(bearer),name,origin==='king'?'mountain':origin,origin,now,now);
   return {ok:true,token:bearer,profile:profilePublic(await first(db,'SELECT * FROM bk_profiles WHERE id=?',id)),activity:null};
 }
 
