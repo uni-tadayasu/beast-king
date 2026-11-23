@@ -1,0 +1,30 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {validateRebuildBackup} from '../rebuild/backup.js';
+import {createRebuildCloudClient} from '../rebuild/cloud-client.js';
+import {initialProfile,STARTERS,purchase} from '../rebuild/profile.js';
+import {ONLINE_STORAGE_KEY} from '../online.js';
+const fresh=()=>initialProfile('テスト','king',STARTERS[0].id);
+test('backup preserves actual second pack cards, excludes authentication fields, rejects impossible quantities and retired art',()=>{
+ const data=purchase(fresh(),()=>.2,'BK02');
+ const value=validateRebuildBackup({...data,token:'secret',operator:true,grant:{entitled:true}});
+ assert.equal(value.lastPack.length,12);assert.equal(value.lastPackId,'BK02');assert.equal(value.token,undefined);assert.equal(value.operator,undefined);assert.equal(value.grant,undefined);
+ assert.throws(()=>validateRebuildBackup({...data,collection:{...data.collection,'OP-B1024':1}}));
+ assert.throws(()=>validateRebuildBackup({...data,treasure:-1}));
+ assert.throws(()=>validateRebuildBackup({...data,main:data.main.slice(1)}));
+ assert.throws(()=>validateRebuildBackup({...data,lastPackId:'BK01'}));
+});
+test('cloud transport uses existing session, no automatic overwrite, rejects revision conflicts and changed account',async()=>{
+ let session={token:'A'.repeat(43)},calls=[];
+ const storage={getItem:k=>k===ONLINE_STORAGE_KEY?JSON.stringify(session):null};
+ const fetchImpl=async(url,opt)=>{calls.push({url,opt});return new Response(JSON.stringify({ok:true,accountId:'account1',save:null}),{status:200})};
+ const client=createRebuildCloudClient({storage,fetchImpl,baseUrl:'https://example.test/api'});
+ assert.equal((await client.read()).save,null);assert.equal(calls[0].opt.method,'GET');
+ await client.write({accountId:'account1',revision:0,data:fresh(),mutationId:'test-mutation-1'});
+ assert.equal(calls[1].opt.method,'POST');assert.equal(JSON.parse(calls[1].opt.body).revision,0);
+ assert.equal(JSON.parse(calls[1].opt.body).data.token,undefined);
+ const conflict=createRebuildCloudClient({storage,fetchImpl:async()=>new Response('{}',{status:409})});
+ await assert.rejects(conflict.write({accountId:'account1',revision:0,data:fresh(),mutationId:'test-mutation-2'}),e=>e.code==='conflict');
+ const switched=createRebuildCloudClient({storage,fetchImpl:async()=>{session={token:'B'.repeat(43)};return new Response(JSON.stringify({ok:true,accountId:'account1',save:null}),{status:200})}});
+ await assert.rejects(switched.read(),/切り替わり/);
+});

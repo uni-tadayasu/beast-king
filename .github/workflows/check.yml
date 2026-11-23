@@ -28,3 +28,8 @@ jobs:
 
       - name: Test rebuilt game in Chrome
         run: node scripts/rebuild-browser-smoke.mjs
+
+      - name: Verify public delivery (read only, independent of build)
+        if: always()
+        continue-on-error: true
+        run: node scripts/check-public-release.mjs
