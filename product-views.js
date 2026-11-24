@@ -11,7 +11,7 @@ export function homeDashboard({data,game,icon,esc,fmt,cardMarkup,counts}={}) {
     <section class="home-showcase" aria-labelledby="court-title">
       <div class="home-scenery" aria-hidden="true"></div>
       <div class="home-intro"><p class="court-kicker">THE SEVEN ORIGINS</p><h1 id="court-title">七つの源。<br><em>君だけの王道。</em></h1><p>魔獣を集め、36枚に想いを込める。<br>ようこそ、${esc(data.playerName)}。</p><div class="home-edition"><span>第二弾</span><strong>${expansion.name}</strong><small>NEW 1,152 CARDS</small></div></div>
-      <div class="home-card-fan" aria-label="注目のカード">${['B0001','B0512','F0001'].map(id=>cardMarkup(getCard(id),{classes:'home-featured-card'})).join('')}</div>
+      <div class="home-card-fan" aria-label="注目のカード">${['B0001','B0512','F0001'].map(id=>cardMarkup(getCard(id),{classes:'home-featured-card',artContext:id==='B0512'&&data.activeDeckId==='operator-kirahara-v1'&&data.deckIds.includes(id)?'active':'public'})).join('')}</div>
     </section>
     <aside class="home-command">
       <section class="home-deckbox" style="--deck-accent:${origin.color}" aria-label="使用中のデッキ"><div class="home-deck-top"><span>YOUR BATTLE DECK</span>${icon('origin-'+origin.id)}</div><h2>${esc(data.deckName)}</h2><div class="home-deck-count"><span><b>${data.deckIds.length}</b>通常</span><i>＋</i><span><b>${data.specialIds.length}</b>特殊</span></div><p>魔獣 ${stat.beast} · ミラクル ${stat.miracle} · ギミック ${stat.gimmick}</p><button class="btn" data-nav="deck">${icon('cards')}デッキを編成</button></section>

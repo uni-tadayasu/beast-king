@@ -8,7 +8,7 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   let account={link:null,devices:[],busy:false,error:''};
   let inbox={messages:[],gifts:[],events:[],busy:false,error:''};
   let operator={snapshot:null,eventDraft:null,busy:false,error:''};
-  let operatorDeck=null,deckRequest=null;
+  let operatorDeck=null,operatorDeckOwner=null,deckRequest=null;
   let brandCount=0,brandAt=0,operatorTimer=null;
   const pending=new Map();
   const kind=()=>getModal()?.kind;
@@ -45,11 +45,12 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   }
   function gateModal(error=''){dialog('operator-gate','アクセス確認',operatorGateView({esc,icon,error,busy:operator.busy}));}
   function regaliaModal(error=''){dialog('operator-regalia','特別コードの確認',operatorGateView({esc,icon,error,busy:operator.busy,purpose:'regalia',regaliaClaimed:!!operator.snapshot?.regalia?.claimedAt}));}
-  const getOperatorDeck=()=>operatorDeck?structuredClone(operatorDeck):null;
+  const getOperatorDeck=()=>{const state=client.getStatus?.()||{};return operatorDeck&&operatorDeckOwner===client.profile?.id&&!state.authInvalidated&&!state.identityChanging?structuredClone(operatorDeck):null;};
   function acceptOperatorDeck(value){
-    const next=value&&Array.isArray(value.ids)&&value.ids.length===32&&Array.isArray(value.specialIds)&&value.specialIds.length===4?structuredClone(value):null;
-    if(JSON.stringify(operatorDeck)===JSON.stringify(next))return;
-    operatorDeck=next;onOperatorDeckChange?.(getOperatorDeck());
+    const next=value?.id==='operator-kirahara-v1'&&client.profile?.id&&Array.isArray(value.ids)&&value.ids.length===32&&Array.isArray(value.specialIds)&&value.specialIds.length===4?structuredClone(value):null;
+    const owner=next?client.profile.id:null;
+    if(operatorDeckOwner===owner&&JSON.stringify(operatorDeck)===JSON.stringify(next))return;
+    operatorDeck=next;operatorDeckOwner=owner;onOperatorDeckChange?.(getOperatorDeck());
   }
   function refreshOperatorDeck(){
     if(deckRequest)return deckRequest;

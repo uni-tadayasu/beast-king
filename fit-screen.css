@@ -506,3 +506,8 @@ html.bk-fit .bk-native-screen .deck-row .row-name>span:last-child{line-height:1.
  html.bk-fit .bk-native-screen .transfer-counts b{font-size:12px}
  html.bk-fit .bk-native-screen .deck-inspector-launch>.btn,.bk-native-screen .deck-scope-tabs>.btn{min-height:28px;font-size:10px}
 }
+
+/* Dedicated deck artwork is not replaced with public artwork on a missing grant. */
+.individual-art[data-regalia-status="pending"]::after{content:"専用イラスト\A 認証・配信を確認";white-space:pre-line;position:absolute;inset:0;display:grid;place-content:center;text-align:center;color:#e6d1a0;font-size:clamp(9px,5cqi,16px);font-weight:700;line-height:1.55;background:#11182b55;z-index:2;pointer-events:none}
+.deck-row-art[data-regalia-status="pending"]{border-color:#aa8acb;background:#24243a}
+.operator-art-status{color:#e1c78f;font-size:11px;line-height:1.4}

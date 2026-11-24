@@ -21,7 +21,7 @@ import {calculateCardLayout,calculateFittedCardLayout} from '../viewport.js';
 const appSource = readFileSync(new URL('../app.js', import.meta.url), 'utf8').replace(/^import\s+[^;]+;\s*$/gm, '');
 const expose = `
 globalThis.__appIntegration = {
-  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck,
+  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
   get workingDeck(){return workingDeck}, get data(){return data}, get game(){return game}, get cpuGame(){return cpuGame},
@@ -97,7 +97,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     ...catalog, ...engine, ...shop, ...campaign, ...product, rulebookView, calculateCardLayout, calculateFittedCardLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS,
     createOnlineClient: options => { callbacks = options; return client; },
     createCloudSync: () => ({ getState: () => ({phase:'synced',revision:1,dirty:false}), start: async () => ({phase:'synced',revision:1,dirty:false}), markDirty() {}, flush: async () => ({revision:1}), refresh: async () => ({revision:1}) }),
-    createAccountUi: () => ({onCloudState() {},handleAction:()=>false,touchBrand:()=>false,clearIdentity(){},onModalClosed(){}}),
+    createAccountUi: () => ({getOperatorDeck:()=>hooks.operatorDeck||null,onCloudState() {},handleAction:()=>false,touchBrand:()=>false,clearIdentity(){},onModalClosed(){}}),
     setPublicNotice() {},
     createPresenceController: () => ({start:async()=>{},stop:async()=>{}}),
     createMusicController: () => ({ sync() {}, unlock() {}, getState: () => ({ scene: 'menu', blocked: false }) }),
@@ -385,4 +385,32 @@ test('deck transfer uses ownership and exact deck-slot validation',()=>{
  assert.equal(app.transferCard({side:'deck',id,index:0,section:'main',bank},{side:'pool'}),true);assert.equal(app.workingDeck.length,31);
  assert.equal(app.transferCard({side:'pool',id,bank},{side:'deck'}),true);assert.equal(app.workingDeck.length,32);assert.deepEqual(plain(app.data.collection),inventory);
  assert.equal(app.transferCard({side:'pool',id,bank:'other-deck'},{side:'deck'}),false);
+});
+
+test('Regalia artwork is scoped to the authenticated deck instance and the clicked card detail',()=>{
+ const regalia=catalog.getCard('B0512'),privateArt='data:image/svg+xml;base64,PHN2Zy8+';
+ const grant={id:'operator-kirahara-v1',name:'𠮷良原デッキ',artwork:privateArt};
+ const hooks={operatorDeck:grant}, {app,nodes}=boot({hooks});
+ const data=app.data;const main=[...catalog.STARTER_DECKS[0].ids];main[0]='B0512';data.collection.B0512=2;
+ data.deckLibrary.push({id:grant.id,name:grant.name,ids:main,specialIds:[...data.specialIds]});
+ app.setState({page:'deck',entered:true});
+ assert.equal(app.loadBankEntry(grant.id),true);
+ assert.ok(app.artStyle(regalia,'editor').includes(privateArt));
+ assert.ok(app.artStyle(regalia,'public').includes('king.webp'));
+ assert.ok(app.cardMarkup(regalia,{artContext:'editor'}).includes('data-art-context="editor"'));
+ app.cardDetails('B0512','editor');assert.ok(nodes.get('#modal-root').innerHTML.includes(privateArt));
+ app.cardDetails('B0512');assert.ok(!nodes.get('#modal-root').innerHTML.includes(privateArt));
+ app.loadBankEntry(data.activeDeckId);assert.ok(app.artStyle(regalia,'editor').includes('king.webp'));
+ data.activeDeckId=grant.id;data.deckIds=main;app.setState({page:'home'});
+ assert.ok(app.artStyle(regalia,'active').includes(privateArt));
+ assert.ok(!app.artStyle(regalia,'public').includes(privateArt));
+ app.setState({page:'duel',game:{playerDeckId:grant.id}});
+ data.activeDeckId='starter-star-crown';
+ assert.ok(app.artStyle(regalia,'battle').includes(privateArt));
+ app.setState({game:{playerDeckId:null}});
+ assert.ok(app.artStyle(regalia,'battle').includes('king.webp'));
+ app.setState({game:{playerDeckId:grant.id}});hooks.operatorDeck={...grant,artwork:null};
+ assert.ok(app.artStyle(regalia,'battle').includes('radial-gradient'));
+ assert.ok(!app.artStyle(regalia,'battle').includes('king.webp'));
+ assert.ok(!JSON.stringify(data).includes(privateArt));
 });

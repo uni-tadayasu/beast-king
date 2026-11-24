@@ -87,6 +87,7 @@ function cpuSave(raw,fail){
   const log=raw.log.map(event=>{check(plain(event)&&text(event.text,1000,{lines:true})&&text(event.type,32,{empty:false})&&(event.turn===undefined||integer(event.turn,1,9999)),fail,'invalid_save');return {text:event.text,type:event.type,...(event.turn===undefined?{}:{turn:event.turn})};});
   const game={rulesVersion:2,turn:raw.turn,active:raw.active,winner:raw.winner,players,log,nextUid:raw.nextUid,seed:raw.seed,difficulty:raw.difficulty};
   for(const key of ['cpuDeckName','playerDeckName'])if(raw[key]!==undefined){check(text(raw[key],80),fail,'invalid_save');game[key]=raw[key];}
+  if(raw.playerDeckId!==undefined){check(raw.playerDeckId===null||raw.playerDeckId==='operator-kirahara-v1',fail,'invalid_save');game.playerDeckId=raw.playerDeckId;}
   for(const key of ['statsRecorded','forfeited'])if(raw[key]!==undefined){check(typeof raw[key]==='boolean',fail,'invalid_save');game[key]=raw[key];}
   if(raw.cpuOrigin!==undefined){check(ORIGIN_IDS.has(raw.cpuOrigin),fail,'invalid_save');game.cpuOrigin=raw.cpuOrigin;}
   if(raw.treasureReward!==undefined){check(integer(raw.treasureReward,0,100_000),fail,'invalid_save');game.treasureReward=raw.treasureReward;}
@@ -234,7 +235,12 @@ async function requireOperator(c,player,{setup=false}={}){
   c.fail(404,'operator_unavailable','この操作は利用できません。',setup&&!row&&typeof c.env.BK_OPERATOR_BOOTSTRAP==='string'&&c.env.BK_OPERATOR_BOOTSTRAP.length?{setupAvailable:true}:{});
 }
 async function privateRegaliaArt(db,playerId){
- const row=await first(db,"SELECT a.id FROM bk_operator_audit a JOIN bk_operator o ON o.player_id=a.player_id WHERE o.singleton=1 AND a.player_id=? AND a.action='operator.activated' ORDER BY a.created_at,a.id LIMIT 1",playerId);
+ const select=()=>first(db,"SELECT a.id FROM bk_operator_audit a JOIN bk_operator o ON o.singleton=1 AND o.player_id=a.player_id WHERE a.player_id=? AND a.action IN ('operator.activated','operator.art_seed') ORDER BY CASE WHEN a.action='operator.activated' THEN 0 ELSE 1 END,a.created_at,a.id LIMIT 1",playerId);
+ let row=await select();
+ if(!row){
+  await run(db,"INSERT INTO bk_operator_audit (id,player_id,action,payload_json,created_at) SELECT ?,?,'operator.art_seed','{}',? WHERE EXISTS (SELECT 1 FROM bk_operator WHERE singleton=1 AND player_id=?) AND NOT EXISTS (SELECT 1 FROM bk_operator_audit WHERE player_id=? AND action IN ('operator.activated','operator.art_seed'))",uuid(),playerId,Date.now(),playerId,playerId);
+  row=await select();
+ }
  return row?operatorRegaliaArtwork(row.id):null;
 }
 const unlockedOperatorDeck=async(db,playerId,claimedAt,upgradeRequired=false)=>claimedAt==null?null:{...OPERATOR_DECK,unlockedAt:claimedAt,upgradeRequired,artwork:await privateRegaliaArt(db,playerId)};
