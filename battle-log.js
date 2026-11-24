@@ -47,6 +47,6 @@ export function battleLogView({ game, esc = defaultEscape, icon, open = false, m
   return `<section id="${id}" class="battle-log ${drawer ? 'battle-log-drawer' : 'battle-log-panel'}" aria-labelledby="${id}-title"${drawer ? ' role="dialog" aria-modal="false" tabindex="-1"' : ''}>
     <header class="battle-log-header"><div class="battle-log-title-group"><span class="battle-log-mark" aria-hidden="true">${glyph('book')}</span><div><h2 id="${id}-title">効果ログ <span class="battle-log-count">${count}</span></h2><p>この対戦の履歴 · 新しい順</p></div></div>${drawer ? `<button type="button" class="battle-log-close" data-action="toggle-battle-log" data-open="false" aria-label="効果ログを閉じる"><span aria-hidden="true">${glyph('close')}</span><span>閉じる</span></button>` : ''}</header>
     <div id="${id}-scroll" class="battle-log-scroll" data-battle-log-scroll="${drawer ? 'drawer' : 'panel'}" tabindex="0" aria-label="対戦履歴、新しい順">${records ? `<ol class="battle-log-entries">${records}</ol>` : empty}</div>
-    <footer class="battle-log-footer"><span>直近1,000件までの履歴</span>${drawer ? '<button type="button" class="battle-log-return" data-action="toggle-battle-log" data-open="false">対戦に戻る</button>' : '<span class="battle-log-scroll-hint">スクロールで確認</span>'}</footer>
+    <footer class="battle-log-footer"><span>直近1,000件までの履歴</span>${drawer ? '<button type="button" class="battle-log-return" data-action="toggle-battle-log" data-open="false">対戦に戻る</button>' : '<span class="battle-log-scroll-hint">ページ送りで確認</span>'}</footer>
   </section>`;
 }

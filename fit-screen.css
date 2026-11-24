@@ -1076,14 +1076,14 @@ html.bk-fit .bk-native-pane,
 html.bk-fit .bk-fit-frame,
 html.bk-fit .bk-fit-article,
 html.bk-fit .operator-content-frame{
- overflow-x:hidden!important;overflow-y:auto!important;
- overscroll-behavior:contain;scrollbar-width:thin;scrollbar-gutter:stable;
+ overflow:clip!important;
+ overscroll-behavior:none;scrollbar-width:none;scrollbar-gutter:auto;
 }
 html.bk-fit .bk-native-pane>.bk-fit-pane,
 html.bk-fit .bk-fit-frame>.bk-fit-target,
 html.bk-fit .bk-fit-article>.bk-fit-target,
 html.bk-fit .operator-content-frame>.operator-section-body{
- box-sizing:border-box;transform:none!important;
+ box-sizing:border-box;
 }
 html.bk-fit .bk-native-screen .page>.product-home,
 html.bk-fit .bk-native-screen .page>.product-shop,
@@ -1095,7 +1095,7 @@ html.bk-fit .bk-native-screen .page>.rulebook{
 html.bk-fit .bk-native-screen .page>.product-home{min-height:calc(var(--bk-canvas-h,500px) - 2 * var(--bk-pad))!important}
 html.bk-fit #modal-root .modal.bk-fit-modal:not(.operator-fullscreen),
 html.bk-fit dialog.bk-fit-modal:not(.news-dialog){
- transform:none!important;overscroll-behavior:contain;scrollbar-width:thin;
+ overscroll-behavior:none;scrollbar-width:none;
 }
 html.bk-fit .bk-native-screen .dual-workshop>.transfer-workspace{
  grid-template-columns:repeat(2,minmax(0,1fr))!important;
@@ -1123,4 +1123,115 @@ html.bk-fit .bk-native-screen .dual-workshop .deck-list>.deck-image-grid{
  }
  html.bk-fit .bk-native-screen .dual-workshop .filter-bar.deck-filters-compact>.search-field{grid-column:1;grid-row:1}
  html.bk-fit .bk-native-screen .dual-workshop .filter-bar.deck-filters-compact>.tabs{grid-column:2;grid-row:1}
+}
+
+/* Readable paged layout: no wheel or touch scrolling, including overlays.
+   Actual views use the full viewport. Only an indivisible short-screen panel
+   can require local fitting, never the surrounding navigation. */
+html.bk-fit,html.bk-fit body{overflow:hidden!important;overscroll-behavior:none}
+html.bk-fit *{scrollbar-width:none!important;scroll-behavior:auto!important}
+html.bk-fit [data-bk-page-hidden],html.bk-fit .bk-screen-tabs[hidden],html.bk-fit .bk-fit-inline-pager[hidden]{display:none!important}
+html.bk-fit :is(.bk-native-pane,.bk-fit-frame,.bk-fit-article,.operator-content-frame){overflow:clip!important;scrollbar-gutter:auto!important}
+html.bk-fit .bk-screen-tabs{display:flex;flex:none;gap:6px;min-width:0;margin:0;padding:0;align-items:stretch}
+html.bk-fit .bk-screen-tabs>button{flex:1;min-width:0;min-height:34px;padding:5px 10px;border:1px solid #b49ac677;border-radius:6px;background:#24223b;color:#e9d9f0;font-size:clamp(13px,1.05vw,17px);line-height:1.2;font-weight:600;white-space:normal}
+html.bk-fit .bk-screen-tabs>button[aria-pressed=true]{border-color:#f2d39a;background:#564469;color:#fff0d2;box-shadow:inset 0 -3px #dfbe81}
+html.bk-fit .bk-fit-inline-pager{min-height:34px;flex:none;grid-column:1/-1;margin:4px 0;font-size:clamp(12px,1vw,15px);line-height:1.2}
+html.bk-fit .bk-fit-inline-pager button{min-height:34px;min-width:65px;font-size:inherit;padding:5px 10px}
+html.bk-fit .bk-native-screen .page[data-page=deck]>.dual-workshop{
+ grid-template-rows:auto auto minmax(0,1fr)!important;gap:5px
+}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .workshop-tools .deck-bank-toolbar,
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .workshop-tools .deck-panel-head,
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .workshop-tools .deck-display-tabs,
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .workshop-tools .filter-bar,
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-source-tools>[data-action=deck-advanced-filters],
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-source-tools>[data-action=reset-filters],
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-panel-foot .deck-hint,
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-panel-foot [data-action=deck-clear],
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-panel-foot [data-action=deck-save-only]{display:none!important}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-source-tools{grid-template-columns:minmax(0,3fr) minmax(0,1fr)!important;gap:4px}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-source-tools>.deck-scope-tabs{grid-column:1!important}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .workshop-tools .deck-panel-foot>div{grid-template-columns:minmax(0,1fr)!important}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .transfer-heading small{display:none}
+html.bk-fit .bk-native-screen .dual-workshop:is([data-bk-workshop-mode=filter],[data-bk-workshop-mode=settings])>.transfer-workspace{
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important;height:auto!important;min-height:0!important
+}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=filter] .deck-panel,
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=settings] .transfer-source,
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=filter] #card-results,
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=settings] .deck-list{display:none!important}
+html.bk-fit .bk-native-screen .dual-workshop:is([data-bk-workshop-mode=filter],[data-bk-workshop-mode=settings]) :is(.transfer-source,.deck-panel){
+ grid-column:1!important;grid-row:1!important;grid-template-rows:auto!important;height:auto!important;align-content:start;min-height:0!important
+}
+html.bk-fit .bk-native-screen .dual-workshop:is([data-bk-workshop-mode=filter],[data-bk-workshop-mode=settings]) .workshop-tools{
+ display:flex;gap:10px;max-width:100%;padding:clamp(8px,1.4vw,22px);align-content:start
+}
+html.bk-fit .bk-native-screen .dual-workshop:is([data-bk-workshop-mode=filter],[data-bk-workshop-mode=settings]) .workshop-tools :is(.btn,.tab,.text-button,select,input){
+ min-height:40px;font-size:clamp(13px,1.2vw,18px);line-height:1.3;padding:7px 8px
+}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=settings] .workshop-tools .deck-panel-head>input{width:auto;flex:1 1 120px}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=settings] .workshop-tools .deck-panel-head>label{display:block}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=settings] .workshop-tools .deck-bank-toolbar>p{display:block}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=filter] .filter-bar{grid-template-columns:minmax(0,1fr)!important}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=filter] .filter-bar>.search-field{grid-column:1/-1!important;grid-row:1}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=filter] .filter-bar>.tabs{grid-column:1/-1!important;grid-row:2}
+html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=filter] .filter-bar>.filters-secondary{grid-column:1/-1!important;grid-row:3}
+html.bk-fit .bk-native-screen .page[data-bk-catalog-mode=cards]>.filter-bar,
+html.bk-fit .bk-native-screen .page[data-bk-catalog-mode=cards]>.catalog-guide,
+html.bk-fit .bk-native-screen .page[data-bk-catalog-mode=filter]>#card-results{display:none!important}
+html.bk-fit .bk-native-screen .page[data-bk-catalog-mode=filter] .filter-bar{margin:0;padding:12px;gap:8px}
+html.bk-fit .bk-native-screen .page[data-bk-catalog-mode=filter] .filter-bar :is(input,select,button){min-height:40px;font-size:14px}
+html.bk-fit .bk-native-screen .product-home:not([data-bk-home-mode=all]){
+ display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(min-content,1fr);gap:6px
+}
+html.bk-fit .bk-native-screen .product-home:not([data-bk-home-mode=all])>.bk-screen-tabs{grid-row:2;grid-column:1/-1}
+html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=showcase]>:is(.home-command,.home-originbar),
+html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=command]>:is(.home-showcase,.home-originbar),
+html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=origins]>:is(.home-showcase,.home-command){display:none!important}
+html.bk-fit .bk-native-screen .product-home:not([data-bk-home-mode=all])>:is(.home-showcase,.home-command,.home-originbar){grid-row:3;grid-column:1/-1;align-self:stretch;min-height:0}
+html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=showcase]>.home-showcase{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto;align-content:center;padding:10px}
+html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=origins]>.home-originbar{display:flex;flex-direction:column;justify-content:center;gap:12px}
+html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=origins]>.home-originbar>nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
+html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=origins]>.home-originbar>nav>button{min-height:55px;font-size:16px}
+html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=command]>.home-command{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;align-content:center}
+html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=command] .home-shortcuts>button{font-size:14px;min-height:40px}
+html.bk-fit .bk-native-screen .product-shop .starter-shelf[data-fit-paged]{grid-template-columns:repeat(var(--bk-visible-items,1),minmax(0,1fr))}
+html.bk-fit .bk-fit-modal .pack-result-grid[data-fit-paged]{grid-template-columns:repeat(var(--bk-visible-items,2),minmax(0,1fr));align-items:start}
+html.bk-fit .bk-fit-modal .pack-result-grid .pack-pull>.game-card{max-width:240px;width:100%}
+html.bk-fit .bk-native-screen .rulebook-spread[data-fit-paged]{grid-template-columns:repeat(var(--bk-visible-items,1),minmax(0,1fr))}
+html.bk-fit .bk-native-screen .rulebook-sheet>.bk-fit-inline-pager{margin:3px 0 0}
+html.bk-fit .bk-fit-modal .detail-layout>.game-card{max-width:min(320px,42vw);width:100%}
+html.bk-fit .bk-fit-modal .detail-info .detail-effect{font-size:clamp(14px,1.3vw,19px);line-height:1.6}
+html.bk-fit .bk-fit-modal .inspect-gallery .game-card,html.bk-fit .bk-fit-modal .inspect-candidates .game-card{max-width:240px;width:100%}
+@media(min-width:1000px){
+ html.bk-fit .bk-native-screen .dual-workshop .transfer-heading strong{font-size:17px}
+ html.bk-fit .bk-native-screen .dual-workshop .workshop-tools .btn{font-size:14px}
+ html.bk-fit .bk-native-screen .product-home .home-card-fan .game-card{max-width:min(320px,calc(var(--bk-canvas-h,500px)*.46))}
+ html.bk-fit .bk-native-screen .field-row>.field-slot{width:min(100%,clamp(52px,calc((var(--bk-canvas-h,420px) - 120px)*.235),190px))!important}
+}
+@media(max-width:650px){
+ html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-source-tools{grid-template-columns:1fr!important}
+ html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-source-tools>.btn{min-height:25px}
+ html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-scope-tabs>.btn{min-height:27px;line-height:1.15}
+ html.bk-fit .bk-native-screen .product-shop .starter-shelf[data-fit-paged]>.starter-offer{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:8px;align-items:center}
+ html.bk-fit .bk-native-screen .product-shop .starter-shelf .starter-box{width:100%;max-width:185px}
+ html.bk-fit .bk-native-screen .product-shop .starter-offer-copy h2{font-size:18px}
+ html.bk-fit .bk-native-screen .product-shop .starter-sale-actions>.btn{font-size:12px;min-height:36px}
+ html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-card-fan .game-card{max-width:130px}
+ html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-intro h1{font-size:clamp(20px,5vw,30px)}
+ html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-showcase{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto}
+ html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-card-fan{grid-row:2}
+ html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-intro{grid-row:1}
+ html.bk-fit .bk-fit-modal .detail-layout>.game-card{max-width:min(280px,65vw)}
+}
+@media(max-height:540px) and (orientation:landscape){
+ html.bk-fit .bk-screen-tabs>button{min-height:27px;font-size:12px;padding:3px 5px}
+ html.bk-fit .bk-fit-inline-pager{min-height:26px;margin:1px 0}
+ html.bk-fit .bk-fit-inline-pager button{min-height:26px;padding:3px 6px}
+ html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .transfer-heading{padding:2px 5px;min-height:22px}
+ html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-scope-tabs>.btn{min-height:25px}
+ html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-zone-tabs>button{min-height:25px}
+ html.bk-fit .bk-native-screen .dual-workshop[data-bk-workshop-mode=cards] .deck-panel-foot .btn{min-height:25px}
+ html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=showcase]>.home-showcase{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ html.bk-fit .bk-native-screen .product-shop .starter-shelf>.starter-offer{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr);gap:7px}
 }
