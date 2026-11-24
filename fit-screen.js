@@ -28,11 +28,13 @@ function measureCardPane(node,height){
  const footer=(meta?.offsetHeight||18)+(pager?.offsetHeight||36)+22;
  const pad=Number.parseFloat(getComputedStyle(node).paddingBottom)||0;
  const dual=node.dataset.page==='deck'&&!!node.querySelector('.dual-workshop');
- const available=Math.max(1,dual?result.clientHeight-footer:height-(r.top-bounds.top)-pad-footer);
+ const leftGrid=result.querySelector('.cards-grid');
+ const available=Math.max(1,dual?(leftGrid?.clientHeight||1):height-(r.top-bounds.top)-pad-footer);
  const list=node.querySelector('.deck-list'),foot=node.querySelector('.deck-panel-foot');
  const pagerRight=list?.querySelector('.deck-list-pagination'),rightPadding=20;
- const deckHeight=list?Math.max(0,dual?list.clientHeight-(pagerRight?.offsetHeight||34)-rightPadding:height-(list.getBoundingClientRect().top-bounds.top)-pad-(foot?.offsetHeight||48)-40):0;
- const metrics={width:Math.max(1,Math.floor(result.clientWidth)),height:Math.floor(available),deckHeight:Math.floor(deckHeight),deckWidth:list?Math.max(1,list.clientWidth-16):0};
+ const imageGrid=list?.querySelector('.deck-image-grid');
+ const deckHeight=list?Math.max(0,dual?(imageGrid?.clientHeight||list.clientHeight-(pagerRight?.offsetHeight||34)-rightPadding):height-(list.getBoundingClientRect().top-bounds.top)-pad-(foot?.offsetHeight||48)-40):0;
+ const metrics={width:Math.max(1,Math.floor(dual?(leftGrid?.clientWidth||result.clientWidth):result.clientWidth)),height:Math.floor(available),deckHeight:Math.floor(deckHeight),deckWidth:list?Math.max(1,imageGrid?.clientWidth||list.clientWidth-10):0};
  const key=[node.dataset.page,metrics.width,metrics.height,metrics.deckHeight,metrics.deckWidth].join(':');
  // A replaced app render needs the current calculation even if geometry is identical.
  if(key!==lastCardMetrics||!node.dataset.bkMetricsApplied){lastCardMetrics=key;node.dataset.bkMetricsApplied='true';window.dispatchEvent(new CustomEvent('bk-fit-card-metrics',{detail:metrics}));}

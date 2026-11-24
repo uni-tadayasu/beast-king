@@ -14,7 +14,7 @@ import {soloView} from '../mode-views.js';
 import * as campaign from '../campaign.js';
 import * as product from '../product-views.js';
 import {rulebookView} from '../rules-view.js';
-import {calculateCardLayout,calculateFittedCardLayout} from '../viewport.js';
+import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayout} from '../viewport.js';
 
 // Load the production script unchanged apart from ES-module imports. The suffix exposes
 // existing helpers only inside this isolated VM; no test hooks are added to the app.
@@ -94,7 +94,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     sendAction: async () => ({ ok: true }),
   };
   const context = vm.createContext({
-    ...catalog, ...engine, ...shop, ...campaign, ...product, rulebookView, calculateCardLayout, calculateFittedCardLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS,
+    ...catalog, ...engine, ...shop, ...campaign, ...product, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS,
     createOnlineClient: options => { callbacks = options; return client; },
     createCloudSync: () => ({ getState: () => ({phase:'synced',revision:1,dirty:false}), start: async () => ({phase:'synced',revision:1,dirty:false}), markDirty() {}, flush: async () => ({revision:1}), refresh: async () => ({revision:1}) }),
     createAccountUi: () => ({getOperatorDeck:()=>hooks.operatorDeck||null,onCloudState() {},handleAction:()=>false,touchBrand:()=>false,clearIdentity(){},onModalClosed(){}}),
@@ -424,4 +424,13 @@ test('dual workshop displays a complete left catalogue and an independent right 
  const id=app.workingDeck[0],collection=plain(app.data.collection);
  assert.equal(app.editDeck(id,false),true);assert.equal(app.filteredCards().length,2304);
  assert.deepEqual(plain(app.data.collection),collection);
+});
+
+test('50/50 editor card geometry includes the entire action footer',()=>{
+ for(const [width,height] of [[890,510],[540,340],[180,220],[130,145],[1200,750]]){
+  const layout=calculateWorkshopTileLayout({width,height,compact:width<300});
+  assert.ok(layout.pageSize>=1&&layout.cardWidth>=1);
+  assert.ok(layout.columns*layout.cardWidth+(layout.columns-1)*6<=width-10);
+  assert.ok(layout.rows*(layout.cardWidth*520/360+58)+(layout.rows-1)*6<=height-9);
+ }
 });
