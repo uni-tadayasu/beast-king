@@ -15,17 +15,20 @@ export function normalizeExperiencePreferences(value = {}) {
   };
 }
 
-/** Small original scores, synthesized locally. Gain is deliberately conservative
- * because several voices may overlap with the existing background music. */
+/** Original cyber interface cues: a tactile low pulse, a bright digital tick,
+ * and a short frequency sweep make each action recognizable without a long
+ * tail over the music. Battle and pack scores keep their separate identities. */
 export function soundScore(kind, rarity = 'N') {
   const n = (frequency, delay = 0, duration = .15, gain = .07, wave = 'sine', end = frequency) => ({frequency, end, delay, duration, gain, wave});
   const chime = (notes, step = .065, gain = .065) => notes.map((f, i) => n(f, i * step, .24, gain));
   switch (kind) {
-    case 'nav': return [n(360, 0, .09, .06, 'triangle', 540), n(810, .045, .12, .04)];
-    case 'select': return [n(740, 0, .07, .045), n(1110, .035, .1, .026)];
-    case 'close': return [n(620, 0, .09, .045, 'triangle', 310)];
-    case 'confirm': case 'play': return chime([392, 588, 784], .045, .05);
-    case 'deny': return [n(175, 0, .13, .06, 'triangle', 125), n(140, .12, .12, .035, 'triangle')];
+    case 'click': return [n(1080, 0, .055, .047, 'triangle', 720), n(310, 0, .038, .028, 'sine', 210), n(2160, .017, .033, .013, 'sine', 1440)];
+    case 'nav': return [n(360, 0, .11, .047, 'triangle', 980), n(1320, .035, .075, .025, 'sine', 1760), n(1760, .09, .08, .020)];
+    case 'select': return [n(1568, 0, .048, .034), n(1047, .035, .045, .025, 'triangle')];
+    case 'close': return [n(880, 0, .09, .04, 'triangle', 330), n(196, .035, .075, .025, 'sine', 130)];
+    case 'confirm': return [n(392, 0, .045, .034, 'triangle', 587), n(784, .045, .09, .034), n(1175, .09, .12, .027), n(1568, .105, .08, .012)];
+    case 'play': return chime([392, 588, 784], .045, .05);
+    case 'deny': return [n(174, 0, .055, .035, 'square', 146), n(146, .07, .085, .04, 'triangle', 110)];
     case 'summon': return [n(110, 0, .28, .095, 'triangle', 220), ...chime([392, 587, 784], .055, .055)];
     case 'fusion': return [n(65, 0, .55, .075, 'triangle', 195), ...chime([262, 330, 392, 523, 784, 1047], .075, .065)];
     case 'attack': return [n(290, 0, .15, .08, 'sawtooth', 65), n(84, .055, .22, .12, 'triangle', 42)];
@@ -159,10 +162,13 @@ export function battlePresentation(previous, current) {
 const CONTROL_SELECTOR = 'button, a[href], input[type="checkbox"], input[type="radio"], summary, [role="tab"], [data-action], [data-act], [data-nav]';
 function controlKind(element) {
   const action = element?.dataset?.action || element?.dataset?.act || '';
+  // The application owns the ON confirmation and immediate OFF silence.
+  // A card displayed only as an illustration must not pretend to be a control.
+  if (['noop', 'sound', 'effects-sound'].includes(action)) return null;
   if (element?.dataset?.nav || action === 'nav' || element?.tagName === 'A') return 'nav';
-  if (/close|cancel|back|discard|remove/.test(action)) return 'close';
+  if (/close|cancel|back|discard|remove|return/.test(action)) return 'close';
   if (/confirm|save|equip|activate|receive|claim|buy|purchase/.test(action)) return 'confirm';
-  if (/hand|unit|select|detail|tab|filter|origin|page|inspect|preset|deck-add/.test(action) || ['radio', 'checkbox'].includes(element?.type)) return 'select';
+  if (/hand|unit|select|detail|tab|filter|origin|page|inspect|preset|deck-add|section|scope/.test(action) || element?.dataset?.bkScreenTab || ['tab', 'radio', 'checkbox', 'switch'].includes(element?.getAttribute?.('role')) || ['radio', 'checkbox'].includes(element?.type)) return 'select';
   return 'click';
 }
 
@@ -181,7 +187,8 @@ export function createExperienceController(options = {}) {
   const localPoint = point => win.BeastKingViewport?.toLocalPoint(point) || point;
   const layer = doc.createElement('div'); layer.className = 'bk-experience-layer'; layer.setAttribute('aria-hidden', 'true'); overlayHost().appendChild(layer);
   const listeners = [], timers = new Set(), particles = new Set(), battleTimers = new Set();
-  let opening = null, previousFocus = null;
+  let opening = null, previousFocus = null, controlCue = null, sampleSequence = 0;
+  const cancelSample = () => { sampleSequence++; };
   const on = (target, type, fn, opts) => { target?.addEventListener(type, fn, opts); listeners.push(() => target?.removeEventListener(type, fn, opts)); };
   const delay = (fn, ms, battle = false) => { const id = win.setTimeout(() => { timers.delete(id); battleTimers.delete(id); if (!destroyed) fn(); }, ms); timers.add(id); if (battle) battleTimers.add(id); return id; };
   const visible = () => !doc.hidden && doc.visibilityState !== 'hidden';
@@ -193,7 +200,7 @@ export function createExperienceController(options = {}) {
     audio.sync(preferences); audio.setVisible(visible());
     if (!motion()) { for (const node of particles) node.remove(); particles.clear(); opening?.complete(); }
   };
-  const sync = (next = {}) => { const before = JSON.stringify(preferences); preferences = normalizeExperiencePreferences({...preferences, ...next}); if (before !== JSON.stringify(preferences)) save(); applyPreferences(); return {...preferences}; };
+  const sync = (next = {}) => { const before = JSON.stringify(preferences); preferences = normalizeExperiencePreferences({...preferences, ...next}); if (before !== JSON.stringify(preferences)) save(); if (!preferences.enabled || preferences.volume === 0) cancelSample(); applyPreferences(); return {...preferences}; };
   const rectOf = node => { try { const r = node?.getBoundingClientRect(); return r?.width && r?.height ? (win.BeastKingViewport?.toLocalRect(r) || r) : null; } catch { return null; } };
   const point = (node, fallback) => { const r = rectOf(node); return r ? {x: r.x + r.width / 2, y: r.y + r.height / 2} : fallback || {x: viewport().width / 2, y: viewport().height / 2}; };
   const temporary = (className, x, y, duration = 700, text = '') => {
@@ -227,7 +234,20 @@ export function createExperienceController(options = {}) {
       : [{opacity: .55, filter: 'brightness(1.6)'}, {opacity: 1, filter: 'brightness(1)'}];
     try { node.animate(frames, {duration: full() ? 420 : 180, easing: 'cubic-bezier(.2,.8,.2,1)'}); } catch {}
   };
-  const sound = (kind = 'click', rarity) => audio.play(kind, rarity);
+  const sound = (kind = 'click', rarity) => {
+    // A synchronous outcome (saved, started, denied) takes the place of the
+    // generic button cue queued by capture, so one operation has one response.
+    if (controlCue) controlCue.cancelled = true;
+    return audio.play(kind, rarity);
+  };
+  const queueControlSound = kind => {
+    if (!kind) return;
+    const cue = {kind, cancelled: false}; controlCue = cue;
+    Promise.resolve().then(() => {
+      if (controlCue === cue) controlCue = null;
+      if (!destroyed && !cue.cancelled) audio.play(cue.kind);
+    });
+  };
   function screen(id) {
     if (screenId === id) return;
     screenId = id;
@@ -314,28 +334,37 @@ export function createExperienceController(options = {}) {
     return promise;
   }
   function settingsMarkup() {
-    return `<div class="setting-volume experience-setting"><label for="experience-volume">効果音の音量 <output data-experience-volume-output>${Math.round(preferences.volume * 100)}%</output></label><input id="experience-volume" data-experience-volume type="range" min="0" max="100" step="1" value="${Math.round(preferences.volume * 100)}" aria-label="効果音の音量"><div class="experience-setting-bottom"><small>この端末に保存されます</small><button type="button" class="btn small" data-experience-demo>試聴</button></div></div><div class="setting-row experience-setting"><div>演出の強さ<small>控えめでも操作結果とカード効果を表示</small></div><select aria-label="演出の強さ" data-experience-intensity><option value="full"${preferences.intensity === 'full' ? ' selected' : ''}>華やか</option><option value="subtle"${preferences.intensity === 'subtle' ? ' selected' : ''}>控えめ</option></select></div>`;
+    return `<div class="setting-volume experience-setting"><label for="experience-volume">システム・効果音の音量 <output data-experience-volume-output>${Math.round(preferences.volume * 100)}%</output></label><input id="experience-volume" data-experience-volume type="range" min="0" max="100" step="1" value="${Math.round(preferences.volume * 100)}" aria-label="効果音の音量" aria-valuetext="${Math.round(preferences.volume * 100)}%"><div class="experience-setting-bottom"><small>選択・移動・決定を電子音でお知らせ</small><button type="button" class="btn small" data-experience-demo aria-label="サイバー操作音を試聴">操作音を試聴</button></div></div><div class="setting-row experience-setting"><div>演出の強さ<small>控えめでも操作結果とカード効果を表示</small></div><select aria-label="演出の強さ" data-experience-intensity><option value="full"${preferences.intensity === 'full' ? ' selected' : ''}>華やか</option><option value="subtle"${preferences.intensity === 'subtle' ? ' selected' : ''}>控えめ</option></select></div>`;
   }
   on(doc, 'pointerdown', event => { if (event.isTrusted !== false) audio.unlock(); }, {capture: true, passive: true});
   on(doc, 'keydown', event => { if (!event.repeat && !['Shift', 'Control', 'Alt', 'Meta'].includes(event.key) && event.isTrusted !== false) audio.unlock(); }, {capture: true});
   on(doc, 'click', event => {
-    const control = event.target?.closest?.(CONTROL_SELECTOR); if (!control || control.disabled || control.getAttribute('aria-disabled') === 'true' || control.closest('.bk-pack-ceremony')) return;
-    sound(controlKind(control));
+    if (event.isTrusted === false) return;
+    const control = event.target?.closest?.(CONTROL_SELECTOR); if (!control || control.disabled || control.matches(':disabled') || control.getAttribute('aria-disabled') === 'true' || control.closest('[inert], [aria-disabled="true"], .bk-pack-ceremony')) return;
+    // Trusted clicks also cover keyboard/assistive activation with no pointerdown.
+    audio.unlock(); cancelSample();
+    if (control.matches('[data-experience-demo]')) {
+      const sequence = sampleSequence;
+      sound('click');
+      for (const [kind, ms] of [['nav', 170], ['confirm', 370]]) delay(() => { if (sequence === sampleSequence && visible()) sound(kind); }, ms);
+    } else if (!['checkbox', 'radio'].includes(control.type)) queueControlSound(controlKind(control));
     const r = rectOf(control); if (r) { const p = event.clientX > 0 || event.clientY > 0 ? localPoint({x: event.clientX, y: event.clientY}) : {x: r.x + r.width / 2, y: r.y + r.height / 2}; temporary('bk-touch-ring', p.x, p.y, 500); }
-    if (control.matches('[data-experience-demo]')) { audio.unlock(); delay(() => sound('summon'), 75); }
   }, {capture: true});
   on(doc, 'input', event => {
     if (!event.target.matches?.('[data-experience-volume]')) return;
     const volume = Number(event.target.value) / 100; sync({volume});
+    event.target.setAttribute('aria-valuetext', `${Math.round(preferences.volume * 100)}%`);
     for (const output of doc.querySelectorAll('[data-experience-volume-output]')) output.textContent = `${Math.round(preferences.volume * 100)}%`;
   });
   on(doc, 'change', event => {
+    if (event.isTrusted === false || event.target?.disabled || event.target?.matches?.(':disabled') || event.target?.closest?.('[inert], [aria-disabled="true"]')) return;
+    audio.unlock(); cancelSample();
     if (event.target.matches?.('[data-experience-intensity]')) { sync({intensity: event.target.value}); sound('select'); }
     else if (event.target.matches?.('[data-experience-volume]')) sound('select');
     else if (event.target.matches?.('select, input[type="checkbox"], input[type="radio"]')) sound('select');
   });
-  on(doc, 'visibilitychange', () => { applyPreferences(); if (!visible()) { opening?.complete(); for (const node of particles) node.remove(); particles.clear(); for (const id of battleTimers) { win.clearTimeout(id); timers.delete(id); } battleTimers.clear(); } });
-  on(win, 'pagehide', () => { opening?.complete(); audio.setVisible(false); });
+  on(doc, 'visibilitychange', () => { applyPreferences(); if (!visible()) { cancelSample(); if (controlCue) controlCue.cancelled = true; opening?.complete(); for (const node of particles) node.remove(); particles.clear(); for (const id of battleTimers) { win.clearTimeout(id); timers.delete(id); } battleTimers.clear(); } });
+  on(win, 'pagehide', () => { cancelSample(); if (controlCue) controlCue.cancelled = true; opening?.complete(); audio.setVisible(false); });
   on(win, 'pageshow', applyPreferences);
   on(reduced, 'change', applyPreferences);
   on(doc, 'bk-experience', event => { const detail = event.detail || {}; if (detail.kind) sound(detail.kind, detail.rarity); });

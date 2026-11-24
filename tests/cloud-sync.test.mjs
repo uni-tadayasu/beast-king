@@ -94,6 +94,99 @@ test('two devices share a save, detect CAS conflicts, and resolve only through a
   a.sync.destroy(); b.sync.destroy();
 });
 
+test('persisting unchanged content or reverting a draft does not create writes or false conflicts', async () => {
+  for (const revert of [false, true]) {
+    const server = cloudServer(); server.replace('player', { treasure: 100, draft: null });
+    const d = device(server, 'player', { treasure: 100, draft: null }); await d.sync.start();
+    if (revert) d.edit({ treasure: 100, draft: { name: '編集中' } });
+    d.edit({ treasure: 100, draft: null });
+    assert.equal(d.sync.getState().dirty, false);
+    await d.sync.flush();
+    assert.equal(server.writes.length, 0, 'a no-op persist must not advance the cloud revision');
+    server.replace('player', { treasure: 200, draft: null });
+    await d.sync.refresh();
+    assert.equal(d.sync.getState().phase, 'synced');
+    assert.deepEqual(d.local, { treasure: 200, draft: null });
+    d.sync.destroy();
+  }
+});
+
+test('two devices making the identical edit acknowledge one value without a conflict or extra write', async () => {
+  const server = cloudServer(); server.replace('player', { treasure: 100 });
+  const a = device(server, 'player', { treasure: 100 }), b = device(server, 'player', { treasure: 100 });
+  await a.sync.start(); await b.sync.start();
+  a.edit({ treasure: 150 }); b.edit({ treasure: 150 });
+  await a.sync.flush(); await b.sync.flush();
+  assert.equal(server.saves.get('player').revision, 2);
+  assert.equal(server.writes.length, 2, 'one accepted write and one CAS check, with no overwrite retry');
+  assert.equal(b.sync.getState().phase, 'synced');
+  assert.equal(b.sync.getState().revision, 2);
+  assert.equal(b.sync.getState().dirty, false);
+  assert.equal(b.states.some(state => state.phase === 'conflict'), false);
+  a.sync.destroy(); b.sync.destroy();
+});
+
+test('a newer revision containing the unchanged baseline can safely accept local edits', async () => {
+  for (const operation of ['refresh', 'flush']) {
+    const server = cloudServer(); server.replace('player', { treasure: 100, cards: ['B0001'] });
+    const d = device(server, 'player', { treasure: 100, cards: ['B0001'] }); await d.sync.start();
+    d.edit({ treasure: 150, cards: ['B0001'] });
+    server.replace('player', { cards: ['B0001'], treasure: 100 });
+    await d.sync[operation]();
+    assert.equal(d.sync.getState().phase, 'synced');
+    assert.deepEqual(server.saves.get('player').data, { treasure: 150, cards: ['B0001'] });
+    assert.equal(server.saves.get('player').revision, 3);
+    assert.equal(d.states.some(state => state.phase === 'conflict'), false);
+    d.sync.destroy();
+  }
+});
+
+test('stale persisted dirty metadata is cleared only when the actual local content equals its baseline', async () => {
+  const server = cloudServer(); server.replace('player', { treasure: 100 });
+  const memory = storage(), a = device(server, 'player', { treasure: 100 }, { storage: memory });
+  await a.sync.start(); a.sync.destroy();
+  const key = `${CLOUD_SYNC_STORAGE_KEY}:player`, meta = JSON.parse(memory.getItem(key));
+  meta.dirty = true; meta.pendingData = { treasure: 100 }; memory.setItem(key, JSON.stringify(meta));
+  server.replace('player', { treasure: 200 });
+  const b = device(server, 'player', { treasure: 100 }, { storage: memory }); await b.sync.start();
+  assert.equal(b.sync.getState().phase, 'synced');
+  assert.deepEqual(b.local, { treasure: 200 });
+  assert.equal(server.writes.length, 0);
+  b.sync.destroy();
+});
+
+test('an existing conflict can recover when both sides match, while differing content remains protected', async () => {
+  const server = cloudServer(); server.replace('player', { treasure: 100 });
+  const d = device(server, 'player', { treasure: 100 }); await d.sync.start();
+  d.edit({ treasure: 150 }); server.replace('player', { treasure: 200 });
+  await d.sync.refresh();
+  await assert.rejects(d.sync.flush(), { code: 'SAVE_CONFLICT' });
+  assert.deepEqual(d.local, { treasure: 150 });
+  assert.equal(server.writes.length, 0);
+  server.replace('player', { treasure: 150 });
+  await d.sync.flush();
+  assert.equal(d.sync.getState().phase, 'synced');
+  assert.equal(d.sync.getState().revision, 3);
+  assert.equal(server.writes.length, 0, 'matching contents acknowledge the new revision without overwriting either side');
+  d.sync.destroy();
+});
+
+test('starter migration still persists new save metadata after content-based dirty tracking', async () => {
+  const server = cloudServer(); server.replace('player', { treasure: 100 });
+  let local = { treasure: 0 };
+  const d = device(server, 'player', local, {
+    getLocalData: () => local,
+    applyRemoteData: data => { local = { ...data, freeStarterId: 'star-crown' }; },
+  });
+  await d.sync.start();
+  assert.equal(d.sync.getState().dirty, true);
+  await d.sync.flush();
+  assert.deepEqual(server.saves.get('player').data, { treasure: 100, freeStarterId: 'star-crown' });
+  assert.equal(server.saves.get('player').revision, 2);
+  assert.equal(d.sync.getState().dirty, false);
+  d.sync.destroy();
+});
+
 test('reloadCloud explicitly adopts a conflict but a new edit during its read is preserved', async () => {
   const server = cloudServer(); server.replace('player', { treasure: 100 });
   const d = device(server, 'player', { treasure: 100 }); await d.sync.start();

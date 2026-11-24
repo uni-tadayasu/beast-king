@@ -1,6 +1,6 @@
-import {CARDS} from './catalog.js?v=20261124-29';
-import {accountSyncView,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js?v=20261124-29';
-import {operatorRewardPageSize} from './operator-paging.js?v=20261124-29';
+import {CARDS} from './catalog.js?v=20261124-30';
+import {accountSyncView,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js?v=20261124-30';
+import {operatorRewardPageSize} from './operator-paging.js?v=20261124-30';
 
 /** Account dialogs use the same server identity as online battles. No role or
  * activation credential is saved in the game data or inferred from the UI. */
@@ -229,7 +229,11 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     try{
       await ensureReady();await cloud.flush();if(operator!==owner)return;
       let result=await client.getOperatorDeck();if(operator!==owner)return;
-      if(result.deck?.upgradeRequired){result=await client.claimOperatorRegalia('',cloud.getState().revision,{upgrade:true});if(operator!==owner)return;await cloud.acceptServerSave(result.save);if(operator!==owner)return;}
+      if(result.deck?.upgradeRequired){
+        result=await client.claimOperatorRegalia('',cloud.getState().revision,{upgrade:true});if(operator!==owner)return;
+        const sync=await cloud.acceptServerSave(result.save);if(operator!==owner)return;
+        if(sync.phase==='conflict'||sync.conflict)throw Object.assign(new Error('保存内容を確認してから、もう一度プレミアムデッキを選んでください。'),{code:'SAVE_CONFLICT'});
+      }
       acceptOperatorDeck(result.deck);
       if(!operatorDeck)throw new Error('専用デッキの開放を確認してください。');
       await onEquipOperatorDeck(getOperatorDeck());if(operator!==owner)return;
@@ -237,6 +241,11 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     }catch(error){
       if(operator!==owner)return;
       if(error?.status===401||error?.status===404)acceptOperatorDeck(null);
+      if(error?.code==='SAVE_CONFLICT'||error?.code==='save_conflict'){
+        // The user must be able to choose from the screen that reported the
+        // conflict. Resolution never automatically repeats a grant or equip.
+        operator.busy=false;await openAccount();return;
+      }
       toast(safeError(error),true);
     }finally{if(operator===owner)operator.busy=false;}
   }

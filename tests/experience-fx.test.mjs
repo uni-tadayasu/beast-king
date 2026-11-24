@@ -94,7 +94,7 @@ test('stored preferences tolerate corruption and all sound envelopes stay short 
   assert.equal(normalizeExperiencePreferences({volume: 8}).volume, 1);
   assert.equal(normalizeExperiencePreferences({volume: -2}).volume, 0);
   assert.equal(normalizeExperiencePreferences({intensity: 'subtle', motion: false}).motion, false);
-  for (const kind of ['nav', 'select', 'close', 'confirm', 'deny', 'summon', 'fusion', 'attack', 'damage', 'destroy', 'heal', 'shield', 'buff', 'miracle', 'gimmick', 'draw', 'turn', 'victory', 'defeat', 'pack-charge', 'pack-open', 'reveal']) {
+  for (const kind of ['click', 'nav', 'select', 'close', 'confirm', 'deny', 'summon', 'fusion', 'attack', 'damage', 'destroy', 'heal', 'shield', 'buff', 'miracle', 'gimmick', 'draw', 'turn', 'victory', 'defeat', 'pack-charge', 'pack-open', 'reveal']) {
     const score = soundScore(kind, 'GGR');
     assert.ok(score.length >= 1 && score.length <= 7, kind);
     for (const note of score) {
@@ -105,6 +105,14 @@ test('stored preferences tolerate corruption and all sound envelopes stay short 
     }
   }
   assert.ok(soundScore('reveal', 'GGR').length > soundScore('reveal', 'N').length);
+});
+
+test('cyber interface cues are distinct and finish within a quarter second', () => {
+  const cues = ['click', 'nav', 'select', 'confirm', 'close', 'deny'].map(kind => soundScore(kind));
+  assert.equal(new Set(cues.map(score => JSON.stringify(score))).size, cues.length);
+  for (const score of cues) assert.ok(Math.max(...score.map(note => note.delay + note.duration)) <= .25);
+  assert.ok(cues[0].some(note => note.end < note.frequency), 'button tick has a falling electronic transient');
+  assert.ok(cues[1].some(note => note.end > note.frequency), 'navigation has a rising electronic sweep');
 });
 
 const event = (type, text = type, turn = 1) => ({type, text, turn});
@@ -157,7 +165,7 @@ class FakeElement extends EventTarget {
   querySelector() { return null; }
   querySelectorAll() { return []; }
 }
-function presentationSetup({reducedMotion = false, rotated = false} = {}) {
+function presentationSetup({reducedMotion = false, rotated = false, audio = null} = {}) {
   const doc = new EventTarget(), win = new EventTarget(), pending = new Map(), stored = new Map();
   let nextTimer = 0;
   doc.hidden = false; doc.visibilityState = 'visible';
@@ -167,6 +175,7 @@ function presentationSetup({reducedMotion = false, rotated = false} = {}) {
   doc.querySelector = () => null; doc.querySelectorAll = () => [];
   doc.activeElement = new FakeElement('button', doc); doc.activeElement.isConnected = true;
   win.innerWidth = 1280; win.innerHeight = 720;
+  if (audio) win.AudioContext = function() { return audio.factory(); };
   if (rotated) {
     const viewport = landscapeViewport({physicalWidth: 390, physicalHeight: 844, mobile: true});
     const stage = new FakeElement('div', doc); doc.body.appendChild(stage);
@@ -179,6 +188,89 @@ function presentationSetup({reducedMotion = false, rotated = false} = {}) {
   const controller = createExperienceController({document: doc, window: win, storage: {getItem: key => stored.get(key), setItem: (key, value) => stored.set(key, value)}});
   return {doc, win, controller, pending, flush() { for (const [id, fn] of [...pending]) { pending.delete(id); fn(); } }};
 }
+
+// Minimal semantic controls for delegated-event tests. Their real click/change
+// order is dispatched against the controller, including explicit app outcomes.
+function feedbackControl(doc, {tag = 'button', action = '', type = '', role = '', disabled = false, inert = false, demo = false} = {}) {
+  const control = new FakeElement(tag, doc);
+  control.dataset.action = action; control.type = type; control.disabled = disabled;
+  if (role) control.setAttribute('role', role);
+  if (demo) control.setAttribute('data-experience-demo', '');
+  control.getAttribute = key => control.attributes.get(key) ?? null;
+  control.matches = selector => selector.split(',').some(part => {
+    const value = part.trim();
+    if (value === ':disabled') return disabled;
+    if (value === 'select') return tag === 'select';
+    if (value === '[data-experience-demo]') return demo;
+    if (value === 'input[type="checkbox"]') return tag === 'input' && type === 'checkbox';
+    if (value === 'input[type="radio"]') return tag === 'input' && type === 'radio';
+    return false;
+  });
+  control.closest = selector => selector.startsWith('button,') ? control : selector.includes('[inert]') && inert ? control : null;
+  return control;
+}
+function dispatchControl(doc, type, control, {trusted = true, detail = 1} = {}) {
+  const event = new Event(type);
+  Object.defineProperties(event, {target: {value: control}, isTrusted: {value: trusted}, detail: {value: detail}});
+  doc.dispatchEvent(event);
+}
+
+test('keyboard and touch activation each play one cyber control cue, with no hover or render audio', async () => {
+  for (const keyboard of [false, true]) {
+    const audio = fakeAudio(), {doc, controller} = presentationSetup({audio});
+    const control = feedbackControl(doc, {action: 'detail'});
+    controller.screen('home');
+    dispatchControl(doc, 'pointerover', control);
+    assert.equal(audio.calls.created, 0);
+    if (!keyboard) dispatchControl(doc, 'pointerdown', control);
+    dispatchControl(doc, 'click', control, {detail: keyboard ? 0 : 1});
+    await Promise.resolve();
+    assert.equal(audio.calls.created, 1, 'trusted activation unlocks the shared effect context');
+    assert.equal(audio.calls.voices.length, soundScore('select').length);
+    controller.destroy();
+  }
+});
+
+test('native checkbox click/change is announced once and synchronous outcomes replace the generic click', async () => {
+  const audio = fakeAudio(), {doc, controller} = presentationSetup({audio});
+  const checkbox = feedbackControl(doc, {tag: 'input', type: 'checkbox'});
+  dispatchControl(doc, 'click', checkbox);
+  dispatchControl(doc, 'change', checkbox);
+  await Promise.resolve();
+  assert.equal(audio.calls.voices.length, soundScore('select').length);
+  const before = audio.calls.voices.length;
+  dispatchControl(doc, 'click', feedbackControl(doc, {action: 'deck-save'}));
+  controller.sound('play');
+  await Promise.resolve();
+  assert.equal(audio.calls.voices.length - before, soundScore('play').length, 'one save must not also play a confirm chime');
+  controller.destroy();
+});
+
+test('disabled, inert, decorative and synthetic controls are silent, including the sound OFF button', async () => {
+  const audio = fakeAudio(), {doc, controller} = presentationSetup({audio});
+  controller.unlock();
+  for (const options of [{disabled: true}, {inert: true}, {action: 'noop'}, {action: 'sound'}, {action: 'effects-sound'}]) {
+    dispatchControl(doc, 'click', feedbackControl(doc, options));
+  }
+  dispatchControl(doc, 'click', feedbackControl(doc), {trusted: false});
+  dispatchControl(doc, 'change', feedbackControl(doc, {tag: 'select'}), {trusted: false});
+  await Promise.resolve();
+  assert.equal(audio.calls.voices.length, 0);
+  controller.destroy();
+});
+
+test('system sound preview is cancelled when the page hides and never resumes old samples', () => {
+  const audio = fakeAudio(), {doc, controller, flush} = presentationSetup({audio});
+  dispatchControl(doc, 'click', feedbackControl(doc, {demo: true}));
+  assert.equal(audio.calls.voices.length, soundScore('click').length);
+  doc.hidden = true; doc.visibilityState = 'hidden';
+  doc.dispatchEvent(new Event('visibilitychange'));
+  doc.hidden = false; doc.visibilityState = 'visible';
+  doc.dispatchEvent(new Event('visibilitychange'));
+  flush();
+  assert.equal(audio.calls.voices.length, soundScore('click').length);
+  controller.destroy();
+});
 
 test('screen entrances preserve fitted canvas geometry at every animation frame', () => {
   for (const rotated of [false, true]) {

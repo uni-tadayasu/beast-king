@@ -493,6 +493,28 @@ test('multiple named decks survive cloud validation and device restoration indep
  const bad=structuredClone(data);bad.deckLibrary[1].ids=Array(32).fill('B0001');assert.equal((await f.save(p,bad,1)).status,400);
 });
 
+test('deleted starter deck slots survive cloud saves and linked-device reads without changing owned cards',async t=>{
+ const f=fixture(t),p=await f.profile(),data=saveData(p),starter=STARTER_DECKS[0],deleted='starter-'+starter.id;
+ data.deckLibrary=[{id:'custom-kept',name:data.deckName,ids:[...data.deckIds],specialIds:[...data.specialIds]}];
+ data.activeDeckId='custom-kept';data.editingDeckId='custom-kept';data.deletedStarterDeckIds=[deleted];
+ const before=structuredClone(data.collection),saved=await f.save(p,data);
+ assert.equal(saved.status,200,JSON.stringify(saved.data));
+ assert.deepEqual(saved.data.save.data.deletedStarterDeckIds,[deleted]);
+ assert.deepEqual(saved.data.save.data.collection,before);
+ const linked=await f.link(p),restored=await f.api('GET','/api/cloud-save',linked.token);
+ assert.equal(restored.status,200);assert.deepEqual(restored.data.save.data.deletedStarterDeckIds,[deleted]);
+ assert.equal(restored.data.save.data.deckLibrary.length,1);assert.equal(restored.data.save.data.activeDeckId,'custom-kept');
+ assert.deepEqual(restored.data.save.data.collection,before);
+ for(const ids of [[deleted,deleted],['custom-kept'],['operator-kirahara-v1'],['starter-not-a-real-deck'],{},null]){
+  const invalid={...data,deletedStarterDeckIds:ids};assert.equal((await f.save(p,invalid,1)).status,400,'Reject invalid deletion marker '+JSON.stringify(ids));
+ }
+ const inconsistent=structuredClone(data);inconsistent.deckLibrary.push({id:deleted,name:starter.name,ids:[...starter.ids],specialIds:[...starter.specialIds]});
+ assert.equal((await f.save(p,inconsistent,1)).status,400,'A deleted starter must not still be in the library');
+ const loadAgain=structuredClone(data);loadAgain.deletedStarterDeckIds=[];loadAgain.deckLibrary=inconsistent.deckLibrary;
+ const reloaded=await f.save(p,loadAgain,1);assert.equal(reloaded.status,200,JSON.stringify(reloaded.data));
+ assert.deepEqual(reloaded.data.save.data.deletedStarterDeckIds,[]);assert.deepEqual(reloaded.data.save.data.collection,before);
+});
+
 function seedOperatorDeckReceipt(f,p,id,{pair=true}={}){
  const claimedAt=f.now()-1000;
  const insert=f.sqlite.prepare("INSERT INTO bk_reward_claims (player_id,item_type,item_id,result_json,save_revision,claimed_at) VALUES (?,'gift',?,?,1,?)");

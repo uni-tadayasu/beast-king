@@ -116,6 +116,11 @@ export function validateCloudData(raw,player,fail){
   check(plain(raw.campaignProgress)&&Array.isArray(raw.campaignProgress.results)&&raw.campaignProgress.results.length<=1000&&Array.isArray(raw.campaignProgress.clearedBattleIds)&&raw.campaignProgress.clearedBattleIds.length<=20,fail,'invalid_save');
   const data={version:6,playerName:name,profileOrigin:raw.profileOrigin,campaignProgress:normalizeCampaignProgress(raw.campaignProgress),bgm:raw.bgm,bgmVolume:raw.bgmVolume,sound:raw.sound,motion:raw.motion,treasure:raw.treasure,collection,rewardedMatches:[...new Set(raw.rewardedMatches)],lastPack:null,deckName:raw.deckName,deckIds:[...raw.deckIds],specialIds:[...raw.specialIds],starter:getDeckPreset(raw.starter)?raw.starter:'',draft:null,stats:{played:raw.stats.played,won:raw.stats.won,drawn:raw.stats.drawn},game:cpuSave(raw.game,fail)};
   if(raw.freeStarterId!==undefined){check(STARTER_DECKS.some(d=>d.id===raw.freeStarterId),fail,'invalid_save','無料スターターを確認してください。');data.freeStarterId=raw.freeStarterId;}
+  if(raw.deletedStarterDeckIds!==undefined){
+    const ids=raw.deletedStarterDeckIds;
+    check(Array.isArray(ids)&&ids.length<=STARTER_DECKS.length&&new Set(ids).size===ids.length&&ids.every(id=>STARTER_DECKS.some(d=>'starter-'+d.id===id)),fail,'invalid_save','削除済みスターターデッキを確認してください。');
+    data.deletedStarterDeckIds=[...ids];
+  }
   if(raw.eventProgress!==undefined){check(plain(raw.eventProgress)&&Array.isArray(raw.eventProgress.results)&&raw.eventProgress.results.length<=200&&Array.isArray(raw.eventProgress.clearedDeckIds)&&raw.eventProgress.clearedDeckIds.length<=EVENT_BATTLES.length,fail,'invalid_save');data.eventProgress=normalizeEventProgress(raw.eventProgress);}
   if(raw.draft!=null){check(plain(raw.draft)&&text(raw.draft.name,28),fail,'invalid_save');const ids=cardIds(raw.draft.ids,['beast','miracle','gimmick'],32,fail),specialIds=cardIds(raw.draft.specialIds,['fusion'],4,fail);check([...ids,...specialIds].every(id=>[...ids,...specialIds].filter(x=>x===id).length<=DECK_COPY_LIMIT),fail,'invalid_save',`編集中のデッキも同じカードは${DECK_COPY_LIMIT}枚までです。`);data.draft={name:raw.draft.name,ids,specialIds};}
   if(raw.deckLibrary!==undefined){
@@ -131,6 +136,7 @@ export function validateCloudData(raw,player,fail){
     const active=data.deckLibrary.find(d=>d.id===raw.activeDeckId),editing=data.deckLibrary.find(d=>d.id===raw.editingDeckId);
     check(!!active&&!!editing&&active.name===data.deckName&&active.ids.join('|')===data.deckIds.join('|')&&active.specialIds.join('|')===data.specialIds.join('|'),fail,'invalid_save','使用中のデッキを確認してください。');
     data.activeDeckId=active.id;data.editingDeckId=editing.id;
+    check(!(data.deletedStarterDeckIds||[]).some(id=>data.deckLibrary.some(d=>d.id===id)),fail,'invalid_save','削除済みデッキが保存一覧に残っています。');
   }
   if(raw.lastPack!=null){
     check(plain(raw.lastPack)&&Array.isArray(raw.lastPack.pulls)&&raw.lastPack.pulls.length===12&&integer(raw.lastPack.bonusTreasure,0,100_000),fail,'invalid_save');

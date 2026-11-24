@@ -133,12 +133,41 @@ try{
     const fan=await evaluate('(()=>{const p=layoutRect(document.querySelector(".bk-native-pane"));return {frame:p.toJSON(),cards:[...document.querySelectorAll(".home-card-fan>.game-card")].map(e=>{const r=layoutRect(e);return {visible:r.width>0&&r.height>0&&r.top>=p.top-2&&r.bottom<=p.bottom+2&&r.left>=p.left-2&&r.right<=p.right+2,box:r.toJSON()}})}})()');assert.deepEqual(fan.cards.map(c=>c.visible),[true,true,true],width+'x'+height+' all three featured cards fully visible '+JSON.stringify(fan));
    }
    if(page==='shop'){
-    assert.equal(await evaluate('document.querySelectorAll("[data-action=pack-select]").length'),4);
+    const assertShopVisible=async(selector,count,label,completeText=false)=>{
+     const result=await evaluate(`(()=>{
+      const bounds=layoutRect(document.querySelector('.bk-native-pane')),nodes=[...document.querySelectorAll(${JSON.stringify(selector)})];
+      return {count:nodes.length,bad:nodes.filter(node=>{const r=layoutRect(node),s=getComputedStyle(node);return r.width<=0||r.height<=0||s.display==='none'||s.visibility==='hidden'||r.left<bounds.left-2||r.right>bounds.right+2||r.top<bounds.top-2||r.bottom>bounds.bottom+2||${completeText}&&node.scrollHeight>node.clientHeight+2}).map(node=>node.className||node.dataset.bkScreenTab||node.tagName)};
+     })()`);
+     assert.deepEqual(result,{count,bad:[]},width+'x'+height+' '+label+' visible within the shop pane');
+    };
+    const selectShopPane=async(mode)=>{
+     const compact=await evaluate('layoutViewport().width<1100||layoutViewport().height<800');
+     if(!compact){assert.equal(await evaluate('document.querySelector(".product-shop").dataset.bkShopMode'),'all');return;}
+     const selector='.product-shop>[data-bk-tab-kind=shop] [data-bk-screen-tab='+mode+']';
+     await assertShopVisible(selector,1,'shop '+mode+' tab');
+     await click(selector);
+     await until(()=>evaluate('document.querySelector(".product-shop").dataset.bkShopMode==='+JSON.stringify(mode)+'&&document.querySelector('+JSON.stringify(selector)+').getAttribute("aria-pressed")==="true"'),'shop '+mode+' pane');
+     await delay(120);
+    };
+    assert.equal(await evaluate('document.querySelectorAll(".product-section-tabs [data-action=pack-select]").length'),4);
     for(const pack of ['BK03','BK04']){
-     await click('[data-action=pack-select][data-pack='+pack+']');await delay(160);
+     const packSelector='.product-section-tabs [data-action=pack-select][data-pack='+pack+']';
+     await assertShopVisible(packSelector,1,pack+' selector');await click(packSelector);await delay(160);
+     await selectShopPane('pack');
+     await assertShopVisible('.pack-display,.pack-buy',2,pack+' artwork and purchase control');
      assert.equal(await evaluate('document.querySelector(".pack-cover-art").complete&&document.querySelector(".pack-cover-art").naturalWidth>0'),true,pack+' illustrated cover loads');
-     assert.equal(await evaluate('document.querySelectorAll(".recipe-launchers>button").length'),4);
-     await check(width+'x'+height+' '+pack,['.product-section-tabs>button','.pack-offer>.pack-buy,.pack-offer>.pack-assurance,.pack-offer>.pack-collection']);
+     await check(width+'x'+height+' '+pack+' purchase',['.product-section-tabs>button','.pack-offer>.pack-buy,.pack-offer>.pack-assurance,.pack-offer>.pack-collection']);
+     await selectShopPane('details');
+     await assertShopVisible('.pack-offer>p:not([class]),.pack-assurance,.pack-collection,.pack-offer>[data-action=pack-odds]',4,pack+' complete pack description and collection details',true);
+     const packContent=await evaluate(`(async()=>{
+      const {getPack}=await import('./shop.js?v=20261124-30'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
+      return {description:document.querySelector('.pack-offer>p:not([class])').textContent===pack.description,purchase:buy.dataset.pack===pack.id&&buy.textContent.includes(pack.cost+'秘宝で'+pack.size+'枚'),guarantee:document.querySelector('.pack-assurance').textContent.includes('レア以上を1枚保証'),collection:document.querySelector('.pack-collection').textContent.includes(pack.cardCount.toLocaleString('ja-JP')+'種類')};
+     })()`);
+     assert.deepEqual(packContent,{description:true,purchase:true,guarantee:true,collection:true},pack+' complete supply information');
+     await check(width+'x'+height+' '+pack+' details',['.pack-offer>p:not([class]),.pack-offer>.pack-assurance,.pack-offer>.pack-collection,.pack-offer>[data-action=pack-odds]']);
+     await selectShopPane('recipes');
+     await assertShopVisible('.recipe-launchers>button',4,pack+' four recipe choices');
+     await check(width+'x'+height+' '+pack+' recipes',['.recipe-launchers>button']);
      const recipeId=await evaluate('document.querySelector(".recipe-launchers>button").dataset.id');
      await click('[data-action=expansion-recipe][data-id='+recipeId+']');await waitElement('.recipe-card-list');await delay(120);
      assert.equal(await evaluate('document.querySelector("[data-action=recipe-load]").disabled'),true,'Unowned recipes are not granted');
@@ -151,7 +180,7 @@ try{
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
   // Long scheduled operator content is rendered locally; never sent to live players.
-  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261124-29');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
+  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261124-30');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
   // Real native news dialog, not a synthetic layout. Every notice must
   // appear exactly once, fully within the viewport and outside the controls.
   await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);
@@ -204,11 +233,43 @@ try{
   assert.ok(Math.abs(panes.left.width-panes.right.width)<=2&&panes.left.width>0&&panes.right.width>0&&panes.left.right<=panes.right.left+2,width+'x'+height+' separate left and right panes '+JSON.stringify(panes));
   assert.ok(panes.left.top>=panes.frame.top-2&&panes.right.top>=panes.frame.top-2&&panes.left.bottom<=panes.frame.bottom+3&&panes.right.bottom<=panes.frame.bottom+3&&['hidden','clip'].includes(panes.overflow),width+'x'+height+' both panes within the content frame '+JSON.stringify(panes));
   assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),4625);
-  const cardGeometry=await evaluate(`(()=>{const failures=[];for(const [grid,selector] of [['.transfer-source .cards-grid','.transfer-card'],['.deck-image-grid','.deck-image-slot']]){const container=document.querySelector(grid);if(!container){failures.push(grid);continue}const bounds=layoutRect(container);for(const tile of container.querySelectorAll(selector)){const r=layoutRect(tile),parts=[...tile.children].map(e=>layoutRect(e));if(r.left<bounds.left-2||r.right>bounds.right+2||r.top<bounds.top-2||r.bottom>bounds.bottom+2||parts.some((p,i)=>i>0&&p.top<parts[i-1].bottom-2))failures.push({grid,id:tile.dataset.transferId,tile:r.toJSON(),bounds:bounds.toJSON()});}}return failures})()`);
+  const cardGeometry=await evaluate(`(()=>{
+   const failures=[];
+   for(const [grid,selector] of [['.transfer-source .cards-grid','.transfer-card'],['.deck-image-grid','.deck-image-slot']]){
+    const container=document.querySelector(grid);if(!container){failures.push(grid);continue}
+    const bounds=layoutRect(container);
+    for(const tile of container.querySelectorAll(selector)){
+     const r=layoutRect(tile),parts=[...tile.children].map(e=>layoutRect(e)).filter(p=>p.width>0&&p.height>0);
+     // Images and counts may share a row. Only intersection on both axes
+     // is a collision; compare every pair so nonadjacent controls are covered.
+     const overlap=parts.some((p,i)=>parts.slice(i+1).some(q=>Math.min(p.right,q.right)-Math.max(p.left,q.left)>2&&Math.min(p.bottom,q.bottom)-Math.max(p.top,q.top)>2));
+     if(r.left<bounds.left-2||r.right>bounds.right+2||r.top<bounds.top-2||r.bottom>bounds.bottom+2||overlap)failures.push({grid,id:tile.dataset.transferId,tile:r.toJSON(),bounds:bounds.toJSON()});
+    }
+   }
+   return failures;
+  })()`);
   assert.deepEqual(cardGeometry,[],width+'x'+height+' card art, counts, buttons and grid bounds');
   const symmetric=await evaluate(`(()=>{const q=s=>layoutRect(document.querySelector(s)),a=q('.transfer-source .cards-grid'),b=q('.deck-image-grid'),c=q('.transfer-card>.game-card'),d=q('.deck-image-slot>.game-card'),p=q('.deck-list-pagination'),l=q('#card-results>.pagination'),foot=q('.deck-panel-foot');return {a:a.toJSON(),b:b.toJSON(),c:c.toJSON(),d:d.toJSON(),p:p.toJSON(),l:l.toJSON(),foot:foot.toJSON()}})()`);
   assert.ok(Math.abs(symmetric.a.top-symmetric.b.top)<=2&&Math.abs(symmetric.a.bottom-symmetric.b.bottom)<=2&&Math.abs(symmetric.c.width-symmetric.d.width)<=2&&Math.abs(symmetric.c.height-symmetric.d.height)<=2,width+'x'+height+' symmetric card grids '+JSON.stringify(symmetric));
-  assert.ok(symmetric.foot.bottom<=symmetric.b.top+2&&symmetric.p.top>=symmetric.b.bottom-2&&Math.abs(symmetric.p.top-symmetric.l.top)<=2&&symmetric.p.bottom<=panes.right.bottom+2,width+'x'+height+' save and pager separated '+JSON.stringify(symmetric));
+  const footerVisible=symmetric.foot.width>0&&symmetric.foot.height>0;
+  assert.ok((!footerVisible||symmetric.foot.bottom<=symmetric.b.top+2)&&symmetric.p.top>=symmetric.b.bottom-2&&Math.abs(symmetric.p.top-symmetric.l.top)<=2&&symmetric.p.bottom<=panes.right.bottom+2,width+'x'+height+' save and pager separated '+JSON.stringify(symmetric));
+  if(!footerVisible){
+   // A zero rect from a hidden footer has no meaningful position, especially
+   // after portrait rotation. Its actions must remain reachable in Settings.
+   await click('[data-bk-screen-tab=settings]');await delay(120);
+   const settingsActions=await evaluate(`(()=>{
+    const frame=layoutRect(document.querySelector('.bk-native-pane'));
+    return ['deck-save','deck-save-only','deck-bank-delete'].map(action=>{
+     const node=document.querySelector('.dual-workshop [data-action="'+action+'"]');if(!node)return {action,missing:true};
+     const r=layoutRect(node),s=getComputedStyle(node);
+     return {action,width:r.width,height:r.height,visible:s.display!=='none'&&s.visibility!=='hidden'&&Number(s.opacity)>0,inside:r.left>=frame.left-2&&r.right<=frame.right+2&&r.top>=frame.top-2&&r.bottom<=frame.bottom+2,disabled:node.disabled};
+    });
+   })()`);
+   assert.ok(settingsActions.every(a=>!a.missing&&a.width>0&&a.height>0&&a.visible&&a.inside&&(!a.disabled||a.action==='deck-bank-delete')),width+'x'+height+' settings retains save/delete controls, allowing last-deck delete protection '+JSON.stringify(settingsActions));
+   await check(width+'x'+height+' deck settings actions',['.deck-bank-actions>.btn','.deck-panel-foot>div>button']);
+   await click('[data-bk-screen-tab=cards]');await delay(120);
+   assert.equal(await evaluate('document.querySelector(".dual-workshop").dataset.bkWorkshopMode'),'cards','Restore card mode after checking settings actions');
+  }
   // Exercise the operator status/actions in the visible settings tab without
   // accessing a live account. Hidden card-mode rows cannot prove their fit.
   await click('[data-bk-screen-tab=settings]');await delay(120);
@@ -241,7 +302,29 @@ try{
   await click('[data-action=solo-section][data-section=practice]');await check(width+'x'+height+' practice',['.solo-level-grid>.solo-level']);
   await click('.navigation-dock [data-nav=home]');await click('[data-action=multi-mode]');await waitElement('.mode-lobby');await check(width+'x'+height+' room',general);
   await click('.navigation-dock [data-nav=home]');await click('[data-action=rank-mode]');await waitElement('.mode-lobby');await check(width+'x'+height+' rank',general);
-  await click('.navigation-dock [data-nav=collection]');await click('#card-results .game-card');await waitElement('.modal');await check(width+'x'+height+' card detail',['.modal-close,.modal>.detail-layout']);await click('.modal-close');
+  await click('.navigation-dock [data-nav=collection]');await click('#card-results .game-card');await waitElement('.modal');await check(width+'x'+height+' card detail',['.detail-info button']);
+  const detailClose=await evaluate(`(()=>{
+   const close=document.querySelector('#modal-root .modal-close'),detail=document.querySelector('#modal-root .detail-layout'),box=layoutRect(close),viewport=layoutViewport(),style=getComputedStyle(close),overlaps=[];
+   const intersects=r=>r.width>0&&r.height>0&&Math.min(box.right,r.right)-Math.max(box.left,r.left)>2&&Math.min(box.bottom,r.bottom)-Math.max(box.top,r.top)>2;
+   const controlSelector='button,input,select,textarea,a[href]';
+   for(const node of detail.querySelectorAll(':scope > .game-card,'+controlSelector)){
+    const s=getComputedStyle(node);if(s.display!=='none'&&s.visibility!=='hidden'&&intersects(layoutRect(node)))overlaps.push(node.className||node.tagName);
+   }
+   // Padding around a heading can intentionally accommodate the close button.
+   // Range rectangles measure the painted text instead of that parent box.
+   const walker=document.createTreeWalker(detail,NodeFilter.SHOW_TEXT);
+   while(walker.nextNode()){
+    const node=walker.currentNode,parent=node.parentElement;
+    if(!node.textContent.trim()||parent.closest('.game-card,'+controlSelector)||getComputedStyle(parent).visibility==='hidden')continue;
+    const range=document.createRange();range.selectNodeContents(node);
+    if([...range.getClientRects()].some(raw=>intersects(layoutRect({getBoundingClientRect:()=>raw}))))overlaps.push(node.textContent.trim().slice(0,45));
+   }
+   close.focus({preventScroll:true});
+   return {width:box.width,height:box.height,visible:style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)>0,inside:box.left>=-2&&box.top>=-2&&box.right<=viewport.width+2&&box.bottom<=viewport.height+2,focusable:document.activeElement===close,overlaps};
+  })()`);
+  assert.ok(detailClose.width>0&&detailClose.height>0&&detailClose.visible&&detailClose.inside&&detailClose.focusable,width+'x'+height+' visible, focusable close control '+JSON.stringify(detailClose));
+  assert.deepEqual(detailClose.overlaps,[],width+'x'+height+' close control leaves card artwork, text and actions unobstructed');
+  await click('.modal-close');assert.equal(await evaluate('Boolean(document.querySelector("#modal-root .modal"))'),false,'Close control dismisses the detail');
  }
  await click('.navigation-dock [data-nav=home]');await click('[data-action=solo-mode]');await click('[data-action=solo-section][data-section=practice]');await click('[data-action=start-game]');await waitElement('.duel-shell');
  for(const {width,height,mobile} of viewports){

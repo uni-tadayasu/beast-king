@@ -28,7 +28,7 @@ function measureCardPane(node,height){
  const result=node.querySelector('#card-results');if(!result)return;
  const bounds=layoutRect(node),r=layoutRect(result);
  const meta=result.querySelector('.results-meta'),pager=result.querySelector('.pagination');
- const footer=(meta?.offsetHeight||18)+(pager?.offsetHeight||36)+22;
+ const footer=(meta?.offsetHeight||22)+(pager?.offsetHeight||38)+22;
  const pad=Number.parseFloat(getComputedStyle(node).paddingBottom)||0;
  const dual=node.dataset.page==='deck'&&!!node.querySelector('.dual-workshop');
  const leftGrid=result.querySelector('.cards-grid');
@@ -52,9 +52,9 @@ function measureWorkshopTracks(node,logicalHeight){
  const panels=[workspace.querySelector('.transfer-source'),workspace.querySelector('.deck-panel')];
  if(panels.some(p=>!p))return null;
  const maxHeight=selector=>Math.ceil(Math.max(0,...panels.map(panel=>{
-  const el=panel.querySelector(selector);return el?Math.max(el.offsetHeight,el.scrollHeight):0;
+  const el=panel.querySelector(selector);return el&&el.getClientRects().length?Math.max(el.offsetHeight,el.scrollHeight):0;
  })));
- const tools=maxHeight('.workshop-tools'),meta=maxHeight('.results-meta'),pager=Math.max(33,maxHeight('.pagination,.deck-list-pagination'));
+ const tools=maxHeight('.workshop-tools'),meta=maxHeight('.results-meta'),pager=Math.max(36,maxHeight('.pagination,.deck-list-pagination'));
  workspace.style.setProperty('--workshop-tools-height',tools+'px');
  workspace.style.setProperty('--workshop-meta-height',meta+'px');
  workspace.style.setProperty('--workshop-pager-height',pager+'px');
@@ -63,8 +63,12 @@ function measureWorkshopTracks(node,logicalHeight){
   const s=getComputedStyle(panel),list=panel.querySelector('#card-results,.deck-list'),l=getComputedStyle(list);
   return num(s,'paddingTop')+num(s,'paddingBottom')+num(s,'borderTopWidth')+num(s,'borderBottomWidth')+num(s,'rowGap')+2*num(l,'rowGap')+num(l,'paddingTop')+num(l,'paddingBottom')+num(l,'borderTopWidth')+num(l,'borderBottomWidth');
  }));
- // At least one complete illustrated card plus counts and actions.
- const minImageHeight=layoutWidth()>=1000?235:145;
+ // A shallow landscape canvas needs smaller artwork, not smaller controls.
+ // Short screens use a horizontal tile and 40px action footer; taller screens
+ // reserve 64px for separate readable count/action rows.
+ // CSS uses the same minimum instead of the previous unconditional 145px.
+ const minImageHeight=layoutHeight()<=350?80:layoutHeight()<=400?120:layoutHeight()<=540?155:layoutWidth()>=1000?235:165;
+ workspace.style.setProperty('--workshop-min-image-height',minImageHeight+'px');
  const required=Math.ceil(tools+meta+pager+chrome+minImageHeight+3);
  workspace.style.setProperty('min-height',required+'px','important');
  const bounds=layoutRect(node),box=layoutRect(workspace),style=getComputedStyle(node);
@@ -178,7 +182,7 @@ function paginateAbout(){
 }
 // Keep existing elements and delegated game actions: these are alternate views
 // of the same editor, never copies of cards, controls or saved data.
-let workshopMode='cards',homeMode='showcase',catalogMode='cards',lastPage='';
+let workshopMode='cards',homeMode='showcase',catalogMode='cards',shopMode='pack',lastPage='';
 function screenTabs(host,anchor,items,key,current,change){
  let bar=host.querySelector(':scope > .bk-screen-tabs[data-bk-tab-kind="'+key+'"]');
  if(!bar){
@@ -191,7 +195,7 @@ function screenTabs(host,anchor,items,key,current,change){
 }
 function preparePage(pane){
  const page=pane.dataset.page||'duel';
- if(lastPage!==page){if(page==='deck')workshopMode='cards';if(page==='home')homeMode='showcase';if(page==='collection')catalogMode='cards';lastPage=page;}
+ if(lastPage!==page){if(page==='deck')workshopMode='cards';if(page==='home')homeMode='showcase';if(page==='collection')catalogMode='cards';if(page==='shop')shopMode='pack';lastPage=page;}
  if(page==='deck'){
   const workshop=pane.querySelector('.dual-workshop');if(!workshop)return;
   workshop.dataset.bkWorkshopMode=workshopMode;
@@ -203,11 +207,11 @@ function preparePage(pane){
  }
  if(page==='home'){
   const home=pane.querySelector('.product-home');if(!home)return;
-  const compact=layoutWidth()<850||layoutHeight()<650;
+  const compact=layoutWidth()<1100||layoutHeight()<800;
   home.dataset.bkHomeMode=compact?homeMode:'all';
   const existing=home.querySelector(':scope > .bk-screen-tabs');
   if(compact){
-   const bar=screenTabs(home,home.querySelector(':scope > .home-mode-rail'),[['showcase','王庭'],['command','デッキ・戦績'],['origins','オリジン']],'home',homeMode,id=>{homeMode=id;home.dataset.bkHomeMode=id;});bar.hidden=false;
+   const bar=screenTabs(home,home.querySelector(':scope > .home-mode-rail'),[['showcase','ホーム'],['command','デッキ・戦績'],['origins','オリジン']],'home',homeMode,id=>{homeMode=id;home.dataset.bkHomeMode=id;});bar.hidden=false;
   }else if(existing)existing.hidden=true;
  }
  if(page==='collection'){
@@ -217,6 +221,17 @@ function preparePage(pane){
   const existing=pane.querySelector(':scope > .bk-screen-tabs');
   if(compact){const bar=screenTabs(pane,pane.querySelector(':scope > .page-title'),[['cards','カード一覧'],['filter','検索・絞り込み']],'catalog',catalogMode,id=>{catalogMode=id;pane.dataset.bkCatalogMode=id;});bar.hidden=false;}
   else if(existing)existing.hidden=true;
+ }
+ if(page==='shop'){
+  const shop=pane.querySelector('.product-shop');if(!shop)return;
+  const compact=layoutWidth()<1100||layoutHeight()<800;
+  const booster=shop.querySelector('.booster-layout');
+  shop.dataset.bkShopMode=booster?(compact?shopMode:'all'):'starters';
+  const existing=shop.querySelector(':scope > .bk-screen-tabs[data-bk-tab-kind="shop"]');
+  if(compact&&booster){
+   const bar=screenTabs(shop,shop.querySelector(':scope > .product-section-tabs'),[['pack','パック'],['recipes','構築例'],['details','収録・詳細']],'shop',shopMode,id=>{shopMode=id;shop.dataset.bkShopMode=id;});
+   bar.setAttribute('aria-label','ショップの表示');bar.hidden=false;
+  }else if(existing)existing.hidden=true;
  }
 }
 function fitApp(){
@@ -272,20 +287,20 @@ function paginateList(list,size,label='一覧'){
  state.size=size;updatePagedList(list,state);
 }
 function paginateLongLists(){
- const short=layoutHeight()<650,phone=layoutWidth()<600;
- const general=layoutHeight()<=500?2:layoutHeight()<=750?4:6;
+ const short=layoutHeight()<650,phone=layoutWidth()<600,tight=layoutHeight()<=400;
+ const general=tight?1:layoutHeight()<=540?2:layoutHeight()<=750?3:5;
  const groups=[
-  ['.starter-shelf',phone?1:layoutWidth()<1100||short?2:4,'スターター'],
-  ['.pack-result-grid',phone?2:short?3:4,'開封カード'],
+  ['.starter-shelf',phone||tight?1:layoutWidth()<1100||short?2:4,'スターター'],
+  ['.pack-result-grid',phone||tight?2:short?3:4,'開封カード'],
   ['.rulebook-spread',phone||short?1:2,'ルール'],
-  ['.campaign-chapters',phone||short?2:5,'章'],
+  ['.campaign-chapters',phone||tight?1:short?2:4,'章'],
   ['.battle-log-panel .battle-log-entries',1,'対戦履歴'],
   ['.battle-log-drawer .battle-log-entries',short?2:4,'対戦履歴'],
   ['.operator-player-list,.operator-audit,.account-device-list,.zone-card-list,.special-deck-list',general,'一覧'],
   ['.operator-event-list,.operator-delivery-history',general,'履歴'],
   ['.shell .deck-rows',phone||short?3:6,'編成カード'],
   ['.shell .side .log',general,'対戦履歴'],
-  ['.rebuild-starter-offers',phone?1:short?2:4,'スターター']
+  ['.rebuild-starter-offers',phone||tight?1:short?2:4,'スターター']
  ];
  for(const [selector,size,label] of groups)for(const list of doc.querySelectorAll(selector))paginateList(list,size,label);
 }

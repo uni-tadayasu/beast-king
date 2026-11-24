@@ -134,9 +134,28 @@ export function createCloudSync({
   function observeLocal() {
     const current = snapshot();
     const currentFingerprint = fingerprint(current);
-    if (baseline !== null && currentFingerprint !== baseline) dirty = true;
-    if (dirty) localSnapshot = current;
+    // Calling persist is not itself an edit. Selection, backup and a reverted
+    // draft can all save the same object again; only its content is dirty.
+    if (baseline !== null) dirty = currentFingerprint !== baseline;
+    localSnapshot = dirty ? current : null;
     return current;
+  }
+  function reconcileMatchingSave(save, current = snapshot(), sentFingerprint = null) {
+    if (needsIdentityApply || (revision !== null && save.revision < revision)) return false;
+    const remoteFingerprint = fingerprint(save.data), currentFingerprint = fingerprint(current);
+    // These are equality checks, never a merge: either both sides already
+    // agree, the cloud still contains our baseline, or it contains the exact
+    // write just attempted by this device. Other concurrent changes conflict.
+    if (remoteFingerprint !== currentFingerprint && remoteFingerprint !== baseline && remoteFingerprint !== sentFingerprint) return false;
+    revision = save.revision; baseline = remoteFingerprint; pendingWrite = null;
+    dirty = currentFingerprint !== baseline; localSnapshot = dirty ? current : null;
+    remoteCandidate = null; conflictReason = null; errorState = null; retryCount = 0;
+    phase = dirty ? 'dirty' : 'synced';
+    if (!dirty) lastSyncedAt = now();
+    clearTimer(debounceTimer); debounceTimer = null;
+    writeStored(bindingKey, { playerId }); writeStored(unboundKey, null);
+    persistMeta(); notify();
+    return true;
   }
   async function applySave(save, reason, operationEpoch) {
     assertOwner(operationEpoch);
@@ -147,8 +166,8 @@ export function createCloudSync({
     assertOwner(operationEpoch);
     revision = save.revision;
     const applied = snapshot();
-    baseline = fingerprint(applied);
     const starterMigration = typeof applied.freeStarterId === 'string' && !save.data.freeStarterId;
+    baseline = fingerprint(starterMigration ? save.data : applied);
     dirty = starterMigration; localSnapshot = starterMigration ? applied : null; pendingWrite = null; needsIdentityApply = false;
     remoteCandidate = null; conflictReason = null; errorState = null; retryCount = 0;
     phase = 'synced'; lastSyncedAt = now();
@@ -163,7 +182,7 @@ export function createCloudSync({
     if (needsIdentityApply) throw new CloudSyncError('連携先の保存データを先に読み込んでください。', 'IDENTITY_CHANGED');
     if (conflictReason) throw new CloudSyncError('保存が競合しています。使うデータを選んでください。', 'SAVE_CONFLICT');
     observeLocal();
-    if (!dirty && !pendingWrite) { phase = 'synced'; errorState = null; notify(); return; }
+    if (!dirty && !pendingWrite) { phase = 'synced'; errorState = null; persistMeta(); notify(); return; }
     // Bound the work per flush. New edits can schedule another turn, never a hot loop.
     for (let attempt = 0; attempt < 3 && (dirty || pendingWrite); attempt += 1) {
       assertOwner(operationEpoch);
@@ -174,7 +193,20 @@ export function createCloudSync({
       const sending = jsonCopy(pendingWrite);
       persistMeta();
       phase = 'saving'; errorState = null; notify();
-      const response = await client.saveCloudSave({ revision: sending.revision, data: sending.data, mutationId: sending.mutationId });
+      let response;
+      try {
+        response = await client.saveCloudSave({ revision: sending.revision, data: sending.data, mutationId: sending.mutationId });
+      } catch (error) {
+        assertOwner(operationEpoch);
+        if (error?.status === 409 && error.code === 'save_conflict' && error.payload?.save) {
+          const currentSave = validSave(error.payload.save);
+          if (currentSave && reconcileMatchingSave(currentSave, snapshot(), sending.fingerprint)) {
+            if (!dirty) return true;
+            continue;
+          }
+        }
+        throw error;
+      }
       assertOwner(operationEpoch);
       const save = validSave(response.save);
       if (!save) throw new CloudSyncError('保存完了の応答がありません。', 'INVALID_CLOUD_SAVE');
@@ -194,6 +226,10 @@ export function createCloudSync({
       writeStored(bindingKey, { playerId }); writeStored(unboundKey, null);
       persistMeta(); notify();
       if (save.revision > appliedRevision) {
+        if (reconcileMatchingSave(save, local)) {
+          if (!dirty) return true;
+          continue;
+        }
         if (dirty) {
           setConflict(save, 'revision');
           throw new CloudSyncError('保存後にクラウドが更新されています。使うデータを選んでください。', 'SAVE_CONFLICT');
@@ -211,11 +247,10 @@ export function createCloudSync({
     assertOwner(operationEpoch);
     // A lost response may already have committed. Retry the exact mutation first.
     if (pendingWrite && !conflictReason && !needsIdentityApply && await writePending(operationEpoch) === true) return getState();
-    const beforeRead = editVersion;
     const response = await client.getCloudSave();
     assertOwner(operationEpoch);
     const save = validSave(response.save);
-    observeLocal();
+    const current = observeLocal();
     if (!save) {
       if (needsIdentityApply) { setConflict(null, 'linked-save-missing'); return getState(); }
       if (revision !== null && revision > 0) { setConflict(null, 'cloud-save-missing'); return getState(); }
@@ -228,8 +263,12 @@ export function createCloudSync({
       return getState();
     }
     if (revision !== null && save.revision < revision) throw new CloudSyncError('古い保存データを受信しました。', 'STALE_CLOUD_SAVE');
+    if (reconcileMatchingSave(save, current)) {
+      if (dirty) await writePending(operationEpoch);
+      return getState();
+    }
     const changed = revision === null || save.revision !== revision;
-    if (changed && (dirty || beforeRead !== editVersion)) {
+    if (changed && dirty) {
       setConflict(save, 'revision');
       return getState();
     }
@@ -290,14 +329,17 @@ export function createCloudSync({
   }
   function scheduleSave() {
     clearTimer(debounceTimer); debounceTimer = null;
-    if (!started || !initialized || destroyed || paused || switching || !visible() || conflictReason || needsIdentityApply || phase === 'auth-required') return;
+    if ((!dirty && !pendingWrite) || !started || !initialized || destroyed || paused || switching || !visible() || conflictReason || needsIdentityApply || phase === 'auth-required') return;
     debounceTimer = timers.setTimeout(() => { debounceTimer = null; void flush().catch(() => {}); }, Math.max(0, debounceMs));
   }
   function markDirty() {
     if (destroyed || applying) return getState();
-    localSnapshot = snapshot();
-    dirty = true; editVersion += 1;
-    if (!switching && !conflictReason && !paused && phase !== 'auth-required') phase = 'dirty';
+    const current = snapshot(), currentFingerprint = fingerprint(current);
+    const previousFingerprint = localSnapshot ? fingerprint(localSnapshot) : baseline;
+    if (currentFingerprint !== previousFingerprint) editVersion += 1;
+    dirty = baseline === null || currentFingerprint !== baseline;
+    localSnapshot = dirty ? current : null;
+    if (!switching && !conflictReason && !paused && phase !== 'auth-required') phase = dirty || pendingWrite ? 'dirty' : revision === null ? 'idle' : 'synced';
     persistMeta(); notify();
     retryCount = 0;
     scheduleSave();
@@ -310,6 +352,9 @@ export function createCloudSync({
     const task = enqueue(async operationEpoch => {
       if (!initialized) await initialize(operationEpoch);
       assertOwner(operationEpoch);
+      // Older clients may have persisted a false dirty flag. Recheck current
+      // content once before presenting a conflict, without choosing either side.
+      if (conflictReason && !needsIdentityApply) await readAndReconcile(operationEpoch);
       if (conflictReason) throw new CloudSyncError('保存が競合しています。使うデータを選んでください。', 'SAVE_CONFLICT');
       await writePending(operationEpoch);
       return getState();
