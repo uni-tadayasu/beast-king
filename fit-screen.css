@@ -404,13 +404,54 @@ html.bk-fit .bk-native-screen>.mobile-action .selection-text p{display:-webkit-b
  html.bk-fit .bk-native-screen .duel-shell .zone-strip button,.bk-native-screen .arena .zone-strip button{font-size:9px;min-height:26px;padding:2px}
  html.bk-fit .bk-native-screen .duel-shell .midline>.end-turn,.bk-native-screen .midline>.end-turn{min-height:28px}
 }
+/* Each arena region has one explicit grid cell. The former portrait flex
+   layout used separate nested rows; when flattened with display:contents
+   those inherited row numbers collided with the opponent's public zones.
+   Keep one shared coordinate system at all widths and both orientations. */
+html.bk-fit .bk-native-screen .arena>.duelist.enemy{grid-area:1/1/2/2}
+html.bk-fit .bk-native-screen .arena>.zone-strip{grid-area:1/2/2/3}
+html.bk-fit .bk-native-screen .arena>.field-row{grid-area:2/1/3/2}
+html.bk-fit .bk-native-screen .midline>.arcana-zone-row{grid-area:2/2/3/3}
+html.bk-fit .bk-native-screen .midline>.turn-label{grid-area:3/1/4/2}
+html.bk-fit .bk-native-screen .midline>.end-turn{grid-area:3/2/4/3}
+html.bk-fit .bk-native-screen .arena>.midline+.field-row{grid-area:4/1/5/2}
+html.bk-fit .bk-native-screen .own-zone-row>.arcana-zone-row{grid-area:4/2/5/3}
+html.bk-fit .bk-native-screen .arena>.duelist.my-hud{grid-area:5/1/6/2}
+html.bk-fit .bk-native-screen .own-zone-row>.zone-strip{grid-area:5/2/6/3}
+html.bk-fit .bk-native-screen .arena>.hand-section{grid-area:6/1/7/3}
+html.bk-fit .bk-native-screen .arena>.midline,
+html.bk-fit .bk-native-screen .arena>.own-zone-row{display:contents}
+html.bk-fit .bk-native-screen .arena .arcana-zone-row{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;justify-items:center;gap:3px;padding:2px;
+ width:100%;min-width:0;max-width:100%;height:auto;min-height:0;max-height:none;
+}
+html.bk-fit .bk-native-screen .arcana-zone-row>.gimmick-frames{display:contents}
+html.bk-fit .bk-native-screen .arcana-zone-row .arcana-slot{
+ width:100%;max-width:38px;min-width:0;align-self:start;justify-self:center;
+}
+html.bk-fit .bk-native-screen .arcana-zone-row .arcana-frame{width:100%;height:auto;aspect-ratio:36/52;min-height:0}
+html.bk-fit .bk-native-screen .arcana-zone-row .arcana-slot>small{
+ display:block;width:100%;max-width:100%;white-space:normal;overflow-wrap:anywhere;font-size:8px;line-height:1.2;text-align:center;
+}
+@media(max-height:570px) and (orientation:landscape){
+ html.bk-fit .bk-native-screen .arena>.hand-section{grid-area:1/3/6/4}
+}
 @media(max-width:650px) and (orientation:portrait){
- html.bk-fit .bk-native-screen .duel-layout>.arena{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,27%);grid-template-rows:auto minmax(min-content,1fr) auto minmax(min-content,1fr) auto minmax(min-content,1fr)}
- html.bk-fit .bk-native-screen .arena>.midline,.bk-native-screen .arena>.own-zone-row{display:contents}
- html.bk-fit .bk-native-screen .arena>.zone-strip,.bk-native-screen .own-zone-row>.zone-strip{grid-column:2}
- html.bk-fit .bk-native-screen .midline>.arcana-zone-row,.bk-native-screen .own-zone-row>.arcana-zone-row{grid-column:2}
- html.bk-fit .bk-native-screen .midline>.turn-label{grid-column:1;grid-row:3}
- html.bk-fit .bk-native-screen .midline>.end-turn{grid-column:2;grid-row:3}
+ html.bk-fit .bk-native-screen .duel-layout>.arena{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(94px,28%);
+  grid-template-rows:auto minmax(min-content,1fr) auto minmax(min-content,1fr) auto minmax(min-content,1fr);
+  align-content:stretch;align-items:stretch;gap:5px 4px;padding:5px;
+ }
+ html.bk-fit .bk-native-screen .arena>.duelist{min-width:0;width:100%;height:auto;min-height:0;gap:3px}
+ html.bk-fit .bk-native-screen .duelist-info,.bk-native-screen .my-hud .duelist-info{flex:1 1 52px;max-width:95px;min-width:0}
+ html.bk-fit .bk-native-screen .duelist-avatar{width:24px;height:27px}
+ html.bk-fit .bk-native-screen .duelist-extras{font-size:9px;gap:3px}
+ html.bk-fit .bk-native-screen .arena .zone-strip{min-width:0;width:100%;max-width:100%;gap:2px;align-self:center}
+ html.bk-fit .bk-native-screen .arena .zone-strip button{font-size:8px;min-height:32px;line-height:1.2;padding:3px 1px}
+ html.bk-fit .bk-native-screen .arena .zone-strip button b{font-size:11px}
+ html.bk-fit .bk-native-screen .arena>.field-row{min-width:0;min-height:0;width:100%;max-width:100%;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
  html.bk-fit .bk-native-screen .field-row>.field-slot{width:min(100%,90px)!important}
  html.bk-fit .bk-native-screen .hand-cards>.hand-card{width:min(100%,100px)!important}
+ html.bk-fit .bk-native-screen .midline>.turn-label,.bk-native-screen .midline>.end-turn{min-width:0;min-height:30px;padding:4px;font-size:11px}
+ html.bk-fit .bk-native-screen .arcana-zone-row .arcana-slot>small{font-size:7px}
 }
