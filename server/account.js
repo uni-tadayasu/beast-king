@@ -3,7 +3,7 @@ import {isRegaliaRasterArtwork} from '../regalia-art-format.js';
 import {KIRAHARA_RECIPE,requiredCards} from '../rebuild/operator-deck.js';
 import {validateRebuildBackup,MAX_REBUILD_BACKUP_BYTES} from '../rebuild/backup.js';
 import {verifyOperatorSnapshot} from '../rebuild/solo-save.js';
-import {CARDS,ORIGINS,getDeckPreset,DECK_COPY_LIMIT,getCard,validateDeck,validateSpecialDeck} from '../catalog.js';
+import {CARDS,ORIGINS,STARTER_DECKS,getDeckPreset,DECK_COPY_LIMIT,getCard,validateDeck,validateSpecialDeck} from '../catalog.js';
 import {MAX_HEART_POINTS,MAX_LOG_ENTRIES} from '../engine.js';
 import {normalizeCampaignProgress,getCampaignBattle} from '../campaign.js';
 import {EXTRA_COPY_TREASURE,MAX_CARD_COPIES,PACK_ID,getPack} from '../shop.js';
@@ -111,6 +111,7 @@ export function validateCloudData(raw,player,fail){
   check(Array.isArray(raw.rewardedMatches)&&raw.rewardedMatches.length<=200&&raw.rewardedMatches.every(id=>text(id,200,{empty:false})),fail,'invalid_save');
   check(plain(raw.campaignProgress)&&Array.isArray(raw.campaignProgress.results)&&raw.campaignProgress.results.length<=1000&&Array.isArray(raw.campaignProgress.clearedBattleIds)&&raw.campaignProgress.clearedBattleIds.length<=20,fail,'invalid_save');
   const data={version:6,playerName:name,profileOrigin:raw.profileOrigin,campaignProgress:normalizeCampaignProgress(raw.campaignProgress),bgm:raw.bgm,bgmVolume:raw.bgmVolume,sound:raw.sound,motion:raw.motion,treasure:raw.treasure,collection,rewardedMatches:[...new Set(raw.rewardedMatches)],lastPack:null,deckName:raw.deckName,deckIds:[...raw.deckIds],specialIds:[...raw.specialIds],starter:getDeckPreset(raw.starter)?raw.starter:'',draft:null,stats:{played:raw.stats.played,won:raw.stats.won,drawn:raw.stats.drawn},game:cpuSave(raw.game,fail)};
+  if(raw.freeStarterId!==undefined){check(STARTER_DECKS.some(d=>d.id===raw.freeStarterId),fail,'invalid_save','無料スターターを確認してください。');data.freeStarterId=raw.freeStarterId;}
   if(raw.draft!=null){check(plain(raw.draft)&&text(raw.draft.name,28),fail,'invalid_save');const ids=cardIds(raw.draft.ids,['beast','miracle','gimmick'],32,fail),specialIds=cardIds(raw.draft.specialIds,['fusion'],4,fail);check([...ids,...specialIds].every(id=>[...ids,...specialIds].filter(x=>x===id).length<=DECK_COPY_LIMIT),fail,'invalid_save',`編集中のデッキも同じカードは${DECK_COPY_LIMIT}枚までです。`);data.draft={name:raw.draft.name,ids,specialIds};}
   if(raw.deckLibrary!==undefined){
     const validId=id=>typeof id==='string'&&/^(?:starter-(?:star-crown|azure-memory|crimson-pulse|sky-promise)|custom-[a-z0-9-]{1,60}|operator-kirahara-v1)$/.test(id);

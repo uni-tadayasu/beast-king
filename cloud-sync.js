@@ -146,12 +146,15 @@ export function createCloudSync({
     finally { applying = false; }
     assertOwner(operationEpoch);
     revision = save.revision;
-    baseline = fingerprint(snapshot());
-    dirty = false; localSnapshot = null; pendingWrite = null; needsIdentityApply = false;
+    const applied = snapshot();
+    baseline = fingerprint(applied);
+    const starterMigration = typeof applied.freeStarterId === 'string' && !save.data.freeStarterId;
+    dirty = starterMigration; localSnapshot = starterMigration ? applied : null; pendingWrite = null; needsIdentityApply = false;
     remoteCandidate = null; conflictReason = null; errorState = null; retryCount = 0;
     phase = 'synced'; lastSyncedAt = now();
     writeStored(bindingKey, { playerId });
     writeStored(unboundKey, null);
+    if (starterMigration) { phase = 'dirty'; scheduleSave(); }
     persistMeta(); notify();
     return true;
   }

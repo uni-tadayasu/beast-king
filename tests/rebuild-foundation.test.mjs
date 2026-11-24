@@ -155,3 +155,16 @@ test('BGM settings survive save and danger threshold switches exactly at 2500 HP
 test('rebuild starter ownership survives reload without grants of other starters',()=>{
  for(const s of STARTERS){const storage=memory(),p=initialProfile('王','king',s.id);persistProfile(storage,p);assert.deepEqual(loadProfile(storage).collection,p.collection);assert.equal(Object.values(p.collection).reduce((a,b)=>a+b,0),36);}
 });
+
+
+test('unmarked legacy rebuild inventories retain only the selected free baseline',()=>{
+ const storage=memory(),chosen=STARTERS[2],old=initialProfile('王','king',chosen.id);
+ delete old.freeStarterId;
+ for(const d of STARTERS)old.collection=grantDeckCollection(old.collection,[...d.ids,...d.specialIds]);
+ persistProfile(storage,old);
+ const next=loadProfile(storage);
+ assert.equal(next.freeStarterId,chosen.id);
+ assert.equal(Object.values(next.collection).reduce((a,b)=>a+b,0),36);
+ assert.equal(checkDeck(next,next.main,next.special).valid,true);
+ persistProfile(storage,next);assert.deepEqual(loadProfile(storage).collection,next.collection);
+});

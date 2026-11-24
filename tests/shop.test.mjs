@@ -229,3 +229,19 @@ test('starter repurchases convert only excess copies and never charge on failure
  const full={treasure:1000,collection:Object.fromEntries([...deck.ids,...deck.specialIds].map(id=>[id,3]))};
  const blocked=purchaseStarter(full,deck.id);assert.equal(blocked.ok,false);assert.equal(blocked.errorCode,'ALREADY_COMPLETE');assert.equal(blocked.treasure,1000);assert.deepEqual(blocked.collection,full.collection);
 });
+
+
+test('legacy free four-starter baseline is recalled once; chosen cards and excess copies survive',async()=>{
+ const {migrateLegacyStarters,createStarterCollection,hasStarterCards}=await import('../shop.js');
+ const chosen=STARTER_DECKS[1],other=STARTER_DECKS[0];
+ const old=STARTER_DECKS.reduce((c,d)=>createStarterCollection(c,d.id),{});
+ const extra=other.specialIds[0],unrelated=CARDS.find(c=>!old[c.id]).id;
+ old[extra]=3;old[unrelated]=2;
+ const next=migrateLegacyStarters({starter:chosen.id,collection:old});
+ assert.ok(next.removed>0);assert.equal(next.freeStarterId,chosen.id);assert.equal(hasStarterCards(next.collection,chosen.id),true);
+ assert.equal(hasStarterCards(next.collection,other.id),false);assert.equal(next.collection[extra],2);assert.equal(next.collection[unrelated],2);
+ assert.deepEqual(migrateLegacyStarters({...next}).collection,next.collection);
+ const partial=createStarterCollection({},chosen.id);
+ assert.deepEqual(migrateLegacyStarters({starter:chosen.id,collection:partial}).collection,partial);
+ const purchased={...next,collection:old};assert.deepEqual(migrateLegacyStarters(purchased).collection,old);
+});

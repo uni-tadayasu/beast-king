@@ -75,6 +75,32 @@ export function hasStarterCards(collection,starterId){
  return Object.entries(required).every(([id,n])=>Number.isInteger(collection?.[id])&&collection[id]>=n);
 }
 
+/** Revoke only the extra free baseline from an unmarked old four-deck
+ * inventory. Historical saves have no complete acquisition ledger; preserve
+ * excess copies, common cards and identifiable recent purchases. */
+export function migrateLegacyStarters(raw,owned=raw?.collection,{starters=STARTER_DECKS,preferred=raw?.starter||raw?.starterId,protectedIds=[]}={}){
+ const collection=normalizeCollection(owned);
+ const marker=starters.find(d=>d.id===raw?.freeStarterId);
+ const selected=marker||starters.find(d=>d.id===preferred)||starters[0];
+ const freeStarterId=selected.id;
+ if(marker)return {collection,freeStarterId,removed:0};
+ const required=d=>grantDeckCollection({},[...d.ids,...d.specialIds]);
+ const legacy=starters.reduce((c,d)=>grantDeckCollection(c,[...d.ids,...d.specialIds]),{});
+ // A partial inventory is not evidence of the historical full grant.
+ if(!Object.entries(legacy).every(([id,n])=>(collection[id]||0)>=n))return {collection,freeStarterId,removed:0};
+ const keep=grantDeckCollection(required(selected),protectedIds),recent={};
+ const pulls=Array.isArray(raw?.lastPack)?raw.lastPack:raw?.lastPack?.pulls;
+ if(Array.isArray(pulls))for(const p of pulls)if(p&&!p.converted&&CARD_MAP.has(p.cardId))recent[p.cardId]=(recent[p.cardId]||0)+1;
+ let removed=0;
+ for(const [id,n] of Object.entries(legacy)){
+  const before=collection[id]||0,extra=Math.max(0,n-(keep[id]||0));
+  const after=Math.min(before,Math.max(keep[id]||0,recent[id]||0,before-extra));
+  removed+=before-after;
+  if(after)collection[id]=after;else delete collection[id];
+ }
+ return {collection,freeStarterId,removed};
+}
+
 function randomUnit(randomFn) {
   const value = randomFn();
   if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value >= 1) {

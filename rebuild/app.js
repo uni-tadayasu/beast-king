@@ -4,14 +4,14 @@ import {createMusicController} from '../music.js';
 import {normalizeSoloSnapshot,verifyOperatorSnapshot,musicScene} from './solo-save.js';
 import {createOperatorClient} from './operator-client.js';
 import {createRebuildCloudClient} from './cloud-client.js';
-import {validateRebuildBackup,ROLLBACK_KEY} from './backup.js';
+import {validateRebuildBackup,ROLLBACK_KEY} from './backup.js?v=20261124-22';
 import {CARDS,ORIGINS,TYPE_LABELS,RARITY_LABELS,MODEL_LABELS,STARTER_DECKS,PACKS,SECOND_REGALIA_ID,getCard} from './catalog.js';
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
 import {CARD_ART_OVERRIDES} from '../card-art-overrides.js';
 import {newGame,playCard,attack,endTurn,runCpuTurn,getLegalTargets,getAttackTargets,getPlayableCards,getFusionMaterials,canAttack} from './engine.js';
 import {CAMPAIGN_BATTLES} from '../campaign.js';
-import {STARTERS,STORAGE_KEY,initialProfile,loadProfile,persistProfile,checkDeck,saveDeck,chooseStarter,counts,purchase,recordSolo,endSuspendedSolo} from './profile.js';
-import {quoteStarterPurchase,purchaseStarter,STARTER_PRICE} from '../shop.js';
+import {STARTERS,STORAGE_KEY,initialProfile,loadProfile,persistProfile,migrateRebuildProfile,checkDeck,saveDeck,chooseStarter,counts,purchase,recordSolo,endSuspendedSolo} from './profile.js?v=20261124-22';
+import {quoteStarterPurchase,purchaseStarter,STARTER_PRICE} from '../shop.js?v=20261124-22';
 const root=document.querySelector('#app'),dialog=document.querySelector('#detail');
 const esc=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const fmt=n=>Number(n).toLocaleString('ja-JP');
@@ -19,6 +19,7 @@ const origin=id=>ORIGINS.find(x=>x.id===id);
 const byType=Object.entries(TYPE_LABELS);
 const label=id=>getCard(id)?.name||id;
 let profile=loadProfile(localStorage),page='home',message='',draft=null,match=null,selection=null,cpuBusy=false,filter={q:'',type:'',origin:'',rarity:'',pack:'',page:0};
+if(profile)persistProfile(localStorage,profile);
 let shopPage=0,shopPack='BK01',cpuTimer=null,starterQuote=null;
 const music=createMusicController({idPrefix:'beastking-rebuild-bgm',sources:{menu:'../assets/audio/menu.mp3',battle:'../assets/audio/battle.mp3','battle-danger':'../assets/audio/battle-danger.mp3'}});
 const operatorClient=createOperatorClient(),cloudClient=createRebuildCloudClient();let cloudView=null;let operatorGrant=null,operatorSelected=false,operatorBusy=false,brandTaps=0,brandAt=0,starting=false;
@@ -144,7 +145,7 @@ function assertLocalUnchanged(v){
  if(v.local!==localStorage.getItem(STORAGE_KEY))throw Error('別のタブで端末データが変更されました。ページを再読み込みしてください。');
 }
 function applyCloudRestore(data){
- const previous=validateRebuildBackup(profile),next=validateRebuildBackup(data);
+ const previous=validateRebuildBackup(profile),next=migrateRebuildProfile(validateRebuildBackup(data));
  localStorage.setItem(ROLLBACK_KEY,JSON.stringify(previous));
  save(next);clearCpu();match=null;selection=null;draft=null;operatorGrant=null;operatorSelected=false;page='home';render();closeDialog();setMessage('端末データを復元しました。復元前のデータも保持しています。');
 }

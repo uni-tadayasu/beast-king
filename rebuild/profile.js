@@ -2,6 +2,7 @@
 import {STARTER_DECKS,getCard,validateDeck,validateSpecialDeck} from './catalog.js';
 import {grantDeckCollection,normalizeCollection,STARTING_TREASURE,openPack,getBattleReward} from './shop.js';
 import {normalizeSoloSnapshot,normalizeAudioSettings} from './solo-save.js';
+import {migrateLegacyStarters} from '../shop.js?v=20261124-22';
 export const STORAGE_KEY='beast-king-rebuild-v1';
 export const STARTERS=Object.freeze(STARTER_DECKS.filter(s=>['star-crown','azure-memory','crimson-pulse','sky-promise'].includes(s.id)));
 export const ORIGIN_IDS=Object.freeze(['mountain','river','seed','grass','flower','tree','king']);
@@ -16,7 +17,7 @@ export function initialProfile(name,origin,starterId){
  const starter=STARTERS.find(s=>s.id===starterId);
  if(!starter)throw new Error('スターターを選択してください。');
  const collection=grantDeckCollection({},[...starter.ids,...starter.specialIds]);
- return {version:1,name,origin,starterId,collection,treasure:STARTING_TREASURE,main:[...starter.ids],special:[...starter.specialIds],wins:0,losses:0,draws:0,completed:0,settled:[],lastPack:[],bgm:true,bgmVolume:.5,suspendedMatch:null};
+ return {version:1,name,origin,starterId,freeStarterId:starterId,collection,treasure:STARTING_TREASURE,main:[...starter.ids],special:[...starter.specialIds],wins:0,losses:0,draws:0,completed:0,settled:[],lastPack:[],bgm:true,bgmVolume:.5,suspendedMatch:null};
 }
 export function checkDeck(profile,main,special){
  const a=validateDeck(main),b=validateSpecialDeck(special),errors=[...a.errors,...b.errors];
@@ -34,12 +35,26 @@ export function chooseStarter(profile,id){
  const s=STARTERS.find(s=>s.id===id);if(!s)throw new Error('存在しないスターターです。');
  return {...saveDeck(profile,s.ids,s.specialIds),starterId:id};
 }
+// Run the same one-time recall on local saves and imported backups.
+export function migrateRebuildProfile(raw){
+ const migrated=migrateLegacyStarters(raw,raw.collection,{starters:STARTERS,preferred:raw.starterId});
+ const next={...raw,collection:migrated.collection,freeStarterId:migrated.freeStarterId};
+ if(migrated.removed&&!checkDeck(next,next.main,next.special).valid){
+  const starter=STARTERS.find(d=>d.id===next.freeStarterId);
+  next.starterId=starter.id;next.main=[...starter.ids];next.special=[...starter.specialIds];
+ }
+ if(migrated.removed)next.suspendedMatch=normalizeSoloSnapshot(raw.suspendedMatch,next);
+ return next;
+}
 const nonnegative=v=>Number.isSafeInteger(v)&&v>=0?v:0;
 export function loadProfile(storage){
  try{
   const raw=JSON.parse(storage.getItem(STORAGE_KEY)||'null');
   if(!raw||raw.version!==1||!validateName(raw.name)||!ORIGIN_IDS.includes(raw.origin))return null;
-  const p={...initialProfile(raw.name,raw.origin,STARTERS.some(s=>s.id===raw.starterId)?raw.starterId:STARTERS[0].id),...raw,collection:normalizeCollection(raw.collection),treasure:nonnegative(raw.treasure),wins:nonnegative(raw.wins),losses:nonnegative(raw.losses),draws:nonnegative(raw.draws),completed:Math.min(20,nonnegative(raw.completed)),settled:Array.isArray(raw.settled)?raw.settled.filter(v=>typeof v==='string').slice(-200):[],lastPack:Array.isArray(raw.lastPack)?raw.lastPack.filter(x=>x&&getCard(x.id||x.cardId)).slice(0,12):[]};
+  let p={...initialProfile(raw.name,raw.origin,STARTERS.some(s=>s.id===raw.starterId)?raw.starterId:STARTERS[0].id),...raw,collection:normalizeCollection(raw.collection),treasure:nonnegative(raw.treasure),wins:nonnegative(raw.wins),losses:nonnegative(raw.losses),draws:nonnegative(raw.draws),completed:Math.min(20,nonnegative(raw.completed)),settled:Array.isArray(raw.settled)?raw.settled.filter(v=>typeof v==='string').slice(-200):[],lastPack:Array.isArray(raw.lastPack)?raw.lastPack.filter(x=>x&&getCard(x.id||x.cardId)).slice(0,12):[]};
+  // initialProfile supplies defaults; an unmarked raw save must still migrate.
+  if(!raw.freeStarterId)delete p.freeStarterId;
+  p=migrateRebuildProfile(p);
   p.name=validateName(p.name);Object.assign(p,normalizeAudioSettings(raw));
   p.suspendedMatch=normalizeSoloSnapshot(raw.suspendedMatch,p);
   if(!checkDeck(p,p.main,p.special).valid){

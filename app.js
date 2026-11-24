@@ -4,7 +4,7 @@ import {CARD_ART_OVERRIDES} from './card-art-overrides.js';
 import { CARDS, DECK_MIN, DECK_COPY_LIMIT, ELEMENTS, TYPE_LABELS, RARITY_LABELS, KEYWORD_LABELS, STARTER_DECKS, DECK_PRESETS, getDeckPreset, getCard, validateDeck, validateSpecialDeck, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS, SUBTYPE_LABELS } from './catalog.js';
 import {createMusicController} from './music.js';
 import {createOnlineClient} from './online.js';
-import {createCloudSync} from './cloud-sync.js';
+import {createCloudSync} from './cloud-sync.js?v=20261124-22';
 import {createAccountUi} from './account-ui.js';
 import {setPublicNotice} from './news.js';
 import {createPresenceController} from './presence.js';
@@ -16,7 +16,7 @@ import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayou
 import {battleLogView} from './battle-log.js';
 import {handInspectorView} from './hand-inspector.js';
 import {CAMPAIGN_BATTLES,createCampaignProgress,normalizeCampaignProgress,getCampaignBattle,isCampaignBattleUnlocked,getNextCampaignBattle,recordCampaignResult} from './campaign.js';
-import {PACKS,getPack,PACK_ID,PACK_NAME,PACK_DESCRIPTION,PACK_COST,PACK_SIZE,STARTING_TREASURE,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,PACK_CARD_IDS,createStarterCollection,hasStarterCards,normalizeCollection,grantDeckCollection,openPack,getBattleReward,quoteStarterPurchase,purchaseStarter} from './shop.js';
+import {PACKS,getPack,PACK_ID,PACK_NAME,PACK_DESCRIPTION,PACK_COST,PACK_SIZE,STARTING_TREASURE,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,PACK_CARD_IDS,createStarterCollection,hasStarterCards,migrateLegacyStarters,normalizeCollection,grantDeckCollection,openPack,getBattleReward,quoteStarterPurchase,purchaseStarter} from './shop.js?v=20261124-22';
 import { newGame, playCard, attack, endTurn, runCpuTurn, getLegalTargets, getAttackTargets, canAttack, getPlayableCards, getFusionMaterials, validateFusionSelection, MAX_HEART_POINTS } from './engine.js';
 
 const $ = (s, r=document) => r.querySelector(s);
@@ -30,7 +30,7 @@ const subtypeOptions=[['attack','beast','アタック型（通常魔獣）'],['d
 const typeColors = {beast:'#7eb5a6',miracle:'#a996d3',gimmick:'#c7a76f',fusion:'#c9a4ef'};
 const icons = BRAND_ICONS;
 const icon = name => `<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${icons[name]||icons.spark}</svg>`;
-const baseData = (starterId=STARTER_DECKS[0].id) => {const first=STARTER_DECKS.find(d=>d.id===starterId)||STARTER_DECKS[0];return ({version:6,playerName:'',profileOrigin:'mountain',campaignProgress:createCampaignProgress(),bgm:true,bgmVolume:.5,treasure:STARTING_TREASURE,collection:createStarterCollection({},first.id),rewardedMatches:[],lastPack:null,deckName:first.name,deckIds:[...first.ids],specialIds:[...first.specialIds],starter:first.id,draft:null,sound:false,motion:true,stats:{played:0,won:0,drawn:0},game:null});};
+const baseData = (starterId=STARTER_DECKS[0].id) => {const first=STARTER_DECKS.find(d=>d.id===starterId)||STARTER_DECKS[0];return ({version:6,playerName:'',profileOrigin:'mountain',campaignProgress:createCampaignProgress(),bgm:true,bgmVolume:.5,treasure:STARTING_TREASURE,collection:createStarterCollection({},first.id),rewardedMatches:[],lastPack:null,deckName:first.name,deckIds:[...first.ids],specialIds:[...first.specialIds],starter:first.id,freeStarterId:first.id,draft:null,sound:false,motion:true,stats:{played:0,won:0,drawn:0},game:null});};
 function validSavedGame(g) {
   const known = (ids,types) => Array.isArray(ids)&&ids.length<=36&&ids.every(id=>types.includes(getCard(id)?.type));
   return !!(g && g.rulesVersion===2 && Array.isArray(g.players) && g.players.length===2 && [0,1].includes(g.active) && [null,0,1,'draw'].includes(g.winner) && Number.isInteger(g.turn) && g.turn>0 && g.turn<10000 && Number.isFinite(g.seed) && Number.isFinite(g.nextUid) && Array.isArray(g.log) && g.log.every(l=>typeof l.text==='string'&&typeof l.type==='string') && g.players.every(p=>p && ['core','shield','energy','maxEnergy','fatigue'].every(k=>Number.isFinite(p[k])&&p[k]>=0) && p.core<=MAX_HEART_POINTS && p.hand?.length<=4 && known(p.deck,['beast','miracle','gimmick'])&&known(p.hand,['beast','miracle','gimmick','fusion']) && known(p.grave,['beast','miracle','gimmick','fusion']) && known(p.banished,['beast','fusion']) && known(p.special,['fusion']) && p.special.length<=4 && Array.isArray(p.field)&&p.field.length<=4&&p.field.every(u=>['beast','fusion'].includes(getCard(u.cardId)?.type)&&typeof u.uid==='string'&&['attack','hp','maxHp'].every(k=>Number.isFinite(u[k])&&u[k]>=0)&&Array.isArray(u.keywords)) && Array.isArray(p.traps)&&p.traps.length<=2&&p.traps.every(t=>getCard(t.cardId)?.type==='gimmick')&&validSavedPool(p)));
@@ -128,14 +128,19 @@ function deckBankToolbar(){
 }
 
 function restoreData(saved) {
-  const initial=STARTER_DECKS.find(d=>d.id===saved?.starter)||STARTER_DECKS[0],restored=baseData(initial.id);
+  const initial=STARTER_DECKS.find(d=>d.id===saved?.freeStarterId)||STARTER_DECKS.find(d=>d.id===saved?.starter)||STARTER_DECKS[0],restored=baseData(initial.id);
   if(!saved||![3,4,5,6].includes(saved.version)){initializeDeckBank(restored);return restored;}
   let owned=normalizeCollection(saved.collection);
   if(saved.version<6){
    owned=grantDeckCollection(createStarterCollection(owned,initial.id),[...(Array.isArray(saved.deckIds)?saved.deckIds:[]),...(Array.isArray(saved.specialIds)?saved.specialIds:[])]);
    const q=saved.game?.players?.[0];if(q)owned=grantDeckCollection(owned,[...(q.deck||[]),...(q.special||[]),...(q.hand||[]),...(q.grave||[]),...(q.banished||[]),...(q.field||[]).map(u=>u.cardId),...(q.traps||[]).map(t=>t.cardId)]);
   }
-  let main=restoreDeckCopies(saved.deckIds,owned),special=restoreDeckCopies(saved.specialIds,owned,true);
+  const operator=Array.isArray(saved.deckLibrary)?saved.deckLibrary.find(d=>d.id==='operator-kirahara-v1'&&validBankDeck(d,owned)):null;
+  const migration=migrateLegacyStarters(saved,owned,{preferred:initial.id,protectedIds:operator?[...operator.ids,...operator.specialIds]:[]});
+  owned=migration.collection;restored.freeStarterId=migration.freeStarterId;
+  const priorActive={id:saved.activeDeckId||'custom-original',name:saved.deckName,ids:saved.deckIds,specialIds:saved.specialIds};
+  const replaceActive=migration.removed>0&&!validBankDeck(priorActive,owned);
+  let main=replaceActive?[...initial.ids]:restoreDeckCopies(saved.deckIds,owned),special=replaceActive?[...initial.specialIds]:restoreDeckCopies(saved.specialIds,owned,true);
   if(saved.version===3&&main){
    const preset=getDeckPreset(saved.starter)||initial,e=DECK_PRESETS.indexOf(preset),oldDraw=`M${String(e*32+3).padStart(4,'0')}`,legacy=[...preset.ids.filter(id=>id!=='M0256'),oldDraw,oldDraw];
    if([...main].sort().join(',')===legacy.sort().join(',')&&preset.ids.every(id=>preset.ids.filter(x=>x===id).length<=(owned[id]||0)))main=[...preset.ids];
@@ -156,17 +161,19 @@ function restoreData(saved) {
    }
   }
   restored.deckIds=main;restored.specialIds=special;
-  restored.deckName=String(saved.deckName||fallback?.name||initial.name).slice(0,28);
-  restored.starter=String(saved.starter||'');restored.collection=owned;
+  restored.deckName=String(replaceActive?initial.name:(saved.deckName||fallback?.name||initial.name)).slice(0,28);
+  restored.starter=replaceActive?initial.id:String(saved.starter||'');restored.collection=owned;
   restored.playerName=typeof saved.playerName==='string'?saved.playerName.trim().slice(0,16):'';restored.profileOrigin=elementMap[saved.profileOrigin]?saved.profileOrigin:'mountain';restored.campaignProgress=normalizeCampaignProgress(saved.campaignProgress);
   restored.sound=saved.sound===true;restored.motion=saved.motion!==false;restored.bgm=saved.bgm!==false;restored.bgmVolume=Number.isFinite(saved.bgmVolume)?Math.max(0,Math.min(1,saved.bgmVolume)):.5;
   if(saved.version>=6){restored.treasure=Number.isSafeInteger(saved.treasure)&&saved.treasure>=0?saved.treasure:STARTING_TREASURE;restored.rewardedMatches=Array.isArray(saved.rewardedMatches)?saved.rewardedMatches.filter(id=>typeof id==='string').slice(-200):[];if(Array.isArray(saved.lastPack?.pulls)&&saved.lastPack.pulls.length===12&&saved.lastPack.pulls.every(x=>getCard(x.cardId)))restored.lastPack={packId:getPack(saved.lastPack.packId)?.id||PACK_ID,pulls:saved.lastPack.pulls.map(x=>({cardId:x.cardId,isNew:x.isNew===true,converted:x.converted===true,guaranteed:x.guaranteed===true})),bonusTreasure:Number.isSafeInteger(saved.lastPack.bonusTreasure)&&saved.lastPack.bonusTreasure>=0?saved.lastPack.bonusTreasure:0,...(Number.isSafeInteger(saved.lastPack.openedAt)&&saved.lastPack.openedAt>=0?{openedAt:saved.lastPack.openedAt}:{})};}
   if(saved.stats&&['played','won','drawn'].every(k=>Number.isInteger(saved.stats[k])&&saved.stats[k]>=0)&&saved.stats.won+saved.stats.drawn<=saved.stats.played)restored.stats={played:saved.stats.played,won:saved.stats.won,drawn:saved.stats.drawn};
-  if(saved.draft&&Array.isArray(saved.draft.ids)&&saved.draft.ids.length<=32&&saved.draft.ids.every(id=>['beast','miracle','gimmick'].includes(getCard(id)?.type))){const special=saved.draft.specialIds;restored.draft={ids:restoreDeckCopies(saved.draft.ids,owned,false,false)||[],specialIds:restoreDeckCopies(special,owned,true,false)||[...restored.specialIds],name:String(saved.draft.name||'マイデッキ').slice(0,28)};}
-  restored.game=restoreGame(saved.game,saved.version);initializeDeckBank(restored,saved);return restored;
+  if(!replaceActive&&saved.draft&&Array.isArray(saved.draft.ids)&&saved.draft.ids.length<=32&&saved.draft.ids.every(id=>['beast','miracle','gimmick'].includes(getCard(id)?.type))){const special=saved.draft.specialIds;restored.draft={ids:restoreDeckCopies(saved.draft.ids,owned,false,false)||[],specialIds:restoreDeckCopies(special,owned,true,false)||[...restored.specialIds],name:String(saved.draft.name||'マイデッキ').slice(0,28)};}
+  restored.game=restoreGame(saved.game,saved.version);
+  const source=replaceActive?{...saved,activeDeckId:starterSlot(initial.id),editingDeckId:starterSlot(initial.id)}:saved;
+  initializeDeckBank(restored,source);return restored;
 }
 let data=baseData(),storageAvailable=true;
-try {data=restoreData(JSON.parse(localStorage.getItem(storageKey)||localStorage.getItem('beast-king-v5')||localStorage.getItem('beast-king-v4')||localStorage.getItem('beast-king-v3')||'null'));}catch{storageAvailable=false;}
+try {const saved=JSON.parse(localStorage.getItem(storageKey)||localStorage.getItem('beast-king-v5')||localStorage.getItem('beast-king-v4')||localStorage.getItem('beast-king-v3')||'null');data=restoreData(saved);if(saved&&data.playerName&&!saved.freeStarterId)localStorage.setItem(storageKey,JSON.stringify(data));}catch{storageAvailable=false;}
 initializeDeckBank(data);
 let game=data.game;
 let cpuGame=game;
@@ -917,7 +924,7 @@ async function saveOnlineNickname(){
 }
 function chooseProfileOrigin(origin){if(!elementMap[origin])return;if(!entered){entryNameDraft=$('#entry-player-name')?.value??entryNameDraft;data.profileOrigin=origin;persist();render();}else if(currentModal?.kind==='nickname'){nicknameModal($('#online-nickname')?.value??data.playerName,origin);}}
 function startEntry(){const name=$('#entry-player-name')?.value.trim();if(!name||name.length>16){toast('プレイヤー名を1〜16文字で入力してください。',true);$('#entry-player-name')?.focus();return;}const chosen=STARTER_DECKS.find(d=>d.id===($('#entry-starter')?.value||entryStarterDraft))||STARTER_DECKS[0];
- const first=baseData(chosen.id);data.collection=first.collection;data.deckIds=first.deckIds;data.specialIds=first.specialIds;data.deckName=first.deckName;data.starter=chosen.id;data.deckLibrary=[];data.draft=null;data.activeDeckId=null;data.editingDeckId=null;initializeDeckBank(data);loadBankEntry(data.activeDeckId,{persistNow:false});
+ const first=baseData(chosen.id);data.collection=first.collection;data.deckIds=first.deckIds;data.specialIds=first.specialIds;data.deckName=first.deckName;data.starter=chosen.id;data.freeStarterId=chosen.id;data.deckLibrary=[];data.draft=null;data.activeDeckId=null;data.editingDeckId=null;initializeDeckBank(data);loadBankEntry(data.activeDeckId,{persistNow:false});
  data.playerName=name;entryNameDraft=name;entryStarterDraft=chosen.id;entered=true;persist(true);musicController.unlock();navigate('home');void initializeCloud().catch(()=>{});}
 function openMode(mode){lobbyMode=mode;navigate('online');}
 

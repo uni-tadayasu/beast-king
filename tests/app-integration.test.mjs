@@ -470,3 +470,16 @@ test('only one starter is granted; unowned presets cannot load and restores pres
  const legacy=plain(app.data);for(const d of catalog.STARTER_DECKS)legacy.collection=shop.createStarterCollection(legacy.collection,d.id);
  const restored=app.restoreData(legacy);assert.deepEqual(plain(restored.collection),legacy.collection);assert.equal(restored.deckLibrary.length,4);
 });
+
+
+test('old four-free-starter save migrates to selected starter and persists the independent marker',()=>{
+ const {app}=boot(),chosen=catalog.STARTER_DECKS[1];
+ const old=plain(app.baseData(chosen.id));delete old.freeStarterId;
+ for(const d of catalog.STARTER_DECKS)old.collection=shop.createStarterCollection(old.collection,d.id);
+ app.initializeDeckBank(old);
+ const next=app.restoreData(old);
+ assert.equal(next.freeStarterId,chosen.id);assert.equal(Object.values(next.collection).reduce((a,b)=>a+b,0),36);
+ assert.equal(next.deckLibrary.filter(d=>d.id.startsWith('starter-')).length,1);
+ assert.deepEqual(plain(next.deckIds),plain(chosen.ids));
+ assert.deepEqual(plain(app.restoreData(plain(next)).collection),plain(next.collection));
+});

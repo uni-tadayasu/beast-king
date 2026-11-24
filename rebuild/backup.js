@@ -27,6 +27,7 @@ export function validateRebuildBackup(raw){
   return {cardId:p.cardId,isNew:p.isNew,converted:p.converted,guaranteed:p.guaranteed};
  });
  const result={version:1,name,origin:raw.origin,starterId:raw.starterId,collection,treasure:raw.treasure,main:[...raw.main],special:[...raw.special],wins:raw.wins,losses:raw.losses,draws:raw.draws,completed:raw.completed,settled:[...new Set(raw.settled)],lastPack,lastPackId,bgm:raw.bgm,bgmVolume:raw.bgmVolume,suspendedMatch:null};
+ if(raw.freeStarterId!==undefined){assert(STARTERS.some(s=>s.id===raw.freeStarterId));result.freeStarterId=raw.freeStarterId;}
  if(raw.suspendedMatch!=null){
   result.suspendedMatch=normalizeSoloSnapshot(raw.suspendedMatch,result);assert(result.suspendedMatch);
   if(result.suspendedMatch.game.winner!==null)assert(result.settled.includes(result.suspendedMatch.id));
