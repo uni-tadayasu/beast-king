@@ -22,7 +22,7 @@ import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayou
 const appSource = readFileSync(new URL('../app.js', import.meta.url), 'utf8').replace(/^import\s+[^;]+;\s*$/gm, '');
 const expose = `
 globalThis.__appIntegration = {
-  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase, loadStarterFromShop, registerOwnedStarter,
+  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, inspectBattleEffect, inspectFieldEffect, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase, loadStarterFromShop, registerOwnedStarter,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
   get workingDeck(){return workingDeck}, get data(){return data}, get game(){return game}, get cpuGame(){return cpuGame},
@@ -482,4 +482,19 @@ test('old four-free-starter save migrates to selected starter and persists the i
  assert.equal(next.deckLibrary.filter(d=>d.id.startsWith('starter-')).length,1);
  assert.deepEqual(plain(next.deckIds),plain(chosen.ids));
  assert.deepEqual(plain(app.restoreData(plain(next)).collection),plain(next.collection));
+});
+
+
+test('battle effect reference does not mutate the game or send a network action',()=>{
+ const {app,calls,nodes}=boot(),match=onlineSnapshot();
+ const data=app.baseData();data.playerName='旅人';app.setState({data,entered:true});
+ const beast=catalog.CARDS.find(c=>c.type==='beast'),trap=catalog.CARDS.find(c=>c.type==='gimmick'),spell=catalog.CARDS.find(c=>c.type==='miracle');
+ match.state.players[0].field=[{uid:'effect-unit',cardId:beast.id,attack:1234,hp:567,maxHp:567,ready:true,keywords:[],owner:0}];
+ match.state.players[0].traps=[{uid:'effect-trap',cardId:trap.id}];match.state.players[0].lastMiracle=spell.id;match.state.players[0].grave=[spell.id];
+ app.enterOnlineMatch(match);
+ const before=plain(app.game),n=calls.length;
+ app.inspectFieldEffect(0,'effect-unit');assert.match(nodes.get('#app').innerHTML,new RegExp('data-inspected-card="'+beast.id+'"'));assert.match(nodes.get('#app').innerHTML,/data-action="inspect-field-effect"/);
+ app.inspectBattleEffect('gimmick','0:trap:effect-trap');assert.match(nodes.get('#app').innerHTML,new RegExp('data-inspected-card="'+trap.id+'"'));
+ app.inspectBattleEffect('miracle','0:last');assert.match(nodes.get('#app').innerHTML,new RegExp('data-inspected-card="'+spell.id+'"'));
+ assert.deepEqual(plain(app.game),before);assert.equal(calls.length,n);
 });

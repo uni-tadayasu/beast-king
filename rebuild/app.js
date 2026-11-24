@@ -105,7 +105,7 @@ function targetList(){
 function isTarget(player,uid){return targetList().some(t=>t.player===player&&(uid?t.uid===uid:t.core===true))}
 function playerStrip(p,i){
  const name=i?p.name:profile.name;
- return '<div class="player-strip"><span class="duelist-name">'+esc(name)+'<small>手札 '+p.hand.length+' · 山札 '+p.deck.length+'</small></span><button type="button" class="hp '+(isTarget(i)?'target':'')+'" data-act="core" data-player="'+i+'" aria-label="'+esc(name+'のハートポイント '+p.core)+'">'+icon('heart')+' '+fmt(p.core)+'</button><span class="duel-meters"><span title="結界">'+icon('shield')+fmt(p.shield)+'</span><span title="エーテル">'+icon('energy')+p.energy+'/'+p.maxEnergy+'</span></span>'+act('zone-list','ゾーン','data-player="'+i+'"','zone-button')+'</div>';
+ return '<div class="player-strip"><span class="duelist-name">'+esc(name)+'<small>手札 '+p.hand.length+' · 山札 '+p.deck.length+'</small></span><button type="button" class="hp '+(isTarget(i)?'target':'')+'" data-act="core" data-player="'+i+'" aria-label="'+esc(name+'のハートポイント '+p.core)+'">'+icon('heart')+' '+fmt(p.core)+'</button><span class="duel-meters"><span title="結界">'+icon('shield')+fmt(p.shield)+'</span><span title="エーテル">'+icon('energy')+p.energy+'/'+p.maxEnergy+'</span></span>'+act('zone-list','ゾーン・効果','data-player="'+i+'"','zone-button')+'</div>';
 }
 function units(p,i){return '<div class="zones">'+p.field.map(u=>card(getCard(u.cardId),{action:'unit',data:'data-player="'+i+'" data-uid="'+u.uid+'"',unit:u,operatorArt:i===0&&match?.mode==='kirahara',className:(isTarget(i,u.uid)?'target ':'')+(selection?.uid===u.uid?'selected':'')})).join('')+Array.from({length:Math.max(0,4-p.field.length)},()=>'<div class="slot">'+icon('beast')+'<span>出場ゾーン</span></div>').join('')+'</div>'}
 function battle(){
@@ -120,8 +120,8 @@ function render(){
 }
 function zoneList(i){
  const player=match?.game?.players?.[i];if(!player)return;
- const groups=[['山札',player.deck.length,null],['手札',player.hand.length,i===0?player.hand:null],['特殊ゾーン',player.special.length,i===0?player.special:null],['ギミック',player.traps.length,i===0?player.traps.map(t=>t.cardId):null],['墓地',player.grave.length,player.grave],['異世界',player.banished.length,player.banished]];
- openDialog('<section class="zone-dialog"><h2>'+esc(i===0?profile.name:player.name)+' · ゾーン一覧</h2>'+groups.map(([name,count,ids])=>'<section><h3>'+esc(name)+' '+count+'枚</h3>'+(ids?'<div class="zone-cards">'+(ids.length?ids.map(id=>'<div>'+icon(typeIcons[getCard(id)?.type]||'cards')+' '+esc(label(id))+'</div>').join(''):'<small>カードなし</small>')+'</div>':'<small>カードの内容は非公開です</small>')+'</section>').join('')+act('close','閉じる')+'</section>');
+ const groups=[['山札',player.deck.length,null],['手札',player.hand.length,i===0?player.hand:null],['出場魔獣',player.field.length,player.field.map(u=>u.cardId)],['特殊ゾーン',player.special.length,i===0?player.special:null],['ギミック',player.traps.length,i===0?player.traps.map(t=>t.cardId):null],['直前のミラクル',player.lastMiracle?1:0,player.lastMiracle?[player.lastMiracle]:[]],['墓地',player.grave.length,player.grave],['異世界',player.banished.length,player.banished]];
+ openDialog('<section class="zone-dialog"><h2>'+esc(i===0?profile.name:player.name)+' · ゾーン一覧</h2>'+groups.map(([name,count,ids])=>'<section><h3>'+esc(name)+' '+count+'枚</h3>'+(ids?'<div class="zone-cards">'+(ids.length?ids.filter(id=>getCard(id)).map(id=>act('zone-card-effect',label(id)+' · 効果を見る','data-id="'+esc(id)+'" data-player="'+i+'"')).join(''):'<small>カードなし</small>')+'</div>':'<small>カードの内容は非公開です</small>')+'</section>').join('')+act('close','閉じる')+'</section>');
 }
 function closeDialog(){if(dialog.open)dialog.close()}
 function openDialog(html){closeDialog();dialog.innerHTML=html;dialog.showModal()}
@@ -289,6 +289,7 @@ document.addEventListener('click',async e=>{
   case 'cloud-restore':await cloudAction('restore');break;
   case 'cloud-recover':await cloudAction('recover');break;
   case 'zone-list':if(page==='battle')zoneList(Number(el.dataset.player));break;
+  case 'zone-card-effect':{const i=Number(el.dataset.player),p=match?.game?.players?.[i],c=getCard(id);if(page!=='battle'||![0,1].includes(i)||!p||!c)break;const ids=[...p.field.map(u=>u.cardId),...p.grave,...p.banished,...(p.lastMiracle?[p.lastMiracle]:[]),...(i===0?[...p.hand,...p.special,...p.traps.map(t=>t.cardId)]:[])];if(ids.includes(id))detail(c,'','',i===0&&match?.mode==='kirahara');break;}
   case 'bgm-toggle':save({...profile,bgm:!profile.bgm});syncMusic();if(profile.bgm)music.unlock();render();break;
   case 'resume':await resumeMatch();break;
   case 'discard-match':if(profile.suspendedMatch&&(profile.suspendedMatch.game.winner!==null||confirm('中断中の対戦を降参して終了しますか？'))){leaveMatch()}break;

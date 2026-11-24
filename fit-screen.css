@@ -1247,3 +1247,29 @@ html.bk-fit .battle-log-drawer .bk-fit-inline-pager{flex:none}
 html.bk-fit .battle-log-panel .bk-fit-inline-pager{gap:4px;font-size:10px;margin:2px 0}
 html.bk-fit .battle-log-panel .bk-fit-inline-pager button{min-width:38px;min-height:24px;padding:2px 4px}
 html.bk-fit .hand-inspector-scroll .hand-inspector-effect p{font-size:clamp(14px,1.2vw,18px);line-height:1.6}
+
+/* Read-only battle inspection: compact fixed tabs and one complete card's
+   effect at a time. No scrolling or modification of the selected attacker. */
+html.bk-fit .battle-effect-controls{flex:none;display:grid;gap:6px;min-width:0;margin-bottom:4px}
+html.bk-fit .battle-effect-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+html.bk-fit .battle-effect-tab{font:600 12px/1.25 system-ui,sans-serif;min-height:32px;padding:4px 3px;min-width:0;white-space:normal;overflow-wrap:anywhere;border:1px solid #a18abb77;border-radius:5px;background:#27223f;color:#e3d6f0}
+html.bk-fit .battle-effect-tab[aria-pressed=true]{background:#55406f;border-color:#e0bff6;color:#fff1ff}
+html.bk-fit .battle-effect-picker{display:grid;min-width:0;gap:4px;color:#dfcdeb;font-size:12px}
+html.bk-fit .battle-effect-picker select{width:100%;min-width:0;max-width:100%;font:inherit;min-height:34px}
+html.bk-fit .battle-effect-controls .hand-inspector-switcher{padding:0 0 5px;gap:4px}
+html.bk-fit .battle-effect-controls .hand-inspector-choice{min-height:32px}
+html.bk-fit .field-slot>.field-effect-button{position:absolute;z-index:8;right:2px;top:38%;width:clamp(18px,2vw,28px);height:clamp(18px,2vw,28px);min-width:0;min-height:0;margin:0;padding:2px;display:grid;place-items:center;border:1px solid #ddc5ed;border-radius:50%;background:#151328ed;color:#fff1d5;box-shadow:0 1px 5px #0009;cursor:pointer;touch-action:manipulation}
+html.bk-fit .field-effect-button .icon{width:100%;height:100%;max-width:19px;max-height:19px}
+html.bk-fit .field-effect-button:focus-visible,html.bk-fit .battle-effect-tab:focus-visible{outline:2px solid #ffe2a3;outline-offset:2px}
+@media(max-height:700px) and (orientation:landscape){
+ html.bk-fit .duel-shell .hand-inspector[data-open=true]{display:flex!important;flex-direction:column;gap:3px;padding:7px 10px}
+ html.bk-fit .hand-inspector[data-open=true] .hand-inspector-header{display:flex;flex:none;padding:0}
+ html.bk-fit .hand-inspector[data-open=true] .hand-inspector-heading{flex:1}
+ html.bk-fit .hand-inspector[data-open=true] .hand-inspector-close{width:auto;height:28px;min-height:28px;min-width:48px;flex-direction:row}
+ html.bk-fit .battle-effect-tabs{grid-template-columns:repeat(4,minmax(0,1fr))}
+ html.bk-fit .battle-effect-tab{min-height:24px;font-size:11px;padding:2px}
+ html.bk-fit .battle-effect-controls{gap:3px;margin:0}
+ html.bk-fit .battle-effect-controls .hand-inspector-choice{min-height:27px}
+ html.bk-fit .battle-effect-picker select{min-height:27px}
+ html.bk-fit .hand-inspector-scroll{flex:1 1 0;min-height:0}
+}

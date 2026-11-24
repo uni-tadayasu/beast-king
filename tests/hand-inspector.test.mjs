@@ -69,3 +69,18 @@ test('rendering leaves the game, hand order, selection and card definitions unch
   assert.doesNotThrow(() => render({ game, selected, getCard: id => cards[id] }));
   assert.deepEqual({ game, selected, cards }, before);
 });
+
+
+test('field, set gimmicks, used gimmicks and miracle history are inspectable without leaking hidden cards',()=>{
+ const cards={...ownCards,ENEMY_FIELD:{...ownCards.OWN_A,id:'ENEMY_FIELD',name:'相手の公開魔獣'},OWN_TRAP:{id:'OWN_TRAP',type:'gimmick',name:'自分の設置罠',text:'攻撃を反射する'},USED_TRAP:{id:'USED_TRAP',type:'gimmick',name:'相手の使用済み罠',text:'発動時に回復'},USED_SPELL:{...ownCards.OWN_B,id:'USED_SPELL',name:'以前に使ったミラクル'}};
+ const game={players:[{hand:['OWN_A'],field:[{uid:'own',cardId:'OWN_A',attack:777,hp:333}],traps:[{uid:'trap',cardId:'OWN_TRAP'}],lastMiracle:'OWN_B',grave:['USED_SPELL','OWN_B']},{hand:['SECRET_HAND'],special:['SECRET_SPECIAL'],deck:['SECRET_DECK'],traps:[{uid:'hidden',cardId:'SECRET_TRAP'}],field:[{uid:'enemy',cardId:'ENEMY_FIELD',attack:999,hp:111}],grave:['USED_TRAP']}]};
+ const lookedUp=[],getCard=id=>{lookedUp.push(id);return cards[id]};
+ const field=render({game,selected:{kind:'reference',zone:'field',key:'1:enemy'},getCard});
+ assert.match(field,/data-inspected-card="ENEMY_FIELD"/);assert.match(field,/>999<\/dd>/);assert.match(field,/>111<\/dd>/);
+ const trap=render({game,selected:{kind:'reference',zone:'gimmick',key:'0:trap:trap'},getCard});
+ assert.match(trap,/data-inspected-card="OWN_TRAP"/);assert.match(trap,/相手の使用済み罠/);
+ const miracle=render({game,selected:{kind:'reference',zone:'miracle',key:'0:grave:0:USED_SPELL'},getCard});
+ assert.match(miracle,/data-inspected-card="USED_SPELL"/);assert.match(miracle,/自分・直前の発動/);
+ assert.ok(lookedUp.every(id=>!id.startsWith('SECRET_')));
+ assert.doesNotMatch(field+trap+miracle,/SECRET_/);
+});
