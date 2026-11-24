@@ -1,5 +1,5 @@
-/* Viewport-fit controller. One screen, no wheel/touch-scroll dependence.
-   It never rewrites game data, changes the device zoom or intercepts clicks. */
+/* Native-pixel viewport controller. Reflow and paginate before using a local
+   overflow pane. Never shrink a screen, browser zoom, or game data. */
 const doc=document,root=doc.documentElement;
 root.classList.add('bk-fit');
 let pending=false,running=false,lastRoot=null,lastModal=null,about=null;
@@ -61,14 +61,15 @@ function measureWorkshopTracks(node,logicalHeight){
   return num(s,'paddingTop')+num(s,'paddingBottom')+num(s,'borderTopWidth')+num(s,'borderBottomWidth')+num(s,'rowGap')+2*num(l,'rowGap')+num(l,'paddingTop')+num(l,'paddingBottom')+num(l,'borderTopWidth')+num(l,'borderBottomWidth');
  }));
  // At least one complete illustrated card plus counts and actions.
- const required=Math.ceil(tools+meta+pager+chrome+145+3);
+ const minImageHeight=innerWidth>=1000?240:185;
+ const required=Math.ceil(tools+meta+pager+chrome+minImageHeight+3);
  workspace.style.setProperty('min-height',required+'px','important');
  const bounds=node.getBoundingClientRect(),box=workspace.getBoundingClientRect(),style=getComputedStyle(node);
  const outside=Math.ceil(box.top-bounds.top+num(style,'paddingBottom')+num(style,'borderBottomWidth'));
  // Reserve exactly the same full logical panel and image heights. A grid
  // item's legacy intrinsic/percentage height must never shorten one side.
  const panelHeight=Math.max(required,Math.floor(logicalHeight-outside));
- const imageHeight=Math.max(145,Math.floor(panelHeight-tools-meta-pager-chrome));
+ const imageHeight=Math.max(minImageHeight,Math.floor(panelHeight-tools-meta-pager-chrome));
  const listHeight=Math.ceil(meta+imageHeight+pager+2*Math.max(...panels.map(panel=>num(getComputedStyle(panel.querySelector('#card-results,.deck-list')),'rowGap'))));
  workspace.style.setProperty('height',panelHeight+'px','important');
  workspace.style.setProperty('--workshop-panel-height',panelHeight+'px');
@@ -76,84 +77,51 @@ function measureWorkshopTracks(node,logicalHeight){
  workspace.style.setProperty('--workshop-list-height',listHeight+'px');
  return {workspace,requiredHeight:outside+required};
 }
+// Keep every interactive screen at physical pixel size. If a very short
+// viewport cannot contain the minimum card and its controls, extend only the
+// inner pane. The fixed navigation and document never scroll or shrink.
+function resetNative(node){
+ node.style.setProperty('transform','none','important');
+ node.style.setProperty('left','0px','important');
+ node.style.setProperty('top','0px','important');
+ node.dataset.fitScale='1.0000';
+}
+function finishNative(node,width,height){
+ node.dataset.fitWidth=String(Math.round(width));
+ node.dataset.fitHeight=String(Math.round(Math.max(height,node.offsetHeight)));
+}
 function fitDeckWorkshop(node,width,height){
  if(width<1||height<1)return;
- node.style.transform='none';node.style.setProperty('left','0px','important');node.style.setProperty('top','0px','important');
- function trial(scale){
-  const w=width/scale,h=height/scale;
-  setCanvas(node,w,h,true);
-  const tracks=measureWorkshopTracks(node,h);
-  return {w,h,needed:tracks?.requiredHeight||h,ok:(tracks?.requiredHeight||h)<=h+0.5};
+ resetNative(node);
+ setCanvas(node,width,height,true);
+ let tracks=measureWorkshopTracks(node,height);
+ const logicalHeight=Math.max(height,tracks?.requiredHeight||height);
+ if(logicalHeight!==height){
+  setCanvas(node,width,logicalHeight,true);
+  tracks=measureWorkshopTracks(node,logicalHeight);
  }
- let scale=1,result=trial(1);
- if(!result.ok){
-  let high=1,low=0;
-  // Only scale the central deck workspace when the full control area and
-  // minimum complete tile genuinely cannot fit. Header/navigation stay native.
-  for(let n=0;n<9;n++){
-   high=scale;scale=Math.max(.08,Math.min(scale-.005,scale*result.h/result.needed*.99));
-   result=trial(scale);if(result.ok){low=scale;break;}
-  }
-  if(low){
-   for(let n=0;n<6;n++){
-    const candidate=(low+high)/2,r=trial(candidate);
-    if(r.ok)low=candidate;else high=candidate;
-   }
-   scale=low;result=trial(scale);
-  }
- }
- // Recalculate the actual shared tile budget once, at the final scale.
- // Never use an outdated card's overflow to determine the control height.
- measureCardPane(node,result.h);
- node.style.transform=scale>=.999?'none':'scale('+scale+')';
- node.dataset.fitScale=scale.toFixed(4);node.dataset.fitWidth=String(Math.round(result.w*scale));node.dataset.fitHeight=String(Math.round(result.h*scale));
+ measureCardPane(node,logicalHeight);
+ finishNative(node,width,logicalHeight);
 }
-
-function fit(node,width,height,{modal=false,logicalMin=0,center=false,fill=false,measureCards=false}={}){
+function fit(node,width,height,{fill=false,measureCards=false}={}){
  if(!node||width<1||height<1)return;
- node.style.transform='none';node.style.setProperty('left','0px','important');node.style.setProperty('top','0px','important');
- // Try physical pixel dimensions first. If content is exceptionally tall,
- // reflow at a wider logical width AND a taller logical height. Unlike the
- // old letterboxed fit, the selected canvas always covers both dimensions.
- let scale=1;
- const minimum=fill?0:logicalMin;
- function trial(s,measure=false){
-  const w=fill?width/s:Math.max(width,minimum),h=height/s;
-  setCanvas(node,w,h,fill);
-  if(measureCards&&(measure||node.dataset.page==='deck'))measureCardPane(node,h);
-  const n=naturalSize(node);
-  return {fits:n.w*s<=width+2&&n.h*s<=height+2,ratio:Math.min(1,width/n.w,height/n.h),w,h,n};
- }
- let result=trial(1,true);
- if(fill){
-  if(!result.fits){
-   let hi=1,lo=0;
-   // Find a usable candidate, then maximize readable scale.
-   scale=Math.max(.20,Math.min(.985,result.ratio));
-   for(let i=0;i<7;i++){
-    result=trial(scale);
-    if(result.fits){lo=scale;break;}
-    hi=scale;scale=Math.max(.08,Math.min(scale-.005,result.ratio));
-   }
-   if(lo>0){for(let i=0;i<5;i++){const middle=(lo+hi)/2;const r=trial(middle);if(r.fits)lo=middle;else hi=middle;}scale=lo;}
-   result=trial(scale);
-   // Ensure a previously overflowing descendant cannot extend outside the pane.
-   if(!result.fits){scale=Math.max(.025,Math.min(scale,result.ratio));result=trial(scale);}
+ resetNative(node);
+ setCanvas(node,width,height,fill);
+ let logicalHeight=height;
+ if(measureCards&&node.dataset.page==='collection'){
+  const result=node.querySelector('#card-results');
+  if(result){
+   const r=result.getBoundingClientRect(),b=node.getBoundingClientRect();
+   const footer=(result.querySelector('.results-meta')?.offsetHeight||18)+(result.querySelector('.pagination')?.offsetHeight||36)+22;
+   const padding=Number.parseFloat(getComputedStyle(node).paddingBottom)||0;
+   // The page size, rather than a transform on all the UI, adjusts to the
+   // remaining card budget. Keep a complete illustrated card even on tiny screens.
+   logicalHeight=Math.max(height,Math.ceil(r.top-b.top+footer+padding+(innerWidth>=1000?225:175)));
+   if(logicalHeight!==height)setCanvas(node,width,logicalHeight,fill);
   }
-  node.style.transform=scale>=.999?'none':'scale('+scale+')';
-  node.dataset.fitScale=scale.toFixed(4);
-  node.dataset.fitWidth=String(Math.round(result.w*scale));
-  node.dataset.fitHeight=String(Math.round(result.h*scale));
- }else{
-  // Dialogs keep their own reading layout; a wide dialog may occupy the entire
-  // available width without altering the native application frame behind it.
-  scale=clamp(result.ratio,.025,1);
-  const n=result.n;
-  node.style.transform=scale>=.999?'none':'scale('+scale+')';
-  node.style.setProperty('left',Math.max(0,(width-n.w*scale)/2)+'px','important');
-  node.style.setProperty('top',(center?Math.max(0,(height-n.h*scale)/2):0)+'px','important');
-  node.dataset.fitScale=scale.toFixed(4);
+  measureCardPane(node,logicalHeight);
  }
+ finishNative(node,width,logicalHeight);
 }
 function paginateAbout(){
  if(about)return;
@@ -268,14 +236,26 @@ function fitModal(){
  const w=Math.max(1,innerWidth-20),h=Math.max(1,(window.visualViewport?.height||innerHeight)-20);
  if(modal!==lastModal){lastModal=modal;modal.classList.add('bk-fit-modal');}
  if(fitOperatorConsole(modal))return;
- const wrap=modal.parentElement;
- const inBackdrop=wrap?.classList.contains('modal-backdrop');
- // Native dialogs remain in the top layer and use its centered positioning.
- if(!inBackdrop){modal.style.maxHeight='none';modal.style.width=Math.min(w,680)+'px';modal.style.height='auto';modal.style.transform='none';const n=naturalSize(modal);const factor=Math.min(1,w/n.w,h/n.h);modal.style.transform='scale('+factor+')';modal.style.transformOrigin='center center';return;}
- const wide=modal.classList.contains('wide');
- fit(modal,wide?w:Math.min(w,760),h,{modal:true,logicalMin:0,center:true,fill:wide});
- if(!wide)modal.style.setProperty('left',(Number.parseFloat(modal.style.left||'0')+(w-Math.min(w,760))/2)+'px','important');
- modal.style.setProperty('left',(Number.parseFloat(modal.style.left||'0')+10)+'px','important');modal.style.setProperty('top',(Number.parseFloat(modal.style.top||'0')+10)+'px','important');
+ const wide=modal.classList.contains('wide'),inBackdrop=modal.parentElement?.classList.contains('modal-backdrop');
+ const width=Math.min(w,wide?w:760);
+ resetNative(modal);
+ modal.style.setProperty('box-sizing','border-box','important');
+ modal.style.setProperty('width',width+'px','important');
+ modal.style.setProperty('min-width','0px','important');
+ modal.style.setProperty('min-height','0px','important');
+ modal.style.setProperty('max-height',h+'px','important');
+ modal.style.setProperty('height','auto','important');
+ modal.style.setProperty('overflow-y','auto','important');
+ modal.style.setProperty('overflow-x','hidden','important');
+ if(inBackdrop){
+  modal.style.setProperty('left',Math.max(10,(innerWidth-width)/2)+'px','important');
+  modal.style.setProperty('top',Math.max(10,(innerHeight-modal.offsetHeight)/2)+'px','important');
+ }else{
+  modal.style.setProperty('position','fixed','important');
+  modal.style.setProperty('inset','0','important');
+  modal.style.setProperty('margin','auto','important');
+ }
+ finishNative(modal,width,modal.offsetHeight);
 }
 function run(){
  pending=false;if(running)return;running=true;
