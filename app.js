@@ -16,7 +16,7 @@ import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayou
 import {battleLogView} from './battle-log.js';
 import {handInspectorView} from './hand-inspector.js';
 import {CAMPAIGN_BATTLES,createCampaignProgress,normalizeCampaignProgress,getCampaignBattle,isCampaignBattleUnlocked,getNextCampaignBattle,recordCampaignResult} from './campaign.js';
-import {PACKS,getPack,PACK_ID,PACK_NAME,PACK_DESCRIPTION,PACK_COST,PACK_SIZE,STARTING_TREASURE,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,PACK_CARD_IDS,createStarterCollection,normalizeCollection,grantDeckCollection,openPack,getBattleReward} from './shop.js';
+import {PACKS,getPack,PACK_ID,PACK_NAME,PACK_DESCRIPTION,PACK_COST,PACK_SIZE,STARTING_TREASURE,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,PACK_CARD_IDS,createStarterCollection,normalizeCollection,grantDeckCollection,openPack,getBattleReward,quoteStarterPurchase,purchaseStarter} from './shop.js';
 import { newGame, playCard, attack, endTurn, runCpuTurn, getLegalTargets, getAttackTargets, canAttack, getPlayableCards, getFusionMaterials, validateFusionSelection, MAX_HEART_POINTS } from './engine.js';
 
 const $ = (s, r=document) => r.querySelector(s);
@@ -580,6 +580,8 @@ function actionHandler(event){if(page==='deck'&&!currentModal&&event.target.clos
  case'solo-section':soloSection=el.dataset.section==='practice'?'practice':'campaign';render();$(`[data-action="solo-section"][data-section="${soloSection}"]`)?.focus({preventScroll:true});break;
  case'shop-section':shopSection=el.dataset.section==='starters'?'starters':'boosters';render();$(`[data-action="shop-section"][data-section="${shopSection}"]`)?.focus({preventScroll:true});break;
  case'starter-packs':shopSection='starters';navigate('shop');break;
+ case'starter-buy':starterPurchaseModal(id);break;
+ case'starter-buy-confirm':confirmStarterPurchase(id);break;
  case'starter-load':{const preset=STARTER_DECKS.find(d=>d.id===id);if(preset&&loadBankEntry(starterSlot(preset.id))){navigate('deck');toast('「'+workingName+'」を読み込みました。');}break;}
  case'pack-select':if(getPack(el.dataset.pack)){selectedPackId=el.dataset.pack;shopSection='boosters';render();$(`[data-action="pack-select"][data-pack="${selectedPackId}"]`)?.focus({preventScroll:true});}break;
  case'pack-odds':currentModal={kind:'pack-odds',label:'収録内容と排出率'};showModal(packOddsView({RARITY_LABELS,packId:el.dataset.pack||selectedPackId}));break;
@@ -703,6 +705,26 @@ function missingOwnedCards(ids){return [...new Set(ids)].filter(id=>ids.filter(x
 function collectedMain(){return (getPack(selectedPackId)||PACKS[0]).cardIds.filter(id=>(data.collection[id]||0)>0).length;}
 function shopView(){return treasureShop({data,section:shopSection,packId:selectedPackId,title,icon,esc,fmt,artStyle,collected:collectedMain()});}
 function packCardsMarkup(pulls){return pulls.map((pull,i)=>`<div class="pack-pull ${pull.isNew?'new-card':''}" style="--reveal-delay:${Math.min(i*.045,.5)}s">${cardMarkup(getCard(pull.cardId))}<span class="pack-pull-status">${pull.converted?`重複 · +${EXTRA_COPY_TREASURE}秘宝`:pull.isNew?'NEW · 初獲得':'所持カードに追加'}${pull.guaranteed?' · 確定枠':''}</span></div>`).join('');}
+function starterPurchaseModal(id){
+ const quote=quoteStarterPurchase(data,id);
+ if(!quote.ok){toast(quote.error,true);return false;}
+ currentModal={kind:'starter-buy',id,label:'スターターデッキの購入',received:quote.received,bonusTreasure:quote.bonusTreasure};
+ showModal(`<div class="eyebrow">STARTER DECK · PURCHASE</div><h2>${esc(quote.starter.name)}</h2><p class="modal-intro">通常32枚・特殊4枚の固定セットです。抽選はありません。</p><div class="starter-sale-summary"><div><span>価格</span><strong>${fmt(quote.cost)}秘宝</strong></div><div><span>追加されるカード</span><strong>${quote.received}枚</strong></div><div><span>所持上限による変換</span><strong>+${fmt(quote.bonusTreasure)}秘宝</strong></div><div><span>購入後の残高</span><strong>${fmt(quote.treasure)}秘宝</strong></div></div><p class="modal-intro">現在のデッキ編成と保存データは変更しません。</p><div class="modal-actions"><button class="btn" data-action="close-modal">キャンセル</button><button class="btn primary" data-action="starter-buy-confirm" data-id="${esc(id)}">${icon('treasure')}購入する</button></div>`);
+ return true;
+}
+function confirmStarterPurchase(id){
+ if(currentModal?.kind!=='starter-buy'||currentModal.id!==id||page!=='shop')return false;
+ const quote=quoteStarterPurchase(data,id);
+ if(!quote.ok){closeModal();render();toast(quote.error,true);return false;}
+ if(quote.received!==currentModal.received||quote.bonusTreasure!==currentModal.bonusTreasure){starterPurchaseModal(id);toast('所持状況が変わりました。購入内容を再確認してください。',true);return false;}
+ const result=purchaseStarter(data,id);
+ if(!result.ok){closeModal();toast(result.error,true);return false;}
+ closeModal();data.treasure=result.treasure;data.collection=result.collection;
+ persist(true);render();sound('play');
+ currentModal={kind:'starter-purchased',label:'スターター購入完了'};
+ showModal(`<div class="eyebrow">STARTER DECK · COMPLETE</div><h2>${esc(result.starter.name)}</h2><p class="modal-intro">購入完了。カード${result.received}枚を所持カードに追加しました。${result.bonusTreasure?` 重複変換で${fmt(result.bonusTreasure)}秘宝を獲得。`:''}</p><p>残り ${fmt(data.treasure)}秘宝</p><div class="modal-actions"><button class="btn" data-action="starter-load" data-id="${esc(id)}">デッキに読み込む</button><button class="btn primary" data-action="close-modal">ショップに戻る</button></div>`);
+ return true;
+}
 function purchasePack(packId=selectedPackId){if(currentModal?.kind==='pack-result')return;const result=openPack({treasure:data.treasure,collection:data.collection},{packId,randomFn:()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296});if(!result.ok){toast(result.error,true);return;}data.treasure=result.treasure;data.collection=result.collection;data.lastPack={packId:result.packId,pulls:result.pulls,bonusTreasure:result.bonusTreasure,openedAt:Date.now()};persist(true);render();sound('play');packResultModal();}
 function packResultModal(){const p=data.lastPack;if(!p)return;const pack=getPack(p.packId)||PACKS[0];currentModal={kind:'pack-result',label:'パック開封結果'};showModal(`<div class="eyebrow">${pack.id} · PACK OPENED</div><h2>${pack.name} — 12枚の出会い</h2><p class="modal-intro">新しく獲得 ${p.pulls.filter(x=>x.isNew).length}種類${p.bonusTreasure?` · 重複変換 +${p.bonusTreasure}秘宝`:''} · 残り ${fmt(data.treasure)}秘宝</p><div class="pack-result-grid">${packCardsMarkup(p.pulls)}</div><div class="modal-actions"><button class="btn" data-nav="deck">デッキに組み込む</button><button class="btn primary" data-action="close-modal">ショップに戻る</button></div>`,true);$('.modal',modalRoot)?.classList.add('pack-modal');}
 

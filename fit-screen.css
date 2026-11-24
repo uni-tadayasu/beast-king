@@ -1056,3 +1056,15 @@ html.bk-fit .bk-native-screen .dual-workshop .deck-list>.deck-image-grid{
  height:var(--workshop-image-height,145px)!important;
  min-height:0!important;max-height:none!important;align-self:stretch!important;
 }
+
+/* Fixed starter products, with non-overlapping purchase/load actions. */
+.starter-sale-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:5px;margin-top:auto;min-width:0}
+.starter-sale-actions>.btn{width:100%;min-width:0;min-height:30px;margin:0;padding:5px 7px;white-space:normal;line-height:1.25}
+.starter-purchase-note{font-size:11px;line-height:1.35;min-width:0;color:#d4c3a1;margin:2px 0 6px;overflow-wrap:anywhere}
+.starter-sale-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.starter-sale-summary>div{display:grid;gap:4px;min-width:0;padding:10px;border:1px solid #b09bc466;border-radius:5px;background:#1e2137}
+.starter-sale-summary span{font-size:12px;color:#d2c0dc}
+.starter-sale-summary strong{font-size:clamp(16px,2vw,24px);color:#f1ddb0;overflow-wrap:anywhere}
+.rebuild-starter-offers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
+.rebuild-starter-offers>article{display:grid;gap:6px;min-width:0;padding:12px;border:1px solid #a58ebd77;border-radius:6px;background:#24253b}
+@media(max-width:650px){.starter-purchase-note{font-size:9px}.starter-sale-actions>.btn{font-size:10px;min-height:27px}.rebuild-starter-offers>article{padding:8px}}

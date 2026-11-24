@@ -11,6 +11,7 @@ import {CARD_ART_OVERRIDES} from '../card-art-overrides.js';
 import {newGame,playCard,attack,endTurn,runCpuTurn,getLegalTargets,getAttackTargets,getPlayableCards,getFusionMaterials,canAttack} from './engine.js';
 import {CAMPAIGN_BATTLES} from '../campaign.js';
 import {STARTERS,STORAGE_KEY,initialProfile,loadProfile,persistProfile,checkDeck,saveDeck,chooseStarter,counts,purchase,recordSolo,endSuspendedSolo} from './profile.js';
+import {quoteStarterPurchase,purchaseStarter,STARTER_PRICE} from '../shop.js';
 const root=document.querySelector('#app'),dialog=document.querySelector('#detail');
 const esc=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const fmt=n=>Number(n).toLocaleString('ja-JP');
@@ -18,7 +19,7 @@ const origin=id=>ORIGINS.find(x=>x.id===id);
 const byType=Object.entries(TYPE_LABELS);
 const label=id=>getCard(id)?.name||id;
 let profile=loadProfile(localStorage),page='home',message='',draft=null,match=null,selection=null,cpuBusy=false,filter={q:'',type:'',origin:'',rarity:'',pack:'',page:0};
-let shopPage=0,shopPack='BK01',cpuTimer=null;
+let shopPage=0,shopPack='BK01',cpuTimer=null,starterQuote=null;
 const music=createMusicController({idPrefix:'beastking-rebuild-bgm',sources:{menu:'../assets/audio/menu.mp3',battle:'../assets/audio/battle.mp3','battle-danger':'../assets/audio/battle-danger.mp3'}});
 const operatorClient=createOperatorClient(),cloudClient=createRebuildCloudClient();let cloudView=null;let operatorGrant=null,operatorSelected=false,operatorBusy=false,brandTaps=0,brandAt=0,starting=false;
 const nav=[['home','王庭','home'],['solo','ソロ対戦','sword'],['deck','デッキ工房','cards'],['catalog','カード図鑑','book'],['shop','秘宝ショップ','treasure'],['rules','遊び方','info']];
@@ -90,9 +91,10 @@ function deck(){
  return '<div class="deck-layout">'+catalog(true)+'<section class="panel deck-list"><div><h2>編成中のデッキ</h2><p>メイン '+draft.main.length+'/32 · 特殊 '+draft.special.length+'/4</p><small>同名2枚まで · 所持枚数以内</small>'+(operatorGrant?.entitled?'<div>'+act('operator-select',operatorSelected?'𠮷良原デッキ使用中':'𠮷良原デッキを使用','','primary')+(operatorSelected?act('operator-off','通常デッキに戻す'):'')+'</div>':'')+'</div><div class="deck-rows">'+sections.map(([zone,t,ids,n])=>'<h3>'+t+' '+ids.length+'/'+n+'</h3>'+Object.entries(counts(ids)).map(([id,k])=>'<button data-act="remove" data-zone="'+zone+'" data-id="'+id+'"><span>'+esc(label(id))+' ×'+k+'</span><span>−</span></button>').join('')).join('')+'</div><div class="actions"><select id="starter-select" aria-label="スターター">'+opts(STARTERS.map(s=>[s.id,s.name]),profile.starterId)+'</select>'+act('preset','適用')+act('discard','元に戻す')+act('save-deck','保存',valid.valid?'':'disabled','primary')+'</div></section></div>';
 }
 function shop(){
+ if(shopPack==='starters')return '<section class="panel shop"><div class="shop-info"><div><h2>スターターデッキ販売</h2><p>各'+STARTER_PRICE+'秘宝 · 通常32枚＋特殊4枚 · 所持 '+profile.treasure+'秘宝</p><small>固定内容。4枚目以降は5秘宝に変換します。</small></div><div class="pack-tabs">'+PACKS.map(p=>act('select-pack',p.number===1?'第一弾':'第二弾','data-pack="'+p.id+'"')).join('')+'</div></div><div class="rebuild-starter-offers">'+STARTERS.map(d=>{const q=quoteStarterPurchase(profile,d.id);return '<article><h3>'+esc(d.name)+'</h3><p>追加 '+q.received+'枚 · 変換 +'+q.bonusTreasure+'秘宝</p>'+act('starter-buy',q.received?STARTER_PRICE+'秘宝で購入':'所持上限','data-id="'+d.id+'" '+(q.ok?'':'disabled'),'primary')+'</article>'}).join('')+'</div></section>';
  const pack=PACKS.find(p=>p.id===shopPack)||PACKS[0],last=PACKS.find(p=>p.id===(profile.lastPackId||'BK01'));
  const pulls=profile.lastPack||[],size=pageSize(),total=Math.max(1,Math.ceil(pulls.length/size));shopPage=Math.min(shopPage,total-1);
- return '<section class="panel shop"><div class="shop-info"><div><h2>'+esc(pack.name)+'</h2><p>1パック 100秘宝 · 12枚 · レア以上1枚保証</p><small>各弾1,152枚。同じカードの4枚目から5秘宝に変換します。</small><div class="pack-tabs">'+PACKS.map(p=>'<button data-act="select-pack" data-pack="'+p.id+'" aria-pressed="'+(p.id===pack.id)+'">'+(p.number===1?'第一弾':'第二弾')+'</button>').join('')+'</div></div>'+act('purchase','パックを開封',profile.treasure<100?'disabled':'','primary')+'</div><div class="card-grid">'+(pulls.length?pulls.slice(shopPage*size,(shopPage+1)*size).map(x=>card(getCard(x.cardId),{owned:profile.collection[x.cardId]||0,className:x.converted?'converted':''})).join(''):'<p class="muted">ここに開封結果が表示されます。</p>')+'</div><div class="pagination">'+act('shop-prev','前へ',shopPage===0?'disabled':'')+'<span>'+(pulls.length?'開封結果：'+esc(last?.name||'')+' · ':'')+(shopPage+1)+' / '+total+'</span>'+act('shop-next','次へ',shopPage+1===total?'disabled':'')+'</div></section>';
+ return '<section class="panel shop"><div class="shop-info"><div><h2>'+esc(pack.name)+'</h2><p>1パック 100秘宝 · 12枚 · レア以上1枚保証</p><small>各弾1,152枚。同じカードの4枚目から5秘宝に変換します。</small><div class="pack-tabs">'+PACKS.map(p=>'<button data-act="select-pack" data-pack="'+p.id+'" aria-pressed="'+(p.id===pack.id)+'">'+(p.number===1?'第一弾':'第二弾')+'</button>').join('')+act('select-pack','スターター販売','data-pack="starters"')+'</div></div>'+act('purchase','パックを開封',profile.treasure<100?'disabled':'','primary')+'</div><div class="card-grid">'+(pulls.length?pulls.slice(shopPage*size,(shopPage+1)*size).map(x=>card(getCard(x.cardId),{owned:profile.collection[x.cardId]||0,className:x.converted?'converted':''})).join(''):'<p class="muted">ここに開封結果が表示されます。</p>')+'</div><div class="pagination">'+act('shop-prev','前へ',shopPage===0?'disabled':'')+'<span>'+(pulls.length?'開封結果：'+esc(last?.name||'')+' · ':'')+(shopPage+1)+' / '+total+'</span>'+act('shop-next','次へ',shopPage+1===total?'disabled':'')+'</div></section>';
 }
 function rules(){return '<section class="panel rules"><h2>基本ルール</h2><h3>デッキと勝利条件</h3><p>メイン32枚＋合成魔獣4枚。同名2枚まで。ハートポイント5,000で開始し、相手を0にすると勝利します。</p><h3>ターンと出場ゾーン</h3><p>最大エーテルが自分のターンごとに1増加（最大10）。手札は最大4枚、出場魔獣は4体、ギミックは2枚。魔獣は通常、召喚した次の自分のターンから攻撃できます。</p><h3>攻撃と守護</h3><p>守護がある場合は優先して攻撃。通常アタック型は攻撃を受けると消滅し、持ち主に攻撃力分のダメージ。ディフェンス型・合成魔獣は攻撃力が守備力を上回ると消滅し、超過分のみダメージ。通常戦闘で反撃はありません。</p><h3>合成召喚</h3><p>コスト3のミラクル「合成」で特殊デッキから合成魔獣を選び、手札・場・お墓の魔獣を1枚以上異世界へ。素材2枚目以降、攻撃力・守備力が各100上昇します。</p><h3>先行公開版について</h3><p>第一弾・第二弾とCPU対戦の独立した新画面です。第二弾のレガリア以外のイラストは制作前です。ソロ対戦は自動保存と中断・再開に対応します。レガリアは従来の通常イラストを使用します。運営認証・クラウド保存APIは本番サーバーの更新が必要です。王庭のクラウド保存から端末間復元を確認できます。新生版のオンライン対戦は開発中です。従来版のデータには影響しません。</p><p class="edition-links"><a href="about.html">新生版の詳細</a><a href="../">最新版へ戻る</a></p></section>'}
 function targetList(){
@@ -309,7 +311,9 @@ document.addEventListener('click',async e=>{
   case 'preset':{const s=STARTERS.find(x=>x.id===document.querySelector('#starter-select').value);draft={main:[...s.ids],special:[...s.specialIds]};render();break}
   case 'discard':draft={main:[...profile.main],special:[...profile.special]};render();break;
   case 'save-deck':save(saveDeck(profile,draft.main,draft.special));setMessage('デッキを保存しました。');break;
-  case 'select-pack':if(PACKS.some(p=>p.id===el.dataset.pack)){shopPack=el.dataset.pack;render()}break;
+  case 'select-pack':if(el.dataset.pack==='starters'||PACKS.some(p=>p.id===el.dataset.pack)){shopPack=el.dataset.pack;render()}break;
+  case 'starter-buy':{const q=quoteStarterPurchase(profile,id);if(!q.ok){setMessage(q.error);break}starterQuote=q;openDialog('<h2>'+esc(q.starter.name)+'</h2><p>価格 '+q.cost+'秘宝 · 追加 '+q.received+'枚 · 変換 +'+q.bonusTreasure+'秘宝</p><p>購入後 '+q.treasure+'秘宝。現在のデッキは変更しません。</p><div class="actions">'+act('close','キャンセル')+act('starter-buy-confirm','購入する','data-id="'+id+'"','primary')+'</div>');break}
+  case 'starter-buy-confirm':{if(page!=='shop'||shopPack!=='starters'||!dialog.open||starterQuote?.starterId!==id)break;const q=quoteStarterPurchase(profile,id);if(!q.ok||q.received!==starterQuote.received||q.bonusTreasure!==starterQuote.bonusTreasure){starterQuote=null;closeDialog();render();setMessage(q.error||'購入内容を再確認してください。');break}const r=purchaseStarter(profile,id);starterQuote=null;closeDialog();if(!r.ok){setMessage(r.error);break}save({...profile,treasure:r.treasure,collection:r.collection});render();setMessage(esc(r.starter.name)+'を購入しました。');break}
   case 'purchase':save(purchase(profile,Math.random,shopPack));shopPage=0;render();setMessage('12枚のカードを開封しました。');break;
   case 'campaign':await start('normal',idx);break;
   case 'replay':{const v=document.querySelector('#replay').value;if(v!=='')await start('normal',Number(v));break}
@@ -322,7 +326,7 @@ document.addEventListener('click',async e=>{
   case 'cancel-target':selection=null;render();break;
   case 'forfeit':if(confirm('降参しますか？ 秘宝報酬はありません。'))leaveMatch();break;
   case 'leave':leaveMatch();break;
-  case 'close':closeDialog();break;
+  case 'close':starterQuote=null;closeDialog();break;
  }}catch(err){if(dialog.open){const p=document.createElement('p');p.setAttribute('role','alert');p.textContent=err.message;dialog.appendChild(p)}else setMessage(err.message)}
 });
 document.addEventListener('input',e=>{if(e.target.id==='bgm-volume'&&profile){const value=Number(e.target.value);music.sync({volume:value/100});const out=document.querySelector('#volume-number');if(out)out.textContent=value+'%'}});

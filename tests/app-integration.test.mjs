@@ -22,7 +22,7 @@ import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayou
 const appSource = readFileSync(new URL('../app.js', import.meta.url), 'utf8').replace(/^import\s+[^;]+;\s*$/gm, '');
 const expose = `
 globalThis.__appIntegration = {
-  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck,
+  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
   get workingDeck(){return workingDeck}, get data(){return data}, get game(){return game}, get cpuGame(){return cpuGame},
@@ -448,4 +448,14 @@ test('illustration replacements affect only the selected public card faces',()=>
  for(const id of Object.keys(CARD_ART_OVERRIDES)){const c=catalog.getCard(id);assert.ok(c);const r=CARD_ART_OVERRIDES[id];assert.ok(app.artStyle(c).includes(r.src));assert.ok(app.cardMarkup(c).includes('rarity-'+c.rarity));}
  assert.ok(app.artStyle(catalog.getCard('B0001')).includes('beast-01.webp'));
  assert.ok(app.artStyle(catalog.getCard('B0512')).includes('king.webp'));
+});
+
+test('starter purchase confirmation preserves every deck and prevents duplicate confirmation',()=>{
+ const {app}=boot();app.setState({page:'shop',entered:true});app.data.treasure=1000;
+ const id=catalog.STARTER_DECKS[1].id,before=plain(app.data.deckLibrary),active=plain(app.data.deckIds),quote=shop.quoteStarterPurchase(app.data,id);
+ assert.equal(app.starterPurchaseModal(id),true);assert.equal(app.confirmStarterPurchase(id),true);
+ assert.equal(app.data.treasure,quote.treasure);assert.deepEqual(plain(app.data.collection),quote.collection);
+ assert.deepEqual(plain(app.data.deckLibrary),before);assert.deepEqual(plain(app.data.deckIds),active);
+ assert.equal(app.confirmStarterPurchase(id),false);assert.equal(app.data.treasure,quote.treasure);
+ const restored=app.restoreData(plain(app.data));assert.deepEqual(plain(restored.collection),quote.collection);assert.equal(restored.treasure,quote.treasure);
 });

@@ -5,7 +5,7 @@ import {
   PACK_ID, PACK_NAME, PACK_DESCRIPTION, PACK_CARD_IDS, PACK_CARD_COUNT,
   PACK_COST, PACK_SIZE, STARTING_TREASURE, EXTRA_COPY_TREASURE,
   RARITY_ODDS, GUARANTEED_RARITY_ODDS,
-  normalizeCollection, grantDeckCollection, createStarterCollection, openPack, getBattleReward,
+  normalizeCollection, grantDeckCollection, createStarterCollection, openPack, getBattleReward, STARTER_PRICE,quoteStarterPurchase,purchaseStarter,
 } from '../shop.js';
 
 function seededRandom(seed) {
@@ -208,4 +208,25 @@ test('completed battle rewards use player zero perspective and exclude surrender
   for (const winner of [0, 1, 'draw', null, undefined]) assert.equal(getBattleReward({ winner, forfeited: true }), 0);
   for (const winner of [null, undefined, '0', '1', 2]) assert.equal(getBattleReward({ winner }), 0);
   assert.equal(getBattleReward(), 0);
+});
+
+test('each of the four starter products supplies the exact fixed 36 cards',()=>{
+ assert.equal(STARTER_PRICE,300);
+ for(const deck of STARTER_DECKS){
+  const before={treasure:300,collection:{}},r=purchaseStarter(before,deck.id);
+  assert.ok(r.ok);assert.equal(r.received,36);assert.equal(r.bonusTreasure,0);assert.equal(r.treasure,0);
+  assert.deepEqual(r.pulls.map(p=>p.cardId),[...deck.ids,...deck.specialIds]);assert.deepEqual(r.collection,grantDeckCollection({},[...deck.ids,...deck.specialIds]));
+  assert.deepEqual(before,{treasure:300,collection:{}});
+ }
+});
+test('starter repurchases convert only excess copies and never charge on failure',()=>{
+ const deck=STARTER_DECKS[0],state={treasure:1000,collection:createStarterCollection()};
+ const q=quoteStarterPurchase(state,deck.id),r=purchaseStarter(state,deck.id);
+ assert.ok(r.ok);assert.equal(q.received,r.received);assert.equal(q.received+q.converted,36);
+ assert.equal(r.treasure,state.treasure-STARTER_PRICE+r.bonusTreasure);assert.equal(r.bonusTreasure,r.converted*EXTRA_COPY_TREASURE);
+ assert.ok(Object.values(r.collection).every(n=>n<=3));assert.ok(r.treasure<state.treasure);
+ assert.equal(purchaseStarter({treasure:299,collection:{}},deck.id).ok,false);
+ assert.equal(purchaseStarter(state,'operator-kirahara-v1').ok,false);
+ const full={treasure:1000,collection:Object.fromEntries([...deck.ids,...deck.specialIds].map(id=>[id,3]))};
+ const blocked=purchaseStarter(full,deck.id);assert.equal(blocked.ok,false);assert.equal(blocked.errorCode,'ALREADY_COMPLETE');assert.equal(blocked.treasure,1000);assert.deepEqual(blocked.collection,full.collection);
 });

@@ -173,3 +173,28 @@ export function getBattleReward({ winner, forfeited = false } = {}) {
   if (winner === 'draw') return BATTLE_REWARDS.draw;
   return 0;
 }
+
+/** A fixed starter product, not a randomized pack. Existing free starter
+ * ownership is preserved. Purchase supplies additional copies up to 3. */
+export const STARTER_PRICE=300;
+export function quoteStarterPurchase(state,starterId){
+ const starter=STARTER_DECKS.find(d=>d.id===starterId);
+ if(!starter)return {ok:false,errorCode:'INVALID_STARTER',error:'スターターデッキを選んでください。'};
+ const collection=normalizeCollection(state?.collection),items=[...starter.ids,...starter.specialIds];
+ const pulls=[];
+ for(const cardId of items){
+  const owned=collection[cardId]||0,converted=owned>=MAX_CARD_COPIES;
+  if(!converted)collection[cardId]=owned+1;
+  pulls.push({cardId,isNew:owned===0,converted});
+ }
+ const received=pulls.filter(p=>!p.converted).length,converted=items.length-received,bonusTreasure=converted*EXTRA_COPY_TREASURE;
+ const validBalance=Number.isSafeInteger(state?.treasure)&&state.treasure>=0;
+ const errorCode=!validBalance?'INVALID_BALANCE':received===0?'ALREADY_COMPLETE':state.treasure<STARTER_PRICE?'INSUFFICIENT_TREASURE':null;
+ const error=errorCode==='INVALID_BALANCE'?'秘宝の所持数を確認してください。':errorCode==='ALREADY_COMPLETE'?'収録カードはすべて所持上限です。':errorCode==='INSUFFICIENT_TREASURE'?'購入には300秘宝が必要です。':null;
+ return {ok:!errorCode,errorCode,error,starterId,starter,cost:STARTER_PRICE,size:items.length,received,converted,bonusTreasure,netCost:STARTER_PRICE-bonusTreasure,collection,pulls,treasure:validBalance?state.treasure-STARTER_PRICE+bonusTreasure:0};
+}
+export function purchaseStarter(state,starterId){
+ const quote=quoteStarterPurchase(state,starterId);
+ if(!quote.ok)return {...failure(state,quote.errorCode,quote.error),starterId};
+ return {...quote};
+}
