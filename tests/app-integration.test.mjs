@@ -21,7 +21,7 @@ import {calculateCardLayout} from '../viewport.js';
 const appSource = readFileSync(new URL('../app.js', import.meta.url), 'utf8').replace(/^import\s+[^;]+;\s*$/gm, '');
 const expose = `
 globalThis.__appIntegration = {
-  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck,
+  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, inspectOptions, replaceInspectedCard, removeInspectedCard,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
   get workingDeck(){return workingDeck}, get data(){return data}, get game(){return game}, get cpuGame(){return cpuGame},
@@ -319,4 +319,22 @@ test('the editor blocks a third deck copy even when three copies are owned',()=>
   data.collection[id]=3;app.setState({data});
   const before=[...app.workingDeck];app.editDeck(id,true);
   assert.deepEqual([...app.workingDeck],before);
+});
+
+test('optional physical-card editor preserves the grouped editor and validates atomic replacements',()=>{
+ const {app}=boot();
+ const before=[...app.workingDeck],original=before[0],candidate=app.inspectOptions('main',0)[0];
+ // All candidates are owned, of the correct zone and not the same card.
+ assert.ok(app.inspectOptions('main',0).every(c=>c.type!=='fusion'&&c.id!==original&&app.data.collection[c.id]>0));
+ if(candidate){
+  assert.equal(app.replaceInspectedCard('main',0,original,candidate.id),true);
+  assert.equal(app.workingDeck.length,32);assert.equal(app.workingDeck[0],candidate.id);
+  assert.deepEqual([...app.workingDeck].slice(1),before.slice(1));
+  assert.equal(app.replaceInspectedCard('main',0,original,candidate.id),false);
+ }
+ const first=app.workingDeck[0];
+ assert.equal(app.replaceInspectedCard('main',0,first,'F0001'),false);
+ assert.equal(app.removeInspectedCard('main',0,first),true);
+ assert.equal(app.workingDeck.length,31);
+ assert.deepEqual([...app.workingDeck],before.slice(1));
 });

@@ -165,6 +165,62 @@ function deckList(special=false){
  const rows=all.slice((deckListPage-1)*size,deckListPage*size);
  return `<div class="deck-visible-rows">${rows.length?rows.map(c=>{const qty=deck.filter(id=>id===c.id).length;return `<div class="deck-row"><span class="mini-cost ${special?'fusion-mini':''}">${special?'合':c.cost}</span><button class="row-name" data-action="detail" data-id="${c.id}" title="${esc(c.name)}">${esc(c.name)}</button><button class="qty-btn" data-action="deck-remove" data-id="${c.id}" aria-label="${esc(c.name)}を1枚外す">−</button><span class="qty">${qty}</span><button class="qty-btn" data-action="deck-add" data-id="${c.id}" aria-label="${esc(c.name)}を1枚追加" ${qty>=deckCopyCapacity(c.id)||deck.length>=limit?'disabled':''}>+</button></div>`;}).join(''):`<p class="deck-hint">${special?'合成魔獣を4枚選び、特殊デッキに登録します。':'カードの「＋」から通常デッキに追加できます。'}</p>`}</div><div class="deck-list-pagination"><button class="icon-btn" data-action="deck-list-prev" aria-label="デッキの前のページ" ${deckListPage<=1?'disabled':''}>${icon('chevron-left')}</button><span>${deckListPage} / ${pages}<small>${all.length}種類</small></span><button class="icon-btn" data-action="deck-list-next" aria-label="デッキの次のページ" ${deckListPage>=pages?'disabled':''}>${icon('chevron-right')}</button></div>`;
 }
+// Separate optional inspector. Each physical copy has its own slot index.
+function inspectZone(section){return section==='special'?workingSpecial:workingDeck;}
+function inspectIndex(section,index){const deck=inspectZone(section),i=Number(index);return Number.isInteger(i)&&i>=0&&i<deck.length?i:-1;}
+function inspectOptions(section,index){
+ const deck=inspectZone(section),i=inspectIndex(section,index);if(i<0)return [];
+ const quantities=new Map();deck.forEach((id,n)=>{if(n!==i)quantities.set(id,(quantities.get(id)||0)+1);});
+ return CARDS.filter(c=>c.id!==deck[i]&&(section==='special'?c.type==='fusion':c.type!=='fusion')&&(quantities.get(c.id)||0)<Math.min(DECK_COPY_LIMIT,availableCopies(c.id)));
+}
+function openDeckInspector(section=deckSection,index=0,mode='single'){
+ if(page!=='deck')return;
+ const zone=section==='special'?'special':'main',deck=inspectZone(zone);
+ const i=Math.max(0,Math.min(Number.isInteger(Number(index))?Number(index):0,Math.max(0,deck.length-1)));
+ currentModal={kind:'deck-inspect',label:'編成カードを確認・編集',section:zone,index:i,mode:mode==='gallery'?'gallery':'single',query:'',candidatePage:1,chosen:null};
+ renderDeckInspector();
+}
+function inspectTabs(m){
+ const z=m.section;
+ return `<div class="inspect-toolbar"><div class="inspect-tabs" aria-label="デッキの種類"><button class="btn small ${z==='main'?'primary':''}" data-action="deck-inspect-zone" data-section="main" aria-pressed="${z==='main'}">通常 ${workingDeck.length}/32</button><button class="btn small ${z==='special'?'primary':''}" data-action="deck-inspect-zone" data-section="special" aria-pressed="${z==='special'}">特殊 ${workingSpecial.length}/4</button></div><div class="inspect-tabs" aria-label="表示方法"><button class="btn small ${m.mode==='single'?'primary':''}" data-action="deck-inspect-single" aria-pressed="${m.mode==='single'}">1枚ずつ</button><button class="btn small ${m.mode==='gallery'?'primary':''}" data-action="deck-inspect-all" aria-pressed="${m.mode==='gallery'}">画像一覧</button></div></div>`;
+}
+function inspectCandidateList(m){
+ const query=String(m.query||'').trim().toLowerCase();
+ return inspectOptions(m.section,m.index).filter(c=>!query||[c.id,c.name,c.text,elementMap[c.element].name,TYPE_LABELS[c.type]].some(value=>String(value).toLowerCase().includes(query)));
+}
+function inspectCandidateMarkup(m){
+ const list=inspectCandidateList(m),size=6,pages=Math.max(1,Math.ceil(list.length/size));m.candidatePage=Math.max(1,Math.min(m.candidatePage,pages));
+ return `<p class="inspect-muted">入替可能 ${fmt(list.length)}種類 · ${m.candidatePage}/${pages}ページ</p><div class="inspect-candidates">${list.slice((m.candidatePage-1)*size,m.candidatePage*size).map(c=>`<article>${cardMarkup(c,{action:'deck-inspect-choose',classes:m.chosen===c.id?'selected':''})}<strong>${esc(c.name)}</strong><small>所持 ${availableCopies(c.id)}枚</small><button class="btn small" data-action="deck-inspect-choose" data-id="${c.id}">効果を確認</button></article>`).join('')||'<p>入れ替えられる所持カードが見つかりません。</p>'}</div><div class="inspect-pagination"><button class="btn small" data-action="deck-inspect-candidate-prev" ${m.candidatePage<=1?'disabled':''}>前へ</button><span>${m.candidatePage}/${pages}</span><button class="btn small" data-action="deck-inspect-candidate-next" ${m.candidatePage>=pages?'disabled':''}>次へ</button></div>`;
+}
+function inspectChosenMarkup(m){
+ const candidate=inspectOptions(m.section,m.index).find(c=>c.id===m.chosen);
+ return candidate?`<div class="inspect-confirm"><strong>${esc(getCard(m.original).name)} → ${esc(candidate.name)}</strong><p>${esc(candidate.text)}</p><button class="btn primary" data-action="deck-inspect-apply" data-id="${candidate.id}">このカードに入れ替える</button></div>`:'<p class="inspect-muted">候補のカードを選択して、効果を確認してください。</p>';
+}
+function renderDeckInspector(){
+ const m=currentModal;if(m?.kind!=='deck-inspect')return;
+ const deck=inspectZone(m.section),zone=m.section==='special'?'特殊':'通常',count=deck.length;
+ m.index=Math.max(0,Math.min(m.index,Math.max(0,count-1)));
+ const c=getCard(deck[m.index]);
+ let body='';
+ if(m.mode==='replace'&&c){
+  if(deck[m.index]!==m.original){m.mode='single';return renderDeckInspector();}
+  body=`<div class="eyebrow">REPLACE · ${zone} ${m.index+1}枚目</div><h2>カードを入れ替え</h2><p>現在：${esc(c.name)}。所持済み・編成可能なカードだけを表示します。</p><label for="inspect-candidate-query">カードを検索</label><input id="inspect-candidate-query" type="search" data-input="inspect-candidate-query" value="${esc(m.query)}" placeholder="カード名・効果・オリジン" autocomplete="off"><div id="inspect-chosen">${inspectChosenMarkup(m)}</div><div id="inspect-candidate-results">${inspectCandidateMarkup(m)}</div><button class="btn" data-action="deck-inspect-single">元のカードに戻る</button>`;
+ }else if(m.mode==='gallery'){
+  body=`<div class="inspect-gallery" aria-label="${zone}デッキの全カード">${deck.map((id,i)=>{const card=getCard(id);return card?`<article data-inspect-slot="${i}"><span class="inspect-muted">${i+1} / ${count}枚</span>${cardMarkup(card,{action:'deck-inspect-slot',idx:i,operatorArt:true})}<strong>${esc(card.name)}</strong><button class="btn small" data-action="deck-inspect-slot" data-index="${i}">詳細・編集</button></article>`:'';}).join('')||'<p>編成中のカードはありません。</p>'}</div>`;
+ }else if(c){
+  body=`<div class="inspect-slot-nav"><button class="btn small" data-action="deck-inspect-prev" ${m.index===0?'disabled':''}>← 前のカード</button><label><strong>${zone} ${m.index+1} / ${count}枚</strong><select data-change="inspect-slot" aria-label="表示するカード">${deck.map((id,i)=>`<option value="${i}" ${i===m.index?'selected':''}>${i+1}. ${esc(getCard(id)?.name||id)}</option>`).join('')}</select></label><button class="btn small" data-action="deck-inspect-next" ${m.index>=count-1?'disabled':''}>次のカード →</button></div><div class="detail-layout">${cardMarkup(c,{action:'noop',operatorArt:true})}<div class="detail-info"><div class="eyebrow">DECK CARD · ${esc(c.id)}</div><h2>${esc(c.name)}</h2><div class="detail-meta"><span class="tag">${TYPE_LABELS[c.type]} · ${elementMap[c.element].name}</span><span class="tag">${RARITY_LABELS[c.rarity]}</span></div><p class="inspect-stat">${c.type==='fusion'?'合成魔獣':'コスト '+c.cost}${['beast','fusion'].includes(c.type)?' · 攻撃 '+c.attack+' · 守備 '+c.hp:''}</p><p class="detail-effect">${esc(c.text)}</p><p class="flavor">${esc(c.flavor)}</p><div class="modal-actions"><button class="btn primary" data-action="deck-inspect-replace">このカードを入れ替え</button><button class="btn" data-action="deck-inspect-remove">この1枚を外す</button></div></div></div>`;
+ }else body='<p class="modal-intro">このゾーンにカードがありません。通常の編集画面から「＋」で追加してください。</p>';
+ showModal(`<div class="deck-inspector"><div class="eyebrow">DECK WORKSHOP</div><h2>編成カードの確認・編集</h2>${inspectTabs(m)}${body}<p class="inspect-muted">ここでの編集は従来の編集中デッキに反映されます。対戦に使用するには「保存する」を押してください。</p><div class="modal-actions"><button class="btn" data-action="close-modal">通常の編集画面へ戻る</button></div></div>`,true);
+}
+function replaceInspectedCard(section,index,original,id){
+ const i=inspectIndex(section,index),deck=inspectZone(section);
+ if(i<0||deck[i]!==original||!inspectOptions(section,i).some(c=>c.id===id))return false;
+ deck[i]=id;rememberDraft();return true;
+}
+function removeInspectedCard(section,index,original){
+ const i=inspectIndex(section,index),deck=inspectZone(section);if(i<0||deck[i]!==original)return false;
+ deck.splice(i,1);rememberDraft();return true;
+}
 function equipOperatorDeck(deck){
  const normal=validateDeck(deck?.ids),special=validateSpecialDeck(deck?.specialIds);
  if(!normal.valid||!special.valid)throw new Error('専用デッキの内容を確認できませんでした。');
@@ -181,7 +237,7 @@ function deckPanel(){
  const cnt=counts(workingDeck),normal=validateDeck(workingDeck),special=validateSpecialDeck(workingSpecial),valid=normal.valid&&special.valid&&!missingOwnedCards([...workingDeck,...workingSpecial]).length,isSpecial=deckSection==='special';
  return `<aside class="deck-panel"><div class="deck-panel-head"><label for="deck-name">使用するデッキ</label><input id="deck-name" data-input="deck-name" value="${esc(workingName)}" maxlength="28" aria-label="デッキ名"><select data-change="starter" aria-label="スターターデッキを選択"><option value="">4種類のスターターから読み込む</option>${STARTER_DECKS.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join('')}</select>${operatorDeckPanel()}<div class="deck-total"><strong class="${valid?'status-good':''}">${workingDeck.length+workingSpecial.length}<span> / 36枚</span></strong><span>通常 ${workingDeck.length}/32 · 特殊 ${workingSpecial.length}/4</span></div><p class="deck-composition">魔獣 ${cnt.beast} · ミラクル ${cnt.miracle} · ギミック ${cnt.gimmick}</p></div><div class="deck-zone-tabs" aria-label="編成中のゾーン"><button data-action="deck-section" data-section="main" class="${isSpecial?'':'active'}" aria-pressed="${!isSpecial}">通常 <b>${workingDeck.length}/32</b></button><button data-action="deck-section" data-section="special" class="${isSpecial?'active':''}" aria-pressed="${isSpecial}">${icon('fusion')}特殊 <b>${workingSpecial.length}/4</b></button></div><div class="deck-list">${deckList(isSpecial)}</div><div class="deck-panel-foot"><p class="deck-hint">${valid?'通常32枚＋特殊4枚。保存して次の対戦へ。':esc([...normal.errors,...special.errors,...missingOwnedCards([...workingDeck,...workingSpecial])][0])}</p><div><button class="btn primary" data-action="deck-save" ${!valid?'disabled':''}>${icon('check')}保存する</button><button class="text-button" data-action="deck-clear">すべて外す</button></div></div></aside>`;
 }
-function deckView(){return `<div class="deck-workshop">${title('DECK WORKSHOP','デッキ編成','通常デッキは必ず32枚。特殊デッキは必ず4枚。あなたの36枚を組み上げる。')}<section class="deck-workshop-summary" aria-label="対戦に必要なデッキ枚数"><article><span>MAIN DECK</span><strong>通常 <b>32</b>枚</strong><small>魔獣・ミラクル・ギミック</small></article><article><span>SPECIAL DECK</span><strong>特殊 <b>4</b>枚</strong><small>合成魔獣</small></article><article><span>READY TO BATTLE</span><strong>合計 <b>36</b>枚</strong><small>どちらも指定枚数で保存</small></article></section><div class="deck-editor"><section>${filters()}<div id="card-results">${cardResults(true)}</div></section>${deckPanel()}</div></div>`;}
+function deckView(){return `<div class="deck-workshop">${title('DECK WORKSHOP','デッキ編成','通常デッキは必ず32枚。特殊デッキは必ず4枚。あなたの36枚を組み上げる。')}<section class="deck-workshop-summary" aria-label="対戦に必要なデッキ枚数"><article><span>MAIN DECK</span><strong>通常 <b>32</b>枚</strong><small>魔獣・ミラクル・ギミック</small></article><article><span>SPECIAL DECK</span><strong>特殊 <b>4</b>枚</strong><small>合成魔獣</small></article><article><span>READY TO BATTLE</span><strong>合計 <b>36</b>枚</strong><small>どちらも指定枚数で保存</small></article></section><div class="deck-inspector-launch"><button class="btn primary" data-action="deck-inspect-open">${icon('cards')} 1枚ずつ確認・編集</button><button class="btn" data-action="deck-inspect-gallery">${icon('book')} 編成カードの画像一覧</button><span>従来のデッキ編集もそのまま使えます。</span></div><div class="deck-editor"><section>${filters()}<div id="card-results">${cardResults(true)}</div></section>${deckPanel()}</div></div>`;}
 function rulesView(){return rulebookView({title,esc,icon,section:rulebookSection});}
 
 function handInspectionSelection(){const hand=game?.players?.[0]?.hand||[];if(selected?.kind==='play'&&hand[selected.index])return selected;const index=hand.indexOf(inspectedHandId);return {kind:'play',index:index>=0?index:0};}
@@ -221,7 +277,7 @@ function navigate(next){
  clearTimeout(cpuTimer);closeModal();selected=null;battleLogOpen=false;handEffectsOpen=false;
  if(onlineBattle&&next!=='duel'){onlineBattle=false;game=cpuGame;onlineClient.stopPolling();}
  const leavingWaiting=page==='online'&&next!=='online'&&['waiting','joining'].includes(online.phase)&&online.match?.status!=='active';
- page=next;history.replaceState(null,'',`#${next}`);render();window.scrollTo({top:0,behavior:'instant'});
+ page=next;history.replaceState(null,'',`#${next}`);render();const activePage=$('.royal-shell .page');if(activePage)activePage.scrollTop=0;window.scrollTo({top:0,behavior:'instant'});
  if(leavingWaiting)void cancelOnlineWaiting(true);
  if(next==='online'&&entered)void connectOnline();
  if(next==='deck'&&entered)void accountUi?.refreshOperatorDeck?.();
@@ -273,6 +329,18 @@ function actionHandler(event){if(event.target.closest('.site-brand')&&accountUi.
  case'pack-select':if(getPack(el.dataset.pack)){selectedPackId=el.dataset.pack;shopSection='boosters';render();$(`[data-action="pack-select"][data-pack="${selectedPackId}"]`)?.focus({preventScroll:true});}break;
  case'pack-odds':currentModal={kind:'pack-odds',label:'収録内容と排出率'};showModal(packOddsView({RARITY_LABELS,packId:el.dataset.pack||selectedPackId}));break;
  case'deck-section':deckSection=el.dataset.section==='special'?'special':'main';deckListPage=1;render();break;
+ case'deck-inspect-open':openDeckInspector(deckSection,0,'single');break;
+ case'deck-inspect-gallery':openDeckInspector(deckSection,0,'gallery');break;
+ case'deck-inspect-zone':if(currentModal?.kind==='deck-inspect')openDeckInspector(el.dataset.section,0,currentModal.mode==='gallery'?'gallery':'single');break;
+ case'deck-inspect-all':if(currentModal?.kind==='deck-inspect'){currentModal.mode='gallery';renderDeckInspector();}break;
+ case'deck-inspect-single':if(currentModal?.kind==='deck-inspect'){currentModal.mode='single';renderDeckInspector();}break;
+ case'deck-inspect-slot':if(currentModal?.kind==='deck-inspect')openDeckInspector(currentModal.section,Number(el.dataset.index),'single');break;
+ case'deck-inspect-prev':case'deck-inspect-next':if(currentModal?.kind==='deck-inspect'){currentModal.index+=a==='deck-inspect-prev'?-1:1;currentModal.mode='single';renderDeckInspector();}break;
+ case'deck-inspect-replace':if(currentModal?.kind==='deck-inspect'){const m=currentModal;m.mode='replace';m.original=inspectZone(m.section)[m.index];m.query='';m.candidatePage=1;m.chosen=null;renderDeckInspector();}break;
+ case'deck-inspect-candidate-prev':case'deck-inspect-candidate-next':if(currentModal?.kind==='deck-inspect'&&currentModal.mode==='replace'){currentModal.candidatePage+=a==='deck-inspect-candidate-prev'?-1:1;const result=$('#inspect-candidate-results');if(result)result.innerHTML=inspectCandidateMarkup(currentModal);}break;
+ case'deck-inspect-choose':if(currentModal?.kind==='deck-inspect'&&currentModal.mode==='replace'&&inspectOptions(currentModal.section,currentModal.index).some(c=>c.id===id)){currentModal.chosen=id;const preview=$('#inspect-chosen');if(preview)preview.innerHTML=inspectChosenMarkup(currentModal);const result=$('#inspect-candidate-results');if(result)result.innerHTML=inspectCandidateMarkup(currentModal);}break;
+ case'deck-inspect-apply':if(currentModal?.kind==='deck-inspect'&&currentModal.mode==='replace'){const m=currentModal;if(id===m.chosen&&replaceInspectedCard(m.section,m.index,m.original,id)){m.mode='single';render();renderDeckInspector();toast('カードを入れ替えました。保存して使用してください。');}else toast('現在このカードには入れ替えできません。',true);}break;
+ case'deck-inspect-remove':if(currentModal?.kind==='deck-inspect'){const m=currentModal,original=inspectZone(m.section)[m.index];if(removeInspectedCard(m.section,m.index,original)){render();renderDeckInspector();toast('カードを1枚外しました。');}}break;
  case'deck-list-prev':deckListPage--;render();break;
  case'deck-list-next':deckListPage++;render();break;
  case'zone':zoneModal(Number(el.dataset.player),el.dataset.zone);break;
@@ -343,8 +411,8 @@ function actionHandler(event){if(event.target.closest('.site-brand')&&accountUi.
 }
 document.addEventListener('click',actionHandler);
 document.addEventListener('submit',event=>{if(event.target.id==='entry-start-form'){event.preventDefault();startEntry();}});
-document.addEventListener('input',event=>{const el=event.target;if(el.id==='entry-player-name')entryNameDraft=el.value;if(el.dataset.input==='bgm-volume'){data.bgmVolume=Math.max(0,Math.min(1,Number(el.value)/100));const out=$('#bgm-volume-readout');if(out)out.textContent=`${Math.round(data.bgmVolume*100)}%`;el.setAttribute('aria-valuetext',`${Math.round(data.bgmVolume*100)}%`);persist();syncMusic();musicController.unlock();}if(el.dataset.input==='search'){search.text=el.value;search.page=1;renderResults();}if(el.dataset.input==='deck-name'){workingName=el.value;rememberDraft();}});
-document.addEventListener('change',event=>{const el=event.target,key=el.dataset.change;if(['setId','subtype','element','rarity','sort'].includes(key)){search[key]=el.value;search.page=1;renderResults();}if(key==='starter'&&el.value){const preset=STARTER_DECKS.find(d=>d.id===el.value);if(preset){workingDeck=[...preset.ids];workingSpecial=[...preset.specialIds];workingName=preset.name;rememberDraft();render();toast(`「${preset.name}」を読み込みました。保存して使用できます。`);}}if(key==='cpu-deck')cpuDeckId=el.value;if(el.id==='backup-input')importSave(el.files?.[0]);});
+document.addEventListener('input',event=>{const el=event.target;if(el.id==='entry-player-name')entryNameDraft=el.value;if(el.dataset.input==='bgm-volume'){data.bgmVolume=Math.max(0,Math.min(1,Number(el.value)/100));const out=$('#bgm-volume-readout');if(out)out.textContent=`${Math.round(data.bgmVolume*100)}%`;el.setAttribute('aria-valuetext',`${Math.round(data.bgmVolume*100)}%`);persist();syncMusic();musicController.unlock();}if(el.dataset.input==='inspect-candidate-query'&&currentModal?.kind==='deck-inspect'&&currentModal.mode==='replace'){currentModal.query=el.value;currentModal.candidatePage=1;const result=$('#inspect-candidate-results');if(result)result.innerHTML=inspectCandidateMarkup(currentModal);}if(el.dataset.input==='search'){search.text=el.value;search.page=1;renderResults();}if(el.dataset.input==='deck-name'){workingName=el.value;rememberDraft();}});
+document.addEventListener('change',event=>{const el=event.target,key=el.dataset.change;if(key==='inspect-slot'&&currentModal?.kind==='deck-inspect'){currentModal.index=Number(el.value);currentModal.mode='single';renderDeckInspector();return;}if(['setId','subtype','element','rarity','sort'].includes(key)){search[key]=el.value;search.page=1;renderResults();}if(key==='starter'&&el.value){const preset=STARTER_DECKS.find(d=>d.id===el.value);if(preset){workingDeck=[...preset.ids];workingSpecial=[...preset.specialIds];workingName=preset.name;rememberDraft();render();toast(`「${preset.name}」を読み込みました。保存して使用できます。`);}}if(key==='cpu-deck')cpuDeckId=el.value;if(el.id==='backup-input')importSave(el.files?.[0]);});
 modalRoot.addEventListener('click',event=>{if(event.target.classList.contains('modal-backdrop'))closeModal();});
 document.addEventListener('keydown',event=>{if(event.key==='Enter'&&event.target.id==='entry-player-name'){event.preventDefault();startEntry();return;}if(event.key==='Enter'&&event.target.id==='operator-code'){event.preventDefault();accountUi.handleAction('operator-activate',event.target);return;}if(event.key==='Enter'&&event.target.id==='device-link-code'){event.preventDefault();accountUi.handleAction('cloud-link-claim',event.target);return;}if(event.key==='Enter'&&event.target.id==='online-nickname'){event.preventDefault();void saveOnlineNickname();return;}if(event.key==='Escape'){if(currentModal)closeModal();else if(battleLogOpen){battleLogOpen=false;render();$('.battle-log-trigger')?.focus({preventScroll:true});}else if(handEffectsOpen){handEffectsOpen=false;render();$('.hand-effects-trigger')?.focus({preventScroll:true});}else if(selected){selected=null;render();}return;}if(event.key==='Tab'&&currentModal){const els=[...modalRoot.querySelectorAll('button:not(:disabled),a,input:not([hidden]),textarea,select,[tabindex="0"]')].filter(el=>el.offsetParent!==null),first=els[0],last=els.at(-1);if(event.shiftKey&&(document.activeElement===first||document.activeElement.classList.contains('modal'))){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}});
 render();
