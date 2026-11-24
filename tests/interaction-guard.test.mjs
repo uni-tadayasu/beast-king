@@ -60,7 +60,7 @@ function setup(...elements) {
   return { doc, controller, observers, Observer };
 }
 
-test('ordinary text is not selectable, while editable controls and readonly link codes remain selectable', () => {
+test('editable controls and readonly link codes remain selectable with page context menus disabled', () => {
   const span = new Element('span');
   const input = new Element('input');
   const code = new Element('input', { readonly: '' });
@@ -73,24 +73,25 @@ test('ordinary text is not selectable, while editable controls and readonly link
   assert.equal(doc.emit('selectstart', { nodeType: 3, parentElement: span }).defaultPrevented, true);
   for (const target of [input, code, textarea, select, editable, inner]) {
     assert.equal(doc.emit('selectstart', target).defaultPrevented, false);
-    assert.equal(doc.emit('contextmenu', target).defaultPrevented, false);
+    assert.equal(doc.emit('contextmenu', target).defaultPrevented, true);
   }
 });
 
-test('contenteditable false islands cannot start selection, while shadow-root editable targets can', () => {
+test('shadow-root editable targets preserve selection and drag while their context menus are disabled', () => {
   const island = new Element('span', { contenteditable: 'false' });
   const editable = new Element('div', { contenteditable: 'plaintext-only' }).append(island);
   const input = new Element('input');
   const host = new Element('div', { 'data-protect-art': '' });
   const { doc } = setup(editable, host);
   assert.equal(doc.emit('selectstart', island).defaultPrevented, true);
-  for (const type of ['selectstart', 'contextmenu', 'dragstart']) {
+  for (const type of ['selectstart', 'dragstart']) {
     const event = doc.emit(type, host, { composedPath: () => [input, host, doc] });
     assert.equal(event.defaultPrevented, false);
   }
+  assert.equal(doc.emit('contextmenu', host, { composedPath: () => [input, host, doc] }).defaultPrevented, true);
 });
 
-test('artwork context menus and drag are blocked without blocking form editing or unrelated links', () => {
+test('context menus are blocked across the page while drag protection remains limited to artwork', () => {
   const image = new Element('img');
   const vector = new Element('path');
   const svg = new Element('svg').append(vector);
@@ -101,10 +102,11 @@ test('artwork context menus and drag are blocked without blocking form editing o
   const arena = new Element('section', { class: 'arena' }).append(input);
   const link = new Element('a');
   const { doc } = setup(image, svg, card, custom, arena, link);
-  for (const type of ['contextmenu', 'dragstart']) {
-    for (const target of [image, vector, text, custom]) assert.equal(doc.emit(type, target).defaultPrevented, true);
-    for (const target of [input, link]) assert.equal(doc.emit(type, target).defaultPrevented, false);
+  for (const target of [doc.documentElement, image, vector, card, text, custom, arena, input, link]) {
+    assert.equal(doc.emit('contextmenu', target).defaultPrevented, true);
   }
+  for (const target of [image, vector, text, custom]) assert.equal(doc.emit('dragstart', target).defaultPrevented, true);
+  for (const target of [input, link]) assert.equal(doc.emit('dragstart', target).defaultPrevented, false);
 });
 
 test('single-touch scrolling, ordinary wheel and seven consecutive logo clicks stay available', () => {

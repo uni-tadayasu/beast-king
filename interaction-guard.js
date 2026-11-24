@@ -1,4 +1,4 @@
-/** Discourage native artwork saving and accidental page gestures without cancelling game clicks. */
+/** Disable page context menus and accidental artwork gestures without cancelling game clicks. */
 const mountedDocuments = new WeakMap();
 const protectedArt = [
   'img', 'picture', 'svg', 'canvas', '[data-protect-art]',
@@ -85,7 +85,7 @@ export function mountInteractionGuard(options = {}) {
     const element = eventElement(event);
     if (!editable(element) && element?.closest?.(protectedArt)) event.preventDefault();
   };
-  listen('contextmenu', stopArtDefault);
+  listen('contextmenu', event => event.preventDefault());
   listen('dragstart', stopArtDefault);
 
   listen('keydown', event => {

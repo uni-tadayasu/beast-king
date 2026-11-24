@@ -141,6 +141,7 @@ Root owns v6 save version and migration implementation. Preserve valid compatibl
 - Original-set atlas cells retain the native-resolution redraw crops and measured layouts.json boundaries in card-art-layouts.js. BK03/BK04 use a4% safety inset on each side of square native cells of at least256 pixels; package-expansion-art.py records exact crops, source hashes, immutable prompt hashes and actual visual review. Do not upscale or reuse cells to satisfy counts. Keep the portable owner gallery outside the public frontend.
 - Copyright text is © 2026 Beast King.
 - Discourage native artwork save/drag/long-press and accidental selection/zoom while preserving form editing and the hidden seven-click operator gesture. Browser screenshots and external browser/OS controls cannot be prevented.
+- Disable native context menus throughout game, compatibility and guide pages, including editable fields; keep normal clicks, typing and keyboard editing available. Dismiss only the top subwindow on an outside primary click/tap, consume that click, and ignore drags starting inside. Keep desktop battle reference panels open; floating battle panels, native news/compatibility dialogs and common subwindows share this behavior. Skipping an already-purchased pack ceremony only ends its animation and proceeds to the awarded cards.
 - The additive origin_v2 column supports king without rebuilding or deleting existing profile rows. Reads use origin_v2 with legacy origin fallback; all profile writes keep the legacy column valid.
 
 ## Complete release verification

@@ -1,6 +1,7 @@
 /** Purposeful feedback for the whole game. No game rules, purchases, hidden
  * cards or save data are changed here. Call openPack only AFTER saving a purchase.
  * Its presentation can always be skipped; it never grants cards itself. */
+import {bindOutsideDismiss} from './overlay-dismiss.js?v=20261124-32';
 export const EXPERIENCE_STORAGE_KEY = 'beast-king-experience-v1';
 export const RARITY_ORDER = Object.freeze(['N', 'R', 'KR', 'KKR', 'GR', 'GGR']);
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -319,15 +320,16 @@ export function createExperienceController(options = {}) {
     host.append(heading, stage, caption, skip); overlayHost().appendChild(host);
     let finish;
     const promise = new Promise(resolve => { finish = resolve; });
-    let completed = false;
+    let completed = false,removeOutside=()=>{};
     const complete = () => {
       if (completed) return; completed = true;
-      host.remove(); doc.removeEventListener('keydown', keys, true); opening = null;
+      removeOutside();host.remove(); doc.removeEventListener('keydown', keys, true); opening = null;
       if (previousFocus?.isConnected) previousFocus.focus({preventScroll: true});
       finish();
     };
     const keys = event => { if (event.key === 'Escape') { event.preventDefault(); event.stopImmediatePropagation(); complete(); } else if (event.key === 'Tab') { event.preventDefault(); skip.focus(); } };
     doc.addEventListener('keydown', keys, true); skip.addEventListener('click', complete, {once: true}); skip.focus({preventScroll: true});
+    removeOutside=bindOutsideDismiss(host,{getLayer:()=>completed?null:host,isOutside:event=>event.target===host,onDismiss:complete});
     opening = {promise, complete}; sound('pack-charge');
     delay(() => { if (completed) return; host.classList.add('is-releasing'); caption.textContent = '12枚の新しい出会い'; sound('pack-open'); }, full() ? 680 : 180);
     delay(complete, full() ? 1550 : 520);

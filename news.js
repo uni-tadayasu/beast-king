@@ -1,6 +1,8 @@
-import {ONLINE_API_BASE} from './online.js?v=20261124-31';
+import {ONLINE_API_BASE} from './online.js?v=20261124-32';
+import {bindOutsideDismiss,isDialogBackdrop} from './overlay-dismiss.js?v=20261124-32';
 /** Built-in release notices. Update these entries when a new game version is published. */
 export const NEWS_ITEMS = Object.freeze([
+ {date:'2026.11.25',title:'サブ画面の外側で閉じる・右クリックを無効化',text:'設定・カード詳細・お知らせ・対戦中の小窓は、外側をクリックまたはタップすると閉じられます。画面内から外へドラッグした時は閉じません。サイト内の右クリックメニューも無効化しました。'},
  {date:'2026.11.24',title:'第五弾「幻彩の夢界」— 新テーマ96枚',text:'折紙・玻璃・影絵・彩墨の4系統が登場。手札の残り枚数、結界、魔獣の数、手札の種類を使う新戦術と、それぞれの構築例を追加しました。専用イラスト96点を収録。12枚入り・100秘宝・レア以上1枚保証で、全収録カードは4,721枚です。'},
  {date:'2026.11.24',title:'端末連携・設定を大きく見やすく',text:'端末連携を画面全体に表示し、同期・コード発行・コード入力・連携端末の4タブに整理。設定、プロフィール編集、デッキ分析も横幅を活用する配置へ。入力中の連携コードはタブを移動しても残ります。'},
  {date:'2026.11.24',title:'サイバーUI・操作音・デッキ削除',text:'濃紺とシアンの画面へ刷新。文字と操作ボタンを大きくし、小さい画面では表示件数を調整。操作ごとに異なる短いシステム音を追加しました。デッキ設定から不要な保存デッキを削除できます。所持カードは減りません。'},
@@ -135,6 +137,8 @@ function openNewsDialog(){
   dialog.setAttribute('aria-labelledby','news-dialog-heading');
   dialog.innerHTML=`<header class="news-dialog-header"><div><p class="news-eyebrow">BEAST KING NEWS</p><h2 id="news-dialog-heading">最新情報</h2><p class="news-dialog-intro">アップデート・運営からのお知らせ</p></div><form method="dialog"><button class="news-close" aria-label="お知らせを閉じる">×</button></form></header><div class="news-items"></div><footer class="news-dialog-footer"><div class="news-page-nav" aria-label="お知らせのページ切り替え"><button type="button" class="news-prev" aria-label="前のページ">前へ</button><div class="news-page-info"><strong class="news-page-count" aria-live="polite"></strong><small class="news-range"></small></div><button type="button" class="news-next" aria-label="次のページ">次へ</button></div><form method="dialog"><button class="news-return">ゲームに戻る</button></form></footer>`;
   document.body.append(dialog);
+  bindOutsideDismiss(dialog,{getLayer:()=>dialog.open?dialog:null,isOutside:isDialogBackdrop,onDismiss:()=>dialog.close()});
+  dialog.addEventListener('keydown',event=>{if(event.key==='Escape')event.stopPropagation();});
   dialog.querySelector('.news-prev').addEventListener('click',()=>showNewsPage(dialog,Math.max(0,Number(dialog.dataset.newsPage||0)-1)));
   dialog.querySelector('.news-next').addEventListener('click',()=>showNewsPage(dialog,Math.min(newsPages.length-1,Number(dialog.dataset.newsPage||0)+1)));
  }
