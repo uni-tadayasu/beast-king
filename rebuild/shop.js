@@ -55,13 +55,10 @@ export function grantDeckCollection(raw, ids) {
   return collection;
 }
 
-/** Enough owned cards to play any existing starter, including all special decks. */
-export function createStarterCollection() {
-  let collection = {};
-  for (const starter of STARTER_DECKS) {
-    collection = grantDeckCollection(collection, [...starter.ids, ...(starter.specialIds || [])]);
-  }
-  return collection;
+/** Grant only the chosen starting deck. */
+export function createStarterCollection(starterId=STARTER_DECKS[0].id) {
+  const starter=STARTER_DECKS.find(d=>d.id===starterId);if(!starter)throw Error('Unknown starter');
+  return grantDeckCollection({},[...starter.ids,...starter.specialIds]);
 }
 
 function randomUnit(randomFn) {

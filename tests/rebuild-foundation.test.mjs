@@ -24,7 +24,8 @@ test('deck rules reject missing, excessive and unowned cards',()=>{
  const p=fresh();assert.equal(checkDeck(p,p.main.slice(1),p.special).valid,false);
  const unowned=CARDS.find(c=>c.type==='beast'&&!p.collection[c.id]);assert.ok(unowned);
  assert.throws(()=>saveDeck(p,[unowned.id,...p.main.slice(1)],p.special));
- for(const s of STARTERS)assert.equal(checkDeck(p,chooseStarter(p,s.id).main,s.specialIds).valid,true);
+ for(const s of STARTERS){if(s.id===p.starterId)assert.equal(checkDeck(p,chooseStarter(p,s.id).main,s.specialIds).valid,true);else assert.throws(()=>chooseStarter(p,s.id));}
+ assert.equal(Object.values(p.collection).reduce((a,b)=>a+b,0),36);
 });
 test('purchase is atomic and guarantees a rare',()=>{
  const p=fresh();const next=purchase(p,()=>0.1);assert.equal(next.lastPack.length,12);assert.notEqual(getCard(next.lastPack[11].cardId).rarity,'N');
@@ -149,4 +150,8 @@ test('BGM settings survive save and danger threshold switches exactly at 2500 HP
  persistProfile(storage,{...p,bgm:false,bgmVolume:.35});assert.equal(loadProfile(storage).bgm,false);assert.equal(loadProfile(storage).bgmVolume,.35);
  const g=newGame();assert.equal(musicScene('home',g),'menu');assert.equal(musicScene('battle',g),'battle');
  g.players[1].core=2500;assert.equal(musicScene('battle',g),'battle-danger');g.players[1].core=2501;assert.equal(musicScene('battle',g),'battle');g.winner=0;assert.equal(musicScene('battle',g),'menu');
+});
+
+test('rebuild starter ownership survives reload without grants of other starters',()=>{
+ for(const s of STARTERS){const storage=memory(),p=initialProfile('王','king',s.id);persistProfile(storage,p);assert.deepEqual(loadProfile(storage).collection,p.collection);assert.equal(Object.values(p.collection).reduce((a,b)=>a+b,0),36);}
 });

@@ -15,8 +15,7 @@ export function initialProfile(name,origin,starterId){
  if(!name||!ORIGIN_IDS.includes(origin))throw new Error('名前とアイコンを確認してください。');
  const starter=STARTERS.find(s=>s.id===starterId);
  if(!starter)throw new Error('スターターを選択してください。');
- let collection={};
- for(const s of STARTERS)collection=grantDeckCollection(collection,[...s.ids,...s.specialIds]);
+ const collection=grantDeckCollection({},[...starter.ids,...starter.specialIds]);
  return {version:1,name,origin,starterId,collection,treasure:STARTING_TREASURE,main:[...starter.ids],special:[...starter.specialIds],wins:0,losses:0,draws:0,completed:0,settled:[],lastPack:[],bgm:true,bgmVolume:.5,suspendedMatch:null};
 }
 export function checkDeck(profile,main,special){
@@ -44,8 +43,13 @@ export function loadProfile(storage){
   p.name=validateName(p.name);Object.assign(p,normalizeAudioSettings(raw));
   p.suspendedMatch=normalizeSoloSnapshot(raw.suspendedMatch,p);
   if(!checkDeck(p,p.main,p.special).valid){
-   let collection=p.collection;for(const s of STARTERS)collection=grantDeckCollection(collection,[...s.ids,...s.specialIds]);
-   return chooseStarter({...p,collection},STARTERS[0].id);
+   const owned=STARTERS.find(s=>checkDeck(p,s.ids,s.specialIds).valid);
+   if(owned)return chooseStarter(p,owned.id);
+   const pool=(fusion,size)=>Object.entries(p.collection).filter(([id])=>(getCard(id)?.type==='fusion')===fusion).flatMap(([id,n])=>Array(Math.min(2,n)).fill(id)).slice(0,size);
+   const main=pool(false,32),special=pool(true,4);
+   if(checkDeck(p,main,special).valid)return saveDeck(p,main,special);
+   const recovery=STARTERS.find(s=>s.id===p.starterId)||STARTERS[0];
+   return chooseStarter({...p,collection:grantDeckCollection(p.collection,[...recovery.ids,...recovery.specialIds])},recovery.id);
   }
   return p;
  }catch{return null}

@@ -72,6 +72,7 @@ try{
  assert.ok(await evaluate('Array.from(document.querySelectorAll("meta[property]")).some(m=>m.getAttribute("property")==="og:image")'));
  await evaluate('document.querySelector("input[name=name]").value="ブラウザ検証";document.querySelector("#onboard").requestSubmit();true');await waitElement('.shell');await assertFits();
  assert.equal(await evaluate(saved+'.name'),'ブラウザ検証');
+ assert.equal(await evaluate('Object.values('+saved+'.collection).reduce((a,b)=>a+b,0)'),36);
  assert.equal(await evaluate('document.querySelectorAll("nav .bk-icon").length'),6);
  assert.ok(await evaluate('document.querySelector("link[rel=manifest]").href.endsWith("/rebuild/manifest.webmanifest")'));
  await click('[data-act=bgm-toggle]');
