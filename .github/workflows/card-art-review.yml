@@ -1,0 +1,28 @@
+name: Card illustration visual review
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/review-card-art.py'
+      - '.github/workflows/card-art-review.yml'
+      - 'assets/design-v2/cards/individual/**'
+permissions:
+  contents: read
+jobs:
+  contact-sheets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image reader
+        run: python -m pip install Pillow
+      - name: Build all 2,304 visual review thumbnails
+        run: python scripts/review-card-art.py --output "${{ runner.temp }}/bk-art-review"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: card-illustration-contact-sheets
+          path: ${{ runner.temp }}/bk-art-review/
+          retention-days: 7
