@@ -1,0 +1,755 @@
+{
+  "id": "bk05-glass",
+  "family": "glass",
+  "src": "assets/design-v5/cards/bk05-glass.webp",
+  "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+  "sourceSha256": "766b954553863aca55e380ef3cbfe9a1b757717f5a3e6e55749199205165a7d5",
+  "nativeMaster": "exec-a42e5dc2-c9c5-4388-bb59-f56fe26dadc8.png",
+  "promptSha256": "11a7b8812c44653f01d75d87f441fe1f623cdd71ce0b663045c36e327c819b28",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "cardIds": [
+    "B2068",
+    "B2069",
+    "B2070",
+    "B2071",
+    "B2072",
+    "B2073",
+    "B2074",
+    "B2075",
+    "B2076",
+    "B2077",
+    "B2078",
+    "B2079",
+    "M1037",
+    "M1038",
+    "M1039",
+    "M1040",
+    "M1041",
+    "M1042",
+    "G1031",
+    "G1032",
+    "G1033",
+    "G1034",
+    "F0517",
+    "F0518"
+  ],
+  "nativeDimensionsPreserved": true,
+  "visualReview": "reviewed",
+  "cards": [
+    {
+      "id": "B2068",
+      "name": "玻璃の雫魚 シズク",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "glass",
+      "origin": "mountain",
+      "subject": "a tiny clear-glass fish with a single turquoise droplet heart swimming over dark velvet. low three-quarter view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "73e9afcb635689bbf49654046fe11bd0b7c28cc46ccf88b9798aa7d51d9718ef",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2069",
+      "name": "玻璃の跳兎 プリム",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "glass",
+      "origin": "river",
+      "subject": "a lively pink prismatic glass rabbit jumping between rainbows on a tiled floor. graceful diagonal side view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "c97acb512e31b0a61680fdea2ad50bcfc317a38196cfa758f45c8f1ea03b4dd1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2070",
+      "name": "玻璃の瓶亀 フラスコ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "glass",
+      "origin": "seed",
+      "subject": "a round blown-glass tortoise with a bottle-shell containing a miniature midnight ocean. front three-quarter view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "483f0ed25b76c6ebfc6af061b1fa3eb4fbc653d07d3b664692f79624b65dc60c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2071",
+      "name": "玻璃の針蜂 ニードル",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "glass",
+      "origin": "grass",
+      "subject": "a slender amber crystal bee with a needle-shaped abdomen diving through fractured sunlight. slightly elevated cinematic view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "9af2d5a97d3ce59014ccc373f6e69d2930754422c6eec0d14b59ec8c51de1d1e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2072",
+      "name": "玻璃の彩角鹿 リフラ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "glass",
+      "origin": "flower",
+      "subject": "a stained-glass stag with branching cyan and gold antlers projecting protective colored windows. dynamic upward-curving composition. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "8d744371951b132c7ec59c16337569b3138d3aaaaf77cf1c16d8293dc5949f15",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2073",
+      "name": "玻璃の裂翼鷹 スペクト",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "glass",
+      "origin": "tree",
+      "subject": "a sharp-winged sapphire glass hawk scattering triangular reflections during a steep dive. broad foreground silhouette with deep scenic perspective. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "59a2fee57ffc889f178f85605a90c557a99ccfaee72deac3b775bce13befd89a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2074",
+      "name": "玻璃の窓殻蟹 ステラ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "glass",
+      "origin": "mountain",
+      "subject": "a wide stained-glass crab with a cathedral-window shell guarding a luminous tide pool. low three-quarter view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "ad68963a8e5bd7b083881ee240e551717efb9bbd7ec2ea5a7441c8997f89e3c1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2075",
+      "name": "玻璃の流尾豹 フルーラ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "glass",
+      "origin": "river",
+      "subject": "a sleek molten-glass leopard with flowing violet tail racing across a polished black floor. graceful diagonal side view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "828d142742986fb680c2e9ac3d1d3dfab6f8dfb40f3975fd8bef16a4fdf605fa",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2076",
+      "name": "玻璃の灯籠梟 ランテル",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "glass",
+      "origin": "seed",
+      "subject": "a translucent teal owl with a glowing lantern torso perched beneath crystal chandeliers. front three-quarter view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "e5128ddb4b32cd30a7a1f879fac406bc6a917520c4496809af7cce2576d2c67d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2077",
+      "name": "玻璃の破虹虎 クラック",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "glass",
+      "origin": "grass",
+      "subject": "a powerful cracked-glass tiger whose fractures glow with fiery rainbow light. slightly elevated cinematic view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "63e9fab02ba202b2d0ea353235f274782afdf44d3cf5b9eb39c5c616170262d0",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2078",
+      "name": "玻璃の万華孔雀 カレイド",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "glass",
+      "origin": "flower",
+      "subject": "a grand kaleidoscope peacock displaying an intricate circular tail of emerald and magenta glass eyes. dynamic upward-curving composition. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "d401b6a5f5e8977db459b77ea1dae5156528f4385e16be8a5026e0fdf5161a79",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2079",
+      "name": "玻璃の澄界白鯨 クリアラ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "glass",
+      "origin": "tree",
+      "subject": "a majestic transparent glass whale with a luminous inner reef floating through a deep indigo hall. broad foreground silhouette with deep scenic perspective. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "a9512933ccad72ffc76c87fadaebc1fc5f8157853f352c019549ab8681073397",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1037",
+      "name": "玻璃・虹を割る光",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "glass",
+      "origin": "mountain",
+      "subject": "a concentrated rainbow beam bursting through a broken crystal lens toward darkness. low three-quarter view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "0973d802291abf36f9cb8a7b7fd38f38a6063ca320e587adf947eff2aa8ba3c5",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1038",
+      "name": "玻璃・重なる光壁",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "glass",
+      "origin": "river",
+      "subject": "layered cyan and gold translucent glass shields forming a luminous nested fortress. graceful diagonal side view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "50d86d67da6e25f8a2e812b4d4f8d1760c15bdc4fa70fd81178f774e1b659515",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1039",
+      "name": "玻璃・磨き上げる誓い",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "glass",
+      "origin": "seed",
+      "subject": "several glass animal silhouettes reflecting a shared brilliant polishing light from a central prism. front three-quarter view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "dd5a4f3d3f214326725d68d6fa4477337a5945280ee0dcee977369305f784760",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1040",
+      "name": "玻璃・一晶の覚醒",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "glass",
+      "origin": "grass",
+      "subject": "a small faceted crystal opening into a powerful luminous beast-shaped spectral aura. slightly elevated cinematic view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "d94db91fa1d0b0807f76cd3b123ab38bd02bc504b8a772df411daa406b124d31",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1041",
+      "name": "玻璃・傷を満たす雫",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "glass",
+      "origin": "flower",
+      "subject": "liquid rainbow droplets gently filling the cracks of a heart-shaped glass vessel. dynamic upward-curving composition. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "4d6f01aadfc3f1a711842d8ad20b8b5639e297dbf115338fabbdd10f79d8d467",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1042",
+      "name": "玻璃・万華の合成",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "glass",
+      "origin": "tree",
+      "subject": "two glass animal forms merging through a rotating kaleidoscope portal of vivid jewels. broad foreground silhouette with deep scenic perspective. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "2a552901b0d1f519134e06d7a9761e33787878b0d511677bfa5e6481ecc32291",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1031",
+      "name": "玻璃・砕光の迎撃窓",
+      "setId": "BK05",
+      "type": "gimmick",
+      "family": "glass",
+      "origin": "flower",
+      "subject": "a stained-glass window shattering outward into precisely aimed luminous shards. low three-quarter view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "bc22598e3cf1ed2417211129b47dd2bf1c9e62c6af2663f00a38ab931e807e53",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1032",
+      "name": "玻璃・返照の回廊",
+      "setId": "BK05",
+      "type": "gimmick",
+      "family": "glass",
+      "origin": "tree",
+      "subject": "an endless emerald mirror corridor redirecting a red attack beam back to its source. graceful diagonal side view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "b80bd4292723322dd911c0fcb01ff02afac593efb1985c90b09dc4e02ca0a956",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1033",
+      "name": "玻璃・夜明けの温室",
+      "setId": "BK05",
+      "type": "gimmick",
+      "family": "glass",
+      "origin": "mountain",
+      "subject": "a crystal greenhouse at dawn nurturing small floating shield prisms among glass flowers. front three-quarter view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "b57b5d02dc234a34e971a4465f6b00336d3bb2937416458c83c62ea1bbc0d111",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1034",
+      "name": "玻璃・響き合う天蓋",
+      "setId": "BK05",
+      "type": "gimmick",
+      "family": "glass",
+      "origin": "river",
+      "subject": "a radiant cathedral glass canopy sending colored light into waiting beast-shaped sculptures. slightly elevated cinematic view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "8f11d0901786285a8e9b5dd2c1b4ed2639d76372735aec59af01e89108bb34ed",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0517",
+      "name": "万華獣 プリズマ・ノヴァ",
+      "setId": "BK05",
+      "type": "fusion",
+      "family": "glass",
+      "origin": "mountain",
+      "subject": "a magnificent stained-glass chimera with peacock wings, stag horns and a lion body above a kaleidoscope sea. dynamic upward-curving composition. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "5bdd676d20744177c093beff73b705f8d0ac38a21b123ea916f7a1506a5f588b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0518",
+      "name": "澄界王 ヴィトラ・ルクス",
+      "setId": "BK05",
+      "type": "fusion",
+      "family": "glass",
+      "origin": "river",
+      "subject": "a monumental transparent crystal leviathan crowned by a circular cathedral window within an ocean of refracted light. broad foreground silhouette with deep scenic perspective. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "iridescent transparent aqua glass, pale lilac, silver, opal and refracted amber; luminous glass gardens and mirrored halls",
+      "src": "assets/design-v5/cards/bk05-glass.webp",
+      "sha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "0cb03be9715a002272d514ed597f4162886722b8717ca00f6a706bd31921caa7",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import {splitReadingText} from '../reading-pages.js';
 import {BRAND_ICONS} from '../brand-icons.js';
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
 import {CARD_ART_EXPANSIONS} from '../card-art-expansion.js';
+import {CARD_ART_FIFTH} from '../card-art-fifth.js';
 import {CARD_ART_OVERRIDES} from '../card-art-overrides.js';
 import {CARD_ART_USER_OVERRIDES} from '../card-art-user.js';
 import {PREMIUM_CARD_ART} from '../card-art-premium.js';
@@ -106,7 +107,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     sendAction: async () => ({ ok: true }),
   };
   const context = vm.createContext({
-    ...catalog, ...engine, ...shop, ...campaign, ...product, ...eventDecks, ...eventBattles, eventChallengeView, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, splitReadingText, BRAND_ICONS, CARD_ART_CROPS, CARD_ART_OVERRIDES, CARD_ART_EXPANSIONS, CARD_ART_USER_OVERRIDES, PREMIUM_CARD_ART, PREMIUM_DECK, PREMIUM_DECK_ID,
+    ...catalog, ...engine, ...shop, ...campaign, ...product, ...eventDecks, ...eventBattles, eventChallengeView, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, splitReadingText, BRAND_ICONS, CARD_ART_CROPS, CARD_ART_OVERRIDES, CARD_ART_EXPANSIONS, CARD_ART_FIFTH, CARD_ART_USER_OVERRIDES, PREMIUM_CARD_ART, PREMIUM_DECK, PREMIUM_DECK_ID,
     getCard: hooks.getCard || catalog.getCard,
     createOnlineClient: options => { callbacks = options; return client; },
     createCloudSync: () => ({ getState: () => ({phase:'synced',revision:1,dirty:false}), start: async () => ({phase:'synced',revision:1,dirty:false}), markDirty() {}, flush: async () => ({revision:1}), refresh: async () => ({revision:1}) }),
@@ -873,4 +874,14 @@ test('any player can inspect and load the same all-GGR premium recipe only after
  assert.deepEqual(plain(data.specialIds),[...PREMIUM_DECK.specialIds]);
  assert.ok(data.activeDeckId.startsWith('custom-'));
  for(const id of [...data.deckIds,...data.specialIds])assert.equal(catalog.getCard(id).rarity,'GGR');
+});
+
+
+test('the fifth pack uses its reviewed artwork and friendly family targeting in the app',()=>{
+ const {app}=boot();
+ for(const card of catalog.CARDS.filter(card=>card.setId==='BK05')){
+  const style=app.artStyle(card);assert.ok(style.includes(CARD_ART_FIFTH[card.id].src),card.id+' explicit fifth illustration');
+  assert.ok(!style.includes('design-v2/cards/individual/'),card.id+' does not enter legacy numeric fallback');
+  if(card.effect.kind.endsWith('_focus'))assert.match(app.targetHint(card),new RegExp(catalog.EXPANSION_FAMILIES.find(f=>f.id===card.family).name+'の味方魔獣'));
+ }
 });

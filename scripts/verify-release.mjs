@@ -8,12 +8,14 @@ import {CARDS,STARTER_DECKS,getCardsForSet,getCard,validateDeck,validateSpecialD
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
 import {CARD_ART_OVERRIDES} from '../card-art-overrides.js';
 import {CARD_ART_EXPANSIONS} from '../card-art-expansion.js';
+import {CARD_ART_FIFTH} from '../card-art-fifth.js';
 import {CARD_ART_USER_OVERRIDES,CARD_ART_USER_GROUPS} from '../card-art-user.js';
 import {PREMIUM_CARD_ART} from '../card-art-premium.js';
 import {PREMIUM_CARD_IDS,PREMIUM_SET_ADDITIONS,PREMIUM_CARD_SET_ASSIGNMENTS,REGALIA_CARD_ID} from '../premium-cards.js';
 import {PREMIUM_DECK} from '../premium-deck.js';
 import {validateCardArtManifest} from './validate-card-art.mjs';
 import {validateExpansionArtManifest} from './validate-expansion-art.mjs';
+import {validateFifthArtManifest} from './validate-fifth-art.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const directory='assets/design-v2/cards/individual/';
@@ -23,10 +25,13 @@ const manifest=JSON.parse(await read(directory+'manifest.json'));
 const production=JSON.parse(await read(directory+'production.json'));
 const artReview=JSON.parse(await read('assets/design-v2/art-direction-review.json'));
 const expansion=JSON.parse(await read('assets/design-v3/cards/manifest.json'));
+const fifth=JSON.parse(await read('assets/design-v5/cards/manifest.json'));
 const premium=JSON.parse(await read('assets/design-v3/premium-assets.json'));
 validateCardArtManifest(manifest,CARDS);
 validateExpansionArtManifest(expansion,CARDS,CARD_ART_EXPANSIONS);
-assert.equal(CARDS.length,4625,'The four-set release includes the 17 new public premium cards.');
+validateFifthArtManifest(fifth,CARDS,CARD_ART_FIFTH);
+assert.equal(CARDS.length,4721,'The fifth release adds 96 Dream Realm cards while preserving all 4625 prior cards.');
+assert.equal(getCardsForSet('BK05').length,96);
 assert(production.complete,'The card illustration release is incomplete.');
 assert.equal(production.atlases.length,144,'Expected 144 completed illustration atlases.');
 assert.equal(production.missing.length,0,'Missing native illustration atlases.');
@@ -109,6 +114,17 @@ for(const atlas of expansion.atlases){
  assert(!expansionFiles.has(atlas.sha256),'Two expansion atlases reuse an identical image.');expansionFiles.add(atlas.sha256);
 }
 assert.equal(expansionFiles.size,96);
+const fifthHashes=new Set();
+for(const asset of [...fifth.atlases,fifth.cover]){
+ const bytes=await read(asset.src);
+ assert.equal(hash(bytes),asset.sha256,'Fifth-set artwork changed after review: '+asset.id);
+ assert.deepEqual(webpDimensions(bytes),[asset.width,asset.height],'Fifth-set native dimensions differ from the manifest.');
+ assert(!fifthHashes.has(asset.sha256),'Fifth-set assets must be independently illustrated.');
+ assert(!expansionFiles.has(asset.sha256),'Fifth-set artwork must not reuse earlier expansion art.');
+ fifthHashes.add(asset.sha256);
+}
+assert.equal(fifthHashes.size,5,'Four new atlases and one distinct cover are required.');
+
 assert.deepEqual(premium.assets.map(a=>a.id).sort(),['bk01','bk02','bk03','bk04','realm']);
 const premiumHashes=new Set();
 for(const asset of premium.assets){
@@ -159,7 +175,7 @@ for(const id of selva.cardIds){
 // explicitly requested shared Selva portrait, rather than obsolete atlas cells.
 const originalMap=new Map(manifest.cards.map(card=>[card.id,card])),effective=new Map();
 for(const card of CARDS){
- const art=CARD_ART_USER_OVERRIDES[card.id]||PREMIUM_CARD_ART[card.id]||CARD_ART_EXPANSIONS[card.id]||CARD_ART_OVERRIDES[card.id]||originalMap.get(card.id);
+ const art=CARD_ART_USER_OVERRIDES[card.id]||PREMIUM_CARD_ART[card.id]||CARD_ART_FIFTH[card.id]||CARD_ART_EXPANSIONS[card.id]||CARD_ART_OVERRIDES[card.id]||originalMap.get(card.id);
  assert(art,'No effective public illustration: '+card.id);
  const crop=art.pixelCrop||(art.size?[art.x,art.y,art.size,art.size]:null);
  const identity=art.sha256+':'+(crop?crop.join(','):'full');
@@ -167,5 +183,5 @@ for(const card of CARDS){
 }
 const shared=[...effective.values()].filter(ids=>ids.length>1);
 assert.equal(shared.length,1);assert.deepEqual(shared[0].sort(),[...selva.cardIds].sort());
-assert.equal(effective.size,4618);
-console.log(JSON.stringify({cards:CARDS.length,uniqueIllustrations:effective.size,explicitSharedArtwork:{selva:selva.cardIds.length},newPremiumIllustrations:nativeHashes.size,premiumDeckGgrTypes:18,atlases:production.atlases.length+expansionFiles.size,originalAtlasIllustrations:manifest.cards.filter(c=>c.status==='redrawn').length,newlyRedrawnIllustrations:artReview.redrawnCardCount,newExpansionIllustrations:expansion.cards.length,newExpansionAtlases:expansionFiles.size,preserved:['B0512'],packs:['BK01','BK02','BK03','BK04'].map(id=>getCardsForSet(id).length),starters:4,battlefields:3,illustrationReplacements:replacementCells.size,premiumAssets:premiumHashes.size,allFilesVerified:true}));
+assert.equal(effective.size,4714);
+console.log(JSON.stringify({cards:CARDS.length,uniqueIllustrations:effective.size,explicitSharedArtwork:{selva:selva.cardIds.length},newPremiumIllustrations:nativeHashes.size,premiumDeckGgrTypes:18,atlases:production.atlases.length+expansionFiles.size+fifth.atlases.length,originalAtlasIllustrations:manifest.cards.filter(c=>c.status==='redrawn').length,newlyRedrawnIllustrations:artReview.redrawnCardCount,newExpansionIllustrations:expansion.cards.length,newExpansionAtlases:expansionFiles.size,preserved:['B0512'],fifthIllustrations:fifth.cards.length,fifthAtlases:fifth.atlases.length,packs:['BK01','BK02','BK03','BK04','BK05'].map(id=>getCardsForSet(id).length),starters:4,battlefields:3,illustrationReplacements:replacementCells.size,premiumAssets:premiumHashes.size,allFilesVerified:true}));

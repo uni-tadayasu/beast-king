@@ -1,6 +1,6 @@
-import { getCard, STARTER_DECKS, DECK_PRESETS, EXPANSION_DECKS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, DECK_COPY_LIMIT, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js?v=20261124-30';
-import {REGALIA_CARD_ID,PREMIUM_EFFECT_KINDS} from './premium-cards.js?v=20261124-30';
-import {PREMIUM_DECK} from './premium-deck.js?v=20261124-30';
+import { getCard, STARTER_DECKS, DECK_PRESETS, EXPANSION_DECKS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, DECK_COPY_LIMIT, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js?v=20261124-31';
+import {REGALIA_CARD_ID,PREMIUM_EFFECT_KINDS} from './premium-cards.js?v=20261124-31';
+import {PREMIUM_DECK} from './premium-deck.js?v=20261124-31';
 
 export const MAX_HEART_POINTS = 5000;
 // Internal .core and MAX_CORE remain compatible with saved games and callers.
@@ -139,8 +139,61 @@ function restoreDefense(state, who, value, events, source) {
 }
 const EXPANSION_KINDS=new Set(['legacy_rally','legacy_mend','legacy_recall','legacy_aegis','legacy_bless','legacy_bond','orbit_rally','orbit_aegis','orbit_focus','orbit_pulse','echo_bolt','echo_aegis','echo_recall','echo_chorus','vow_rally','vow_aegis','vow_focus','vow_bolt','forge_rally','forge_aegis','forge_bolt','forge_restore']);
 const EXPANSION_DAMAGE=new Set(['legacy_bond','orbit_pulse','echo_bolt','vow_bolt','forge_bolt']);
-const matchesFamily=(card,family)=>family==='regalia'?isRegaliaCard(card):family==='regalia-ace'?isRegaliaAce(card):family==='legacy'?['BK01','BK02'].includes(card?.setId):card?.setId==='BK04'&&card.family===family;
+const DREAM_FAMILIES=new Set(['origami','glass','shadow','pigment']);
+const DREAM_KINDS=new Set([...DREAM_FAMILIES].flatMap(family=>['bolt','aegis','rally','focus'].map(role=>family+'_'+role)));
+const matchesFamily=(card,family)=>family==='regalia'?isRegaliaCard(card):family==='regalia-ace'?isRegaliaAce(card):family==='legacy'?['BK01','BK02'].includes(card?.setId):card?.setId===(DREAM_FAMILIES.has(family)?'BK05':'BK04')&&card.family===family;
 const familyField=(player,family)=>player.field.filter(unit=>unit.hp>0&&matchesFamily(getCard(unit.cardId),family));
+/** The Dream Realm checks existing zones at resolution. Its hand is the
+ * owner's hand only; no hidden opponent cards or persistent counters are read. */
+function dreamCondition(player,enemy,family){
+ if(family==='origami')return player.hand.length<=1;
+ if(family==='glass')return player.shield>=200;
+ if(family==='shadow')return player.field.filter(unit=>unit.hp>0).length<enemy.field.filter(unit=>unit.hp>0).length;
+ if(family==='pigment'){
+  const types=new Set(player.hand.map(id=>getCard(id)?.type));
+  return ['beast','miracle','gimmick'].every(type=>types.has(type));
+ }
+ return false;
+}
+function dreamOutcome(player,enemy,card,useful=true){
+ const role=card.effect.kind.slice(card.family.length+1);
+ const enhanced=useful&&dreamCondition(player,enemy,card.family);
+ const bonus=role==='bolt'?200:role==='aegis'?(card.family==='glass'?300:200):100;
+ return {role,amount:card.effect.value+(enhanced?bonus:0),shieldCost:enhanced&&card.family==='glass'?200:0};
+}
+/** Forecast exactly the zones a play will leave for a summon/miracle effect.
+ * Fusion material indices refer to the original zones, just as resolveFusion. */
+function dreamForecastPlayer(player,card,handIndex,materials=[]){
+ const hands=new Set([handIndex,...materials.filter(material=>material.zone==='hand').map(material=>material.index)]);
+ const fields=new Set(materials.filter(material=>material.zone==='field').map(material=>material.index));
+ const field=player.field.filter((_,index)=>!fields.has(index));
+ if(card.type==='beast'||card.type==='fusion')field.push({cardId:card.id,hp:card.hp});
+ return {...player,hand:player.hand.filter((_,index)=>!hands.has(index)),field};
+}
+function dreamEffect(state,who,card,target,events){
+ if(!DREAM_KINDS.has(card.effect.kind))return false;
+ const player=state.players[who],enemy=state.players[1-who],role=card.effect.kind.slice(card.family.length+1);
+ const family=familyField(player,card.family),targets=role==='focus'?family.filter(unit=>unit.uid===target?.uid):family;
+ const {amount,shieldCost}=dreamOutcome(player,enemy,card,!['rally','focus'].includes(role)||targets.length>0);
+ if(shieldCost){
+  player.shield-=shieldCost;
+  emit(state,events,`「${card.name}」：結界${shieldCost}を消費し、玻璃の効果を増幅（残り${player.shield}）。`,'shield');
+ }
+ if(role==='bolt'){
+  // Summons and delayed effects remain heart-only, regardless of an extra
+  // client target. Only a targeted miracle may choose an opposing creature.
+  const chosen=card.type==='miracle'&&card.targetType==='enemy'?target:{player:1-who,core:true};
+  if(chosen.core)damageCore(state,1-who,amount,events,card.name);
+  else damageUnit(state,enemy.field.find(unit=>unit.uid===chosen.uid),amount,events,card.name);
+ }else if(role==='aegis'){
+  player.shield+=amount;
+  emit(state,events,`「${card.name}」：結界${amount}を付与（合計${player.shield}）。`,'shield');
+ }else{
+  for(const unit of targets){unit.attack+=amount;if(role==='focus'){unit.hp+=amount;unit.maxHp+=amount;}}
+  emit(state,events,`「${card.name}」：${card.family==='origami'?'折紙':card.family==='glass'?'玻璃':card.family==='shadow'?'影絵':'彩墨'}の対象${targets.length}体の攻撃力${role==='focus'?'・現在守備力・最大守備力':''}を${amount}上昇。`,'buff');
+ }
+ return true;
+}
 const orbitCount=player=>Math.min(3,new Set(familyField(player,'orbit').map(unit=>getCard(unit.cardId).origin)).size);
 function echoCount(player,card,excludeCurrent=true){
  const current=excludeCurrent&&card.type==='miracle'?player.grave.lastIndexOf(card.id):-1;
@@ -263,7 +316,7 @@ function activateStartTraps(state, who, events) {
     player.traps = player.traps.filter(t=>t.uid!==trap.uid);
     player.grave.push(trap.cardId);
     emit(state, events, `${label(player)}のギミック「${card.name}」が発動！`, 'gimmick');
-    if(premiumEffect(state,who,card,undefined,events)||expansionEffect(state,who,card,undefined,events)){cleanup(state,events,card.name);checkWinner(state,events);continue;}
+    if(premiumEffect(state,who,card,undefined,events)||expansionEffect(state,who,card,undefined,events)||dreamEffect(state,who,card,undefined,events)){cleanup(state,events,card.name);checkWinner(state,events);continue;}
     if (card.effect.kind === 'spring') {
       for (const unit of player.field) {unit.attack+=card.effect.value;unit.hp+=card.effect.value;unit.maxHp+=card.effect.value;}
       emit(state, events, `「${card.name}」：${player.field.length?`${label(player)}の場の魔獣${player.field.length}体すべての攻撃力・現在守備力・最大守備力が${card.effect.value}上昇。`:'場に対象の魔獣がいないため、能力の変化は0。'}`, 'buff');
@@ -471,7 +524,7 @@ function summonEffect(state, card, events) {
     }
   }
   if (kind!=='none') emit(state,events,`${label(player)}の「${card.name}」の召喚時効果が発動。`,'info');
-  if(premiumEffect(state,own,card,undefined,events)||expansionEffect(state,own,card,undefined,events))return;
+  if(premiumEffect(state,own,card,undefined,events)||expansionEffect(state,own,card,undefined,events)||dreamEffect(state,own,card,undefined,events))return;
   if (kind==='draw') draw(state,own,value,events,false,card.name);
   else if (kind==='heal') healCore(state,own,value,events,card.name);
   else if (kind==='damage_core') damageCore(state,enemy,value,events,card.name);
@@ -486,7 +539,7 @@ function summonEffect(state, card, events) {
 function miracleEffect(state, card, target, events) {
   const own=state.active, enemy=1-own, player=state.players[own];
   const {kind,value=0}=card.effect;
-  if(premiumEffect(state,own,card,target,events)||expansionEffect(state,own,card,target,events))return;
+  if(premiumEffect(state,own,card,target,events)||expansionEffect(state,own,card,target,events)||dreamEffect(state,own,card,target,events))return;
   if (kind==='damage_enemy') {
     if (target.core) damageCore(state,enemy,value,events,card.name);
     else damageUnit(state,state.players[enemy].field.find(u=>u.uid===target.uid),value,events,card.name);
@@ -521,7 +574,7 @@ export function playCard(state, handIndex, target) {
   if (player.energy<cost) return fail(`エーテルが足りません。必要：${cost}。`);
   if (card.type==='beast' && player.field.length>=RULES.field) return fail('魔獣の場は4体までです。');
   if (card.type==='gimmick' && player.traps.length>=RULES.traps) return fail('ギミックは2枚まで設置できます。');
-  if (needsTarget(card) && !getLegalTargets(state,handIndex).some(t=>targetMatches(t,target))) return fail(card.effect.kind==='buff'?'強化する味方の魔獣を選んでください。':card.targetType==='regalia-ace'?'強化するレガリアか専用合成魔獣を選んでください。':'ダメージを与える相手の魔獣かハートポイントを選んでください。');
+  if (needsTarget(card) && !getLegalTargets(state,handIndex).some(t=>targetMatches(t,target))) return fail(card.effect.kind==='buff'?'強化する味方の魔獣を選んでください。':card.targetType==='regalia-ace'?'強化するレガリアか専用合成魔獣を選んでください。':DREAM_FAMILIES.has(card.targetType)?'強化する同じテーマの味方魔獣を選んでください。':'ダメージを与える相手の魔獣かハートポイントを選んでください。');
   const events=[];
   player.energy-=cost;
   player.hand.splice(handIndex,1);
@@ -679,6 +732,21 @@ function chooseFusionSelection(state,handIndex,difficulty) {
   return validateFusionSelection(state,handIndex,selection).valid?selection:undefined;
 }
 
+function dreamScore(player,enemy,card,critical){
+ const units=familyField(player,card.family),role=card.effect.kind.slice(card.family.length+1);
+ const useful=!['rally','focus'].includes(role)||units.length>0;
+ const {amount,shieldCost}=dreamOutcome(player,enemy,card,useful),points=battleUnits(amount);
+ let score=0;
+ if(role==='bolt'){
+  score+=points*.85;
+  if(enemy.core+enemy.shield<=amount)score+=1000;
+ }else if(role==='aegis')score+=battleUnits(amount-shieldCost)*(critical?1.1:.5);
+ else if(role==='rally')score+=units.length*points*.85;
+ else if(role==='focus')score+=points*1.3;
+ if(role!=='aegis')score-=battleUnits(shieldCost)*(critical ? .7 : .35);
+ return {score,useful};
+}
+
 function cardScore(state, index, difficulty) {
   const player=state.players[state.active], enemy=state.players[1-state.active];
   const card=getCard(player.hand[index]);
@@ -702,6 +770,7 @@ function cardScore(state, index, difficulty) {
       const lost=selection.materials.filter(m=>m.zone==='field').reduce((sum,m)=>sum+battleUnits(player.field[m.index].attack)*0.6+battleUnits(player.field[m.index].hp)*0.25,0);
       score+=7+battleUnits(fused.attack)*0.75+battleUnits(fused.hp)*0.45+(selection.materials.length-1)*battleUnits(FUSION_MATERIAL_BONUS)*1.2-lost;
       if (fused.keywords.includes('rush')) score+=3;
+      if(DREAM_KINDS.has(fused.effect.kind))score+=dreamScore(dreamForecastPlayer(player,fused,index,selection.materials),enemy,fused,critical).score;
     }
     if (kind==='damage_enemy') score=1+points*0.6+Math.max(0,...enemy.field.map(u=>u.hp<=value?battleUnits(u.attack)+battleUnits(u.maxHp)*0.3:0));
     if ((kind==='damage_enemy' || kind==='drain') && enemy.core+enemy.shield<=value) score+=1000;
@@ -750,6 +819,12 @@ function cardScore(state, index, difficulty) {
     if(card.type==='gimmick')score-=1.5;
   }
   if(kind==='family_ambush'||kind==='family_barrier')score+=familyField(player,card.family).length?2+points*.6:-2;
+  if(DREAM_KINDS.has(kind)){
+    const result=dreamScore(dreamForecastPlayer(player,card,index),enemy,card,critical);
+    if(card.type!=='beast'&&!result.useful)score=-2;
+    else score+=result.score;
+    if(card.type==='gimmick')score-=1.5;
+  }
   if(PREMIUM_KINDS.has(kind)){
     const royals=regaliaField(player),body=card.type==='beast',kingInHand=player.hand.includes(REGALIA_CARD_ID);
     const kingInDeck=player.deck.includes(REGALIA_CARD_ID),kingInGrave=player.grave.includes(REGALIA_CARD_ID);
@@ -790,7 +865,8 @@ function chooseCardTarget(state,index,difficulty) {
     const af=state.players[a.player].field.find(u=>u.uid===a.uid), bf=state.players[b.player].field.find(u=>u.uid===b.uid);
     return (bf.ready?4:0)+battleUnits(bf.hp)*0.2+(bf.keywords.includes('drain')?2:0)-((af.ready?4:0)+battleUnits(af.hp)*0.2+(af.keywords.includes('drain')?2:0));
   })[0];
-  const enemy=state.players[1-state.active], value=EXPANSION_DAMAGE.has(card.effect.kind)?expansionDamage(state.players[state.active],card,false):card.effect.value;
+  const enemy=state.players[1-state.active],player=state.players[state.active];
+  const value=DREAM_KINDS.has(card.effect.kind)?dreamOutcome(dreamForecastPlayer(player,card,index),enemy,card).amount:EXPANSION_DAMAGE.has(card.effect.kind)?expansionDamage(player,card,false):card.effect.value;
   if (enemy.core+enemy.shield<=value) return targets.find(t=>t.core);
   const units=targets.filter(t=>t.uid).map(t=>({target:t,unit:enemy.field.find(u=>u.uid===t.uid)}));
   units.sort((a,b)=>((b.unit.hp<=value?8:0)+battleUnits(b.unit.attack)+battleUnits(b.unit.maxHp)*0.2)-((a.unit.hp<=value?8:0)+battleUnits(a.unit.attack)+battleUnits(a.unit.maxHp)*0.2));
@@ -837,7 +913,7 @@ function cpuPlayCards(state,difficulty,events) {
       const recyclable=player.hand.length===RULES.hand?scored.filter(({i})=>{
         const card=getCard(player.hand[i]);
         return ['heal','renew','sweep','spring','fountain'].includes(card.effect.kind)
-          ||card.type==='miracle'&&(EXPANSION_KINDS.has(card.effect.kind)||PREMIUM_KINDS.has(card.effect.kind));
+          ||card.type==='miracle'&&(EXPANSION_KINDS.has(card.effect.kind)||PREMIUM_KINDS.has(card.effect.kind)||DREAM_KINDS.has(card.effect.kind));
       }).sort((a,b)=>getCard(player.hand[a.i]).cost-getCard(player.hand[b.i]).cost||a.i-b.i):[];
       if(!recyclable.length)break;
       selected=recyclable[0].i;

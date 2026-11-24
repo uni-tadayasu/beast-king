@@ -1,26 +1,28 @@
 /**
  * ビーストキング — The First Chronicle
- * Four base 1,152-card sets plus 17 public Regalia supports: 4,625 cards. All rules text corresponds to
+ * Four base 1,152-card sets, 17 public Regalia supports and 96 dreamcraft cards: 4,721 cards. All rules text corresponds to
  * effects implemented in engine.js; no network, randomized content, or filler IDs.
  */
 import {
   SECOND_SET_CLANS, secondBeastDefinition, secondMiracleDefinition,
   secondGimmickDefinition, secondFusionDefinition,
-} from './second-set-data.js?v=20261124-30';
-import {balanceCreature, balancedMiracleStats, balancedGimmickStats} from './catalog-balance.js?v=20261124-30';
+} from './second-set-data.js?v=20261124-31';
+import {balanceCreature, balancedMiracleStats, balancedGimmickStats} from './catalog-balance.js?v=20261124-31';
 
-import {ADDITIONAL_CARD_SETS,makeAdditionalCards,EXPANSION_FAMILIES as ADDITIONAL_FAMILIES,EXPANSION_EFFECT_KINDS as ADDITIONAL_EFFECT_KINDS} from './additional-set-data.js?v=20261124-30';
-import {makeExpansionRecipes} from './expansion-recipes.js?v=20261124-30';
-import {makePremiumCards,upgradeRegalia,PREMIUM_SET_ADDITIONS} from './premium-cards.js?v=20261124-30';
-import {PREMIUM_DECK} from './premium-deck.js?v=20261124-30';
-export const EXPANSION_FAMILIES=ADDITIONAL_FAMILIES;
-export const EXPANSION_EFFECT_KINDS=ADDITIONAL_EFFECT_KINDS;
+import {ADDITIONAL_CARD_SETS,makeAdditionalCards,EXPANSION_FAMILIES as ADDITIONAL_FAMILIES,EXPANSION_EFFECT_KINDS as ADDITIONAL_EFFECT_KINDS} from './additional-set-data.js?v=20261124-31';
+import {FIFTH_CARD_SET,FIFTH_FAMILIES,FIFTH_EFFECT_KINDS,makeFifthCards} from './fifth-set-data.js?v=20261124-31';
+import {makeExpansionRecipes} from './expansion-recipes.js?v=20261124-31';
+import {makePremiumCards,upgradeRegalia,PREMIUM_SET_ADDITIONS} from './premium-cards.js?v=20261124-31';
+import {PREMIUM_DECK} from './premium-deck.js?v=20261124-31';
+export const EXPANSION_FAMILIES=Object.freeze([...ADDITIONAL_FAMILIES.map(f=>Object.freeze({...f,setId:'BK04',editionLabel:'第四弾'})),...FIFTH_FAMILIES]);
+export const EXPANSION_EFFECT_KINDS=Object.freeze([...ADDITIONAL_EFFECT_KINDS,...FIFTH_EFFECT_KINDS]);
 
 export const CARD_SETS = Object.freeze([
   { id: 'BK01', edition: 1, editionLabel: '第一弾', name: '六源の覚醒', reading: 'ろくげんのかくせい', coverId: 'B0001', cardCount: 1152 },
   { id: 'BK02', edition: 2, editionLabel: '第二弾', name: '王源の継承', reading: 'おうげんのけいしょう', coverId: 'B0512', cardCount: 1152 },
   ...ADDITIONAL_CARD_SETS,
-].map(set=>Object.freeze({...set,cardCount:set.cardCount+PREMIUM_SET_ADDITIONS[set.id]})));
+  FIFTH_CARD_SET,
+].map(set=>Object.freeze({...set,cardCount:set.cardCount+(PREMIUM_SET_ADDITIONS[set.id]??0)})));
 
 const CARD_SERIES = Object.freeze([
   { id: 'dawn', name: '星光', color: '#e9c475', glyph: '✦', description: '星を冠する守護者。結界と回復で、揺るがない戦線を築く。' },
@@ -462,7 +464,7 @@ export const CARDS = Object.freeze([...balanceOrigins([
   ...legacyCards.map(card => card.id === 'B0512' ? upgradeRegalia(card,{modelDescriptions:MODEL_DESCRIPTIONS}) : card), ...makeSecondBeasts(), restoredAether,
   ...makeSecondMiracles(legacyCards.find(card => card.id === FUSION_CARD_ID).text),
   ...makeSecondGimmicks(), ...makeSecondFusions(),
-]),...makeAdditionalCards({modelDescriptions:MODEL_DESCRIPTIONS,fusionText:legacyCards.find(card=>card.id===FUSION_CARD_ID).text}),...makePremiumCards({modelDescriptions:MODEL_DESCRIPTIONS})]);
+]),...makeAdditionalCards({modelDescriptions:MODEL_DESCRIPTIONS,fusionText:legacyCards.find(card=>card.id===FUSION_CARD_ID).text}),...makePremiumCards({modelDescriptions:MODEL_DESCRIPTIONS}),...makeFifthCards({modelDescriptions:MODEL_DESCRIPTIONS,fusionText:legacyCards.find(card=>card.id===FUSION_CARD_ID).text})]);
 const cardsBySet = new Map(CARD_SETS.map(set => [set.id, Object.freeze(CARDS.filter(card => card.setId === set.id))]));
 const EMPTY_SET = Object.freeze([]);
 export const getCardsForSet = id => cardsBySet.get(id) || EMPTY_SET;

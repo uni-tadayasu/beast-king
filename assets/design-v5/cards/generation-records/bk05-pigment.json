@@ -1,0 +1,755 @@
+{
+  "id": "bk05-pigment",
+  "family": "pigment",
+  "src": "assets/design-v5/cards/bk05-pigment.webp",
+  "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+  "sourceSha256": "9723a8f027a26896527ae52582c6c868573f6f0a00953076837e2f10ebcb6476",
+  "nativeMaster": "exec-7958c048-c412-437d-8074-873b551004cb.png",
+  "promptSha256": "1596702a01c7a4b019af7d6912cabd02a36614cfb10759101c1835b4018b0454",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "cardIds": [
+    "B2092",
+    "B2093",
+    "B2094",
+    "B2095",
+    "B2096",
+    "B2097",
+    "B2098",
+    "B2099",
+    "B2100",
+    "B2101",
+    "B2102",
+    "B2103",
+    "M1049",
+    "M1050",
+    "M1051",
+    "M1052",
+    "M1053",
+    "M1054",
+    "G1039",
+    "G1040",
+    "G1041",
+    "G1042",
+    "F0521",
+    "F0522"
+  ],
+  "nativeDimensionsPreserved": true,
+  "visualReview": "reviewed",
+  "cards": [
+    {
+      "id": "B2092",
+      "name": "彩墨の点蛙 テンテン",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "pigment",
+      "origin": "mountain",
+      "subject": "a tiny round ink frog formed from bright coral paint droplets on white rice paper. low three-quarter view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "adcb16f021ffe3f304a8963a8c155ebc90d13c49bff6268a9df106863992733a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2093",
+      "name": "彩墨の筆尾鼬 フデリ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "pigment",
+      "origin": "river",
+      "subject": "a playful turquoise ink weasel with a paintbrush tail drawing a fresh blue river. graceful diagonal side view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "0a433bd014fc463348dac91bfa1c91b481e27ea19eeaf9e1f460f57690fcfc24",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2094",
+      "name": "彩墨の墨甲亀 スミガメ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "pigment",
+      "origin": "seed",
+      "subject": "a stout black-ink tortoise with a glossy lacquer shell holding pools of jewel-toned paint. front three-quarter view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "b610df7d8e893b6500cdea58c5d127ba2c06690d8867575294a21ea5d56cb7d0",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2095",
+      "name": "彩墨の飛沫蜂 ハジキ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "pigment",
+      "origin": "grass",
+      "subject": "a vivid yellow and magenta paint-splash bee streaking across a dramatic brushstroke. slightly elevated cinematic view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "2ce3fa8d0a16a0f4986255d9660ab76149e767c7ae2809ad84b0086595c6c7aa",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2096",
+      "name": "彩墨の結色鹿 ユイロ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "pigment",
+      "origin": "flower",
+      "subject": "a graceful ink-wash stag whose antlers carry ribbons of red blue and golden pigment. dynamic upward-curving composition. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "eed9f4965a656fbb01110061b0d4e7349e01ea96aa3b04168ffa0c85f6167776",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2097",
+      "name": "彩墨の刷羽鷹 スリハ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "pigment",
+      "origin": "tree",
+      "subject": "a dynamic cobalt ink hawk with broad paintbrush wings sweeping over vermilion clouds. broad foreground silhouette with deep scenic perspective. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "1912b02b74d889c74988064eefab8cd721c209f8bed653239ff54dc6105224e5",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2098",
+      "name": "彩墨の岩彩熊 イワネ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "pigment",
+      "origin": "mountain",
+      "subject": "a large earthy mineral-pigment bear with rugged ochre paws beside an emerald painted mountain. low three-quarter view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "1af62a4d8278fb71dd584193393072008a4a7af2c292269e61b9e5d507e7a8eb",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2099",
+      "name": "彩墨の流彩豹 ナガレ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "pigment",
+      "origin": "river",
+      "subject": "a swift leopard made of flowing magenta and teal ink streams racing across wet paper. graceful diagonal side view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "7d890b716edcf739b6a2f5326d594d516907443e3979c62b1b912288330e87cb",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2100",
+      "name": "彩墨の混色梟 マゼラ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "pigment",
+      "origin": "seed",
+      "subject": "a thoughtful ink owl mixing three luminous pools of pigment with feather brushes. front three-quarter view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "d37ca79f8537ce8d08ec6df03f332d3b676dcc1b4c48327bbc930ec277f9fe27",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2101",
+      "name": "彩墨の朱奔虎 アカハシ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "pigment",
+      "origin": "grass",
+      "subject": "a fierce vermilion brush-painted tiger lunging from a huge calligraphic red stroke. slightly elevated cinematic view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "2e67a52af3a8bb12b2c148e10ff2a7db17a806f87a444354cefa524cfc2ec762",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2102",
+      "name": "彩墨の彩雨鳳 ニジサメ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "pigment",
+      "origin": "flower",
+      "subject": "a glorious phoenix shedding a rain of distinct rainbow ink droplets from long painted feathers. dynamic upward-curving composition. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "b0f9ddcd02b6048b213333322d9c9c345a9a2d4574b7709176f51a494296c349",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2103",
+      "name": "彩墨の無辺墨龍 ムゲン",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "pigment",
+      "origin": "tree",
+      "subject": "an immense black-ink dragon with luminous multicolor veins swirling through an endless scroll painting. broad foreground silhouette with deep scenic perspective. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "6f8ab01abd07229facfebd19bd5b34e4e376c6d22ea67f57d174f4f667b75746",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1049",
+      "name": "彩墨・三彩の一閃",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "pigment",
+      "origin": "mountain",
+      "subject": "three red blue and gold paint streams joining into a sharp luminous projectile. low three-quarter view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "7e64647bf5df17ab4539cc6fd7b70d125f98e6f3efd6703ca3a4a4af15148ee4",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1050",
+      "name": "彩墨・彩雲の結界",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "pigment",
+      "origin": "river",
+      "subject": "a protective dome painted from interlaced pink cyan and gold cloud-shaped brushstrokes. graceful diagonal side view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "f1131ec5329669ee1253f55f54e0d2ed1954d0502a1a6ac3de1c816bd0b1bdc1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1051",
+      "name": "彩墨・合奏する筆先",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "pigment",
+      "origin": "seed",
+      "subject": "several animated paintbrushes painting glowing strength into a group of ink beasts. front three-quarter view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "8890cd66a6ad5aa31c21cb1fec59f6bbc1c0cee986b1fb5024db7c88122e916a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1052",
+      "name": "彩墨・一筆の真景",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "pigment",
+      "origin": "grass",
+      "subject": "one small ink beast receiving a grand triple-colored brushstroke aura on luminous paper. slightly elevated cinematic view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "090a9dfe382e8447ef076b8d8e7531f8da82b7257a347022d0041e3a0aeb1183",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1053",
+      "name": "彩墨・潤いの余白",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "pigment",
+      "origin": "flower",
+      "subject": "clear water restoring color to a faded ink heart surrounded by peaceful white paper. dynamic upward-curving composition. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "501f5db6912490ff49f661cc089210940678e8c305fc803a4fd4e00f400e5f0c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1054",
+      "name": "彩墨・夢描きの合成",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "pigment",
+      "origin": "tree",
+      "subject": "two vividly painted animal spirits merging inside a rotating circular ink-wash brushstroke. broad foreground silhouette with deep scenic perspective. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "77b2033177ef1a74b87ce446cbc367ba50df3adbe36fb59e0d483646e2e94aa7",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1039",
+      "name": "彩墨・跳ね墨の罠",
+      "setId": "BK05",
+      "type": "gimmick",
+      "family": "pigment",
+      "origin": "mountain",
+      "subject": "a puddle of black and crimson ink suddenly erupting into animal-shaped fangs. low three-quarter view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "6ccf8c5e0c5a16bc892f111ad28ae34d6cf964b8b1ba83d421acef5e779ed894",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1040",
+      "name": "彩墨・返彩の水鏡",
+      "setId": "BK05",
+      "type": "gimmick",
+      "family": "pigment",
+      "origin": "river",
+      "subject": "a perfectly round liquid-pigment mirror reflecting a red attack as a blue curling wave. graceful diagonal side view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "040744bb1aa1883e099b32c7dbc2c5ab327d12e41abdcbae03fe6086dddf20d4",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1041",
+      "name": "彩墨・三色の硯",
+      "setId": "BK05",
+      "type": "gimmick",
+      "family": "pigment",
+      "origin": "seed",
+      "subject": "three ceremonial inkstones filled with glowing cyan magenta and gold beneath a soft moon. front three-quarter view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "7d2d68e6e8a4613e00f89794fd9df2cada5c97df29aad4b47b4ed3a4a80d483c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1042",
+      "name": "彩墨・色めく画房",
+      "setId": "BK05",
+      "type": "gimmick",
+      "family": "pigment",
+      "origin": "grass",
+      "subject": "a magical art studio where colorful beast paintings step out of hanging scrolls at dawn. slightly elevated cinematic view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "3de0021af316f8660defc29ad93b0878e5532e090913148d93685294c7a2c6aa",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0521",
+      "name": "夢描獣 クロマ・ミラージュ",
+      "setId": "BK05",
+      "type": "fusion",
+      "family": "pigment",
+      "origin": "flower",
+      "subject": "a majestic ink chimera combining tiger body, phoenix wings and stag antlers in vivid cyan magenta and gold. dynamic upward-curving composition. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "139b64d291aab6397db5189b58457c4bc8fadb10db33a679afd4ed656d853b5a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0522",
+      "name": "無彩王 インク・エタニア",
+      "setId": "BK05",
+      "type": "fusion",
+      "family": "pigment",
+      "origin": "tree",
+      "subject": "a monumental black-ink dragon-whale with a radiant prismatic halo emerging from an endless floating scroll. broad foreground silhouette with deep scenic perspective. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "saturated cyan, vivid coral, ultramarine, magenta and ivory; flowing ink rivers and vividly painted dream gardens",
+      "src": "assets/design-v5/cards/bk05-pigment.webp",
+      "sha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "385728ff6666aef35ff482f0819a7448a419a3f86cc30cf3eb1f4485671a1c40",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

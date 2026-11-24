@@ -18,7 +18,7 @@ test('32 distinct public challenges cover six origins, inherited series, every f
   assert.equal('artwork' in deck,false);assert.notEqual(deck.id,'operator-kirahara-v1');
  }
  for(const origin of ['mountain','river','seed','grass','flower','tree'])assert.equal(EVENT_DECKS.filter(d=>d.group==='origins'&&d.origin===origin).length,2);
- for(const family of EXPANSION_FAMILIES)assert.equal(EVENT_DECKS.filter(d=>d.family===family.id).length,2);
+ for(const family of EXPANSION_FAMILIES.filter(family=>family.setId==='BK04'))assert.equal(EVENT_DECKS.filter(d=>d.family===family.id).length,2);
  assert.deepEqual([...sets].sort(),['BK01','BK02','BK03','BK04']);
  assert.equal(getEventDeck('operator-kirahara-v1'),null);
  assert.equal(getEventDeck('event-mixed-royal').ids.filter(id=>id==='B0512').length,2);

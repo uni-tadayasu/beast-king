@@ -22,10 +22,10 @@ function fixture(family='legacy'){
 const physicalCount=game=>game.players.reduce((sum,p)=>sum+['deck','hand','grave','banished','field','traps','special'].reduce((n,zone)=>n+p[zone].length,0),0);
 
 test('BK03/BK04 retain their 2304 base cards and only the authorized original Regalia changes',()=>{
- assert.equal(CARDS.length,4625);assert.equal(new Set(CARDS.map(c=>c.name)).size,4625);
+ assert.equal(CARDS.length,4721);assert.equal(new Set(CARDS.map(c=>c.name)).size,4721);
  assert.equal(createHash('sha256').update(JSON.stringify(CARDS.slice(0,2304).filter(c=>c.id!=='B0512'))).digest('hex'),'9b8c051f0fd224f25eaa237ff378e5a3d5f94169c32cf5d441f8f343b5f5f802');
  assert.equal(HISTORICAL.length,2304);assert.equal(getHistoricalCard('B1025'),undefined);
- assert.deepEqual(CARD_SETS.map(s=>s.id),['BK01','BK02','BK03','BK04']);
+ assert.deepEqual(CARD_SETS.map(s=>s.id),['BK01','BK02','BK03','BK04','BK05']);
  for(const setId of ['BK03','BK04']){
   const cards=getCardsForSet(setId).filter(c=>!c.regaliaSupport);assert.equal(cards.length,1152);
   for(const [type,count] of [['beast',512],['fusion',128],['miracle',256],['gimmick',256]]){
@@ -39,8 +39,8 @@ test('BK03/BK04 retain their 2304 base cards and only the authorized original Re
 });
 
 test('all eight recipes are legal, collection-gated, and cannot mint or silently substitute cards',()=>{
- assert.equal(EXPANSION_DECKS.length,8);assert.equal(EXPANSION_FAMILIES.length,4);
- for(const deck of EXPANSION_DECKS){
+ assert.equal(EXPANSION_DECKS.filter(deck=>deck.setId!=='BK05').length,8);assert.equal(EXPANSION_FAMILIES.filter(family=>family.setId!=='BK05').length,4);
+ for(const deck of EXPANSION_DECKS.filter(deck=>deck.setId!=='BK05')){
   for(const key of ['id','name','description','setId','family'])assert.equal(typeof deck[key],'string',deck.id+' '+key);
   assert.equal(validateDeck(deck.ids).valid,true);assert.equal(validateSpecialDeck(deck.specialIds).valid,true);
   assert.equal(deck.ids.filter(id=>getCard(id).type==='beast').length,16);

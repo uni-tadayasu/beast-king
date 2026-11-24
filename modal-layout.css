@@ -1,0 +1,180 @@
+/* Task dialogs use the available screen before reducing any text. */
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .modal>.modal-close{
+ position:absolute!important;inset:12px 12px auto auto!important;margin:0!important;
+ width:38px!important;height:38px!important;min-height:38px!important;z-index:6;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .modal>h2{padding-right:46px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .modal>.eyebrow{padding-right:46px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .modal.account-fullscreen{
+ position:fixed!important;inset:12px!important;width:auto!important;height:auto!important;
+ min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;
+ margin:0!important;padding:20px!important;box-sizing:border-box!important;transform:none!important;
+ display:flex!important;flex-direction:column;overflow:hidden!important;
+}
+
+/* Settings keep the same actions, grouped by the task they perform. */
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root #settings-sound:not([hidden]){
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .cyber-sound-group{
+ padding:14px 18px;border:1px solid #31526c;border-radius:10px;background:#091a2b;margin:0;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .settings-data-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .settings-data-grid>.setting-row{
+ display:flex;flex-direction:column;align-items:stretch;justify-content:space-between;gap:16px;
+ min-width:0;padding:20px;border:1px solid #31526c;border-radius:10px;background:#091a2b;
+ font-size:1rem;line-height:1.4;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .settings-data-grid .setting-row small{
+ font-size:.875rem;line-height:1.4;margin-top:6px;color:#b4cbdc;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .settings-data-grid .profile-setting{min-width:0;gap:9px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .settings-backup{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);align-items:center;gap:20px;
+ padding:18px 0 12px;margin-top:10px;border-top:1px solid #31526c;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .settings-backup :is(.modal-intro,.modal-actions){margin:0;line-height:1.45}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .settings-backup .modal-actions{display:grid;grid-template-columns:1.25fr 1fr;gap:8px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .settings-links{display:flex;justify-content:space-between;gap:16px;padding-top:8px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .settings-links .game-guide-link{
+ margin:0;font-size:.875rem;line-height:1.5;color:#b6eafa;text-decoration:underline;text-underline-offset:4px;
+}
+
+/* A name and seven icons fit side by side on a shallow landscape display. */
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .profile-editor-grid{
+ display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.25fr);gap:24px;align-items:start;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root :is(.profile-name-label,.profile-choice-label){
+ margin:0 0 10px;font-size:1rem;line-height:1.4;color:#dcecf6;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .profile-options{
+ grid-template-columns:repeat(7,minmax(0,1fr))!important;margin:0!important;gap:7px;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .profile-option{
+ min-width:0!important;min-height:88px;padding:8px 4px;gap:6px;background:#0e263a;border-color:#365e7b;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .profile-option.selected{
+ border-color:#65e8fc;color:#b9fbff;background:#174158;box-shadow:inset 0 -2px #62e4ff;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .profile-option span{font-size:1rem;line-height:1.3}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .profile-option .origin-profile-image{width:46px;height:46px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root #online-nickname{
+ min-height:46px;font-size:1.125rem;padding:10px 12px;max-width:100%;width:100%;box-sizing:border-box;
+}
+
+/* Deck analysis makes use of the width: figures beside the curve, then advice. */
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .deck-insight-layout{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px 24px;align-items:start;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .deck-insight-metrics{min-width:0}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .deck-check-summary{margin:0 0 14px;gap:10px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .deck-check-summary>div{font-size:1rem;line-height:1.4;padding:14px 8px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .deck-check-summary strong{font-size:1.7rem;line-height:1.4;margin-top:6px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .deck-insight-metrics>.modal-intro{margin:0;line-height:1.55}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .deck-insight-chart h3{font-size:1rem;line-height:1.4;margin:0 0 12px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .deck-curve{height:auto;padding:0;margin:0;gap:9px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .deck-curve-track{height:160px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .deck-curve>div>span{font-size:.875rem}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .deck-curve-bar{font-size:1rem;background:linear-gradient(0deg,#1689b4,#65e6ed)}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .deck-insight-layout>.deck-check-note{
+ grid-column:1/-1;margin:0;padding:14px 18px;font-size:1rem;line-height:1.55;
+}
+
+/* Recipe paging keeps the actual ownership gate and the same card controls. */
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .recipe-copy-compact{display:none}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .recipe-layout .recipe-heading{padding-right:36px}
+
+/* A shallow reader places its explanation beside its two-card page instead
+   of shrinking a long stack. Footer actions remain below both columns. */
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .modal:has(.recipe-layout){padding:10px!important}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout{
+ display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:8px 12px;align-items:start;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-overview{
+ display:flex;flex-direction:column;gap:8px;min-width:0;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-heading{
+ display:block;margin:0;padding:0;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-heading :is(.recipe-emblem,.eyebrow,.recipe-family-badge){display:none}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-heading h2{
+ margin:0;font-size:1.25rem;line-height:1.25;overflow-wrap:anywhere;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout :is(.recipe-description,.recipe-note){
+ margin:0;font-size:1rem;line-height:1.4;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-copy-full{display:none}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-copy-compact{display:inline}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-contents{
+ display:flex;flex-direction:column;gap:6px;min-width:0;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-summary{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:0;padding-right:34px;font-size:.875rem;line-height:1.3;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-summary>span{padding:3px 4px;white-space:nowrap;text-align:center}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-summary>span:last-child{display:none}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-card-list{margin:0;gap:6px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-card-row{
+ grid-template-columns:minmax(0,1fr) auto;gap:3px 8px;padding:6px 8px;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-card-row>button{grid-column:1/-1;min-height:0}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-card-row strong{font-size:1rem;line-height:1.3;overflow-wrap:anywhere}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-card-row small{display:none}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-card-row>span{font-size:.875rem;line-height:1.3}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-pagination{margin:0;gap:8px;font-size:.875rem}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-layout .recipe-pagination .btn{min-height:32px;padding:4px 10px;line-height:1.3}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-actions{
+ grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .recipe-actions>.btn{min-height:36px;padding:6px 8px;font-size:1rem;line-height:1.3}
+
+/* Large card readers gain a larger illustration and a comfortable text column. */
+@container beast-viewport (min-width:1100px) and (min-height:600px){
+ html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .cyber-card-detail{grid-template-columns:minmax(260px,360px) minmax(0,1fr);gap:34px}
+ html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .cyber-card-detail>.game-card{max-width:360px!important;width:100%!important}
+ html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .cyber-card-detail .detail-effect{font-size:1.125rem!important;line-height:1.65}
+ html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body #modal-root .cyber-card-detail h2{font-size:1.65rem;padding-right:42px}
+}
+
+/* Compact screens reflow the controls; none of these views need page scrolling. */
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .modal>.modal-close{
+ inset:6px 6px auto auto!important;width:32px!important;height:32px!important;min-height:32px!important;
+}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .modal.account-fullscreen{inset:6px!important;padding:10px!important}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .modal:has(.profile-editor-grid,.deck-insight-layout)>.eyebrow{display:none}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .modal:has(.profile-editor-grid,.deck-insight-layout)>h2{margin:0 0 7px;line-height:1.25}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .modal:has(.profile-editor-grid)>.modal-intro{margin:0 0 10px;font-size:1rem;line-height:1.4}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .profile-editor-grid{gap:12px;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr)}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root :is(.profile-name-label,.profile-choice-label){font-size:.875rem;margin:0 0 6px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .profile-options{gap:4px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .profile-option{min-height:60px;padding:4px 1px;gap:4px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .profile-option .origin-profile-image{width:30px;height:30px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .profile-option span{font-size:.875rem}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root #online-nickname{min-height:40px;font-size:1rem;padding:8px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .modal:has(.profile-editor-grid,.deck-insight-layout)>.modal-actions{margin-top:10px;gap:8px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root :is(.settings-data-grid,.settings-backup){gap:8px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .settings-data-grid>.setting-row{padding:8px;gap:7px;font-size:.875rem;line-height:1.3}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .settings-data-grid .setting-row small{font-size:.875rem;line-height:1.25;margin-top:3px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .settings-data-grid .profile-setting>.origin-profile-image{width:26px;height:26px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .settings-data-grid .btn{min-height:34px!important;padding:4px!important}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .settings-backup{margin-top:7px;padding:7px 0 0;grid-template-columns:minmax(0,1.15fr) minmax(0,1.2fr)}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .settings-backup .modal-intro{font-size:1rem;line-height:1.35}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .settings-links{gap:10px;padding-top:7px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .settings-links .game-guide-link{font-size:.875rem;line-height:1.35}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .settings-links .game-guide-link{padding:0;min-height:32px;align-items:center}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .modal:has(.settings-tabs)>h2{margin:0 0 4px!important}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .settings-tabs{padding:0!important;border:0!important;margin:4px 0 6px!important}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root #settings-sound:not([hidden]){gap:10px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .cyber-sound-group{padding:6px 9px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .deck-insight-layout{gap:8px 14px;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .deck-check-summary{margin:0 0 6px;gap:4px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .deck-check-summary>div{padding:6px 3px;font-size:.875rem}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .deck-check-summary strong{font-size:1.1rem;margin-top:3px;white-space:nowrap}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .deck-insight-metrics>.modal-intro{font-size:1rem;line-height:1.4}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .deck-insight-chart h3{margin-bottom:6px;font-size:.875rem}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .deck-curve{height:auto!important;padding:0;gap:4px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .deck-curve>div{height:auto;gap:4px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .deck-curve-track{height:85px}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #modal-root .deck-insight-layout>.deck-check-note{padding:8px 10px;line-height:1.4}

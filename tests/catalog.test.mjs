@@ -6,25 +6,27 @@ import {
   getCard, validateDeck, validateSpecialDeck,
 } from '../catalog.js';
 import {PREMIUM_CARD_IDS,PREMIUM_EFFECT_KINDS,PREMIUM_SET_ADDITIONS} from '../premium-cards.js';
+const historicalCards=CARDS.filter(card=>card.setId!=='BK05');
 
-test('four expansions contain 4625 unique cards including 17 public Regalia supports', () => {
-  assert.equal(CARDS.length, 4625);
-  assert.equal(new Set(CARDS.map(c => c.id)).size, 4625);
-  assert.equal(new Set(CARDS.map(c => c.name)).size, 4625);
-  assert.equal(CARD_MAP.size, 4625);
-  assert.equal(CARDS.filter(c=>c.category==='beast').length,2569);
+test('five expansions contain 4721 unique cards and retain the original four-set inventory', () => {
+  assert.equal(CARDS.length, 4721);
+  assert.equal(new Set(CARDS.map(c => c.id)).size, 4721);
+  assert.equal(new Set(CARDS.map(c => c.name)).size, 4721);
+  assert.equal(CARD_MAP.size, 4721);
+  assert.equal(historicalCards.length,4625);
+  assert.equal(historicalCards.filter(c=>c.category==='beast').length,2569);
   assert.deepEqual(MODEL_LABELS,{attack:'アタック型',defense:'ディフェンス型',hybrid:'アタック・ディフェンス型'});
-  assert.equal(CARDS.filter(c=>c.type==='beast'&&c.model==='attack').length,1024);
-  assert.equal(CARDS.filter(c=>c.type==='beast'&&c.model==='defense').length,1031);
-  assert.equal(CARDS.filter(c=>c.type==='fusion'&&c.model==='hybrid').length,514);
-  assert.equal(CARDS.filter(c=>c.type==='beast'&&c.model==='hybrid').length,0);
+  assert.equal(historicalCards.filter(c=>c.type==='beast'&&c.model==='attack').length,1024);
+  assert.equal(historicalCards.filter(c=>c.type==='beast'&&c.model==='defense').length,1031);
+  assert.equal(historicalCards.filter(c=>c.type==='fusion'&&c.model==='hybrid').length,514);
+  assert.equal(historicalCards.filter(c=>c.type==='beast'&&c.model==='hybrid').length,0);
   for(const [type,subtypes] of [['miracle',['power','regeneration']],['gimmick',['reflection','support']]]) {
-    for(const subtype of subtypes) assert.equal(CARDS.filter(c=>!c.regaliaSupport&&c.type===type&&c.subtype===subtype).length,512);
+    for(const subtype of subtypes) assert.equal(historicalCards.filter(c=>!c.regaliaSupport&&c.type===type&&c.subtype===subtype).length,512);
   }
   assert.deepEqual(Object.keys(SUBTYPE_LABELS),['power','regeneration','reflection','support']);
-  for (const [type, expected] of [['beast',2055],['miracle',1030],['gimmick',1026],['fusion',514]]) assert.equal(CARDS.filter(c => c.type === type).length, expected);
-  assert.deepEqual(CARDS.map(c => c.index), Array.from({length:4625}, (_,i) => i+1));
-  assert.deepEqual(CARDS.filter(c=>c.type==='fusion').map(c=>c.id),Array.from({length:514},(_,i)=>`F${String(i+1).padStart(4,'0')}`));
+  for (const [type, expected] of [['beast',2055],['miracle',1030],['gimmick',1026],['fusion',514]]) assert.equal(historicalCards.filter(c => c.type === type).length, expected);
+  assert.deepEqual(CARDS.map(c => c.index), Array.from({length:4721}, (_,i) => i+1));
+  assert.deepEqual(CARDS.filter(c=>c.type==='fusion').map(c=>c.id),Array.from({length:522},(_,i)=>`F${String(i+1).padStart(4,'0')}`));
 });
 
 test('all cards have supported effects, costs, art keys and usable rules text', () => {
@@ -50,7 +52,7 @@ test('all cards have supported effects, costs, art keys and usable rules text', 
     if(c.type === 'beast') { assert.ok(c.attack>0 && c.hp>0 && c.art<16,c.id); assert.equal(c.category,'beast',c.id); }
     if(c.type === 'miracle') {
       assert.ok(c.art>=16 && c.art<20,c.id);
-      if(c.regaliaSupport||['BK03','BK04'].includes(c.setId)) assert.ok(['power','regeneration'].includes(c.subtype),c.id);
+      if(c.regaliaSupport||['BK03','BK04','BK05'].includes(c.setId)) assert.ok(['power','regeneration'].includes(c.subtype),c.id);
       else if(c.subtype==='regeneration') assert.ok(['heal','shield_heal','drain','renew','fusion'].includes(c.effect.kind),c.id);
       else assert.ok(c.subtype==='power'&&['damage_enemy','draw','buff','sweep'].includes(c.effect.kind),c.id);
     }
@@ -75,7 +77,7 @@ test('seven origins retain the regular counts and add a public royal support fam
   assert.equal(ELEMENTS,ORIGINS);
   assert.deepEqual(ORIGINS.map(o=>o.id),['mountain','river','seed','grass','flower','tree','king']);
   assert.deepEqual(ORIGINS.map(o=>o.name),['山','川','種','草','花','木','王']);
-  assert.equal(new Set(CARDS.map(c=>c.series)).size,29);
+  assert.equal(new Set(historicalCards.map(c=>c.series)).size,29);
   assert.ok(CARDS.every(c=>c.origin===c.element));
   assert.equal(CARDS.filter(c=>c.origin==='king').length,18);
 });
@@ -83,11 +85,11 @@ test('seven origins retain the regular counts and add a public royal support fam
 test('six regular origins are balanced across both packs and each card type', () => {
   const ids=['mountain','river','seed','grass','flower','tree'];
   const expected=[768,768,768,768,767,768];
-  assert.deepEqual(ids.map(o=>CARDS.filter(c=>c.origin===o).length),expected);
+  assert.deepEqual(ids.map(o=>historicalCards.filter(c=>c.origin===o).length),expected);
   assert.deepEqual(ids.map(o=>getCardsForSet('BK01').filter(c=>c.origin===o).length),[192,192,192,192,192,192]);
   assert.deepEqual(ids.map(o=>getCardsForSet('BK02').filter(c=>c.origin===o).length),[192,192,192,192,191,192]);
   for(const type of ['beast','miracle','gimmick','fusion']){
-    const totals=ids.map(o=>CARDS.filter(c=>c.origin===o&&c.type===type).length);
+    const totals=ids.map(o=>historicalCards.filter(c=>c.origin===o&&c.type===type).length);
     assert.ok(Math.max(...totals)-Math.min(...totals)<=1,type);
     for(const set of ['BK01','BK02','BK03','BK04']){const n=ids.map(o=>getCardsForSet(set).filter(c=>c.type===type&&c.origin===o).length);assert.ok(Math.max(...n)-Math.min(...n)<=1,set+'/'+type);}
   }

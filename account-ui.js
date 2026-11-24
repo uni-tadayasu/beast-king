@@ -1,13 +1,14 @@
-import {CARDS} from './catalog.js?v=20261124-30';
-import {accountSyncView,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js?v=20261124-30';
-import {operatorRewardPageSize} from './operator-paging.js?v=20261124-30';
+import {CARDS} from './catalog.js?v=20261124-31';
+import {accountSyncView,accountDevicePageSize,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js?v=20261124-31';
+import {operatorRewardPageSize} from './operator-paging.js?v=20261124-31';
 
 /** Account dialogs use the same server identity as online battles. No role or
  * activation credential is saved in the game data or inferred from the UI. */
 export function createAccountUi({client,cloud,ensureReady,isBattleActive,showModal,setModal,getModal,closeModal,render,toast,esc,icon,getCard,setPublicNotice,beforeLink,afterLink,onOperatorDeckChange,onEquipOperatorDeck,documentImpl=globalThis.document}={}) {
   const byId=id=>documentImpl.getElementById(id);
   const value=id=>byId(id)?.value?.trim()||'';
-  let account={link:null,devices:[],busy:false,error:''};
+  let account={link:null,devices:[],busy:false,error:'',tab:'sync',devicePage:0,conflictVisible:false};
+  let accountViewportTimer=null,accountViewportListening=false;
   const freshInbox=()=>({messages:[],gifts:[],events:[],tab:'gift',page:0,selected:null,bodyPage:0,counts:{},request:0,busy:false,error:''});
   const freshOperator=()=>({snapshot:null,tab:'overview',records:null,page:0,query:'',draft:null,step:0,rewardPage:0,rewardMatchPage:0,rewardMatches:[],busy:false,error:''});
   let inbox=freshInbox(),operator=freshOperator();
@@ -41,8 +42,14 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     },0);
   }
   function accountModal(preserve=true){
+    startAccountViewport();
     const saved=preserve&&kind()==='account'?rememberFields():null;
-    dialog('account','端末連携と同期',accountSyncView({state:{...cloud.getState(),busy:account.busy||cloud.getState().busy,error:account.error||cloud.getState().error},profile:client.profile,link:account.link,devices:account.devices,esc,icon}),true);
+    const state=cloud.getState(),conflict=Boolean(state.conflict)||state.phase==='conflict'||state.status==='conflict';
+    if(conflict&&!account.conflictVisible)account.tab='sync';
+    account.conflictVisible=conflict;
+    const pageCount=Math.max(1,Math.ceil(account.devices.length/accountDevicePageSize()));
+    account.devicePage=Math.min(Math.max(0,account.devicePage),pageCount-1);
+    dialog('account','端末連携と同期',accountSyncView({state:{...state,busy:account.busy||state.busy,error:account.error||state.error},profile:client.profile,link:account.link,devices:account.devices,tab:account.tab,devicePage:account.devicePage,esc,icon}),true);
     if(saved)restoreFields(saved);
   }
   function inboxModal(){dialog('inbox','お知らせ・プレゼント',playerInboxView({...inbox,esc,icon,getCard}),true);}
@@ -75,8 +82,24 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     toast('対戦やマッチングを終了してから、この操作を行ってください。',true);return true;
   }
   async function loadDevices(){const payload=await client.getSessions();account.devices=payload.sessions||[];}
+  function accountViewportChanged(){
+    clearTimeout(accountViewportTimer);
+    accountViewportTimer=setTimeout(()=>{if(kind()==='account')accountModal();},80);
+  }
+  function startAccountViewport(){
+    if(accountViewportListening)return;
+    const win=documentImpl.defaultView;
+    if(!win?.addEventListener)return;
+    win.addEventListener('resize',accountViewportChanged,{passive:true});
+    win.addEventListener('beastking:viewport',accountViewportChanged);
+    accountViewportListening=true;
+  }
+  function stopAccountViewport(){
+    clearTimeout(accountViewportTimer);
+    if(accountViewportListening){documentImpl.defaultView?.removeEventListener?.('resize',accountViewportChanged);documentImpl.defaultView?.removeEventListener?.('beastking:viewport',accountViewportChanged);accountViewportListening=false;}
+  }
   async function openAccount(){
-    account.error='';accountModal(false);
+    account.error='';account.tab='sync';startAccountViewport();accountModal(false);
     try{await ensureReady();await loadDevices();}
     catch(error){account.error=safeError(error);}
     if(kind()==='account')accountModal();
@@ -346,6 +369,8 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   function handleAction(action,element){
     switch(action){
       case'cloud-open':void openAccount();break;
+      case'cloud-account-tab':if(['sync','send','receive','devices'].includes(element.dataset.tab)){account.tab=element.dataset.tab;accountModal();}break;
+      case'cloud-device-prev':case'cloud-device-next':if(!account.busy){account.devicePage=Math.max(0,account.devicePage+(action.endsWith('next')?1:-1));accountModal();}break;
       case'cloud-link-create':void createLink();break;
       case'cloud-link-claim':void claimLink();break;
       case'cloud-link-copy':if(account.link?.code)void globalThis.navigator?.clipboard?.writeText(account.link.code).then(()=>toast('連携コードをコピーしました。'),()=>toast('コードを選択してコピーしてください。'));break;
@@ -399,10 +424,10 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     return true;
   }
   return {
-    handleAction,openAccount,openInbox,getOperatorDeck,refreshOperatorDeck,onModalClosed:stopOperatorRefresh,
+    handleAction,openAccount,openInbox,getOperatorDeck,refreshOperatorDeck,onModalClosed(){stopOperatorRefresh();stopAccountViewport();},
     onCloudState(){if(kind()==='account')accountModal();},
     touchBrand(){const now=Date.now();brandCount=now-brandAt<1800?brandCount+1:1;brandAt=now;if(brandCount<7)return false;brandCount=0;void openOperator();return true;},
-    clearIdentity(){stopOperatorRefresh();account.link=null;account.devices=[];inbox=freshInbox();operator=freshOperator();acceptOperatorDeck(null);deckRequest=null;pending.clear();},
+    clearIdentity(){stopOperatorRefresh();stopAccountViewport();account.link=null;account.devices=[];account.tab='sync';account.devicePage=0;account.conflictVisible=false;inbox=freshInbox();operator=freshOperator();acceptOperatorDeck(null);deckRequest=null;pending.clear();},
   };
 }
 
