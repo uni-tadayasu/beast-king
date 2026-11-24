@@ -180,6 +180,30 @@ function presentationSetup({reducedMotion = false, rotated = false} = {}) {
   return {doc, win, controller, pending, flush() { for (const [id, fn] of [...pending]) { pending.delete(id); fn(); } }};
 }
 
+test('screen entrances preserve fitted canvas geometry at every animation frame', () => {
+  for (const rotated of [false, true]) {
+    const {doc, controller} = presentationSetup({rotated});
+    const page = new FakeElement('main', doc), animations = [];
+    // A short screen uses a larger logical canvas plus an inline scale.
+    page.style.transform = 'scale(0.8378)';
+    page.animate = (frames, options) => animations.push({frames, options});
+    doc.querySelector = selector => selector.startsWith('.page,') ? page : null;
+    controller.screen('deck');
+    assert.equal(animations.length, 1);
+    assert.ok(animations[0].options.duration > 0, 'the entrance remains animated');
+    assert.notEqual(animations[0].frames[0].opacity, animations[0].frames.at(-1).opacity);
+    for (const frame of animations[0].frames) {
+      for (const key of ['transform', 'translate', 'scale', 'rotate', 'width', 'height', 'top', 'left']) {
+        assert.equal(key in frame, false, key+' must remain under layout control');
+      }
+    }
+    assert.equal(page.style.transform, 'scale(0.8378)');
+    controller.screen('deck');
+    assert.equal(animations.length, 1, 'unchanged renders do not repeat the entrance');
+    controller.destroy();
+  }
+});
+
 test('pack ceremony is always skippable, resolves once, and returns keyboard focus', async () => {
   const {doc, controller, flush} = presentationSetup();
   const focus = doc.activeElement;

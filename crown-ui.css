@@ -410,5 +410,6 @@ html.bk-fit body .bk-native-screen .midline>.end-turn{background:linear-gradient
 html.bk-fit body .bk-native-screen .midline>.end-turn:disabled{background:#173541;border-color:#648b934f;color:#9ab4ba;box-shadow:none}
 html.bk-fit body .duel-shell :is(.zone-button,.zone-badge,.hand-effects-trigger){background:#102c3ee8;border-color:#699ca85c;color:#dbece6}
 html.bk-fit body .bk-fit-modal .pack-result-grid[data-fit-paged]{justify-items:center;gap:16px}
+html.bk-fit body .bk-fit-modal .pack-result-grid .pack-pull{width:100%;max-width:min(320px,calc((var(--app-viewport-height,100dvh) - 190px)*.69));min-width:0}
 html.bk-fit body .bk-fit-modal .pack-result-grid .pack-pull>.game-card{max-width:min(320px,calc((var(--app-viewport-height,100dvh) - 190px)*.69));width:100%}
 html.bk-fit body .bk-fit-modal:has(.pack-result-grid){display:flex;flex-direction:column;justify-content:center}

@@ -222,7 +222,7 @@ export function createExperienceController(options = {}) {
   };
   const animateNode = (node, kind) => {
     if (!motion() || !node?.animate) return;
-    const frames = kind === 'attack' ? [{transform: 'translateY(0)'}, {transform: 'translateY(-7px)', offset: .35}, {transform: 'translateY(0)'}]
+    const frames = kind === 'attack' ? [{translate: '0 0'}, {translate: '0 -7px', offset: .35}, {translate: '0 0'}]
       : kind === 'damage' ? [{filter: 'brightness(1)'}, {filter: 'brightness(1.6)', offset: .25}, {filter: 'brightness(1)'}]
       : [{opacity: .55, filter: 'brightness(1.6)'}, {opacity: 1, filter: 'brightness(1)'}];
     try { node.animate(frames, {duration: full() ? 420 : 180, easing: 'cubic-bezier(.2,.8,.2,1)'}); } catch {}
@@ -233,7 +233,10 @@ export function createExperienceController(options = {}) {
     screenId = id;
     const node = doc.querySelector('.page, .entry-screen, .entry, .duel-shell, #app > main, #app > .shell') || doc.querySelector('#app')?.firstElementChild;
     if (motion() && node?.animate) {
-      try { node.animate([{opacity: .35, transform: 'translateY(6px)'}, {opacity: 1, transform: 'translateY(0)'}], {duration: full() ? 310 : 140, easing: 'cubic-bezier(.2,.8,.2,1)'}); } catch {}
+      // The viewport fitter owns this element's transform. Animating it would
+      // expose the larger logical canvas until the entrance animation ends.
+      // A light reveal stays within the fitted bounds throughout the change.
+      try { node.animate([{opacity: .35, filter: 'brightness(1.12)'}, {opacity: 1, filter: 'brightness(1)'}], {duration: full() ? 310 : 140, easing: 'cubic-bezier(.2,.8,.2,1)'}); } catch {}
     }
   }
   function banner(kind, text) {

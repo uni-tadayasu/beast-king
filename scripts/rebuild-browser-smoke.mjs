@@ -74,7 +74,7 @@ try{
  assert.equal(await evaluate(saved+'.name'),'ブラウザ検証');
  assert.equal(await evaluate('Object.values('+saved+'.collection).reduce((a,b)=>a+b,0)'),36);
  assert.equal(await evaluate('document.querySelectorAll("nav .bk-icon").length'),6);
- assert.ok(await evaluate('document.querySelector("link[rel=manifest]").href.endsWith("/rebuild/manifest.webmanifest")'));
+ assert.equal(await evaluate('new URL(document.querySelector("link[rel=manifest]").href).pathname'),'/rebuild/manifest.webmanifest');
  await click('[data-act=bgm-toggle]');
  assert.equal(await evaluate(saved+'.bgm'),false);
  await evaluate('(()=>{const e=document.querySelector("#bgm-volume");e.value="35";e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));return true})()');
