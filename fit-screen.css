@@ -455,3 +455,54 @@ html.bk-fit .bk-native-screen .arcana-zone-row .arcana-slot>small{
  html.bk-fit .bk-native-screen .midline>.turn-label,.bk-native-screen .midline>.end-turn{min-width:0;min-height:30px;padding:4px;font-size:11px}
  html.bk-fit .bk-native-screen .arcana-zone-row .arcana-slot>small{font-size:7px}
 }
+
+/* Readable, larger workspace without reducing the native viewport. */
+[data-card-transfer] .game-card,[data-card-transfer] .row-name{touch-action:none;cursor:grab}
+[data-card-transfer].transfer-dragging{opacity:.6}
+[data-transfer-drop].transfer-drop-ready{outline:2px solid #dfca91;outline-offset:-3px;background-color:#56476a55}
+[data-card-transfer].transfer-picked{outline:2px solid #e7c983;outline-offset:3px;border-radius:4px}
+.deck-drag-ghost{position:fixed;z-index:2000;pointer-events:none;padding:10px 14px;border:1px solid #e6cd8c;background:#22233bea;color:#fff0c7;font-size:14px;box-shadow:0 5px 20px #0008;max-width:220px;border-radius:6px}
+html.bk-fit .bk-native-screen .game-card .card-top .card-name{font-size:5.1cqi}
+html.bk-fit .bk-native-screen .game-card .card-bottom .card-kind{font-size:4cqi}
+html.bk-fit .bk-native-screen .game-card .card-bottom .card-effect{font-size:4.25cqi}
+html.bk-fit .bk-native-screen .game-card .card-bottom .card-stats{font-size:6.5cqi}
+html.bk-fit .bk-native-screen .transfer-counts>span{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:3px;padding:4px 2px}
+html.bk-fit .bk-native-screen .transfer-counts b{font-size:15px}
+html.bk-fit .bk-native-screen .transfer-actions>.btn{min-height:34px;font-size:13px}
+html.bk-fit .bk-native-screen .deck-inspector-launch>.btn,.bk-native-screen .deck-scope-tabs>.btn{min-height:34px;font-size:12px}
+html.bk-fit .bk-native-screen .deck-row .row-name>span:last-child{line-height:1.25}
+@media(min-width:1051px) and (min-height:650px){
+ html.bk-fit .bk-native-screen .page-title{display:flex;align-items:center;justify-content:space-between}
+ html.bk-fit .bk-native-screen .page-title>div{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 15px}
+ html.bk-fit .bk-native-screen .page-title h1{font-size:clamp(24px,1.8vw,35px)}
+ html.bk-fit .bk-native-screen .page-title p{font-size:clamp(13px,.85vw,16px);margin:0}
+ html.bk-fit .bk-native-screen .page-title .page-label{display:none}
+ html.bk-fit .bk-native-screen .site-header{min-height:54px}
+ html.bk-fit .bk-native-screen .site-controls .icon-btn,.bk-native-screen .site-controls .profile-button{width:42px;height:42px}
+ html.bk-fit .bk-native-screen .site-controls .icon-btn .icon{width:22px;height:22px}
+ html.bk-fit .bk-native-screen.royal-shell .dock-link{font-size:clamp(14px,1.05vw,18px);min-height:40px}
+ html.bk-fit .bk-native-screen .deck-top-tools{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:6px}
+ html.bk-fit .bk-native-screen .deck-bank-toolbar>label strong,.bk-native-screen .deck-bank-toolbar>p{font-size:12px}
+ html.bk-fit .bk-native-screen .deck-bank-actions>.btn,.bk-native-screen .deck-bank-toolbar select{font-size:13px}
+ html.bk-fit .bk-native-screen .deck-workshop .transfer-workspace{grid-template-columns:minmax(0,1fr) minmax(300px,29%);gap:10px}
+ html.bk-fit .bk-native-screen .transfer-heading>strong{font-size:16px}
+ html.bk-fit .bk-native-screen .transfer-heading>small{font-size:12px}
+ html.bk-fit .bk-native-screen .filter-bar{grid-template-columns:minmax(155px,.9fr) minmax(0,1.1fr);gap:5px}
+ html.bk-fit .bk-native-screen .filter-bar .tab{font-size:13px}
+ html.bk-fit .bk-native-screen .filters-secondary select{font-size:13px}
+ html.bk-fit .bk-native-screen .transfer-counts{font-size:12px}
+ html.bk-fit .bk-native-screen .deck-workshop .deck-row .row-name{font-size:14px}
+ html.bk-fit .bk-native-screen .deck-row-art{flex-basis:32px;width:32px;height:34px}
+ html.bk-fit .bk-native-screen .deck-panel-foot .btn{font-size:13px}
+ html.bk-fit .bk-native-screen .deck-image-slot>.game-card{max-width:185px}
+ html.bk-fit .bk-native-screen .product-home .home-card-fan .game-card{max-width:min(290px,calc(var(--bk-canvas-h,500px)*.43))}
+ html.bk-fit .bk-native-screen .product-home>.home-mode-rail>.home-mode strong{font-size:clamp(19px,1.6vw,26px)}
+ html.bk-fit .bk-native-screen .home-command .home-shortcuts>button{font-size:clamp(14px,1vw,18px)}
+ html.bk-fit .bk-native-screen .online-panel h2,.bk-native-screen .solo-mode .campaign-focus h2{font-size:clamp(22px,2vw,34px)}
+ html.bk-fit .bk-native-screen .rulebook-facts dd{font-size:clamp(14px,1vw,17px)}
+}
+@media(max-width:800px),(max-height:570px){
+ html.bk-fit .bk-native-screen .transfer-actions>.btn{min-height:29px;font-size:11px}
+ html.bk-fit .bk-native-screen .transfer-counts b{font-size:12px}
+ html.bk-fit .bk-native-screen .deck-inspector-launch>.btn,.bk-native-screen .deck-scope-tabs>.btn{min-height:28px;font-size:10px}
+}

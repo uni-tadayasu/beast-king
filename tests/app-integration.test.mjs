@@ -21,7 +21,7 @@ import {calculateCardLayout,calculateFittedCardLayout} from '../viewport.js';
 const appSource = readFileSync(new URL('../app.js', import.meta.url), 'utf8').replace(/^import\s+[^;]+;\s*$/gm, '');
 const expose = `
 globalThis.__appIntegration = {
-  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck,
+  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
   get workingDeck(){return workingDeck}, get data(){return data}, get game(){return game}, get cpuGame(){return cpuGame},
@@ -378,4 +378,11 @@ test('physical card layout uses the measured free canvas, including transfer con
  const roomy=calculateFittedCardLayout({width:1600,height:660,edit:true});
  const narrow=calculateFittedCardLayout({width:600,height:300,edit:true,compact:true});
  assert.ok(roomy.cardWidth>=narrow.cardWidth);
+});
+
+test('deck transfer uses ownership and exact deck-slot validation',()=>{
+ const {app}=boot();app.setState({page:'deck'});const before=[...app.workingDeck],id=before[0],bank=app.data.editingDeckId,inventory=plain(app.data.collection);
+ assert.equal(app.transferCard({side:'deck',id,index:0,section:'main',bank},{side:'pool'}),true);assert.equal(app.workingDeck.length,31);
+ assert.equal(app.transferCard({side:'pool',id,bank},{side:'deck'}),true);assert.equal(app.workingDeck.length,32);assert.deepEqual(plain(app.data.collection),inventory);
+ assert.equal(app.transferCard({side:'pool',id,bank:'other-deck'},{side:'deck'}),false);
 });

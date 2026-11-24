@@ -96,7 +96,7 @@ try{
   }
   await click('.navigation-dock [data-nav=deck]');assert.equal(await evaluate('document.querySelectorAll("#deck-bank-select option").length'),4);
   assert.ok(await evaluate('Boolean(document.querySelector(".transfer-source .transfer-card")&&document.querySelector(".deck-panel .deck-row"))'));
-  assert.equal(await evaluate('document.querySelector("[data-action=deck-filter-scope][data-scope=owned]").getAttribute("aria-pressed")'),'true');
+  assert.equal(await evaluate('document.querySelector("[data-action=deck-filter-scope][data-scope=all]").getAttribute("aria-pressed")'),'true');
   const transferId=await evaluate('document.querySelector(".deck-row [data-action=deck-remove]").dataset.id');
   const before=await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent');
   await click('.deck-row [data-action=deck-remove][data-id='+transferId+']');

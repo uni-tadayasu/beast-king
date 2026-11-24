@@ -22,13 +22,13 @@ export function calculateFittedCardLayout({width,height,edit=false,compact=false
  const w=Math.max(1,Math.floor(Number(width)||1)-12);
  const h=Math.max(1,Math.floor(Number(height)||1)-8);
  const gap=compact?8:14,caption=edit?76:28,ratio=520/360;
- const min=compact?68:104,max=compact?210:290;
+ const min=compact?68:120,max=compact?230:360;
  let best=null;
  for(let rows=1;rows<=3;rows++)for(let columns=1;columns<=14;columns++){
   const cardWidth=Math.floor(Math.min(max,(w-gap*(columns-1))/columns,((h-gap*(rows-1))/rows-caption)/ratio));
   if(cardWidth<min)continue;
   // Cover the available canvas, preferring legibility on equally filled grids.
-  const score=cardWidth*cardWidth*rows*columns*(1+Math.min(cardWidth/240,1.2)*.18);
+  const score=cardWidth*cardWidth*rows*columns*(.45+Math.min(cardWidth/180,2)*1.15);
   if(!best||score>best.score)best={columns,rows,cardWidth,pageSize:columns*rows,score};
  }
  if(!best){
