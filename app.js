@@ -1,33 +1,34 @@
-import {splitReadingText} from './reading-pages.js?v=20261124-31';
-import {createExperienceController} from './experience-fx.js?v=20261124-31';
-import {BRAND_ICONS} from './brand-icons.js?v=20261124-31';
-import {CARD_ART_CROPS} from './card-art-layouts.js?v=20261124-31';
-import {CARD_ART_EXPANSIONS} from './card-art-expansion.js?v=20261124-31';
-import {CARD_ART_FIFTH} from './card-art-fifth.js?v=20261124-31';
-import {CARD_ART_OVERRIDES} from './card-art-overrides.js?v=20261124-31';
-import {CARD_ART_USER_OVERRIDES} from './card-art-user.js?v=20261124-31';
-import {PREMIUM_CARD_ART} from './card-art-premium.js?v=20261124-31';
-import {PREMIUM_DECK,PREMIUM_DECK_ID} from './premium-deck.js?v=20261124-31';
-import { CARDS, DECK_MIN, DECK_COPY_LIMIT, ELEMENTS, TYPE_LABELS, RARITY_LABELS, KEYWORD_LABELS, STARTER_DECKS, DECK_PRESETS, getDeckPreset, getCard, validateDeck, validateSpecialDeck, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS, SUBTYPE_LABELS, EXPANSION_DECKS, EXPANSION_FAMILIES, getExpansionDeck } from './catalog.js?v=20261124-31';
-import {createMusicController} from './music.js?v=20261124-31';
-import {createOnlineClient} from './online.js?v=20261124-31';
-import {createCloudSync} from './cloud-sync.js?v=20261124-31';
-import {createAccountUi} from './account-ui.js?v=20261124-31';
-import {setPublicNotice} from './news.js?v=20261124-31';
-import {createPresenceController} from './presence.js?v=20261124-31';
-import {entryView} from './entry.js?v=20261124-31';
-import {soloView} from './mode-views.js?v=20261124-31';
-import {EVENT_DECKS,EVENT_DECK_GROUPS,getEventDeck} from './event-decks.js?v=20261124-31';
-import {createEventProgress,normalizeEventProgress,recordEventResult} from './event-battles.js?v=20261124-31';
-import {eventChallengeView} from './event-views.js?v=20261124-31';
-import {rulebookView} from './rules-view.js?v=20261124-31';
-import {homeDashboard,treasureShop,packOddsView} from './product-views.js?v=20261124-31';
-import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayout} from './viewport.js?v=20261124-31';
-import {battleLogView} from './battle-log.js?v=20261124-31';
-import {handInspectorView} from './hand-inspector.js?v=20261124-31';
-import {CAMPAIGN_BATTLES,createCampaignProgress,normalizeCampaignProgress,getCampaignBattle,isCampaignBattleUnlocked,getNextCampaignBattle,recordCampaignResult} from './campaign.js?v=20261124-31';
-import {PACKS,getPack,PACK_ID,PACK_NAME,PACK_DESCRIPTION,PACK_COST,PACK_SIZE,STARTING_TREASURE,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,PACK_CARD_IDS,createStarterCollection,hasStarterCards,migrateLegacyStarters,normalizeCollection,grantDeckCollection,openPack,getBattleReward,quoteStarterPurchase,purchaseStarter,quoteDeckRecipe} from './shop.js?v=20261124-31';
-import { newGame, playCard, attack, endTurn, runCpuTurn, getLegalTargets, getAttackTargets, canAttack, getPlayableCards, getCardCost, getFusionChoices, getEligibleFusionMaterials, validateFusionSelection, MAX_HEART_POINTS } from './engine.js?v=20261124-31';
+import {splitReadingText} from './reading-pages.js?v=20261124-32';
+import {bindOutsideDismiss} from './overlay-dismiss.js?v=20261124-32';
+import {createExperienceController} from './experience-fx.js?v=20261124-32';
+import {BRAND_ICONS} from './brand-icons.js?v=20261124-32';
+import {CARD_ART_CROPS} from './card-art-layouts.js?v=20261124-32';
+import {CARD_ART_EXPANSIONS} from './card-art-expansion.js?v=20261124-32';
+import {CARD_ART_FIFTH} from './card-art-fifth.js?v=20261124-32';
+import {CARD_ART_OVERRIDES} from './card-art-overrides.js?v=20261124-32';
+import {CARD_ART_USER_OVERRIDES} from './card-art-user.js?v=20261124-32';
+import {PREMIUM_CARD_ART} from './card-art-premium.js?v=20261124-32';
+import {PREMIUM_DECK,PREMIUM_DECK_ID} from './premium-deck.js?v=20261124-32';
+import { CARDS, DECK_MIN, DECK_COPY_LIMIT, ELEMENTS, TYPE_LABELS, RARITY_LABELS, KEYWORD_LABELS, STARTER_DECKS, DECK_PRESETS, getDeckPreset, getCard, validateDeck, validateSpecialDeck, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS, SUBTYPE_LABELS, EXPANSION_DECKS, EXPANSION_FAMILIES, getExpansionDeck } from './catalog.js?v=20261124-32';
+import {createMusicController} from './music.js?v=20261124-32';
+import {createOnlineClient} from './online.js?v=20261124-32';
+import {createCloudSync} from './cloud-sync.js?v=20261124-32';
+import {createAccountUi} from './account-ui.js?v=20261124-32';
+import {setPublicNotice} from './news.js?v=20261124-32';
+import {createPresenceController} from './presence.js?v=20261124-32';
+import {entryView} from './entry.js?v=20261124-32';
+import {soloView} from './mode-views.js?v=20261124-32';
+import {EVENT_DECKS,EVENT_DECK_GROUPS,getEventDeck} from './event-decks.js?v=20261124-32';
+import {createEventProgress,normalizeEventProgress,recordEventResult} from './event-battles.js?v=20261124-32';
+import {eventChallengeView} from './event-views.js?v=20261124-32';
+import {rulebookView} from './rules-view.js?v=20261124-32';
+import {homeDashboard,treasureShop,packOddsView} from './product-views.js?v=20261124-32';
+import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayout} from './viewport.js?v=20261124-32';
+import {battleLogView} from './battle-log.js?v=20261124-32';
+import {handInspectorView} from './hand-inspector.js?v=20261124-32';
+import {CAMPAIGN_BATTLES,createCampaignProgress,normalizeCampaignProgress,getCampaignBattle,isCampaignBattleUnlocked,getNextCampaignBattle,recordCampaignResult} from './campaign.js?v=20261124-32';
+import {PACKS,getPack,PACK_ID,PACK_NAME,PACK_DESCRIPTION,PACK_COST,PACK_SIZE,STARTING_TREASURE,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,PACK_CARD_IDS,createStarterCollection,hasStarterCards,migrateLegacyStarters,normalizeCollection,grantDeckCollection,openPack,getBattleReward,quoteStarterPurchase,purchaseStarter,quoteDeckRecipe} from './shop.js?v=20261124-32';
+import { newGame, playCard, attack, endTurn, runCpuTurn, getLegalTargets, getAttackTargets, canAttack, getPlayableCards, getCardCost, getFusionChoices, getEligibleFusionMaterials, validateFusionSelection, MAX_HEART_POINTS } from './engine.js?v=20261124-32';
 
 const $ = (s, r=document) => r.querySelector(s);
 const layoutWidth=()=>window.BeastKingViewport?.get().width||window.innerWidth;
@@ -854,7 +855,20 @@ document.addEventListener('click',actionHandler);
 document.addEventListener('submit',event=>{if(event.target.id==='entry-start-form'){event.preventDefault();startEntry();}});
 document.addEventListener('input',event=>{const el=event.target;if(el.id==='entry-player-name')entryNameDraft=el.value;if(el.dataset.input==='bgm-volume'){data.bgmVolume=Math.max(0,Math.min(1,Number(el.value)/100));const out=$('#bgm-volume-readout');if(out)out.textContent=`${Math.round(data.bgmVolume*100)}%`;el.setAttribute('aria-valuetext',`${Math.round(data.bgmVolume*100)}%`);persist();syncMusic();musicController.unlock();}if(el.dataset.input==='inspect-candidate-query'&&currentModal?.kind==='deck-inspect'&&currentModal.mode==='replace'){currentModal.query=el.value;currentModal.candidatePage=1;const result=$('#inspect-candidate-results');if(result)result.innerHTML=inspectCandidateMarkup(currentModal);}if(el.dataset.input==='search'){search.text=el.value;search.page=1;renderResults();}if(el.dataset.input==='deck-name'){workingName=el.value;rememberDraft();}});
 document.addEventListener('change',event=>{const el=event.target,key=el.dataset.change;if(key==='inspect-battle-card'){if(battleEffectZone!=='hand')inspectBattleEffect(battleEffectZone,el.value);return;}if(key==='inspect-slot'&&currentModal?.kind==='deck-inspect'){currentModal.index=Number(el.value);currentModal.mode='single';renderDeckInspector();return;}if(['setId','family','subtype','element','rarity','sort'].includes(key)){search[key]=el.value;search.page=1;renderResults();}if(key==='card-page'){const max=Math.max(1,Math.ceil(filteredCards().length/cardPageLayout(page==='deck').pageSize));search.page=Math.max(1,Math.min(max,Math.floor(Number(el.value)||1)));renderResults();return;}if(key==='deck-page'){deckListPage=Math.max(1,Math.floor(Number(el.value)||1));const list=$('.deck-list');if(list)list.innerHTML=deckList(deckSection==='special');requestAnimationFrame(syncCardViewport);return;}if(key==='deck-bank'){selectBankDeck(el.value);return;}if(key==='entry-starter'&&!entered&&STARTER_DECKS.some(d=>d.id===el.value)){entryStarterDraft=el.value;return;}if(key==='starter'&&el.value){if(registerOwnedStarter(el.value))selectBankDeck(starterSlot(el.value));else toast('未所持のスターターです。',true);}if(key==='cpu-deck')cpuDeckId=el.value;if(el.id==='backup-input')importSave(el.files?.[0]);});
-modalRoot.addEventListener('click',event=>{if(event.target.classList.contains('modal-backdrop'))closeModal();});
+bindOutsideDismiss(modalRoot,{getLayer:()=>modalRoot.querySelector('.modal'),onDismiss:closeModal});
+bindOutsideDismiss(document,{
+ getLayer:()=>{
+  if(currentModal||document.querySelector('dialog[open],.bk-pack-ceremony'))return null;
+  const panel=battleLogOpen?$('#battle-log-drawer:not([hidden])'):handEffectsOpen?$('#hand-effects-panel[data-open=true]'):null;
+  return panel&&['fixed','absolute'].includes(getComputedStyle(panel).position)?panel:null;
+ },
+ isOutside:(event,panel)=>!panel.contains(event.target)&&!event.target.closest?.('[data-action="toggle-battle-log"],[data-action="toggle-hand-effects"]'),
+ onDismiss:panel=>{
+  const log=panel.id==='battle-log-drawer';
+  if(log)battleLogOpen=false;else handEffectsOpen=false;
+  render();$(log?'.battle-log-trigger':'.hand-effects-trigger')?.focus({preventScroll:true});
+ }
+});
 document.addEventListener('keydown',event=>{if(event.target.matches?.('[data-action="settings-tab"]')&&['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){event.preventDefault();const tabs=['sound','motion','account'],i=tabs.indexOf(settingsTab);settingsTab=event.key==='Home'?tabs[0]:event.key==='End'?tabs[2]:tabs[(i+(event.key==='ArrowRight'?1:2))%3];settingsModal();$(`[data-action="settings-tab"][data-tab="${settingsTab}"]`)?.focus({preventScroll:true});return;}if(event.key==='Enter'&&event.target.id==='entry-player-name'){event.preventDefault();startEntry();return;}if(event.key==='Enter'&&event.target.id==='operator-code'){event.preventDefault();accountUi.handleAction('operator-activate',event.target);return;}if(event.key==='Enter'&&event.target.id==='device-link-code'){event.preventDefault();accountUi.handleAction('cloud-link-claim',event.target);return;}if(event.key==='Enter'&&event.target.id==='online-nickname'){event.preventDefault();void saveOnlineNickname();return;}if(event.key==='Escape'){if(currentModal)closeModal();else if(battleLogOpen){battleLogOpen=false;render();$('.battle-log-trigger')?.focus({preventScroll:true});}else if(handEffectsOpen){handEffectsOpen=false;render();$('.hand-effects-trigger')?.focus({preventScroll:true});}else if(selected){selected=null;render();}return;}if(event.key==='Tab'&&currentModal){const els=[...modalRoot.querySelectorAll('button:not(:disabled),a,input:not([hidden]),textarea,select,[tabindex="0"]')].filter(el=>el.offsetParent!==null),first=els[0],last=els.at(-1);if(event.shiftKey&&(document.activeElement===first||document.activeElement.classList.contains('modal'))){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}});
 render();
 musicController.unlock();

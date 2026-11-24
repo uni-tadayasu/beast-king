@@ -1,7 +1,7 @@
-import {EVENT_DECKS} from './event-decks.js?v=20261124-31';
-import {STARTER_DECKS,getDeckPreset,getCard,ELEMENTS,CARDS,EXPANSION_DECKS,EXPANSION_FAMILIES} from './catalog.js?v=20261124-31';
-import {PACKS,getPack,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,STARTER_PRICE,quoteStarterPurchase,hasStarterCards} from './shop.js?v=20261124-31';
-import {PREMIUM_DECK_ID} from './premium-deck.js?v=20261124-31';
+import {EVENT_DECKS} from './event-decks.js?v=20261124-32';
+import {STARTER_DECKS,getDeckPreset,getCard,ELEMENTS,CARDS,EXPANSION_DECKS,EXPANSION_FAMILIES} from './catalog.js?v=20261124-32';
+import {PACKS,getPack,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,STARTER_PRICE,quoteStarterPurchase,hasStarterCards} from './shop.js?v=20261124-32';
+import {PREMIUM_DECK_ID} from './premium-deck.js?v=20261124-32';
 
 export function homeDashboard({data,game,icon,esc,fmt,cardMarkup,counts}={}) {
   const expansion=PACKS.at(-1),stat=counts(data.deckIds),preset=getDeckPreset(data.starter);

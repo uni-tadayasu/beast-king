@@ -6,7 +6,7 @@ import {CARD_ART_FIFTH} from '../card-art-fifth.js';
 import {createHash} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 const total=CARDS.length.toLocaleString('en-US');
-const releaseRevision='20261124-31';
+const releaseRevision='20261124-32';
 const sourceMatches=file=>async response=>(await response.text())===(await readFile(new URL('../'+file,import.meta.url),'utf8'));
 const binaryMatches=file=>async response=>{
  const [actual,expected]=await Promise.all([response.arrayBuffer(),readFile(new URL('../'+file,import.meta.url))]);
@@ -20,7 +20,7 @@ const image=async response=>{
 const checks=[
  ['main','https://www.beast-king.com/',r=>r.text().then(s=>(s.includes('BEAST KING')||s.includes('ビーストキング'))&&s.includes(total)&&s.includes('cyber-ui.css?v='+releaseRevision)&&s.includes('modal-layout.css?v='+releaseRevision)&&s.includes('data-ui-theme="cyber"'))],
  ['rebuild','https://www.beast-king.com/rebuild/',r=>r.text().then(s=>s.includes('2,304')&&s.includes('旧セーブ互換版'))],
- ['rebuild-js','https://www.beast-king.com/rebuild/app.js',r=>r.text().then(s=>s.includes('function render')&&s.includes('SECOND_REGALIA_ID'))],
+ ['rebuild-js','https://www.beast-king.com/rebuild/app.js',sourceMatches('rebuild/app.js')],
  ['rebuild-about','https://www.beast-king.com/rebuild/about.html',r=>r.text().then(s=>s.includes('2,304'))],
  ['worker-health','https://beast-king.hisa-0128-1996.chatgpt.site/api/health',r=>r.json().then(x=>x.ok===true&&x.contentRevision===releaseRevision)],
  ['rebuild-cloud','https://beast-king.hisa-0128-1996.chatgpt.site/api/rebuild/status',r=>r.json().then(x=>x.ok===true&&x.cloudSaveVersion===1)]
@@ -39,7 +39,7 @@ if(CARDS.length>=4608)checks.push(
  ['event-decks','https://www.beast-king.com/event-decks.js?v='+releaseRevision,sourceMatches('event-decks.js')],
  ['event-progress','https://www.beast-king.com/event-battles.js?v='+releaseRevision,sourceMatches('event-battles.js')]
 );
-for(const file of ['catalog.js','fifth-set-data.js','card-art-fifth.js','product-views.js','entry.js','rules-view.js','expansion-recipes.js','premium-cards.js','premium-deck.js','engine.js','shop.js','app.js','music.js','hand-inspector.js','card-art-user.js','card-art-premium.js','cyber-ui.css','cyber-shop.css','modal-layout.css','account-views.js','account-views.css','news.js','experience-fx.js','cloud-sync.js','reading-pages.js','account-ui.js','fit-screen.js','viewport.js'])checks.push([file,'https://www.beast-king.com/'+file+'?v='+releaseRevision,sourceMatches(file)]);
+for(const file of ['catalog.js','fifth-set-data.js','card-art-fifth.js','product-views.js','entry.js','rules-view.js','expansion-recipes.js','premium-cards.js','premium-deck.js','engine.js','shop.js','app.js','music.js','hand-inspector.js','card-art-user.js','card-art-premium.js','cyber-ui.css','cyber-shop.css','modal-layout.css','account-views.js','account-views.css','news.js','experience-fx.js','cloud-sync.js','reading-pages.js','account-ui.js','fit-screen.js','viewport.js','overlay-dismiss.js','interaction-guard.js','experience-static.js'])checks.push([file,'https://www.beast-king.com/'+file+'?v='+releaseRevision,sourceMatches(file)]);
 for(const file of ['assets/audio/battle-event.mp3','assets/user-art/selva-20261124.png','assets/design-v3/packs/bk05-cover.webp',...new Set(Object.values(CARD_ART_FIFTH).map(art=>art.src)),...Object.values(PREMIUM_CARD_ART).map(art=>art.src)])checks.push([file,'https://www.beast-king.com/'+file+'?v='+releaseRevision,binaryMatches(file)]);
 const results=await Promise.all(checks.map(async([name,url,verify])=>{
  try{const r=await fetch(url,{signal:AbortSignal.timeout(9000),redirect:'follow',cache:'no-store'});return {name,url,status:r.status,verified:r.ok&&await verify(r)}}catch(e){return {name,url,verified:false,error:e.cause?.code||e.name}}

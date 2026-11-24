@@ -1,4 +1,4 @@
-import {operatorConsoleView,pagedInboxView} from './operator-console.js?v=20261124-31';
+import {operatorConsoleView,pagedInboxView} from './operator-console.js?v=20261124-32';
 /** Pure modal contents. Authentication, authorization, requests and confirmations belong to the caller. */
 const escapeDefault = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const ORIGINS = Object.freeze({ mountain: '山', river: '川', seed: '種', grass: '草', flower: '花', tree: '木', king: '王' });
