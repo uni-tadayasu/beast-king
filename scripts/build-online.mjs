@@ -131,7 +131,8 @@ async function bundleWorker(){
     let match;
     while((match=pattern.exec(source))){
       assert(match[3].startsWith('.'),'Worker must not retain external dependencies');
-      const dependency=await visit(resolve(dirname(file),match[3]));
+      // Browser imports may append a cache version. The Worker bundles the same physical source.
+      const dependency=await visit(resolve(dirname(file),match[3].split(/[?#]/,1)[0]));
       const names=match[1].split(',').map(s=>s.trim()).filter(Boolean).map(name=>{
         assert(/^[A-Za-z_$][\w$]*(?:\s+as\s+[A-Za-z_$][\w$]*)?$/.test(name),'Unsupported import declaration');
         const [imported,local=imported]=name.split(/\s+as\s+/);assert(dependency.exports.includes(imported),`Missing module export ${imported}`);return imported===local?imported:`${imported}:${local}`;

@@ -19,7 +19,7 @@ const origin=id=>ORIGINS.find(x=>x.id===id);
 const byType=Object.entries(TYPE_LABELS);
 const label=id=>getCard(id)?.name||id;
 let profile=loadProfile(localStorage),page='home',message='',draft=null,match=null,selection=null,cpuBusy=false,filter={q:'',type:'',origin:'',rarity:'',pack:'',page:0};
-if(profile)persistProfile(localStorage,profile);
+if(profile)try{persistProfile(localStorage,profile);}catch{/* Continue with the in-memory save on a read-only device. */}
 let shopPage=0,shopPack='BK01',cpuTimer=null,starterQuote=null;
 const music=createMusicController({idPrefix:'beastking-rebuild-bgm',sources:{menu:'../assets/audio/menu.mp3',battle:'../assets/audio/battle.mp3','battle-danger':'../assets/audio/battle-danger.mp3'}});
 const operatorClient=createOperatorClient(),cloudClient=createRebuildCloudClient();let cloudView=null;let operatorGrant=null,operatorSelected=false,operatorBusy=false,brandTaps=0,brandAt=0,starting=false;
