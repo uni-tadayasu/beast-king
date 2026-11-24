@@ -380,6 +380,7 @@ export function createOnlineClient({
   const claimOperatorRegalia = (code, revision, options={}) => auxiliary('cloud', '/operator/regalia/claim', { method: 'POST', body: { code, revision, ...(options.upgrade?{upgrade:true}:{}) } });
   const getOperator = () => auxiliary('operator', '/operator');
   const getOperatorDeck = () => auxiliary('operator', '/operator/deck');
+  const replaceOperatorArtwork = artwork => auxiliary('operator','/operator/artwork',{method:'POST',body:{artwork}});
   const updateOperatorSettings = settings => auxiliary('operator', '/operator/settings', { method: 'POST', body: { notice: settings?.notice, maintenance: settings?.maintenance } });
   const getInbox = () => auxiliary('inbox', '/inbox');
   const markInboxRead = id => auxiliary('inbox', `/inbox/${encode(id)}/read`, { method: 'POST', body: {} });
@@ -511,7 +512,7 @@ export function createOnlineClient({
     ensureProfile, refreshProfile, updateProfile, updateNickname, createRoom, joinRoom, getRoom, leaveRoom,
     startRanked, getQueue, cancelRanked, getMatch, sendAction,
     getCloudSave, saveCloudSave, createDeviceLink, claimDeviceLink, getSessions, revokeSession,
-    getPublicStatus, updatePresence, activateOperator, claimOperatorRegalia, getOperator, getOperatorDeck, updateOperatorSettings,
+    getPublicStatus, updatePresence, activateOperator, claimOperatorRegalia, getOperator, getOperatorDeck, replaceOperatorArtwork, updateOperatorSettings,
     getInbox, markInboxRead, claimGift, getEvents, claimEvent,
     sendOperatorMessage, sendOperatorGift, saveOperatorEvent,
     startPolling, stopPolling, destroy, getStatus,

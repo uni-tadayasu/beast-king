@@ -38,7 +38,7 @@ function setPage(p){
 }
 function art(c,operatorArt=false){
  if(operatorArt&&c.id===SECOND_REGALIA_ID&&operatorGrant?.entitled&&!operatorGrant.artwork)return 'background:radial-gradient(ellipse,#283b5a,#100f24 70%);background-size:cover';
- if(operatorArt&&c.id===SECOND_REGALIA_ID&&operatorGrant?.entitled&&operatorGrant.artwork)return "background-image:url('"+operatorGrant.artwork+"');background-position:center;background-size:cover";
+ if(operatorArt&&c.id===SECOND_REGALIA_ID&&operatorGrant?.entitled&&operatorGrant.artwork)return "background-image:url('"+operatorGrant.artwork+"');background-position:center;background-repeat:no-repeat;background-size:"+(operatorGrant.artwork.startsWith('data:image/webp;')?'contain':'cover');
  const custom=artOverride(c);if(custom)return "background-image:url('../"+custom+"');background-position:center;background-size:cover";
  if(isPendingArt(c))return 'background:radial-gradient(ellipse at 50% 30%,'+(origin(c.origin)?.color||'#afc2b9')+'33,#0a201e 80%)';
  if(c.artAsset)return "background-image:url('../"+c.artAsset+"');background-position:center;background-size:cover";

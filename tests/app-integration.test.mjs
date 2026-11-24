@@ -412,7 +412,10 @@ test('Regalia artwork is scoped to the authenticated deck instance and the click
  app.setState({game:{playerDeckId:grant.id}});hooks.operatorDeck={...grant,artwork:null};
  assert.ok(app.artStyle(regalia,'battle').includes('radial-gradient'));
  assert.ok(!app.artStyle(regalia,'battle').includes('king.webp'));
- assert.ok(!JSON.stringify(data).includes(privateArt));
+ const raster='data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAUAAEAdQ2v7Xo7SBiOh/AAA=';
+ hooks.operatorDeck={...grant,artwork:raster};
+ assert.ok(app.artStyle(regalia,'battle').includes(raster));assert.ok(app.artStyle(regalia,'battle').includes('background-size:contain'));assert.ok(!app.artStyle(regalia,'public').includes(raster));
+ assert.ok(!JSON.stringify(data).includes(privateArt));assert.ok(!JSON.stringify(data).includes(raster));
 });
 
 test('dual workshop displays a complete left catalogue and an independent right deck',()=>{

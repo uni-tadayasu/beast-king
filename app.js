@@ -239,7 +239,7 @@ function regaliaDeckContext(context){
 function operatorRegaliaArt(context='public'){
  if(!regaliaDeckContext(context))return null;
  const artwork=currentOperatorGrant()?.artwork;
- return typeof artwork==='string'&&/^data:image\/svg\+xml;base64,[A-Za-z0-9+/=]+$/.test(artwork)?artwork:null;
+ return typeof artwork==='string'&&/^data:image\/(?:svg\+xml|webp);base64,[A-Za-z0-9+/=]+$/.test(artwork)?artwork:null;
 }
 function regaliaStatus(c,context='public'){
  if(c.id!==REGALIA_ID||!regaliaDeckContext(context))return 'normal';
@@ -268,7 +268,7 @@ function operatorDeckChanged(){
  if(entered&&['home','deck','duel'].includes(page))render();
  refreshRegaliaImages();
 }
-function artStyle(c,artContext='public'){if(c.id==='B0512'){const status=regaliaStatus(c,artContext);if(status==='pending')return 'background:radial-gradient(ellipse,#283b5a,#100f24 70%);background-size:cover';const src=operatorRegaliaArt(artContext)||'assets/design-v2/cards/individual/king.webp';return "background-image:url('"+src+"');background-position:center;background-size:cover";}const n=Number(c.id.slice(1))-1,cell=n%16,batch=String(Math.floor(n/16)+1).padStart(2,'0'),src=`assets/design-v2/cards/individual/${c.type}-${batch}.webp?art=20261124`,crop=CARD_ART_CROPS[c.id];if(crop)return `background-image:url('${src}');background-position:${crop.x*100/(crop.width-crop.size)}% ${crop.y*100/(crop.height-crop.size)}%;background-size:${crop.width*100/crop.size}% ${crop.height*100/crop.size}%`;return `background-image:url('${src}');background-position:${(cell%4+.01)*100/3.02}% ${(Math.floor(cell/4)+.01)*100/3.02}%;background-size:408.163265% 408.163265%`;}
+function artStyle(c,artContext='public'){if(c.id==='B0512'){const status=regaliaStatus(c,artContext);if(status==='pending')return 'background:radial-gradient(ellipse,#283b5a,#100f24 70%);background-size:cover';const src=operatorRegaliaArt(artContext)||'assets/design-v2/cards/individual/king.webp';return "background-image:url('"+src+"');background-position:center;background-repeat:no-repeat;background-size:"+(src.startsWith('data:image/webp;')?'contain':'cover');}const n=Number(c.id.slice(1))-1,cell=n%16,batch=String(Math.floor(n/16)+1).padStart(2,'0'),src=`assets/design-v2/cards/individual/${c.type}-${batch}.webp?art=20261124`,crop=CARD_ART_CROPS[c.id];if(crop)return `background-image:url('${src}');background-position:${crop.x*100/(crop.width-crop.size)}% ${crop.y*100/(crop.height-crop.size)}%;background-size:${crop.width*100/crop.size}% ${crop.height*100/crop.size}%`;return `background-image:url('${src}');background-position:${(cell%4+.01)*100/3.02}% ${(Math.floor(cell/4)+.01)*100/3.02}%;background-size:408.163265% 408.163265%`;}
 function art(c,artContext='public'){return `<div class="card-art individual-art" data-protect-art aria-hidden="true" ${c.id===REGALIA_ID?`data-regalia-context="${artContext}" data-regalia-status="${regaliaStatus(c,artContext)}"`:''} style="${artStyle(c,artContext)}"></div><span class="card-finish rarity-${c.rarity}" aria-hidden="true"><i class="finish-crown">${icon('crown')}</i></span>`;}
 function counts(ids){return ids.reduce((r,id)=>{const c=getCard(id);if(c)r[c.type]++;return r;},{beast:0,miracle:0,gimmick:0,fusion:0});}
 function cardMarkup(c,{action='detail',extra='',classes='',idx='',label='',artContext='public'}={}){
@@ -384,7 +384,7 @@ function equipOperatorDeck(deck){
 }
 function operatorDeckPanel(){
  const deck=accountUi?.getOperatorDeck?.();
- return deck?`<div class="operator-deck-preset"><span>${icon('crown')}運営構築 · 開放済み</span><button class="text-button" data-action="operator-deck-use" title="${esc(deck.description)}">${esc(deck.name)}を使う ${icon('chevron-right')}</button>${!deck.artwork?'<small class="operator-art-status">専用イラスト未受信</small><button class="text-button" data-action="operator-art-refresh">再取得</button>':''}</div>`:'';
+ return deck?`<div class="operator-deck-preset"><span>${icon('crown')}運営構築 · 開放済み</span><button class="text-button" data-action="operator-deck-use" title="${esc(deck.description)}">${esc(deck.name)}を使う ${icon('chevron-right')}</button><button class="text-button" data-action="operator-artwork-open" title="専用イラストの差し替え">イラスト設定</button>${!deck.artwork?'<small class="operator-art-status">専用イラスト未受信</small><button class="text-button" data-action="operator-art-refresh">再取得</button>':''}</div>`:'';
 }
 function deckPanel(){
  const cnt=counts(workingDeck),normal=validateDeck(workingDeck),special=validateSpecialDeck(workingSpecial),valid=normal.valid&&special.valid&&!missingOwnedCards([...workingDeck,...workingSpecial]).length,isSpecial=deckSection==='special';

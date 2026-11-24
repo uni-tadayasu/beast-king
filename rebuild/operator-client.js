@@ -26,7 +26,7 @@ export function createOperatorClient({storage=globalThis.localStorage,fetchImpl=
   if(deck?.id!=='kirahara'||!validateDeck(deck.main).valid||!validateSpecialDeck(deck.special).valid||!collection||typeof collection!=='object')throw Error('運営デッキの応答が無効です。');
   const needed={};for(const id of [...deck.main,...deck.special])needed[id]=(needed[id]||0)+1;
   if(needed[SECOND_REGALIA_ID]!==2||Object.keys(needed).some(id=>!getCard(id)||collection[id]!==needed[id])||Object.keys(collection).length!==Object.keys(needed).length)throw Error('運営デッキのカード情報が無効です。');
-  const artwork=typeof data.artwork==='string'&&/^data:image\/svg\+xml;base64,[A-Za-z0-9+/=]+$/.test(data.artwork)?data.artwork:null;
+  const artwork=typeof data.artwork==='string'&&/^data:image\/(?:svg\+xml|webp);base64,[A-Za-z0-9+/=]+$/.test(data.artwork)?data.artwork:null;
   return Object.freeze({entitled:true,artwork,deck:Object.freeze({id:deck.id,name:'𠮷良原デッキ',main:Object.freeze([...deck.main]),special:Object.freeze([...deck.special])}),collection:Object.freeze({...needed})});
  }
  return Object.freeze({status:()=>request('GET'),activate:code=>request('POST',String(code??''))});

@@ -1,4 +1,5 @@
 import {operatorRegaliaArtwork} from './operator-art.js';
+import {isRegaliaRasterArtwork} from '../regalia-art-format.js';
 import {KIRAHARA_RECIPE,requiredCards} from '../rebuild/operator-deck.js';
 import {validateRebuildBackup,MAX_REBUILD_BACKUP_BYTES} from '../rebuild/backup.js';
 import {verifyOperatorSnapshot} from '../rebuild/solo-save.js';
@@ -235,6 +236,8 @@ async function requireOperator(c,player,{setup=false}={}){
   c.fail(404,'operator_unavailable','この操作は利用できません。',setup&&!row&&typeof c.env.BK_OPERATOR_BOOTSTRAP==='string'&&c.env.BK_OPERATOR_BOOTSTRAP.length?{setupAvailable:true}:{});
 }
 async function privateRegaliaArt(db,playerId){
+ const uploaded=await first(db,"SELECT a.payload_json FROM bk_operator_audit a JOIN bk_operator o ON o.singleton=1 AND o.player_id=a.player_id WHERE a.player_id=? AND a.action='operator.artwork' AND a.id=?",playerId,'regalia-artwork:'+playerId);
+ if(uploaded){try{const art=JSON.parse(uploaded.payload_json).artwork;if(isRegaliaRasterArtwork(art))return art;}catch{}}
  const select=()=>first(db,"SELECT a.id FROM bk_operator_audit a JOIN bk_operator o ON o.singleton=1 AND o.player_id=a.player_id WHERE a.player_id=? AND a.action IN ('operator.activated','operator.art_seed') ORDER BY CASE WHEN a.action='operator.activated' THEN 0 ELSE 1 END,a.created_at,a.id LIMIT 1",playerId);
  let row=await select();
  if(!row){
@@ -248,6 +251,16 @@ async function readOperatorDeck(c,player){
   await requireOperator(c,player);
   const row=await first(c.db,"SELECT c.claimed_at,c.item_id FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.player_id=? AND c.item_type='gift' AND c.item_id IN (?,?) ORDER BY (c.item_id=?) DESC LIMIT 1",player.id,OPERATOR_DECK_REWARD_ID,OLD_OPERATOR_DECK_REWARD_ID,OPERATOR_DECK_REWARD_ID);
   return {ok:true,deck:await unlockedOperatorDeck(c.db,player.id,row?.claimed_at,row?.item_id===OLD_OPERATOR_DECK_REWARD_ID)};
+}
+async function replacePrivateRegaliaArtwork(c,player){
+ const {db,request,now,fail,bodyJSON}=c;
+ await requireOperator(c,player);
+ const entitled=await first(db,"SELECT 1 AS allowed FROM bk_reward_claims WHERE player_id=? AND item_type='gift' AND item_id IN (?,?) LIMIT 1",player.id,OPERATOR_DECK_REWARD_ID,OLD_OPERATOR_DECK_REWARD_ID);
+ if(!entitled)noAccess(fail);
+ const body=await bodyJSON(request,740000),artwork=body?.artwork;
+ check(isRegaliaRasterArtwork(artwork),fail,'invalid_artwork','540KB以下の静止WebP画像を選んでください。');
+ await run(db,"INSERT INTO bk_operator_audit (id,player_id,action,payload_json,created_at) SELECT ?,?,'operator.artwork',?,? WHERE EXISTS (SELECT 1 FROM bk_operator WHERE singleton=1 AND player_id=?) ON CONFLICT(id) DO UPDATE SET payload_json=excluded.payload_json,created_at=excluded.created_at WHERE bk_operator_audit.player_id=excluded.player_id AND bk_operator_audit.action='operator.artwork'",'regalia-artwork:'+player.id,player.id,JSON.stringify({artwork}),now,player.id);
+ return readOperatorDeck(c,player);
 }
 async function activate(c,player){
   const {db,request,env,now,fail,bodyJSON}=c;
@@ -479,7 +492,7 @@ async function rebuildSaveRoute(c,player){
 
 export async function handleAccountRoute(options){
   const c={...options,fail:options.problem}, {path,method,db,now,fail}=c;
-  const paths=["/api/rebuild/status","/api/rebuild/cloud-save","/api/rebuild/operator-deck","/api/public-status","/api/cloud-save","/api/account/link-code","/api/account/link-claim","/api/account/sessions","/api/operator","/api/operator/activate","/api/operator/settings","/api/operator/messages","/api/operator/gifts","/api/operator/events","/api/inbox","/api/events","/api/presence","/api/operator/deck","/api/operator/regalia/claim"];
+  const paths=["/api/rebuild/status","/api/rebuild/cloud-save","/api/rebuild/operator-deck","/api/public-status","/api/cloud-save","/api/account/link-code","/api/account/link-claim","/api/account/sessions","/api/operator","/api/operator/activate","/api/operator/settings","/api/operator/messages","/api/operator/gifts","/api/operator/events","/api/inbox","/api/events","/api/presence","/api/operator/deck","/api/operator/regalia/claim","/api/operator/artwork"];
   const sessionPath=path.match(/^\/api\/account\/sessions\/([A-Za-z0-9_-]{8,100})$/),inboxPath=path.match(/^\/api\/inbox\/([A-Za-z0-9_-]{8,100})\/(read|claim)$/),eventPath=path.match(/^\/api\/events\/([A-Za-z0-9_-]{8,100})\/claim$/);
   if(!paths.includes(path)&&!sessionPath&&!inboxPath&&!eventPath)return null;
   const expect=verb=>{if(method!==verb)fail(405,'method_not_allowed','この操作は利用できません。');};
@@ -495,6 +508,7 @@ export async function handleAccountRoute(options){
   if(path==='/api/account/sessions'||sessionPath)return sessions(c,player,sessionPath?.[1]);
   if(path==='/api/operator'){expect('GET');await requireOperator(c,player,{setup:true});return dashboard(db,now);}
   if(path==='/api/operator/deck'){expect('GET');return readOperatorDeck(c,player);}
+  if(path==='/api/operator/artwork'){expect('POST');return replacePrivateRegaliaArtwork(c,player);}
   if(path==='/api/operator/activate'){expect('POST');return activate(c,player);}
   if(path==='/api/operator/regalia/claim'){expect('POST');return claimRegalia(c,player);}
   for(const [suffix,kind] of [['settings','settings'],['messages','message'],['gifts','gift'],['events','event']])if(path==='/api/operator/'+suffix){expect('POST');return operatorWrite(c,player,kind);}

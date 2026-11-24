@@ -1,4 +1,5 @@
 import {accountSyncView,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js';
+import {isRegaliaRasterArtwork,REGALIA_ART_MAX_BYTES} from './regalia-art-format.js';
 
 /** Account dialogs use the same server identity as online battles. No role or
  * activation credential is saved in the game data or inferred from the UI. */
@@ -9,6 +10,15 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   let inbox={messages:[],gifts:[],events:[],busy:false,error:''};
   let operator={snapshot:null,eventDraft:null,busy:false,error:''};
   let operatorDeck=null,operatorDeckOwner=null,deckRequest=null;
+  let localArtworkOwner=null,localArtwork=null,localArtworkLoaded=false;
+  const localArtworkKey=id=>'beast-king-private-regalia-v1:'+id;
+  function loadPrivateArtwork(id){
+    if(localArtworkLoaded&&localArtworkOwner===id)return localArtwork;
+    localArtworkLoaded=true;localArtworkOwner=id;localArtwork=null;
+    try{const value=globalThis.localStorage?.getItem(localArtworkKey(id));if(isRegaliaRasterArtwork(value))localArtwork=value;}catch{}
+    return localArtwork;
+  }
+  function cachePrivateArtwork(id,artwork){localArtworkLoaded=true;localArtworkOwner=id;localArtwork=artwork;try{if(artwork)globalThis.localStorage?.setItem(localArtworkKey(id),artwork);else globalThis.localStorage?.removeItem(localArtworkKey(id));return true;}catch{return false;}}
   let brandCount=0,brandAt=0,operatorTimer=null;
   const pending=new Map();
   const kind=()=>getModal()?.kind;
@@ -45,10 +55,11 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   }
   function gateModal(error=''){dialog('operator-gate','アクセス確認',operatorGateView({esc,icon,error,busy:operator.busy}));}
   function regaliaModal(error=''){dialog('operator-regalia','特別コードの確認',operatorGateView({esc,icon,error,busy:operator.busy,purpose:'regalia',regaliaClaimed:!!operator.snapshot?.regalia?.claimedAt}));}
-  const getOperatorDeck=()=>{const state=client.getStatus?.()||{};return operatorDeck&&operatorDeckOwner===client.profile?.id&&!state.authInvalidated&&!state.identityChanging?structuredClone(operatorDeck):null;};
+  const getOperatorDeck=()=>{const state=client.getStatus?.()||{};if(!operatorDeck||operatorDeckOwner!==client.profile?.id||state.authInvalidated||state.identityChanging)return null;const deck=structuredClone(operatorDeck),local=loadPrivateArtwork(operatorDeckOwner);if(local){deck.artwork=local;deck.artworkLocal=true;}return deck;};
   function acceptOperatorDeck(value){
     const next=value?.id==='operator-kirahara-v1'&&client.profile?.id&&Array.isArray(value.ids)&&value.ids.length===32&&Array.isArray(value.specialIds)&&value.specialIds.length===4?structuredClone(value):null;
     const owner=next?client.profile.id:null;
+    if(owner&&isRegaliaRasterArtwork(next.artwork)&&loadPrivateArtwork(owner)===next.artwork)cachePrivateArtwork(owner,null);
     if(operatorDeckOwner===owner&&JSON.stringify(operatorDeck)===JSON.stringify(next))return;
     operatorDeck=next;operatorDeckOwner=owner;onOperatorDeckChange?.(getOperatorDeck());
   }
@@ -207,6 +218,49 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       toast(safeError(error),true);
     }finally{if(operator===owner)operator.busy=false;}
   }
+  function privateArtModal(error='',notice=''){
+    const grant=getOperatorDeck();
+    if(!grant){toast('先に𠮷良原デッキの利用権を確認してください。',true);return;}
+    const current=isRegaliaRasterArtwork(grant.artwork)?grant.artwork:null;
+    dialog('operator-artwork','専用レガリアのイラスト設定',`<section class="private-art-dialog"><h2>𠮷良原デッキ専用イラスト</h2><p class="account-intro">背景透過のWebPを選択します。カードの能力・枠・GGR演出は変更しません。通常レガリアや図鑑には適用しません。</p>${current?`<div class="private-art-preview" data-protect-art style="background-image:url('${current}')"></div><p class="account-field-help">${grant.artworkLocal?'この端末に保存済み':'サーバーに登録済み'}</p>`:''}<label class="account-label" for="operator-artwork-file">専用イラスト（WebP・540KB以下）</label><input type="file" id="operator-artwork-file" class="account-input" accept="image/webp,.webp" ${operator.busy?'disabled':''}><p class="account-field-help">本番APIが未更新の場合は、この端末だけに保存されます。</p>${error?`<p class="account-error" role="alert">${esc(error)}</p>`:''}${notice?`<p class="account-field-help" role="status">${esc(notice)}</p>`:''}<div class="modal-actions"><button class="btn primary" data-action="operator-artwork-save" ${operator.busy?'disabled':''}>${operator.busy?'登録中…':'専用イラストに設定'}</button><button class="btn" data-action="close-modal" ${operator.busy?'disabled':''}>閉じる</button></div></section>`,true);
+  }
+  async function savePrivateArtwork(){
+    if(operator.busy||kind()!=='operator-artwork'||!getOperatorDeck()||disallowDuringBattle())return;
+    const file=byId('operator-artwork-file')?.files?.[0];
+    if(!file){toast('WebP画像を選んでください。',true);return;}
+    if(file.size>REGALIA_ART_MAX_BYTES||file.size<30){toast('540KB以下のWebP画像を選んでください。',true);return;}
+    const owner=operator,playerId=client.profile?.id;operator.busy=true;
+    try{
+      const bytes=new Uint8Array(await file.arrayBuffer());
+      let binary='';for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.subarray(i,i+8192));
+      const artwork='data:image/webp;base64,'+btoa(binary);
+      if(!isRegaliaRasterArtwork(artwork))throw Error('静止WebP画像を選んでください。');
+      if(typeof globalThis.createImageBitmap==='function'){const bitmap=await globalThis.createImageBitmap(file);const valid=bitmap.width<=2048&&bitmap.height<=2048;bitmap.close();if(!valid)throw Error('画像の縦横は2048px以下にしてください。');}
+      await ensureReady();const verified=await client.getOperatorDeck();
+      if(operator!==owner||client.profile?.id!==playerId)return;
+      acceptOperatorDeck(verified.deck);if(!getOperatorDeck())throw Error('運営アカウントの利用権を確認できません。');
+      let savedRemote=false;
+      try{
+        const result=await client.replaceOperatorArtwork(artwork);
+        if(operator!==owner||client.profile?.id!==playerId)return;
+        if(result?.deck?.artwork!==artwork)throw Error('サーバーの画像登録結果を確認できません。');
+        cachePrivateArtwork(playerId,null);acceptOperatorDeck(result.deck);
+        if(operator.snapshot)operator.snapshot={...operator.snapshot,deck:result.deck};
+        onOperatorDeckChange?.(getOperatorDeck());savedRemote=true;
+      }catch(e){
+        if(![404,405].includes(e?.status))throw e;
+        const checked=await client.getOperatorDeck();
+        if(operator!==owner||client.profile?.id!==playerId)return;
+        acceptOperatorDeck(checked.deck);if(!getOperatorDeck())throw Error('利用権の再確認が必要です。');
+        const durable=cachePrivateArtwork(playerId,artwork);onOperatorDeckChange?.(getOperatorDeck());
+        if(!durable)toast('端末ストレージに保存できませんでした。現在の画面だけに適用しています。',true);
+      }
+      operator.busy=false;
+      const notice=savedRemote?'新しい専用イラストをサーバーに登録しました。':'新しい専用イラストをこの端末に適用しました。別端末への同期には本番APIの更新が必要です。';
+      if(kind()==='operator-artwork')privateArtModal('',notice);toast(notice);
+    }catch(error){if(operator===owner){operator.busy=false;if(kind()==='operator-artwork')privateArtModal(safeError(error));toast(safeError(error),true);}}
+    finally{if(operator===owner)operator.busy=false;}
+  }
   function recipient(prefix){
     if(value(prefix+'-audience')==='all')return 'all';
     const target=value(prefix+'-player');if(!target)throw new Error('配布先のプレイヤーIDを入力してください。');return target;
@@ -272,6 +326,8 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       case'operator-regalia-claim':void claimRegalia();break;
       case'operator-regalia-back':if(!operator.busy&&operator.snapshot&&kind()==='operator-regalia'){operatorModal({preserve:false});scheduleOperatorRefresh();}break;
       case'operator-deck-use':void equipOperatorDeck();break;
+      case'operator-artwork-open':stopOperatorRefresh();privateArtModal();break;
+      case'operator-artwork-save':void savePrivateArtwork();break;
       case'operator-save':void operate('settings');break;
       case'operator-message-send':void operate('message');break;
       case'operator-gift-send':void operate('gift');break;

@@ -442,3 +442,22 @@ test('legacy entitled operators recover private artwork; match slot metadata is 
  const linked=await f.link(p),linkedView=await f.api('GET','/api/matches/'+joined.data.match.id,linked.token);
  assert.equal(linkedView.data.match.ownDeckSlot,slot);
 });
+
+test('alternate raster Regalia is replaceable only by the authenticated entitled operator',async t=>{
+ const f=fixture(t),operator=await f.operator(),ordinary=await f.profile('一般の王');
+ const image='data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAUAAEAdQ2v7Xo7SBiOh/AAA=',route='/api/operator/artwork';
+ assert.equal((await f.api('POST',route,ordinary.token,{artwork:image})).status,404);
+ assert.equal((await f.api('POST',route,operator.token,{artwork:image})).status,404);
+ f.env.BK_OPERATOR_REGALIA_CODE='fixture-private-raster';
+ const saved=await f.save(operator);assert.equal(saved.status,200);
+ const claim=await f.api('POST','/api/operator/regalia/claim',operator.token,{code:f.env.BK_OPERATOR_REGALIA_CODE,revision:saved.data.save.revision});assert.equal(claim.status,200);
+ assert.equal((await f.api('POST',route,operator.token,{artwork:'data:image/svg+xml;base64,PHN2Zy8+'})).status,400);
+ const accepted=await f.api('POST',route,operator.token,{artwork:image});assert.equal(accepted.status,200,JSON.stringify(accepted.data));assert.equal(accepted.data.deck.artwork,image);
+ assert.equal((await f.api('POST',route,operator.token,{artwork:image})).status,200);
+ assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_operator_audit WHERE action='operator.artwork'").get().n,1);
+ const linked=await f.link(operator);assert.equal((await f.api('GET','/api/operator/deck',linked.token)).data.deck.artwork,image);
+ assert.equal((await f.api('GET','/api/operator/deck',ordinary.token)).status,404);
+ assert.equal((await f.api('GET','/api/cloud-save',operator.token)).data.save.revision,claim.data.save.revision);
+ assert.ok(!JSON.stringify((await f.api('GET','/api/cloud-save',operator.token)).data).includes(image));
+ assert.ok(!JSON.stringify((await f.api('GET','/api/public-status',null)).data).includes(image));
+});
