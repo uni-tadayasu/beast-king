@@ -33,6 +33,9 @@ jobs:
       - name: Test preserved saves in the packaged game with Chrome
         run: node scripts/rebuild-browser-smoke.mjs dist/client
 
+      - name: Test responsive layouts in the main game with Chrome
+        run: node scripts/layout-browser-smoke.mjs dist/client
+
       - name: Verify public delivery (read only, independent of build)
         if: always()
         continue-on-error: true

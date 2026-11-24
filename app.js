@@ -202,12 +202,12 @@ function cardPageLayout(edit=false){
  const desktop=window.matchMedia('(min-width:980px) and (pointer:fine)').matches;
  if(!desktop)return calculateCardLayout({desktop:false,edit});
  if(cardLayout?.page===page)return cardLayout;
- return calculateCardLayout({width:Math.min(window.innerWidth-56,1480)-(edit?310:0),height:window.innerHeight-(edit?310:350),desktop,edit});
+ return calculateCardLayout({width:Math.min(window.innerWidth-56,1480)-(edit?310:0),height:window.innerHeight-(edit?355:330),desktop,edit});
 }
 function syncCardViewport(){
  const result=$('#card-results');if(!result||!['collection','deck'].includes(page))return;
- const deckListEl=$('.deck-list');if(page==='deck'&&deckListEl&&window.matchMedia('(min-width:980px) and (pointer:fine)').matches){const rows=Math.max(1,Math.min(12,Math.floor((deckListEl.clientHeight-42)/32)));if(rows!==deckRowCount){deckRowCount=rows;deckListEl.innerHTML=deckList(deckSection==='special');}}
- const layout=calculateCardLayout({width:result.clientWidth,height:result.clientHeight,desktop:window.matchMedia('(min-width:980px) and (pointer:fine)').matches,edit:page==='deck'});
+ const deckListEl=$('.deck-list');if(page==='deck'&&deckListEl&&window.matchMedia('(min-width:980px) and (pointer:fine)').matches){const rows=Math.max(1,Math.min(12,Math.floor((deckListEl.clientHeight-46)/36)));if(rows!==deckRowCount){deckRowCount=rows;deckListEl.innerHTML=deckList(deckSection==='special');}}
+ const layout=calculateCardLayout({width:Math.max(120,result.clientWidth-12),height:Math.max(295,result.clientHeight-12),desktop:window.matchMedia('(min-width:980px) and (pointer:fine)').matches,edit:page==='deck'});
  if(!cardLayout||cardLayout.page!==page||Object.entries(layout).some(([key,value])=>cardLayout[key]!==value)){
   const before=cardLayout;cardLayout={...layout,page};
   if(!before||before.page!==page||before.pageSize!==layout.pageSize||before.cardWidth!==layout.cardWidth||before.columns!==layout.columns)result.innerHTML=cardResults(page==='deck');

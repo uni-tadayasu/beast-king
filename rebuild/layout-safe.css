@@ -1,0 +1,57 @@
+/* Rebuild's preserved save interface: use bounded scrollports, not clipping. */
+.shell{width:100%;height:100dvh;min-width:0;min-height:0;max-width:100%;grid-template-rows:auto auto minmax(0,1fr) auto;overflow:hidden}
+.shell>header,.shell>nav,.shell>footer{min-width:0;max-width:100%;height:auto;flex-wrap:wrap;gap:6px}
+.shell>header>*{min-width:0;max-width:100%}
+.shell .identity{flex-wrap:wrap;justify-content:flex-end;min-width:0}
+.shell .profile-mark{min-width:0;overflow-wrap:anywhere}
+.shell nav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.shell nav button{min-width:0;min-height:32px;height:auto;white-space:normal;overflow-wrap:anywhere;padding:5px 3px}
+.shell>main{min-width:0;min-height:0;overflow:auto;align-content:start;overscroll-behavior:contain}
+.shell>main>*{min-width:0;max-width:100%}
+.shell .home{grid-template-rows:auto;align-content:start}
+.shell .home-side{grid-template-rows:auto auto}
+.shell .hero,.shell .panel{min-width:0;height:auto;max-height:none}
+.shell .home-side>*,.shell .modes>*{min-width:0;max-width:100%}
+.shell .panel-head,.shell .shop-info,.shell .actions,.shell .pack-tabs,.shell .pagination,.shell .audio-controls{flex-wrap:wrap;min-width:0;gap:6px}
+.shell .catalog-layout,.shell .shop{grid-template-rows:auto auto auto;min-height:0;height:auto;align-content:start}
+.shell .card-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,135px),1fr));grid-template-rows:none;grid-auto-rows:auto;align-items:start;gap:8px;min-height:0;overflow:visible}
+.shell .card-grid .card{height:auto;min-height:0;min-width:0;width:100%;aspect-ratio:360/520}
+.shell .card .cardtop,.shell .card .cardbottom{min-width:0;max-width:100%}
+.shell .card .cardname{min-width:0;overflow:hidden;overflow-wrap:anywhere}
+.shell .card .effect{overflow:hidden;min-height:0}
+.shell .deck-layout{grid-template-columns:minmax(0,1fr) minmax(200px,280px);align-items:start}
+.shell .deck-list{min-width:0;grid-template-rows:auto minmax(0,1fr) auto;height:auto;max-height:none}
+.shell .deck-rows{max-height:340px;min-height:0;overflow:auto}
+.shell .deck-rows button{min-width:0;white-space:normal;overflow-wrap:anywhere}
+.shell .filters>*{min-width:0;max-width:100%;min-height:32px}
+.shell .arena{grid-template-columns:minmax(0,1fr) minmax(150px,20%);grid-template-rows:auto;align-items:start}
+.shell .table{min-width:0;min-height:0;grid-template-rows:auto auto auto auto auto auto;align-content:start}
+.shell .zones,.shell .hand{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto;gap:6px;height:auto;min-height:0;align-items:center}
+.shell .zones>.card,.shell .hand>.card,.shell .zones>.slot,.shell .hand>.slot{width:100%;min-width:0;min-height:0;max-width:110px;height:auto;max-height:none;aspect-ratio:360/520;justify-self:center}
+.shell .player-strip{grid-template-columns:minmax(0,1fr) auto;grid-auto-rows:auto;gap:5px;height:auto}
+.shell .player-strip>*{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.shell .side .log{max-height:300px;overflow:auto}
+.shell .side .actions{display:flex;flex-wrap:wrap}
+dialog{width:min(650px,calc(100vw - 20px));max-width:calc(100vw - 20px);max-height:calc(100dvh - 20px);overflow:auto}
+dialog .detail{grid-template-columns:minmax(0,200px) minmax(0,1fr)}
+dialog .detail section,dialog .detail .preview{min-width:0;max-width:100%;height:auto;min-height:0;overflow-wrap:anywhere}
+dialog .detail .preview .card{aspect-ratio:360/520;height:auto;min-height:0}
+dialog button,dialog input,dialog select{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+@media(max-width:760px){
+ .shell .deck-layout,.shell .home,.shell .arena{grid-template-columns:minmax(0,1fr)}
+ .shell .deck-layout>.deck-list{grid-row:1}
+ .shell .card-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,125px),1fr))}
+ .shell .side .actions{position:static}
+}
+@media(max-width:560px){
+ .shell nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .shell>header{display:grid;grid-template-columns:minmax(0,1fr)}
+ .shell .identity{justify-content:space-between}
+ .shell .card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ dialog .detail{grid-template-columns:1fr}
+ dialog .detail .preview{width:min(60vw,200px);margin:auto}
+ .onboard .origins,.onboard .starter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-height:500px) and (min-width:761px){
+ .shell .zones>.card,.shell .hand>.card,.shell .zones>.slot,.shell .hand>.slot{max-width:68px}
+}
