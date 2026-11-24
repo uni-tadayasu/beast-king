@@ -5,7 +5,7 @@
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
 import {createReadStream} from 'node:fs';
-import {stat} from 'node:fs/promises';
+import {mkdir,stat,writeFile} from 'node:fs/promises';
 import {resolve,sep,extname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {launchSmokeChrome,stopSmokeChrome} from './chrome-smoke-launch.mjs';
@@ -190,7 +190,7 @@ try{
      await selectShopPane('details');
      await assertShopVisible('.pack-offer>p:not([class]),.pack-assurance,.pack-collection,.pack-offer>[data-action=pack-odds]',4,pack+' complete pack description and collection details',true);
      const packContent=await evaluate(`(async()=>{
-      const {getPack}=await import('./shop.js?v=20261124-32'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
+      const {getPack}=await import('./shop.js?v=20261125-33'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
       return {description:document.querySelector('.pack-offer>p:not([class])').textContent===pack.description,purchase:buy.dataset.pack===pack.id&&buy.textContent.includes(pack.cost+'秘宝で'+pack.size+'枚'),guarantee:document.querySelector('.pack-assurance').textContent.includes('レア以上を1枚保証'),collection:document.querySelector('.pack-collection').textContent.includes(pack.cardCount.toLocaleString('ja-JP')+'種類')};
      })()`);
      assert.deepEqual(packContent,{description:true,purchase:true,guarantee:true,collection:true},pack+' complete supply information');
@@ -210,7 +210,7 @@ try{
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
   // Long scheduled operator content is rendered locally; never sent to live players.
-  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261124-32');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
+  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261125-33');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
   // Real native news dialog, not a synthetic layout. Every notice must
   // appear exactly once, fully within the viewport and outside the controls.
   await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);
@@ -436,6 +436,76 @@ try{
   assert.deepEqual(tracks.rows,['1','2','4','5'],width+'x'+height+' public zones have distinct rows');assert.deepEqual(tracks.columns,['2','2','2','2'],width+'x'+height+' zone column');assert.equal(tracks.hand,logical.height<=570&&logical.width>logical.height?'1':'6');
   await check(width+'x'+height+' duel',['.duel-top-actions>button','.arena>.duelist,.arena>.field-row,.arena>.hand-section,.arena>.zone-strip,.midline>.turn-label,.midline>.end-turn,.midline>.arcana-zone-row,.own-zone-row>.arcana-zone-row,.own-zone-row>.zone-strip','.hand-cards>.hand-card']);
  }
+ // These fixtures use the smoke test's temporary browser profile only. Move
+ // owned cards into the field so both saved pools remain exactly 32 + 4.
+ // Resume, settings, rerender and a real attack exercise the production scene.
+ const summonSave=await evaluate('localStorage.getItem("beast-king-v6")');
+ async function assertSummonScene(expected,label){
+  await until(()=>evaluate(`(()=>{const c=document.querySelector('.bk-summon-canvas');return c&&Number(c.dataset.summonCount)===${expected.length}&&document.querySelectorAll('.field-slot[data-summon-ready="true"]').length===${expected.length}})()`),label+' loaded summon artwork',15000);
+  const result=await evaluate(`(async()=>{
+   const {getCard}=await import('./catalog.js?v=20261125-33');
+   const {resolveSummonArt}=await import('./summon-art.js?v=20261125-33');
+   const canvas=document.querySelector('.bk-summon-canvas'),rect=layoutRect(canvas),style=getComputedStyle(canvas);
+   const slots=[...document.querySelectorAll('.field-slot[data-summon-ready="true"]')].map(slot=>{
+    const unit=slot.querySelector('.field-unit'),painting=unit.querySelector('.summon-card-floor .card-art');
+    const background=painting&&getComputedStyle(painting).backgroundImage;
+    const actual=background?.match(/^url\\(["']?(.*?)["']?\\)$/)?.[1];
+    const source=resolveSummonArt(getCard(unit.dataset.cardId));
+    return {uid:unit.dataset.uid,cardId:unit.dataset.cardId,owner:Number(unit.dataset.player),sameCard:slot.dataset.cardId===unit.dataset.cardId&&source?.cardId===unit.dataset.cardId,originalSource:!!actual&&!!source&&new URL(actual,document.baseURI).pathname===new URL(source.src,document.baseURI).pathname};
+   });
+   return {canvases:document.querySelectorAll('.bk-summon-canvas').length,count:Number(canvas.dataset.summonCount),renderer:canvas.closest('.arena')?.dataset.summonRenderer,visible:rect.width>0&&rect.height>0&&canvas.width>0&&canvas.height>0&&style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)>0,pointerEvents:style.pointerEvents,slots};
+  })()`);
+  assert.equal(result.canvases,1,label+' has one shared summon canvas');
+  assert.equal(result.count,expected.length,label+' keeps every living field creature visible');
+  assert.ok(['webgl','canvas'].includes(result.renderer),label+' has a working renderer');
+  assert.equal(result.visible,true,label+' keeps the scene visible');
+  assert.equal(result.pointerEvents,'none',label+' does not cover battle controls');
+  assert.deepEqual(result.slots.map(({uid,cardId,owner})=>({uid,cardId,owner})).sort((a,b)=>a.uid.localeCompare(b.uid)),[...expected].sort((a,b)=>a.uid.localeCompare(b.uid)),label+' mirrors both public fields');
+  assert.ok(result.slots.every(slot=>slot.sameCard&&slot.originalSource),label+' uses each slot’s exact published card illustration');
+ }
+ for(const {width,height,mobile} of [{width:1366,height:768,mobile:false},{width:390,height:844,mobile:true}]){
+  // Let the previous UI action finish its debounced save before replacing the
+  // isolated fixture; pagehide otherwise flushes that older game on reload.
+  await delay(250);
+  const expected=await evaluate(`(async()=>{
+   const {newGame}=await import('./engine.js?v=20261125-33');
+   const {getCard}=await import('./catalog.js?v=20261125-33');
+   const saved=JSON.parse(${JSON.stringify(summonSave)});
+   const battle=newGame({playerDeck:saved.deckIds,cpuDeck:saved.deckIds,playerSpecialDeck:saved.specialIds,cpuSpecialDeck:saved.specialIds,seed:33});
+   for(const [owner,player] of battle.players.entries())for(let i=0;i<2;i++){
+    const pile=player.deck.some(id=>getCard(id).type==='beast')?player.deck:player.hand;
+    const index=pile.findIndex(id=>getCard(id).type==='beast');if(index<0)throw Error('Fixture needs two owned beasts');
+    const card=getCard(pile.splice(index,1)[0]);
+    player.field.push({uid:'u'+battle.nextUid++,cardId:card.id,owner,attack:owner===0?1200:card.attack,hp:owner===0?card.hp:100,maxHp:owner===0?card.hp:100,ready:true,keywords:[...card.keywords]});
+   }
+   saved.game=battle;saved.motion=true;saved.sound=false;saved.bgm=false;
+   localStorage.setItem('beast-king-v6',JSON.stringify(saved));
+   return battle.players.flatMap((player,owner)=>player.field.map(unit=>({uid:unit.uid,cardId:unit.cardId,owner})));
+  })()`);
+  // A hash-only navigation would retain the old in-memory game. A fresh load
+  // at #duel opens Home and restores this fixture through the real save loader.
+  await send('Page.reload',{ignoreCache:true});await waitElement('.home-resume');
+  await viewport(width,height,mobile);await click('[data-action=resume]');await waitElement('.duel-shell');
+  const label=width+'x'+height+' persistent summons';
+  await assertSummonScene(expected,label);
+  const screenshot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+  await mkdir('artifacts/layout',{recursive:true});
+  await writeFile(`artifacts/layout/summons-${width}x${height}.png`,Buffer.from(screenshot.data,'base64'));
+  await click('[data-action=toggle-hand-effects]');await click('[data-action=toggle-hand-effects]');
+  await assertSummonScene(expected,label+' after rerender');
+  await click('.duel-top [data-action=settings]');await click('[data-action=settings-tab][data-tab=motion]');
+  assert.equal(await evaluate('document.querySelector("[data-action=motion]").getAttribute("aria-checked")'),'true');
+  await click('[data-action=motion]');await click('.modal-close');
+  await assertSummonScene(expected,label+' with animation disabled');
+  assert.equal(await evaluate('document.querySelector(".bk-summon-canvas").dataset.summonMotion'),'off',label+' stops movement rather than hiding creatures');
+  const attacker=expected.find(unit=>unit.owner===0);
+  await click('.field-unit[data-player="0"][data-uid="'+attacker.uid+'"]');
+  const target=await evaluate('document.querySelector(".field-unit.targetable[data-player=\\"1\\"]")?.dataset.uid');
+  assert.ok(target,label+' has a legal enemy target');
+  await click('.field-unit[data-player="1"][data-uid="'+target+'"]');
+  await until(()=>evaluate('document.querySelectorAll(".field-unit").length===3'),label+' resolves the attack');
+  await assertSummonScene(expected.filter(unit=>unit.uid!==target),label+' after a creature leaves the field');
+ }
  for(const path of ['about.html','rebuild/about.html']){
   await send('Page.navigate',{url:url+path});await waitElement('body.about-page');await waitElement('.bk-fit-article .bk-fit-target[data-fit-scale]');await waitElement('[data-guide-select]:not(:disabled)');
   const chapterCount=await evaluate('document.querySelectorAll("#about-main > section").length');assert.ok(chapterCount>=4,path+' has complete chapter navigation');
@@ -455,7 +525,7 @@ try{
   }
  }
  assert.deepEqual(exceptions,[],'No uncaught browser errors');
- console.log('Layout smoke passed: entry, home, deck, collection, shop, rules, solo, practice, room, rank, details, battle and every chapter in both guides; eight desktop/mobile viewports including portrait touch landscape fallback; readable account workspaces, conflict/code/device pages and profile/settings/analysis dialogs');
+ console.log('Layout smoke passed: entry, home, deck, collection, shop, rules, solo, practice, room, rank, details, battle and every chapter in both guides; eight desktop/mobile viewports including portrait touch landscape fallback; readable account workspaces, conflict/code/device pages and profile/settings/analysis dialogs; persistent original-art summons, motion-off, rerenders and creature removal on desktop/mobile');
 }finally{
  for(const p of pending.values())clearTimeout(p.timer);
  server.close();server.closeAllConnections();

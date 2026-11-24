@@ -425,7 +425,7 @@ export function createOnlineWorker({now=()=>Date.now()}={}){
       if(path==='/health'||path==='/api/health'){
         if(method!=='GET')problem(405,'method_not_allowed','この操作は利用できません。');
         await first(db,'SELECT id FROM bk_profiles LIMIT 1');
-        return respond({ok:true,service:'beast-king-online',serverTime:time,contentRevision:'20261124-32'});
+        return respond({ok:true,service:'beast-king-online',serverTime:time,contentRevision:'20261125-33'});
       }
       if(path==='/api/profile'){
         if(!['GET','POST'].includes(method))problem(405,'method_not_allowed','この操作は利用できません。');

@@ -1,7 +1,7 @@
 // Entitlement transport: uses an existing authenticated account session.
 // Never store a grant, activation code, or entitlement in the local save.
-import {ONLINE_API_BASE,ONLINE_STORAGE_KEY} from '../online.js?v=20261124-32';
-import {getCard,SECOND_REGALIA_ID,validateDeck,validateSpecialDeck} from './catalog.js?v=20261124-32';
+import {ONLINE_API_BASE,ONLINE_STORAGE_KEY} from '../online.js?v=20261125-33';
+import {getCard,SECOND_REGALIA_ID,validateDeck,validateSpecialDeck} from './catalog.js?v=20261125-33';
 export function createOperatorClient({storage=globalThis.localStorage,fetchImpl=globalThis.fetch?.bind(globalThis)}={}){
  const credential=()=>{
   try{

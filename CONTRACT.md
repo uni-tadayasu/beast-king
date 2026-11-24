@@ -2,7 +2,14 @@
 
 Public origin: https://www.beast-king.com/ . Preserve the repository CNAME and existing GitHub Pages main/(root) publication. Root owns app.js, all shared UI/CSS, integration and deployment; catalog agent owns catalog.js, catalog tests, about.html, README, this contract and online.js/client tests, with index.html description/SEO edits delegated only when requested; engine agent owns engine.js, engine tests and the online Worker/API tests; art agent owns assets. Do not publish temporary QA pages.
 
-## Current r31 additions
+## Current r33 summon display
+
+- Living ordinary and fusion beasts on either player's field remain projected above their cards for as long as they occupy the field. Match each instance by owner and UID, preserve it through rerenders, and remove it when it leaves the field. Restored battles display the current creatures without replaying their summons.
+- Use the actual card illustration, including its reviewed atlas crop or approved replacement, to preserve the creature's appearance and colours. This is a shallow original-art **2.5D projection**, not a reconstructed full 360-degree creature mesh. Do not replace a card with a generic animal model or invent unseen parts of its body.
+- The card's currently approved DOM artwork is the authority for private Regalia imagery. Respect owner/opponent and pending-image scopes, and key texture reuse by the approved source and crop. Never publish private artwork or infer it from a card ID alone. Pending or unavailable artwork retains the ordinary card display.
+- Public summon, attack, damage, recovery and activation changes can animate the projection. Disabling animation or requesting reduced motion preserves the static creatures; hidden tabs stop movement. Rendering is non-interactive and must preserve card names, stats, effect inspection and target selection. No gameplay state or hidden hand/deck information belongs in summon snapshots.
+
+## Preserved r31 additions
 
 - The current main catalogue has **4,721** cards: the unchanged 4,625-card r30 inventory plus **BK05 幻彩の夢界, 96 cards**. The four historical base sets remain 1,152 cards each; the 17 Regalia supports remain in their existing BK01–BK04 assignments. The historical base-set counts below describe those preserved pools.
 - BK05 contains 48 ordinary beasts, 24 miracles, 16 gimmicks and 8 fusions. Its IDs begin at B2056/M1031/G1027/F0515, with indices 4626–4721. Six ordinary origins have 16 cards each; ordinary beasts have 24 attack and 24 defense models. No new King-origin card is added.

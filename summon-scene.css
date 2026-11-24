@@ -1,0 +1,47 @@
+/* One non-interactive canvas serves all eight public summon slots. Card
+   controls remain in front; ordinary cards stay visible until each painting loads. */
+.summon-card-floor{display:contents}
+.summon-anchor{position:absolute;inset:3% -12% 31%;display:block;pointer-events:none}
+.bk-summon-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none!important;user-select:none;touch-action:none}
+html.bk-fit body .duel-shell[data-field] .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"])>.field-row{z-index:3}
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"]{background:transparent!important;border-color:transparent;box-shadow:none}
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit{
+ background:transparent!important;border-color:transparent;box-shadow:none;overflow:visible;
+}
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .summon-card-floor{
+ display:block;position:absolute;left:9%;right:9%;top:53%;height:27%;overflow:hidden;
+ transform:perspective(320px) rotateX(56deg);transform-origin:50% 50%;
+ border:2px solid #99d8e9b5;border-radius:5px;background:#081c2c;
+ box-shadow:0 4px 0 #091422,0 5px 0 #74b5cb63,0 10px 15px #000b,0 0 15px #61e5f02e;
+}
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit .summon-card-floor .card-art.individual-art{
+ inset:0!important;width:100%!important;height:100%!important;aspect-ratio:auto!important;
+ transform:none!important;z-index:0;opacity:.82;
+}
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit .summon-card-floor .card-art:after{
+ background:linear-gradient(140deg,#e9fbff21,transparent 35%,#010b1a7d);
+}
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit .summon-card-floor .card-finish{inset:0;height:100%;aspect-ratio:auto}
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit.ready .summon-card-floor{
+ border-color:#a5f7dc;box-shadow:0 4px 0 #091422,0 5px 0 #82dbbd78,0 10px 15px #000b,0 0 17px #55f5cd47;
+}
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit.selected .summon-card-floor,
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit.targetable .summon-card-floor{
+ border-color:#fff2ae;box-shadow:0 4px 0 #3a2510,0 5px 0 #f9d482c4,0 10px 15px #000b,0 0 21px #f6ce6885;
+}
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit.selected,
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit.targetable{
+ outline:2px solid #f9dfa0;outline-offset:2px;border-color:#f6d68170;box-shadow:inset 0 0 16px #ffe1a00d;
+}
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit .unit-name,
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit .unit-stats{
+ z-index:5;background:#061724f2;box-shadow:0 1px 4px #0008;
+}
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit .unit-badge{
+ z-index:5;background:#091b29e8;border-color:#8cbdce52;
+}
+html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .field-unit .unit-guard{z-index:6}
+@media(max-height:480px){
+ .summon-anchor{inset:2% -14% 34%}
+ html.bk-fit body .duel-shell .arena:is([data-summon-renderer="webgl"],[data-summon-renderer="canvas"]) .field-slot[data-summon-ready="true"] .summon-card-floor{top:49%;height:27%;border-width:1px}
+}

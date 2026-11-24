@@ -117,8 +117,9 @@ function boot({ hooks = {}, stored = {} } = {}) {
     setPublicNotice() {},
     createPresenceController: () => ({start:async()=>{},stop:async()=>{}}),
     createMusicController: () => ({ sync() {}, unlock() {}, getState: () => ({ scene: 'menu', blocked: false }) }),
+    createSummonScene: () => ({sync() {}, react() {}, destroy() {}}),
     createExperienceController: () => ({
-      sync() {}, screen() {}, observeBattle() {}, sound() {}, settingsMarkup: () => '',
+      sync() {}, screen() {}, observeBattle() {}, sound() {}, settingsMarkup: () => '', getPreferences: () => ({intensity:'full'}),
       openPack(values) { fxCalls.push({method:'openPack',values,saved:JSON.parse(storage.get('beast-king-v6')||'null')}); return hooks.openPackEffect?.(values) || Promise.resolve(); },
       revealCards(container,pulls) { fxCalls.push({method:'revealCards',pulls:plain(pulls)}); },
     }),
