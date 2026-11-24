@@ -1,5 +1,7 @@
 # Painted-ink art direction
 
+This document records the original BK01/BK02 painted-ink revision. Its 144 redraws and 2,304-card scope describe that revision; the current four-pack inventory and BK03/BK04 production records are documented in [ARTWORK.md](ARTWORK.md).
+
 The 2026-11-24 presentation update uses deliberate colored contours, broad
 paint shapes, warm highlights and blue-violet shadows. Creature anatomy,
 silhouette, individual motifs and card identity must survive any art change.

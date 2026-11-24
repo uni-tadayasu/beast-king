@@ -1,0 +1,994 @@
+{
+  "id": "bk04-atlas-32",
+  "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+  "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+  "sourceSha256": "be152a2353cab7c3aa7137eb694e1293467606834f0629e4797fd7de24e2ea02",
+  "nativeMaster": "exec-2c305ca4-94de-4cb8-9176-4e122ec07c22.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "9117ee99a08e39ba2b583ea35ab7ecd738a8c82fb8bd951f1bfd410305f39c46",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "M0795",
+    "M0859",
+    "M0923",
+    "M0987",
+    "M0796",
+    "M0860",
+    "M0924",
+    "M0988",
+    "M0797",
+    "M0861",
+    "M0925",
+    "M0989",
+    "M0798",
+    "M0862",
+    "M0926",
+    "M0990",
+    "M0799",
+    "M0863",
+    "M0927",
+    "M0991",
+    "M0800",
+    "M0864",
+    "M0928",
+    "M0992"
+  ],
+  "cards": [
+    {
+      "id": "M0795",
+      "name": "星巡・環紋の返歌",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "orbit",
+      "origin": "mountain",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in turquoise cascades through an ancestral sanctuary; front three-quarter view; a wide sweeping crescent. Tiny satellite tortoise with a cratered moon-shell figures establish scale and story",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 26,
+        "role": 2,
+        "tier": 3,
+        "angle": "front three-quarter view",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "a3a77ea7bcc9db76b1f59a488b13073fc9e831d97b5efaa6b2d1ba04265a05de",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0859",
+      "name": "残響・環紋の返歌",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "echo",
+      "origin": "flower",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a coral garden of floating golden terraces; full-body diagonal action view; a wide sweeping crescent. Tiny amethyst crystal fox figures establish scale and story",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 26,
+        "role": 2,
+        "tier": 3,
+        "angle": "full-body diagonal action view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "a5dad80830e6db21d00883fc9144c88ff4b20823f205b9f4cd18e6850b00d566",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0923",
+      "name": "命誓・環紋の返歌",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "vow",
+      "origin": "seed",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a violet moonlit grove with giant flowering roots; rear three-quarter view with visible expressive face; a wide sweeping crescent. Tiny red fox with wing-shaped tails figures establish scale and story",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 26,
+        "role": 2,
+        "tier": 3,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "3102e737bb5ea78af37c7ff095f59414672465909c126ae1f2863b4095ec478a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0987",
+      "name": "封機・環紋の返歌",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "forge",
+      "origin": "mountain",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a shattered crystal canyon crossed by a silver stream; close dynamic view with the entire main silhouette inside the tile; a wide sweeping crescent. Tiny bronze tortoise with interlocking gear shell figures establish scale and story",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 26,
+        "role": 2,
+        "tier": 3,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "5c0a1249d15f36eb135e4944876df5c7e210e392c088aa1053e192696c077f3a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0796",
+      "name": "星巡・環紋の天幕",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "orbit",
+      "origin": "river",
+      "subject": "a dimensional light doorway unfolding within a ruined cathedral, happening in a shattered crystal canyon crossed by a silver stream; full-body diagonal action view; a wide sweeping crescent. Tiny celestial eagle-lion griffin figures establish scale and story",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 27,
+        "role": 3,
+        "tier": 3,
+        "angle": "full-body diagonal action view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "a52bdc0862031044caba2b24bf34de1d7e13f598618366c2817a23fba76f3813",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0860",
+      "name": "残響・環紋の天幕",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "echo",
+      "origin": "tree",
+      "subject": "a dimensional light doorway unfolding within a ruined cathedral, happening in a vast cloud citadel seen from a hanging bridge; rear three-quarter view with visible expressive face; a wide sweeping crescent. Tiny antlered leonine memory spirit figures establish scale and story",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 27,
+        "role": 3,
+        "tier": 3,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "96de31642ccb2c7cd0fbef52a8b754ce4d87d89814be29956d803772099dabba",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0924",
+      "name": "命誓・環紋の天幕",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "vow",
+      "origin": "grass",
+      "subject": "a dimensional light doorway unfolding within a ruined cathedral, happening in sunken library arches lit by luminous fish; close dynamic view with the entire main silhouette inside the tile; a wide sweeping crescent. Tiny gold-maned lion spirit with crimson oath threads figures establish scale and story",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 27,
+        "role": 3,
+        "tier": 3,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "e63a8bab47ef2f9dd2785f6bf6207cfde7e4a99355db9babf508dd2015ef8190",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0988",
+      "name": "封機・環紋の天幕",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "forge",
+      "origin": "river",
+      "subject": "a dimensional light doorway unfolding within a ruined cathedral, happening in a copper and jade forge carved into living stone; wide cinematic view with the creature large in the foreground; a wide sweeping crescent. Tiny four-armed sealed reliquary titan figures establish scale and story",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 27,
+        "role": 3,
+        "tier": 3,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "31065deddf92609ea53dc913b51e56d4302093d9676ae242bd9bea77e7e23c46",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0797",
+      "name": "星巡・環紋の銘文",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "orbit",
+      "origin": "seed",
+      "subject": "several falling stars converging into a great luminous tide, happening in a copper and jade forge carved into living stone; rear three-quarter view with visible expressive face; a wide sweeping crescent. Tiny sky dragon with a long elegant sapphire body figures establish scale and story",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 28,
+        "role": 4,
+        "tier": 3,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "27fb5ca1c69550f02d0c3f39045c23ae43881f2469eff586745d5e98d9943a6e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0861",
+      "name": "残響・環紋の銘文",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "echo",
+      "origin": "mountain",
+      "subject": "several falling stars converging into a great luminous tide, happening in a ruined ivory observatory above an ocean of stars; close dynamic view with the entire main silhouette inside the tile; a wide sweeping crescent. Tiny long-necked purple memory dragon figures establish scale and story",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 28,
+        "role": 4,
+        "tier": 3,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "3024f0e8ba8dcf69bec03d618c5a8e0604fb9938b3eeb07e3db95eba2e253e64",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0925",
+      "name": "命誓・環紋の銘文",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "vow",
+      "origin": "flower",
+      "subject": "several falling stars converging into a great luminous tide, happening in turquoise cascades through an ancestral sanctuary; wide cinematic view with the creature large in the foreground; a wide sweeping crescent. Tiny ivory-and-crimson oath dragon figures establish scale and story",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 28,
+        "role": 4,
+        "tier": 3,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "cce953a6d6f743e0dfe4412720eb0a7d8075c15bc2fca45f143fc39d1988325b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0989",
+      "name": "封機・環紋の銘文",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "forge",
+      "origin": "seed",
+      "subject": "several falling stars converging into a great luminous tide, happening in a coral garden of floating golden terraces; low three-quarter view; a wide sweeping crescent. Tiny sinuous copper-and-ivory segmented dragon figures establish scale and story",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 28,
+        "role": 4,
+        "tier": 3,
+        "angle": "low three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "0d2ca32bbc244ffb319500ba9720792f833920da13e277c65c7ef5eba433bb8c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0798",
+      "name": "星巡・環紋の再起",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "orbit",
+      "origin": "grass",
+      "subject": "a spiral of healing petals rebuilding ancient tree roots, happening in a coral garden of floating golden terraces; close dynamic view with the entire main silhouette inside the tile; a wide sweeping crescent. Tiny cosmic stag with constellation antlers figures establish scale and story",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 29,
+        "role": 5,
+        "tier": 3,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "fbb7d0fb285a38423867d3c76fc3a2a538eb9c118c4b18faeed6e67ccc1682d4",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0862",
+      "name": "残響・環紋の再起",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "echo",
+      "origin": "river",
+      "subject": "a spiral of healing petals rebuilding ancient tree roots, happening in a violet moonlit grove with giant flowering roots; wide cinematic view with the creature large in the foreground; a wide sweeping crescent. Tiny violet ghost wolf figures establish scale and story",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 29,
+        "role": 5,
+        "tier": 3,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "e624541b54f3507968adbaaee79b5389d90289faca51ed98e2a303b3f775a429",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0926",
+      "name": "命誓・環紋の再起",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "vow",
+      "origin": "tree",
+      "subject": "a spiral of healing petals rebuilding ancient tree roots, happening in a shattered crystal canyon crossed by a silver stream; low three-quarter view; a wide sweeping crescent. Tiny rose-antlered crimson stag figures establish scale and story",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 29,
+        "role": 5,
+        "tier": 3,
+        "angle": "low three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "340e32d90b5ca8150bc2ca446a1030979cedc7f2741cfeb31110711ffae9ed33",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0990",
+      "name": "封機・環紋の再起",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "forge",
+      "origin": "grass",
+      "subject": "a spiral of healing petals rebuilding ancient tree roots, happening in a vast cloud citadel seen from a hanging bridge; side view with the face turned toward the viewer; a wide sweeping crescent. Tiny copper plated crab with articulated jade claws figures establish scale and story",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 29,
+        "role": 5,
+        "tier": 3,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "16090e7ece622457b4b91cc22b8df4d0e339d70f859183940dded0b328aed207",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0799",
+      "name": "星巡・環紋の流転",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "orbit",
+      "origin": "flower",
+      "subject": "ribbons of elemental energy weaving a protective canopy over beasts, happening in a vast cloud citadel seen from a hanging bridge; wide cinematic view with the creature large in the foreground; a wide sweeping crescent. Tiny great astral whale with winglike fins figures establish scale and story",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 30,
+        "role": 6,
+        "tier": 3,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "3473b24e669d4e20ec7695d11fa1d77cbab435d2d4ed5117e8f86348866462f7",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0863",
+      "name": "残響・環紋の流転",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "echo",
+      "origin": "seed",
+      "subject": "ribbons of elemental energy weaving a protective canopy over beasts, happening in sunken library arches lit by luminous fish; low three-quarter view; a wide sweeping crescent. Tiny silver patterned memory moth figures establish scale and story",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 30,
+        "role": 6,
+        "tier": 3,
+        "angle": "low three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "e6392f51266931b7e35a782c933818a2e9fa4afd8926f797edd5afb33bdff2e4",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0927",
+      "name": "命誓・環紋の流転",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "vow",
+      "origin": "mountain",
+      "subject": "ribbons of elemental energy weaving a protective canopy over beasts, happening in a copper and jade forge carved into living stone; side view with the face turned toward the viewer; a wide sweeping crescent. Tiny ivory tiger with crimson crystal stripes figures establish scale and story",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 30,
+        "role": 6,
+        "tier": 3,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "889c8630d70f5dc3f6fa0d2ff4bf45ad5b0d2fff7f88b74a46efb0fc83e763d2",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0991",
+      "name": "封機・環紋の流転",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "forge",
+      "origin": "flower",
+      "subject": "ribbons of elemental energy weaving a protective canopy over beasts, happening in a ruined ivory observatory above an ocean of stars; dramatic elevated three-quarter view; a wide sweeping crescent. Tiny bronze ring-horned bull figures establish scale and story",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 30,
+        "role": 6,
+        "tier": 3,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "1c041fd0a6745a4ea6fc437afdd8b15727411729638371616b388c454c788762",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0800",
+      "name": "星巡・環紋の祈環",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "orbit",
+      "origin": "tree",
+      "subject": "a crown-shaped aurora reuniting two distant floating islands, happening in a ruined ivory observatory above an ocean of stars; low three-quarter view; a wide sweeping crescent. Tiny star owl with broad feathered wings figures establish scale and story",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 31,
+        "role": 7,
+        "tier": 3,
+        "angle": "low three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "c3fc2960c5c9e304f697c1a40f7066cc7cd3eac241764991e68c28c30623fce2",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0864",
+      "name": "残響・環紋の祈環",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "echo",
+      "origin": "grass",
+      "subject": "a crown-shaped aurora reuniting two distant floating islands, happening in turquoise cascades through an ancestral sanctuary; side view with the face turned toward the viewer; a wide sweeping crescent. Tiny mirror-feathered crane figures establish scale and story",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 31,
+        "role": 7,
+        "tier": 3,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "1cf89f87f76cf594be6c846e639c08d4ba0208dc29487000198be0ea2d24b425",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0928",
+      "name": "命誓・環紋の祈環",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "vow",
+      "origin": "river",
+      "subject": "a crown-shaped aurora reuniting two distant floating islands, happening in a coral garden of floating golden terraces; dramatic elevated three-quarter view; a wide sweeping crescent. Tiny scarlet eagle with gilded wings figures establish scale and story",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 31,
+        "role": 7,
+        "tier": 3,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "3e1f036fffc62ca0f99518244b653705411a7c386191a62f8d4b9abfa52f65a3",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0992",
+      "name": "封機・環紋の祈環",
+      "setId": "BK04",
+      "type": "miracle",
+      "family": "forge",
+      "origin": "tree",
+      "subject": "a crown-shaped aurora reuniting two distant floating islands, happening in a violet moonlit grove with giant flowering roots; front three-quarter view; a wide sweeping crescent. Tiny brass key-winged bird figures establish scale and story",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 31,
+        "role": 7,
+        "tier": 3,
+        "angle": "front three-quarter view",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-32.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "17931b4dd30ad5f7406c41f99a9132eeb19ebf30e96533fb2b5ecda09378fcf4",
+      "cellSha256": "e5a346620c352a6f1b56546d388dc8f8c195d23786f0bd4d54643e9edd2cd145",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

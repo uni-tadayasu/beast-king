@@ -24,7 +24,7 @@ html[data-card-art-direction='painted-ink'] :is(.card-art.individual-art,.starte
 }
 /* These images were genuinely redrawn with inked contours and cel shadows.
    Additional contour extraction would only thicken their existing linework. */
-html[data-card-art-direction='painted-ink'] :is(.card-art.individual-art,.starter-box-art,.pack-illustration,.art-well>.art)[style*='illustration-update-']::before {
+html[data-card-art-direction='painted-ink'] :is(.card-art.individual-art,.starter-box-art,.pack-illustration,.art-well>.art):is([style*='illustration-update-'],[style*='assets/design-v3/cards/'])::before {
  filter: saturate(1.025) contrast(1.015);
 }
 /* Regalia's public printing and authenticated illustration retain their exact

@@ -96,6 +96,7 @@ export function mountLandscapeGate({doc = globalThis.document, win = globalThis.
     doc.body.dataset.virtualLandscape = String(next.rotated);
     doc.body.dataset.layoutSize = next.height < 650 || next.width < 1000 ? 'compact' : 'wide';
     doc.body.dataset.layoutShort = String(next.height <= 540);
+    doc.body.dataset.layoutTight = String(next.height <= 400);
     doc.body.dataset.layoutWidth = next.width >= 1100 ? 'wide' : next.width >= 800 ? 'medium' : 'small';
     doc.body.classList.remove('needs-landscape');
     if (changed) win.dispatchEvent(new win.CustomEvent('beastking:viewport', {detail: {...next}}));

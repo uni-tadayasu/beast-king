@@ -1,0 +1,994 @@
+{
+  "id": "bk04-atlas-40",
+  "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+  "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+  "sourceSha256": "43d32128e2a7b46cbfce63699b68f239a2aa19ac45009eb3e5bd164fa87218e5",
+  "nativeMaster": "exec-056e7a6e-f940-4270-93a9-083a28e69953.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "ebfb97226b9f26a2cff782630d3bc731621f7aa6dc05b36f0bf6f450f5244dfc",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "G0779",
+    "G0843",
+    "G0907",
+    "G0971",
+    "G0780",
+    "G0844",
+    "G0908",
+    "G0972",
+    "G0781",
+    "G0845",
+    "G0909",
+    "G0973",
+    "G0782",
+    "G0846",
+    "G0910",
+    "G0974",
+    "G0783",
+    "G0847",
+    "G0911",
+    "G0975",
+    "G0784",
+    "G0848",
+    "G0912",
+    "G0976"
+  ],
+  "cards": [
+    {
+      "id": "G0779",
+      "name": "星巡・旅路の共鳴旗",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "orbit",
+      "origin": "flower",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in a copper and jade forge carved into living stone; rear three-quarter view with visible expressive face; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 10,
+        "role": 2,
+        "tier": 1,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "aad184ec333bfb427e571f67a30973e80c37c34ecf31ef0c46938040566e5152",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0843",
+      "name": "残響・旅路の共鳴旗",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "echo",
+      "origin": "seed",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in a ruined ivory observatory above an ocean of stars; close dynamic view with the entire main silhouette inside the tile; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 10,
+        "role": 2,
+        "tier": 1,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "68e34a1ea309f2cb3bb43cc9abf510a28908cf3bd740e8094e8cf30b50415c66",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0907",
+      "name": "命誓・旅路の共鳴旗",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "vow",
+      "origin": "mountain",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in turquoise cascades through an ancestral sanctuary; wide cinematic view with the creature large in the foreground; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 10,
+        "role": 2,
+        "tier": 1,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "a8326d320e539314f18d5027969655f5a877619571a2bd5905d72046838fcf88",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0971",
+      "name": "封機・旅路の共鳴旗",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "forge",
+      "origin": "flower",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in a coral garden of floating golden terraces; low three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 10,
+        "role": 2,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "c63b2a0dd91053b618107e4db8b46c0adcfe4904b99d73269c08951f9f02a9ee",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0780",
+      "name": "星巡・旅路の再生炉",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "orbit",
+      "origin": "tree",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a coral garden of floating golden terraces; close dynamic view with the entire main silhouette inside the tile; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "f4e56869678efb94fc90e4d2e9a2b66ee195d2edbc0098f5de04d62d9b76d9e7",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0844",
+      "name": "残響・旅路の再生炉",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "echo",
+      "origin": "grass",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a violet moonlit grove with giant flowering roots; wide cinematic view with the creature large in the foreground; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "84d58f7645644dd40dc4ff037c8885283738fb4e86fb3301c24e08ebd4f305ae",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0908",
+      "name": "命誓・旅路の再生炉",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "vow",
+      "origin": "river",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a shattered crystal canyon crossed by a silver stream; low three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "9d5674ff668b14ee507b8b4f2693d5e583f70da4e988dabc40026b5705234b15",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0972",
+      "name": "封機・旅路の再生炉",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "forge",
+      "origin": "tree",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a vast cloud citadel seen from a hanging bridge; side view with the face turned toward the viewer; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "436f56482e32fdd208db4dc5f031e2f8c83e28c4d3bf3f0f76b7bf8351ab2017",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0781",
+      "name": "星巡・旅路の伏牙陣",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "orbit",
+      "origin": "mountain",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a vast cloud citadel seen from a hanging bridge; wide cinematic view with the creature large in the foreground; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "30b89f0b99198428b8e0dcdc9c8fd3203ce88ff419bbe71dd8cf4654bf53d579",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0845",
+      "name": "残響・旅路の伏牙陣",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "echo",
+      "origin": "flower",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in sunken library arches lit by luminous fish; low three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "c4bde0e9ffcf9c179e6ba0c7a8ad5b25b0795468579776207c8cf46a5091885f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0909",
+      "name": "命誓・旅路の伏牙陣",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "vow",
+      "origin": "seed",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a copper and jade forge carved into living stone; side view with the face turned toward the viewer; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "1929a466d3f7ad4b7689cf6d2c0d6a4e401dfe9ba63169ec4c77800c0a953a3f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0973",
+      "name": "封機・旅路の伏牙陣",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "forge",
+      "origin": "mountain",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a ruined ivory observatory above an ocean of stars; dramatic elevated three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "d147ce0dedc3dca72faf799fc8e3d6e108d662282173aba4f57909fe75c87414",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0782",
+      "name": "星巡・旅路の返光壁",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "orbit",
+      "origin": "river",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a ruined ivory observatory above an ocean of stars; low three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "3ce03ff37f13cca3b3f928099d5301730bbc2701f21f22a5a43473878b52e306",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0846",
+      "name": "残響・旅路の返光壁",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "echo",
+      "origin": "tree",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in turquoise cascades through an ancestral sanctuary; side view with the face turned toward the viewer; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "bdd7b01fab0df3d45213f54e59061089be03e95bc2d24589f679555161c66b10",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0910",
+      "name": "命誓・旅路の返光壁",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "vow",
+      "origin": "grass",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a coral garden of floating golden terraces; dramatic elevated three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "7d4e57647ef8d3774cc0d01213572fe78b1f7023440415decb624839562dbf8f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0974",
+      "name": "封機・旅路の返光壁",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "forge",
+      "origin": "river",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a violet moonlit grove with giant flowering roots; front three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "4564fb6f668dd712bf6fa718b72b653e883c084c185f3f5feff052e2ff60727d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0783",
+      "name": "星巡・旅路の星儀壇",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "orbit",
+      "origin": "seed",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a violet moonlit grove with giant flowering roots; side view with the face turned toward the viewer; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "ca580980ed15cccc31ef10d7eaef2901cc388f9d0d9dfebe4e8436b353eab5e6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0847",
+      "name": "残響・旅路の星儀壇",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "echo",
+      "origin": "mountain",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a shattered crystal canyon crossed by a silver stream; dramatic elevated three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "f0aa3c73ab8c1a28765f80f61a54726f76eeee4106600d3c70129e8128da1335",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0911",
+      "name": "命誓・旅路の星儀壇",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "vow",
+      "origin": "flower",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a vast cloud citadel seen from a hanging bridge; front three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "a9aa6f8e5911e98e19bd0af24aa1a5abcc924ae19f419733145db5a69fb1b3ab",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0975",
+      "name": "封機・旅路の星儀壇",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "forge",
+      "origin": "seed",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in sunken library arches lit by luminous fish; full-body diagonal action view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "full-body diagonal action view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "8dd854143c81f63412aeb94b979fd64a81067bd449c7ec3a3cd8456f21826ada",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0784",
+      "name": "星巡・旅路の帰環庭",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "orbit",
+      "origin": "grass",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in sunken library arches lit by luminous fish; dramatic elevated three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "descending toward a luminous pool",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "baa87ac96ea4d4fe4487ce340091b0a6ad4de48fcadbd92d2011896d0518025c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0848",
+      "name": "残響・旅路の帰環庭",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "echo",
+      "origin": "river",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a copper and jade forge carved into living stone; front three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "descending toward a luminous pool",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "5ca95465ed72c6149bf418dee695ef07457f3a578e828411e229cf5e7067de5a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0912",
+      "name": "命誓・旅路の帰環庭",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "vow",
+      "origin": "tree",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a ruined ivory observatory above an ocean of stars; full-body diagonal action view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "full-body diagonal action view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "descending toward a luminous pool",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "cc4ad51732acce74a0e5a325ea4f24bc0454d18a9e66ce6bdecf4c4f07573a6f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0976",
+      "name": "封機・旅路の帰環庭",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "forge",
+      "origin": "grass",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in turquoise cascades through an ancestral sanctuary; rear three-quarter view with visible expressive face; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "descending toward a luminous pool",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-40.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "d65147e3e2c4b0a9c485301807fd81689ef566bc4bfdb6dc6e681a5c9355d0ee",
+      "cellSha256": "79f20a6891ae17dd5876e34b4f6038bd13ca93c44a2a1548a4e0e1c6acf0c07b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

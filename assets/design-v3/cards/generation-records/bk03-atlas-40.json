@@ -1,0 +1,994 @@
+{
+  "id": "bk03-atlas-40",
+  "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+  "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+  "sourceSha256": "ca4828c8b1ae606eb08a6cf9d25a6b26c6b71f3096df57bcf305b50e5bbe4ee5",
+  "nativeMaster": "exec-36313a51-5ecf-4129-bacf-7dfee2ab08cb.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "a327c30f89e6a493111678fa9ced8256a9f85893fcdf565b876c2a55eb62724a",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "G0518",
+    "G0550",
+    "G0582",
+    "G0614",
+    "G0646",
+    "G0678",
+    "G0710",
+    "G0742",
+    "G0519",
+    "G0551",
+    "G0583",
+    "G0615",
+    "G0647",
+    "G0679",
+    "G0711",
+    "G0743",
+    "G0520",
+    "G0552",
+    "G0584",
+    "G0616",
+    "G0648",
+    "G0680",
+    "G0712",
+    "G0744"
+  ],
+  "cards": [
+    {
+      "id": "G0518",
+      "name": "星継・旅路の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a copper and jade forge carved into living stone; rear three-quarter view with visible expressive face; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 5,
+        "role": 5,
+        "tier": 0,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "1a5d03df6f491d149a5d519a12b46826d751d59efe05cb9084a7be6fa88b817c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0550",
+      "name": "潮継・旅路の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a ruined ivory observatory above an ocean of stars; close dynamic view with the entire main silhouette inside the tile; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 5,
+        "role": 5,
+        "tier": 0,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "acbc735593f7d49b00f52057e1898c3ad7b40f23663425f3e8c7c9d54be0193f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0582",
+      "name": "火継・旅路の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in turquoise cascades through an ancestral sanctuary; wide cinematic view with the creature large in the foreground; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 5,
+        "role": 5,
+        "tier": 0,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "d2e07ef53b857a57ee40ccb7fb3e1bea663aed15d3ec8b9c3464a48fb5c9bff6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0614",
+      "name": "風継・旅路の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a coral garden of floating golden terraces; low three-quarter view; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 5,
+        "role": 5,
+        "tier": 0,
+        "angle": "low three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "a0fc91eae6e7673c954a07e60b95edb7abcf6c18cba7bb4d4994b8605cb22a14",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0646",
+      "name": "花継・旅路の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a violet moonlit grove with giant flowering roots; side view with the face turned toward the viewer; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 5,
+        "role": 5,
+        "tier": 0,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "7155d9e676e706d598c7772a98ddb7074c54fa0cce1d360edf2b92c6564c449c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0678",
+      "name": "樹継・旅路の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a shattered crystal canyon crossed by a silver stream; dramatic elevated three-quarter view; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 5,
+        "role": 5,
+        "tier": 0,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "ecce965ea503dce62335ad299d5f53cd2f0a485875e545d3f84a81854d0b6a7e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0710",
+      "name": "晶継・旅路の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a vast cloud citadel seen from a hanging bridge; front three-quarter view; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 5,
+        "role": 5,
+        "tier": 0,
+        "angle": "front three-quarter view",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "ddaef80c9df63c4e50831e6c34c6dc87e3cbf376bf8d2ce388f864a3cc8c8c54",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0742",
+      "name": "月継・旅路の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in sunken library arches lit by luminous fish; full-body diagonal action view; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 5,
+        "role": 5,
+        "tier": 0,
+        "angle": "full-body diagonal action view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "a2cbcfcc53e02d1dd535085417b5d1525b433b77099f5e02c83b754e1e4a9a3a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0519",
+      "name": "星継・旅路の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a coral garden of floating golden terraces; close dynamic view with the entire main silhouette inside the tile; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 6,
+        "role": 6,
+        "tier": 0,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "a265a831b8545558bbc69ba1d0d885244c560fe59d84d29af7e55a8d60637341",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0551",
+      "name": "潮継・旅路の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a violet moonlit grove with giant flowering roots; wide cinematic view with the creature large in the foreground; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 6,
+        "role": 6,
+        "tier": 0,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "fda63e376b58a524648e8b0c88496d9944dd717c63891d5e8a6f187249c7d6b0",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0583",
+      "name": "火継・旅路の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a shattered crystal canyon crossed by a silver stream; low three-quarter view; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 6,
+        "role": 6,
+        "tier": 0,
+        "angle": "low three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "0b4a11ad33d1907b0df7d4a5f64a1e3ee86fdd3ff5a6f73c6db82e96ff111eda",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0615",
+      "name": "風継・旅路の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a vast cloud citadel seen from a hanging bridge; side view with the face turned toward the viewer; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 6,
+        "role": 6,
+        "tier": 0,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "a69acb2234ce51263f03537c77aa12a52d0f30ab847e83bcde54bb0575afba69",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0647",
+      "name": "花継・旅路の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in sunken library arches lit by luminous fish; dramatic elevated three-quarter view; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 6,
+        "role": 6,
+        "tier": 0,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "cb1a5f6418e139d8e1a876d7f31c5f305ba2e5f86c73bf2bb13c1e6aef77c67c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0679",
+      "name": "樹継・旅路の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a copper and jade forge carved into living stone; front three-quarter view; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 6,
+        "role": 6,
+        "tier": 0,
+        "angle": "front three-quarter view",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "3a5c224ada8b676784e6523871f360ce4d9054079e2fbd86faf1189ccc2c51a9",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0711",
+      "name": "晶継・旅路の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a ruined ivory observatory above an ocean of stars; full-body diagonal action view; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 6,
+        "role": 6,
+        "tier": 0,
+        "angle": "full-body diagonal action view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "f3abc0180e08b249648bb09305b05ab22e6caef5c3f1f287a4e4765cfe771457",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0743",
+      "name": "月継・旅路の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in turquoise cascades through an ancestral sanctuary; rear three-quarter view with visible expressive face; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 6,
+        "role": 6,
+        "tier": 0,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "d8b9e64270a76f736ab7fa6ed9bcde931b81c18c078dbbc30ab5ce2c510eb834",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0520",
+      "name": "星継・旅路の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a vast cloud citadel seen from a hanging bridge; wide cinematic view with the creature large in the foreground; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 7,
+        "role": 7,
+        "tier": 0,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "99df3a83bd268bceb1e8aecd438fbc0569f71482247b1e0f476b4518040d8b86",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0552",
+      "name": "潮継・旅路の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in sunken library arches lit by luminous fish; low three-quarter view; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 7,
+        "role": 7,
+        "tier": 0,
+        "angle": "low three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "680ba0b2f85c205f7c6af074d640f94d3e73058c58d67b351fea86fec3fe0287",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0584",
+      "name": "火継・旅路の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a copper and jade forge carved into living stone; side view with the face turned toward the viewer; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 7,
+        "role": 7,
+        "tier": 0,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "a8c61df6131dcc16d112cc3965c88ef34874bd6f9b111ea8e48443f3591753d6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0616",
+      "name": "風継・旅路の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a ruined ivory observatory above an ocean of stars; dramatic elevated three-quarter view; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 7,
+        "role": 7,
+        "tier": 0,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "f9f4deda128c761f93a79d9ef0c23cbf20aeceb0348e4f451def2df32871c15f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0648",
+      "name": "花継・旅路の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in turquoise cascades through an ancestral sanctuary; front three-quarter view; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 7,
+        "role": 7,
+        "tier": 0,
+        "angle": "front three-quarter view",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "726996d9207a63bcdb4a337db7e17b09d850fc237affb250cb807adf6104c45d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0680",
+      "name": "樹継・旅路の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a coral garden of floating golden terraces; full-body diagonal action view; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 7,
+        "role": 7,
+        "tier": 0,
+        "angle": "full-body diagonal action view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "d0210869a6b282e15ab147efeaf8bb4cee5f4f32ee4cc744933fa338ad23d00d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0712",
+      "name": "晶継・旅路の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a violet moonlit grove with giant flowering roots; rear three-quarter view with visible expressive face; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 7,
+        "role": 7,
+        "tier": 0,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "7008bb643729bb4478eeae12cd09014e40fce756c70bd3c38d302532bcf4b139",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0744",
+      "name": "月継・旅路の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a shattered crystal canyon crossed by a silver stream; close dynamic view with the entire main silhouette inside the tile; open and charging. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 7,
+        "role": 7,
+        "tier": 0,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-40.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "9f92ded6b37f16ecf3a75bb2ed465269144b60807ee8d514322b1d1284c2c2d1",
+      "cellSha256": "77e7485ad9b4892f69490bad6d291e294a4f707b14c69c980c7c07034d7e118f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

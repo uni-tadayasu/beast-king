@@ -1,0 +1,994 @@
+{
+  "id": "bk03-atlas-45",
+  "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+  "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+  "sourceSha256": "e27af1b36c975cde10692e52e5e344d58c95da70b0dad8e948efc769e36191c9",
+  "nativeMaster": "exec-a4447f25-3f45-4030-91aa-9c85e85c1965.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "defc7e7021db9489d7cfdf469fd8caa21a45dc9f29b6f3a1143370b9e4d39e6b",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "G0533",
+    "G0565",
+    "G0597",
+    "G0629",
+    "G0661",
+    "G0693",
+    "G0725",
+    "G0757",
+    "G0534",
+    "G0566",
+    "G0598",
+    "G0630",
+    "G0662",
+    "G0694",
+    "G0726",
+    "G0758",
+    "G0535",
+    "G0567",
+    "G0599",
+    "G0631",
+    "G0663",
+    "G0695",
+    "G0727",
+    "G0759"
+  ],
+  "cards": [
+    {
+      "id": "G0533",
+      "name": "星継・天脈の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in sunken library arches lit by luminous fish; dramatic elevated three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 20,
+        "role": 4,
+        "tier": 2,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "descending toward a luminous pool",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "4baa6b7c748fec7fd7d9c98d2f4aaabc7cc85c82718bf036f94511eabf8f3e5e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0565",
+      "name": "潮継・天脈の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a copper and jade forge carved into living stone; front three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 20,
+        "role": 4,
+        "tier": 2,
+        "angle": "front three-quarter view",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "descending toward a luminous pool",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "94c57ffb8a7bfb6f7e6b16371f76ea92cdb2f1bc94f12be48c1461014628342e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0597",
+      "name": "火継・天脈の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a ruined ivory observatory above an ocean of stars; full-body diagonal action view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 20,
+        "role": 4,
+        "tier": 2,
+        "angle": "full-body diagonal action view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "descending toward a luminous pool",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "b8caf3eb671f2f14fd33a10bbb342548f68f7d1727fab89a539574292f62c80e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0629",
+      "name": "風継・天脈の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in turquoise cascades through an ancestral sanctuary; rear three-quarter view with visible expressive face; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 20,
+        "role": 4,
+        "tier": 2,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "descending toward a luminous pool",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "e7376027a63c2958825d3e6af942437ecc108ef78a11cc8c75a61d6b0d091df3",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0661",
+      "name": "花継・天脈の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a coral garden of floating golden terraces; close dynamic view with the entire main silhouette inside the tile; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 20,
+        "role": 4,
+        "tier": 2,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "descending toward a luminous pool",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "0daa6fb53810537a428b16aeff6286ca47f7691319d0169ad8da15207310c5ba",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0693",
+      "name": "樹継・天脈の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a violet moonlit grove with giant flowering roots; wide cinematic view with the creature large in the foreground; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 20,
+        "role": 4,
+        "tier": 2,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "descending toward a luminous pool",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "43ea8b26f4631aa9c4d12b1cbb1c233f7644227ee560d26dbfc6e3279ccbbe41",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0725",
+      "name": "晶継・天脈の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a shattered crystal canyon crossed by a silver stream; low three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 20,
+        "role": 4,
+        "tier": 2,
+        "angle": "low three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "descending toward a luminous pool",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "d9e671d191a3a131e0b6b9335c1c3bfc9773e22272a27eada79e93da88c2418c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0757",
+      "name": "月継・天脈の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a vast cloud citadel seen from a hanging bridge; side view with the face turned toward the viewer; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 20,
+        "role": 4,
+        "tier": 2,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "descending toward a luminous pool",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "6120b89fbf0326b2888e2e6b1276af0ec680db10970eb215435f72c5a09651ae",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0534",
+      "name": "星継・天脈の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in turquoise cascades through an ancestral sanctuary; front three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 21,
+        "role": 5,
+        "tier": 2,
+        "angle": "front three-quarter view",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "fe361503b888fd1b8caa06e6fbba4699e8df4817194d8649fc57f38b00dfd8a2",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0566",
+      "name": "潮継・天脈の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a coral garden of floating golden terraces; full-body diagonal action view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 21,
+        "role": 5,
+        "tier": 2,
+        "angle": "full-body diagonal action view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "4d795a4130b1099e663ffc0e10bafa9f9a350810ebada017b93097909b685dd6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0598",
+      "name": "火継・天脈の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a violet moonlit grove with giant flowering roots; rear three-quarter view with visible expressive face; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 21,
+        "role": 5,
+        "tier": 2,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "3e63e6df96acf7ee15cf9ffe4c354870373804847c573f964d575e109122f12b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0630",
+      "name": "風継・天脈の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a shattered crystal canyon crossed by a silver stream; close dynamic view with the entire main silhouette inside the tile; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 21,
+        "role": 5,
+        "tier": 2,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "9d55a6dfa98e5fecb1b134afabf9436a64f99bf8885fe73ee936643c353f27f5",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0662",
+      "name": "花継・天脈の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a vast cloud citadel seen from a hanging bridge; wide cinematic view with the creature large in the foreground; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 21,
+        "role": 5,
+        "tier": 2,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "1ab00f68b3ec249499cb8fadd4f9e4dfdc90034b77a48db65ee71b2718d42d31",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0694",
+      "name": "樹継・天脈の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in sunken library arches lit by luminous fish; low three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 21,
+        "role": 5,
+        "tier": 2,
+        "angle": "low three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "bc6cc332b5aba2cec9a7caf77e674bcae71590ee3bcbb0892f48cf5a84302693",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0726",
+      "name": "晶継・天脈の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a copper and jade forge carved into living stone; side view with the face turned toward the viewer; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 21,
+        "role": 5,
+        "tier": 2,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "867c9402d5af57e50cb1dffcda824a19337fae6e30a0ef9edddc699bc3a22005",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0758",
+      "name": "月継・天脈の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a ruined ivory observatory above an ocean of stars; dramatic elevated three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 21,
+        "role": 5,
+        "tier": 2,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "9f98691e94a59336aebf5980d47a3011d226d09c8ff39ac38b7fa1dfb3766b92",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0535",
+      "name": "星継・天脈の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a shattered crystal canyon crossed by a silver stream; full-body diagonal action view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 22,
+        "role": 6,
+        "tier": 2,
+        "angle": "full-body diagonal action view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "a274825e36dc5c7014d40f5eaff6dc02c5b040d3f29e2a1daed00a9a84ce2020",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0567",
+      "name": "潮継・天脈の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a vast cloud citadel seen from a hanging bridge; rear three-quarter view with visible expressive face; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 22,
+        "role": 6,
+        "tier": 2,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "4c11d6678d610c632329af0dcc42c3340ec5053d66879e9686876b1be87073d1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0599",
+      "name": "火継・天脈の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in sunken library arches lit by luminous fish; close dynamic view with the entire main silhouette inside the tile; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 22,
+        "role": 6,
+        "tier": 2,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "d36dd306f0e24e86f736c1c7d73f27572445befad7d58d3cf76544ec6bb1012e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0631",
+      "name": "風継・天脈の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a copper and jade forge carved into living stone; wide cinematic view with the creature large in the foreground; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 22,
+        "role": 6,
+        "tier": 2,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "d58cd7ee9bf7bcf785caad7033ce4333d16d8fa1099e10f18e577159b5c8314a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0663",
+      "name": "花継・天脈の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a ruined ivory observatory above an ocean of stars; low three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 22,
+        "role": 6,
+        "tier": 2,
+        "angle": "low three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "5687ec825fa0b0692cdc18bac629c18b18f3252bee7e45faa85e55606af6dc30",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0695",
+      "name": "樹継・天脈の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in turquoise cascades through an ancestral sanctuary; side view with the face turned toward the viewer; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 22,
+        "role": 6,
+        "tier": 2,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "c20ecb66c503097798b3843940e2343609966a5f861d7fbf457d593669cce40c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0727",
+      "name": "晶継・天脈の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a coral garden of floating golden terraces; dramatic elevated three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 22,
+        "role": 6,
+        "tier": 2,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "e3fba0019452be600f5efd68615cbc3325e26c80125b7bec90a52742124c2276",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0759",
+      "name": "月継・天脈の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a violet moonlit grove with giant flowering roots; front three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 22,
+        "role": 6,
+        "tier": 2,
+        "angle": "front three-quarter view",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-45.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "84d2447434a7d61af6f05a94baca91feed86242c884406b72d8a9165619f3dc3",
+      "cellSha256": "51e5b83ae0e961861d46599f308bd014a59dc037058d4288f973b3e810a5de52",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

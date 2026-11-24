@@ -1,0 +1,994 @@
+{
+  "id": "bk03-atlas-46",
+  "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+  "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+  "sourceSha256": "70e49fa35797b1750d9cf2e06d332bfbb44e4792090043a90c842cf8c5bc63ff",
+  "nativeMaster": "exec-5abe4817-22d6-4f91-90f5-598590af962e.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "460c051932a4f179250463b87a40e552e4e09bcd9f29cf41544cea9858c632f4",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "G0536",
+    "G0568",
+    "G0600",
+    "G0632",
+    "G0664",
+    "G0696",
+    "G0728",
+    "G0760",
+    "G0537",
+    "G0569",
+    "G0601",
+    "G0633",
+    "G0665",
+    "G0697",
+    "G0729",
+    "G0761",
+    "G0538",
+    "G0570",
+    "G0602",
+    "G0634",
+    "G0666",
+    "G0698",
+    "G0730",
+    "G0762"
+  ],
+  "cards": [
+    {
+      "id": "G0536",
+      "name": "星継・天脈の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a copper and jade forge carved into living stone; rear three-quarter view with visible expressive face; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 23,
+        "role": 7,
+        "tier": 2,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "721bc591eb5aa697a414d478135a1a67d003043a1443090674a91d94a800efbc",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0568",
+      "name": "潮継・天脈の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a ruined ivory observatory above an ocean of stars; close dynamic view with the entire main silhouette inside the tile; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 23,
+        "role": 7,
+        "tier": 2,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "d0d5d5fd2462bf573e3554d60a2d6069cc33165296c90057bbd535b5b87f6e8e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0600",
+      "name": "火継・天脈の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in turquoise cascades through an ancestral sanctuary; wide cinematic view with the creature large in the foreground; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 23,
+        "role": 7,
+        "tier": 2,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "76169a9673014ff91c7282d8ec9f2e08cd8b4f76ca33eef9837b6fdf64b5ee5f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0632",
+      "name": "風継・天脈の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a coral garden of floating golden terraces; low three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 23,
+        "role": 7,
+        "tier": 2,
+        "angle": "low three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "320df16e9eb8e9d861fa6c8216d12398cf9c70a8d52fafc2bb259e6bdd5056ec",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0664",
+      "name": "花継・天脈の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a violet moonlit grove with giant flowering roots; side view with the face turned toward the viewer; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 23,
+        "role": 7,
+        "tier": 2,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "b6d10874ebab1e35fd9e2caa337a86cfecb07be735e8cc4781c174d048fc26dc",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0696",
+      "name": "樹継・天脈の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a shattered crystal canyon crossed by a silver stream; dramatic elevated three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 23,
+        "role": 7,
+        "tier": 2,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "f35b345be0d5ddd997b9c1e260c41852e6558e76e9c9a2d0cb64ae0a4531e40a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0728",
+      "name": "晶継・天脈の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a vast cloud citadel seen from a hanging bridge; front three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 23,
+        "role": 7,
+        "tier": 2,
+        "angle": "front three-quarter view",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "2f434abd73a7f73ff4d441d44838dc926256b3795cd0203052f229a1cdf51039",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0760",
+      "name": "月継・天脈の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in sunken library arches lit by luminous fish; full-body diagonal action view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 23,
+        "role": 7,
+        "tier": 2,
+        "angle": "full-body diagonal action view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "45332c3f0bcabd2139fed8c42c0bd6482fcf52d5c716d34ba78b0a680ae90de6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0537",
+      "name": "星継・極環の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "an elaborate mechanical jaw trap with curved jeweled teeth and a tensioned glowing core, physically constructed in a violet moonlit grove with giant flowering roots; side view with the face turned toward the viewer; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 24,
+        "role": 0,
+        "tier": 3,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "ad46404b23859ddc5b992a221c6349a1fb25af0d3ed7845350708633592d4754",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0569",
+      "name": "潮継・極環の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "an elaborate mechanical jaw trap with curved jeweled teeth and a tensioned glowing core, physically constructed in a shattered crystal canyon crossed by a silver stream; dramatic elevated three-quarter view; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 24,
+        "role": 0,
+        "tier": 3,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "2828193ad7da4eebb3b0faf40e286fb9581fbe25d160435a429e9b19fa9bca9c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0601",
+      "name": "火継・極環の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "an elaborate mechanical jaw trap with curved jeweled teeth and a tensioned glowing core, physically constructed in a vast cloud citadel seen from a hanging bridge; front three-quarter view; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 24,
+        "role": 0,
+        "tier": 3,
+        "angle": "front three-quarter view",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "991fd58eda67c5d61642ec037682ce10916848e18bffe03ddd7b1ff874268dad",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0633",
+      "name": "風継・極環の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "an elaborate mechanical jaw trap with curved jeweled teeth and a tensioned glowing core, physically constructed in sunken library arches lit by luminous fish; full-body diagonal action view; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 24,
+        "role": 0,
+        "tier": 3,
+        "angle": "full-body diagonal action view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "b473f841f06c9b7989d6cfc4b2757352f23c25ed04efd97c8091466e6978bf0b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0665",
+      "name": "花継・極環の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "an elaborate mechanical jaw trap with curved jeweled teeth and a tensioned glowing core, physically constructed in a copper and jade forge carved into living stone; rear three-quarter view with visible expressive face; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 24,
+        "role": 0,
+        "tier": 3,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "dc2b544d9ed84b483aa91b6b0d5c4da7477ccf145fad806ffe06fed9a4e64e1a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0697",
+      "name": "樹継・極環の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "an elaborate mechanical jaw trap with curved jeweled teeth and a tensioned glowing core, physically constructed in a ruined ivory observatory above an ocean of stars; close dynamic view with the entire main silhouette inside the tile; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 24,
+        "role": 0,
+        "tier": 3,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "854e884520dba79cd34765df500ba646da7079096bd305c17b42ccee49362bc9",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0729",
+      "name": "晶継・極環の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "an elaborate mechanical jaw trap with curved jeweled teeth and a tensioned glowing core, physically constructed in turquoise cascades through an ancestral sanctuary; wide cinematic view with the creature large in the foreground; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 24,
+        "role": 0,
+        "tier": 3,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "2cae3fa9bef265dea26e48ef53441a05d3dc6c7f8a0dfd722048cf03b5a8496b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0761",
+      "name": "月継・極環の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "an elaborate mechanical jaw trap with curved jeweled teeth and a tensioned glowing core, physically constructed in a coral garden of floating golden terraces; low three-quarter view; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 24,
+        "role": 0,
+        "tier": 3,
+        "angle": "low three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "a348434ad39f1481d3c7e7402ce8e44c440ffe344c8a3640a7ee80ec2af8793d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0538",
+      "name": "星継・極環の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in sunken library arches lit by luminous fish; dramatic elevated three-quarter view; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 25,
+        "role": 1,
+        "tier": 3,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "descending toward a luminous pool",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "fb9df2f8d1c56b2354a4058e7ac701c2a252c53b25d5338bb138da9ad8cf1f4e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0570",
+      "name": "潮継・極環の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in a copper and jade forge carved into living stone; front three-quarter view; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 25,
+        "role": 1,
+        "tier": 3,
+        "angle": "front three-quarter view",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "descending toward a luminous pool",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "53f306f7caf8a844d1a2f20cf4791764594b5080169581dac8fbb98c17ed228d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0602",
+      "name": "火継・極環の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in a ruined ivory observatory above an ocean of stars; full-body diagonal action view; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 25,
+        "role": 1,
+        "tier": 3,
+        "angle": "full-body diagonal action view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "descending toward a luminous pool",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "ea9ef7d7b743dc36e1eafde0ed5b4251c73b6c4cf6d1b8dfc5c6cfe12fc5f35e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0634",
+      "name": "風継・極環の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in turquoise cascades through an ancestral sanctuary; rear three-quarter view with visible expressive face; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 25,
+        "role": 1,
+        "tier": 3,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "descending toward a luminous pool",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "b3794fb2a2f5b2333d78bd7b7cdc68cad680dca191e7a7479e854debd7856c4e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0666",
+      "name": "花継・極環の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in a coral garden of floating golden terraces; close dynamic view with the entire main silhouette inside the tile; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 25,
+        "role": 1,
+        "tier": 3,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "descending toward a luminous pool",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "122fe50b5be6312a4c4d49f71192cd9bd3109ff72ee8836b8468b777175f0ef2",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0698",
+      "name": "樹継・極環の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in a violet moonlit grove with giant flowering roots; wide cinematic view with the creature large in the foreground; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 25,
+        "role": 1,
+        "tier": 3,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "descending toward a luminous pool",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "3275aa4d100d7dfd4d04c07cbf10b21e38c4b5196b58cfcabff0e5a6d7300ae7",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0730",
+      "name": "晶継・極環の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in a shattered crystal canyon crossed by a silver stream; low three-quarter view; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 25,
+        "role": 1,
+        "tier": 3,
+        "angle": "low three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "descending toward a luminous pool",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "34431520f550cafbcfda9a2b0cdb514b24093e8837288bfac8111b8b243d2931",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0762",
+      "name": "月継・極環の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in a vast cloud citadel seen from a hanging bridge; side view with the face turned toward the viewer; surrounded by floating broken stones. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 25,
+        "role": 1,
+        "tier": 3,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "descending toward a luminous pool",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-46.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "a9074ba7b9519632872a65c247ed5c2f990954feedf1c0b650f1792a87da6171",
+      "cellSha256": "359d49f9f5f37a688bbcedeeb7ca78870b83606e85246260d0e1c5ba222bc345",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

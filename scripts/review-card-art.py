@@ -22,7 +22,9 @@ if not 96 <= tile <= 240:
 out = args.output.resolve()
 out.mkdir(parents=True, exist_ok=True)
 manifest = json.loads((root / "assets/design-v2/cards/individual/manifest.json").read_text(encoding="utf-8"))
-cards = manifest["cards"]
+expansion = json.loads((root / "assets/design-v3/cards/manifest.json").read_text(encoding="utf-8"))
+assert expansion['complete'] is True and expansion['total'] == 2304
+cards = manifest["cards"] + expansion['cards']
 # Match the actual browser override map, not just the original atlas manifest.
 source = (root / 'card-art-overrides.js').read_text(encoding='utf-8')
 overrides = json.loads(source.split('Object.freeze(',1)[1].rsplit(');',1)[0])
@@ -31,11 +33,20 @@ for card in cards:
         r = overrides[card['id']]
         card['src'] = r['src']
         card['pixelCrop'] = [r['x'],r['y'],r['size'],r['size']]
-assert len(cards) == 2304 and len({c["id"] for c in cards}) == 2304
+# The expansion registry is separate from the historical replacement map; both
+# are checked against the exact crop rendered by the main frontend.
+source = (root / 'card-art-expansion.js').read_text(encoding='utf-8')
+expanded = json.loads(source.split('Object.freeze(',1)[1].rsplit(');',1)[0])
+assert len(expanded) == 2304
+for card in expansion['cards']:
+    r = expanded[card['id']]
+    assert card['src'] == r['src']
+    assert card['pixelCrop'] == [r['x'],r['y'],r['size'],r['size']]
+assert len(cards) == 4608 and len({c["id"] for c in cards}) == 4608
 font = ImageFont.load_default()
 images = {}
 rows = []
-for edition in ("BK01", "BK02"):
+for edition in ("BK01", "BK02", "BK03", "BK04"):
     for prefix in ("B", "M", "G", "F"):
         group = [c for c in cards if c["setId"] == edition and c["id"].startswith(prefix)]
         for batch in range(0, len(group), 64):
@@ -64,6 +75,6 @@ for edition in ("BK01", "BK02"):
                 rows.append({"id":card["id"],"name":card["name"],"setId":edition,"source":card["src"],"crop":card.get("pixelCrop"),"sheet":name+".jpg","cell":idx+1,"visualReview":"unreviewed"})
             sheet.save(out / (name+".jpg"), "JPEG", quality=87, optimize=True)
             images.clear()
-assert len(rows) == 2304 and len({r["id"] for r in rows}) == 2304
+assert len(rows) == 4608 and len({r["id"] for r in rows}) == 4608
 (out / "review-index.json").write_text(json.dumps({"total":len(rows),"reviewed":0,"cards":rows},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
 print(json.dumps({"cards":len(rows),"sheets":len(list(out.glob("*.jpg"))),"visualReview":"unreviewed; actual image inspection required"}))

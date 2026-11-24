@@ -1,28 +1,28 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  CARDS, CARD_MAP, ELEMENTS, ORIGINS, STARTER_DECKS, DECK_PRESETS, getCardsForSet, DECK_SIZE, DECK_MIN, DECK_MAX,
+  CARDS, CARD_MAP, EXPANSION_EFFECT_KINDS, ELEMENTS, ORIGINS, STARTER_DECKS, DECK_PRESETS, getCardsForSet, DECK_SIZE, DECK_MIN, DECK_MAX,
   SPECIAL_DECK_SIZE, DECK_COPY_LIMIT, FUSION_CARD_ID, POINT_SCALE, FUSION_MATERIAL_BONUS, RARITY_ORDER, RARITY_LABELS, MODEL_LABELS, MODEL_DESCRIPTIONS, SUBTYPE_LABELS,
   getCard, validateDeck, validateSpecialDeck,
 } from '../catalog.js';
 
-test('two expansions contain 2304 unique cards with the original identities intact', () => {
-  assert.equal(CARDS.length, 2304);
-  assert.equal(new Set(CARDS.map(c => c.id)).size, 2304);
-  assert.equal(new Set(CARDS.map(c => c.name)).size, 2304);
-  assert.equal(CARD_MAP.size, 2304);
-  assert.equal(CARDS.filter(c=>c.category==='beast').length,1280);
+test('four expansions contain 4608 unique cards with the original identities intact', () => {
+  assert.equal(CARDS.length, 4608);
+  assert.equal(new Set(CARDS.map(c => c.id)).size, 4608);
+  assert.equal(new Set(CARDS.map(c => c.name)).size, 4608);
+  assert.equal(CARD_MAP.size, 4608);
+  assert.equal(CARDS.filter(c=>c.category==='beast').length,2560);
   assert.deepEqual(MODEL_LABELS,{attack:'アタック型',defense:'ディフェンス型',hybrid:'アタック・ディフェンス型'});
-  for(const model of ['attack','defense']) assert.equal(CARDS.filter(c=>c.type==='beast'&&c.model===model).length,512);
-  assert.equal(CARDS.filter(c=>c.type==='fusion'&&c.model==='hybrid').length,256);
+  for(const model of ['attack','defense']) assert.equal(CARDS.filter(c=>c.type==='beast'&&c.model===model).length,1024);
+  assert.equal(CARDS.filter(c=>c.type==='fusion'&&c.model==='hybrid').length,512);
   assert.equal(CARDS.filter(c=>c.type==='beast'&&c.model==='hybrid').length,0);
   for(const [type,subtypes] of [['miracle',['power','regeneration']],['gimmick',['reflection','support']]]) {
-    for(const subtype of subtypes) assert.equal(CARDS.filter(c=>c.type===type&&c.subtype===subtype).length,256);
+    for(const subtype of subtypes) assert.equal(CARDS.filter(c=>c.type===type&&c.subtype===subtype).length,512);
   }
   assert.deepEqual(Object.keys(SUBTYPE_LABELS),['power','regeneration','reflection','support']);
-  for (const [type, expected] of [['beast',1024],['miracle',512],['gimmick',512],['fusion',256]]) assert.equal(CARDS.filter(c => c.type === type).length, expected);
-  assert.deepEqual(CARDS.map(c => c.index), Array.from({length:2304}, (_,i) => i+1));
-  assert.deepEqual(CARDS.filter(c=>c.type==='fusion').map(c=>c.id),Array.from({length:256},(_,i)=>`F${String(i+1).padStart(4,'0')}`));
+  for (const [type, expected] of [['beast',2048],['miracle',1024],['gimmick',1024],['fusion',512]]) assert.equal(CARDS.filter(c => c.type === type).length, expected);
+  assert.deepEqual(CARDS.map(c => c.index), Array.from({length:4608}, (_,i) => i+1));
+  assert.deepEqual(CARDS.filter(c=>c.type==='fusion').map(c=>c.id),Array.from({length:512},(_,i)=>`F${String(i+1).padStart(4,'0')}`));
 });
 
 test('all cards have supported effects, costs, art keys and usable rules text', () => {
@@ -35,7 +35,7 @@ test('all cards have supported effects, costs, art keys and usable rules text', 
   };
   for (const c of CARDS) {
     assert.ok(ELEMENTS.some(e => e.id === c.element), c.id);
-    assert.ok(supported[c.type].includes(c.effect.kind), c.id);
+    assert.ok(supported[c.type].includes(c.effect.kind)||EXPANSION_EFFECT_KINDS.includes(c.effect.kind), c.id);
     if (c.type==='fusion') assert.equal(c.cost,0,c.id);
     else assert.ok(Number.isInteger(c.cost) && c.cost >=1 && c.cost <=8, c.id);
     assert.ok(Number.isInteger(c.effect.value) && c.effect.value >=0, c.id);
@@ -48,12 +48,13 @@ test('all cards have supported effects, costs, art keys and usable rules text', 
     if(c.type === 'beast') { assert.ok(c.attack>0 && c.hp>0 && c.art<16,c.id); assert.equal(c.category,'beast',c.id); }
     if(c.type === 'miracle') {
       assert.ok(c.art>=16 && c.art<20,c.id);
-      if(c.subtype==='regeneration') assert.ok(['heal','shield_heal','drain','renew','fusion'].includes(c.effect.kind),c.id);
+      if(['BK03','BK04'].includes(c.setId)) assert.ok(['power','regeneration'].includes(c.subtype),c.id);
+      else if(c.subtype==='regeneration') assert.ok(['heal','shield_heal','drain','renew','fusion'].includes(c.effect.kind),c.id);
       else assert.ok(c.subtype==='power'&&['damage_enemy','draw','buff','sweep'].includes(c.effect.kind),c.id);
     }
     if(c.type === 'gimmick') {
       assert.ok(c.art>=20 && c.art<24,c.id);
-      assert.equal(c.subtype,['ambush','barrier'].includes(c.effect.kind)?'reflection':'support',c.id);
+      assert.equal(c.subtype,['ambush','barrier','family_ambush','family_barrier'].includes(c.effect.kind)?'reflection':'support',c.id);
     }
     if(c.type === 'fusion') {
       assert.equal(c.category,'beast',c.id);
@@ -72,21 +73,21 @@ test('seven origins preserve the card counts with one maximum-cost King beast', 
   assert.equal(ELEMENTS,ORIGINS);
   assert.deepEqual(ORIGINS.map(o=>o.id),['mountain','river','seed','grass','flower','tree','king']);
   assert.deepEqual(ORIGINS.map(o=>o.name),['山','川','種','草','花','木','王']);
-  assert.equal(new Set(CARDS.map(c=>c.series)).size,16);
+  assert.equal(new Set(CARDS.map(c=>c.series)).size,28);
   assert.ok(CARDS.every(c=>c.origin===c.element));
   assert.equal(CARDS.filter(c=>c.origin==='king').length,1);
 });
 
 test('six regular origins are balanced across both packs and each card type', () => {
   const ids=['mountain','river','seed','grass','flower','tree'];
-  const expected=[384,384,384,384,383,384];
+  const expected=[768,768,768,768,767,768];
   assert.deepEqual(ids.map(o=>CARDS.filter(c=>c.origin===o).length),expected);
   assert.deepEqual(ids.map(o=>getCardsForSet('BK01').filter(c=>c.origin===o).length),[192,192,192,192,192,192]);
   assert.deepEqual(ids.map(o=>getCardsForSet('BK02').filter(c=>c.origin===o).length),[192,192,192,192,191,192]);
   for(const type of ['beast','miracle','gimmick','fusion']){
     const totals=ids.map(o=>CARDS.filter(c=>c.origin===o&&c.type===type).length);
     assert.ok(Math.max(...totals)-Math.min(...totals)<=1,type);
-    for(const set of ['BK01','BK02']){const n=ids.map(o=>getCardsForSet(set).filter(c=>c.type===type&&c.origin===o).length);assert.ok(Math.max(...n)-Math.min(...n)<=1,set+'/'+type);}
+    for(const set of ['BK01','BK02','BK03','BK04']){const n=ids.map(o=>getCardsForSet(set).filter(c=>c.type===type&&c.origin===o).length);assert.ok(Math.max(...n)-Math.min(...n)<=1,set+'/'+type);}
   }
 });
 test('King representative remains a normal beast at the maximum cost', () => {
@@ -231,7 +232,7 @@ test('battle points use hundreds without scaling counts, costs or energy', () =>
     else if (['none','fusion'].includes(card.effect.kind)) assert.equal(card.effect.value,0,card.id);
     else {
       assert.equal(card.effect.value%POINT_SCALE,0,card.id);
-      assert.ok(card.text.includes(String(card.effect.value)),card.id);
+      if(!card.effect.kind.endsWith('_recall'))assert.ok(card.text.includes(String(card.effect.value)),card.id);
     }
     assert.ok(!card.text.includes('コア'),card.id);
   }
@@ -241,9 +242,9 @@ test('battle points use hundreds without scaling counts, costs or energy', () =>
   assert.equal(getCard(FUSION_CARD_ID).cost,3);
 });
 
-test('both packs have identical complete type counts and disjoint membership',()=>{
- const sets=['BK01','BK02'].map(getCardsForSet);
+test('all four packs have identical complete type counts and disjoint membership',()=>{
+ const sets=['BK01','BK02','BK03','BK04'].map(getCardsForSet);
  for(const cards of sets){assert.equal(cards.length,1152);assert.deepEqual(Object.fromEntries(['beast','fusion','miracle','gimmick'].map(type=>[type,cards.filter(c=>c.type===type).length])),{beast:512,fusion:128,miracle:256,gimmick:256});}
- assert.equal(new Set(sets.flat().map(c=>c.id)).size,2304);
+ assert.equal(new Set(sets.flat().map(c=>c.id)).size,4608);
  assert.deepEqual(STARTER_DECKS.map(d=>d.id),['star-crown','azure-memory','crimson-pulse','sky-promise']);
 });

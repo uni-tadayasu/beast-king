@@ -1,0 +1,994 @@
+{
+  "id": "bk04-atlas-10",
+  "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+  "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+  "sourceSha256": "de061283fa3e0d78a0b5544a7aec04f7eaa4bca092c2b5d5706b3902ae4a008a",
+  "nativeMaster": "exec-caaa3ef6-d6ee-4e34-a12b-748c5e00a887.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "b050e40f7d8e49a1fdeaf5ad4470025759a0633a45babbc7ae7e4e747a852648",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "B1591",
+    "B1719",
+    "B1847",
+    "B1975",
+    "B1592",
+    "B1720",
+    "B1848",
+    "B1976",
+    "B1593",
+    "B1721",
+    "B1849",
+    "B1977",
+    "B1594",
+    "B1722",
+    "B1850",
+    "B1978",
+    "B1595",
+    "B1723",
+    "B1851",
+    "B1979",
+    "B1596",
+    "B1724",
+    "B1852",
+    "B1980"
+  ],
+  "cards": [
+    {
+      "id": "B1591",
+      "name": "星巡極環守航伝令光翼獣 フィルナ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "orbit",
+      "origin": "seed",
+      "subject": "celestial eagle-lion griffin, leaping forward across a broken bridge, low three-quarter view, wearing a sweeping feather mantle and gilt anatomical markings; a ruined ivory observatory above an ocean of stars. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 54,
+        "role": 6,
+        "tier": 6,
+        "angle": "low three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "6a3807b5c6f881d5c9e480013cc3062365c5b1d055a7a3ff81dcf290268c05dc",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1719",
+      "name": "残響極環守航伝令銀声獣 ヴェルソ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "echo",
+      "origin": "flower",
+      "subject": "antlered leonine memory spirit, leaping forward across a broken bridge, side view with the face turned toward the viewer, wearing a luminous chest crystal with trailing ceremonial cords; turquoise cascades through an ancestral sanctuary. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 54,
+        "role": 6,
+        "tier": 6,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "0f2a6f6225362fb75f6c6012c93af7670ae39851a8c23be91a751917cf196ffc",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1847",
+      "name": "命誓極環守航伝令命環獣 アニマ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "vow",
+      "origin": "mountain",
+      "subject": "gold-maned lion spirit with crimson oath threads, leaping forward across a broken bridge, dramatic elevated three-quarter view, wearing light crownlike antlers or decorative crest and orbiting fireflies; a coral garden of floating golden terraces. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 54,
+        "role": 6,
+        "tier": 6,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "bd6c452d00f1b2912293c792d53678e044683b62acf517eb337db75738224d81",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1975",
+      "name": "封機極環守航伝令封函獣 アルケ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "forge",
+      "origin": "seed",
+      "subject": "four-armed sealed reliquary titan, leaping forward across a broken bridge, front three-quarter view, wearing antique shoulder plates and small ancestral bells; a violet moonlit grove with giant flowering roots. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 54,
+        "role": 6,
+        "tier": 6,
+        "angle": "front three-quarter view",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "d2d980fe133ee08fbffe4afb2ebe19cab761709a6b2f55db0a1f50d07078969c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1592",
+      "name": "星巡極環守航終奏天球竜 ソラリス",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "orbit",
+      "origin": "grass",
+      "subject": "sky dragon with a long elegant sapphire body, standing alert on a high windblown ledge, side view with the face turned toward the viewer, wearing light crownlike antlers or decorative crest and orbiting fireflies; a violet moonlit grove with giant flowering roots. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 55,
+        "role": 7,
+        "tier": 6,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "a46becc8694392d13e11b2be3043c470f07011e1a77dba0ec5ec7fba6ee24d08",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1720",
+      "name": "残響極環守航終奏残響竜 エコリス",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "echo",
+      "origin": "tree",
+      "subject": "long-necked purple memory dragon, standing alert on a high windblown ledge, dramatic elevated three-quarter view, wearing antique shoulder plates and small ancestral bells; a shattered crystal canyon crossed by a silver stream. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 55,
+        "role": 7,
+        "tier": 6,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "797ab5ec1c2cee37605e1ef55e2aa4266116fce3770eed86088930d431d807d0",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1848",
+      "name": "命誓極環守航終奏盟誓竜 コルディア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "vow",
+      "origin": "river",
+      "subject": "ivory-and-crimson oath dragon, standing alert on a high windblown ledge, front three-quarter view, wearing curling botanical engravings and crystal-tipped plumes; a vast cloud citadel seen from a hanging bridge. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 55,
+        "role": 7,
+        "tier": 6,
+        "angle": "front three-quarter view",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "72d92051705bf6a27d6a32c121303baa229edd7482e07f56bbc75a898b6a6ede",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1976",
+      "name": "封機極環守航終奏創機竜 テクノア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "forge",
+      "origin": "grass",
+      "subject": "sinuous copper-and-ivory segmented dragon, standing alert on a high windblown ledge, full-body diagonal action view, wearing a flowing two-tone mantle and linked gold rings; sunken library arches lit by luminous fish. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 55,
+        "role": 7,
+        "tier": 6,
+        "angle": "full-body diagonal action view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "2c647a12668d61e324e4bcd014cd9d0da8faf4563a9075f30d36b4f6ec4b02c9",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1593",
+      "name": "星巡永約守航先導星鹿 アステル",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "orbit",
+      "origin": "flower",
+      "subject": "cosmic stag with constellation antlers, prowling low along a narrow ancient causeway, rear three-quarter view with visible expressive face, wearing a flowing two-tone mantle and linked gold rings; a copper and jade forge carved into living stone. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 56,
+        "role": 0,
+        "tier": 7,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "d919c3684e8824c3d05e64a89bc6e43d678e629ffb8b1669266b394b157871d0",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1721",
+      "name": "残響永約守航先導響狼 リフレン",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "echo",
+      "origin": "mountain",
+      "subject": "violet ghost wolf, prowling low along a narrow ancient causeway, close dynamic view with the entire main silhouette inside the tile, wearing a delicate engraved neck harness and long silk ribbons; a ruined ivory observatory above an ocean of stars. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 56,
+        "role": 0,
+        "tier": 7,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "9703887ea3335cc0ce6ee35e56c4ea2877b8cf12cd264e3e4f6cbae9ee64be02",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1849",
+      "name": "命誓永約守航先導誓鹿 セリア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "vow",
+      "origin": "seed",
+      "subject": "rose-antlered crimson stag, prowling low along a narrow ancient causeway, wide cinematic view with the creature large in the foreground, wearing layered scale armor with small floating gemstones; turquoise cascades through an ancestral sanctuary. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 56,
+        "role": 0,
+        "tier": 7,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "5991594cac99a163e7f17bdfadd22d1fb27463b341459fdefafeb5ba39fd3feb",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1977",
+      "name": "封機永約守航先導封印蟹 クレヴィ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "forge",
+      "origin": "flower",
+      "subject": "copper plated crab with articulated jade claws, prowling low along a narrow ancient causeway, low three-quarter view, wearing a sweeping feather mantle and gilt anatomical markings; a coral garden of floating golden terraces. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 56,
+        "role": 0,
+        "tier": 7,
+        "angle": "low three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "d85796c0f5b329c9ae605c9c6e4a146659e726f1ca7d2d6b8511a49494ea4459",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1594",
+      "name": "星巡永約守航護衛軌道鯨 オルビア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "orbit",
+      "origin": "tree",
+      "subject": "great astral whale with winglike fins, sweeping diagonally across the frame, close dynamic view with the entire main silhouette inside the tile, wearing layered scale armor with small floating gemstones; a coral garden of floating golden terraces. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 57,
+        "role": 1,
+        "tier": 7,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "a8d24015e61ec02e47d7bbacc42575c8e18409e556b61ee7210d37a0e17f41c8",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1722",
+      "name": "残響永約守航護衛記憶蛾 メモリア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "echo",
+      "origin": "river",
+      "subject": "silver patterned memory moth, sweeping diagonally across the frame, wide cinematic view with the creature large in the foreground, wearing a sweeping feather mantle and gilt anatomical markings; a violet moonlit grove with giant flowering roots. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 57,
+        "role": 1,
+        "tier": 7,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "07a30deace6e1337709f3f9b9f1c7f90c1659ab9a0f2ef76be8a7461096b8653",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1850",
+      "name": "命誓永約守航護衛血晶虎 ルベル",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "vow",
+      "origin": "grass",
+      "subject": "ivory tiger with crimson crystal stripes, sweeping diagonally across the frame, low three-quarter view, wearing a luminous chest crystal with trailing ceremonial cords; a shattered crystal canyon crossed by a silver stream. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 57,
+        "role": 1,
+        "tier": 7,
+        "angle": "low three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "f5751f5002a54b5a40df340c89e48117dd8121a3d106a78b43a15a636e6dc1ce",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1978",
+      "name": "封機永約守航護衛銅環牛 ブロント",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "forge",
+      "origin": "tree",
+      "subject": "bronze ring-horned bull, sweeping diagonally across the frame, side view with the face turned toward the viewer, wearing light crownlike antlers or decorative crest and orbiting fireflies; a vast cloud citadel seen from a hanging bridge. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 57,
+        "role": 1,
+        "tier": 7,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "909af5efd42a7b262b1b804bed191ea72a52423b5e16d9a1644cb2557e236972",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1595",
+      "name": "星巡永約守航調律星梟 ルキノ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "orbit",
+      "origin": "mountain",
+      "subject": "star owl with broad feathered wings, rearing or stretching upward beside a giant crystal, wide cinematic view with the creature large in the foreground, wearing a luminous chest crystal with trailing ceremonial cords; a vast cloud citadel seen from a hanging bridge. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 58,
+        "role": 2,
+        "tier": 7,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "e7a1a824ec701281e033311a611f8a1ea87195531dc7f342383399c771ccdad9",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1723",
+      "name": "残響永約守航調律鏡鶴 カノーネ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "echo",
+      "origin": "seed",
+      "subject": "mirror-feathered crane, rearing or stretching upward beside a giant crystal, low three-quarter view, wearing light crownlike antlers or decorative crest and orbiting fireflies; sunken library arches lit by luminous fish. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 58,
+        "role": 2,
+        "tier": 7,
+        "angle": "low three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "2925f5ebf386ef2508a408925395f085e7d7741d1be9d71c603421ef901226c1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1851",
+      "name": "命誓永約守航調律紅鷹 アヴィス",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "vow",
+      "origin": "flower",
+      "subject": "scarlet eagle with gilded wings, rearing or stretching upward beside a giant crystal, side view with the face turned toward the viewer, wearing antique shoulder plates and small ancestral bells; a copper and jade forge carved into living stone. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 58,
+        "role": 2,
+        "tier": 7,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "e8f3aad456fdd24b8d6e7ecaf35d62283d795638b91912c824d407834c022220",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1979",
+      "name": "封機永約守航調律鍵翼鳥 キリス",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "forge",
+      "origin": "mountain",
+      "subject": "brass key-winged bird, rearing or stretching upward beside a giant crystal, dramatic elevated three-quarter view, wearing curling botanical engravings and crystal-tipped plumes; a ruined ivory observatory above an ocean of stars. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 58,
+        "role": 2,
+        "tier": 7,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "cadbd760cb276aec622730b5e803cdbc0b4f3be61a014e44999b03fa0858459a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1596",
+      "name": "星巡永約守航追憶環蛇 セレス",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "orbit",
+      "origin": "river",
+      "subject": "long ivory orbit serpent, leaping forward across a broken bridge, low three-quarter view, wearing antique shoulder plates and small ancestral bells; a ruined ivory observatory above an ocean of stars. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 59,
+        "role": 3,
+        "tier": 7,
+        "angle": "low three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "e11424465fa9e20a245327818a703709577e65f28bf50a64d8614cd6fd55283d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1724",
+      "name": "残響永約守航追憶音叉豹 オスティ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "echo",
+      "origin": "grass",
+      "subject": "silver panther with tuning-fork horns, leaping forward across a broken bridge, side view with the face turned toward the viewer, wearing curling botanical engravings and crystal-tipped plumes; turquoise cascades through an ancestral sanctuary. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 59,
+        "role": 3,
+        "tier": 7,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "86711dbce2c9d2286b1426ce9b150520701d3e8e05ff2541e47888b12c161cc7",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1852",
+      "name": "命誓永約守航追憶契約兎 ラピア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "vow",
+      "origin": "tree",
+      "subject": "long-eared ivory rabbit with floating oath ribbons, leaping forward across a broken bridge, dramatic elevated three-quarter view, wearing a flowing two-tone mantle and linked gold rings; a coral garden of floating golden terraces. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 59,
+        "role": 3,
+        "tier": 7,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "58cd12da634a486ea06e04d5a6a8adff173504871f7ef8b8ea25dbfd1879c279",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1980",
+      "name": "封機永約守航追憶炉心蜥蜴 フォルナ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "forge",
+      "origin": "river",
+      "subject": "clockwork lizard with glowing furnace belly, leaping forward across a broken bridge, front three-quarter view, wearing a delicate engraved neck harness and long silk ribbons; a violet moonlit grove with giant flowering roots. Ancient majestic creature, large expressive silhouette and complex flowing details",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 59,
+        "role": 3,
+        "tier": 7,
+        "angle": "front three-quarter view",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-10.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "cellSha256": "a81e0a29b02704f7c94e34fed35b2b81d8af8a4288517fe53781f501a7d7e1d6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

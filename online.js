@@ -381,11 +381,13 @@ export function createOnlineClient({
   const getOperator = () => auxiliary('operator', '/operator');
   const getOperatorDeck = () => auxiliary('operator', '/operator/deck');
   const replaceOperatorArtwork = artwork => auxiliary('operator','/operator/artwork',{method:'POST',body:{artwork}});
-  const updateOperatorSettings = settings => auxiliary('operator', '/operator/settings', { method: 'POST', body: { notice: settings?.notice, maintenance: settings?.maintenance } });
-  const getInbox = () => auxiliary('inbox', '/inbox');
+  const updateOperatorSettings = settings => operatorMutation('/operator/settings', settings);
+  const queryString = values => {const query=new URLSearchParams(Object.entries(values||{}).filter(([,value])=>value!==undefined&&value!==null).map(([key,value])=>[key,String(value)])).toString();return query?'?'+query:'';};
+  const getOperatorRecords = values => auxiliary('operator','/operator/records'+queryString(values));
+  const getInbox = values => auxiliary('inbox', '/inbox'+queryString(values));
   const markInboxRead = id => auxiliary('inbox', `/inbox/${encode(id)}/read`, { method: 'POST', body: {} });
   const claimGift = (id, revision) => auxiliary('cloud', `/inbox/${encode(id)}/claim`, { method: 'POST', body: { revision } });
-  const getEvents = () => auxiliary('events', '/events');
+  const getEvents = values => auxiliary('events', '/events'+queryString(values));
   const claimEvent = (id, revision) => auxiliary('cloud', `/events/${encode(id)}/claim`, { method: 'POST', body: { revision } });
   function operatorMutation(path, values = {}) {
     const mutationId = values?.mutationId || actionIdentifier();
@@ -397,6 +399,7 @@ export function createOnlineClient({
   const sendOperatorMessage = values => operatorMutation('/operator/messages', values);
   const sendOperatorGift = values => operatorMutation('/operator/gifts', values);
   const saveOperatorEvent = values => operatorMutation('/operator/events', values);
+  const saveOperatorNotice = values => operatorMutation('/operator/notices', values);
   async function revokeSession(id) {
     const payload = await auxiliary('account', `/account/sessions/${encode(id)}`, { method: 'DELETE' });
     if (payload.currentRevoked) {
@@ -514,7 +517,7 @@ export function createOnlineClient({
     getCloudSave, saveCloudSave, createDeviceLink, claimDeviceLink, getSessions, revokeSession,
     getPublicStatus, updatePresence, activateOperator, claimOperatorRegalia, getOperator, getOperatorDeck, replaceOperatorArtwork, updateOperatorSettings,
     getInbox, markInboxRead, claimGift, getEvents, claimEvent,
-    sendOperatorMessage, sendOperatorGift, saveOperatorEvent,
+    sendOperatorMessage, sendOperatorGift, saveOperatorEvent, saveOperatorNotice, getOperatorRecords,
     startPolling, stopPolling, destroy, getStatus,
     get profile() { return cloneProfile(profile); },
   });

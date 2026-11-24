@@ -898,19 +898,22 @@ html.bk-fit .bk-native-screen .dual-workshop .deck-image-slot{
  html.bk-fit .bk-native-screen .dual-workshop .workshop-tools{gap:3px}
  html.bk-fit .bk-native-screen .dual-workshop .workshop-tools .deck-panel-foot>div>*{font-size:9px;min-height:25px;padding:2px}
 }
-/* Full-screen operator dashboard: the shell and its navigation never scale.
+/* Full-screen operator dashboard and inbox: navigation stays at native size.
    Only a selected, oversized form may fit within its own content pane. */
-html.bk-fit #modal-root .modal.operator-fullscreen{
+html.bk-fit #modal-root .modal.operator-fullscreen,
+html.bk-fit #modal-root .modal.inbox-fullscreen{
  position:fixed!important;inset:8px!important;width:auto!important;height:auto!important;
  min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;
  margin:0!important;padding:12px!important;box-sizing:border-box!important;transform:none!important;
  display:flex!important;flex-direction:column;overflow:hidden!important;
 }
-html.bk-fit #modal-root .operator-fullscreen>.modal-close{
+html.bk-fit #modal-root .operator-fullscreen>.modal-close,
+html.bk-fit #modal-root .inbox-fullscreen>.modal-close{
  position:absolute!important;top:10px!important;right:10px!important;left:auto!important;bottom:auto!important;
  margin:0!important;width:38px;height:38px!important;min-height:38px!important;z-index:5
 }
 .operator-fullscreen>.operator-view{display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px;width:100%;min-width:0;min-height:0;flex:1 1 0}
+html.bk-fit #modal-root .inbox-fullscreen>.player-inbox.op-inbox{height:auto;min-height:0;flex:1 1 0;overflow:hidden}
 .operator-console-header{min-width:0;padding-right:48px;display:grid;gap:4px}
 .operator-console-header>.eyebrow{font-size:11px}
 .operator-console-header>h2{font-size:clamp(20px,2vw,32px);line-height:1.25;margin:0!important}
@@ -942,7 +945,8 @@ html.bk-fit #modal-root .operator-fullscreen>.modal-close{
 .operator-content-frame .operator-player-copy strong{font-size:clamp(13px,1.1vw,18px)}
 .operator-content-frame .operator-delivery-history,.operator-content-frame .operator-event-list{margin-top:10px;padding-top:8px}
 @media(max-width:750px){
- html.bk-fit #modal-root .modal.operator-fullscreen{inset:4px!important;padding:7px!important}
+ html.bk-fit #modal-root .modal.operator-fullscreen,
+ html.bk-fit #modal-root .modal.inbox-fullscreen{inset:4px!important;padding:7px!important}
  .operator-fullscreen>.operator-view{gap:5px}
  .operator-console-header{gap:3px;padding-right:32px}
  .operator-console-header>.account-intro{display:none}

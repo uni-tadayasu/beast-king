@@ -1,0 +1,994 @@
+{
+  "id": "bk03-atlas-42",
+  "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+  "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+  "sourceSha256": "4d2ea8090dcfb2381b12e6e94e3ddec3b2dee1237fcb62788e4b74c29aafa5de",
+  "nativeMaster": "exec-ad03ab71-a35c-4e4d-a71b-0b5d0d7f2ed8.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "db86c192d0850aceeb1f1207f6fe373b2e30e8244b9b0af0f22364514e05dbb9",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "G0524",
+    "G0556",
+    "G0588",
+    "G0620",
+    "G0652",
+    "G0684",
+    "G0716",
+    "G0748",
+    "G0525",
+    "G0557",
+    "G0589",
+    "G0621",
+    "G0653",
+    "G0685",
+    "G0717",
+    "G0749",
+    "G0526",
+    "G0558",
+    "G0590",
+    "G0622",
+    "G0654",
+    "G0686",
+    "G0718",
+    "G0750"
+  ],
+  "cards": [
+    {
+      "id": "G0524",
+      "name": "星継・導標の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a coral garden of floating golden terraces; close dynamic view with the entire main silhouette inside the tile; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "15b9ead9c36a04c16e3fd22abf021a271ecca868b9a545892bf668eec2a0ce6f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0556",
+      "name": "潮継・導標の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a violet moonlit grove with giant flowering roots; wide cinematic view with the creature large in the foreground; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "97f54063a87bf9c6de42d2169bf9fc341afe10d7fe147cad2312dfe5aa95bb1a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0588",
+      "name": "火継・導標の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a shattered crystal canyon crossed by a silver stream; low three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "ddd3ed0db6e96ce70e4842552047eb89daa9210953cb224d6bd6397128479665",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0620",
+      "name": "風継・導標の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a vast cloud citadel seen from a hanging bridge; side view with the face turned toward the viewer; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "bfca06d445a68cb375e59f4b63b6802979b19170ad95aefb7ffbe68c10f75f23",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0652",
+      "name": "花継・導標の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in sunken library arches lit by luminous fish; dramatic elevated three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "04a0033e000b27b2aaee5b84d3b13da14a0cc29b814032e792a7ff08ae2d53f3",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0684",
+      "name": "樹継・導標の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a copper and jade forge carved into living stone; front three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "809893d469eda5d5fe0775c8d7d24df37a769c9059d4e7ec8f543374233f7135",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0716",
+      "name": "晶継・導標の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a ruined ivory observatory above an ocean of stars; full-body diagonal action view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "full-body diagonal action view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "ead6091111e50a422723525f7f2b03f24bbacaa67108f15e7a17b7048590278d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0748",
+      "name": "月継・導標の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in turquoise cascades through an ancestral sanctuary; rear three-quarter view with visible expressive face; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "76ae0fafcae8bb3a37ff3b4301d3931a91f7975139bf82d9744e05d9744e63aa",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0525",
+      "name": "星継・環紋の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a vast cloud citadel seen from a hanging bridge; wide cinematic view with the creature large in the foreground; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "8304222089e5e2d9a4cf7398ae3ae5ef345c3021413db80ac3a0472ca4675aa7",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0557",
+      "name": "潮継・環紋の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in sunken library arches lit by luminous fish; low three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "f53d830d181d64e2cd16f23ca2b931d695c972bbec1f94a8810a0d0532a30cfd",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0589",
+      "name": "火継・環紋の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a copper and jade forge carved into living stone; side view with the face turned toward the viewer; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "6f812c69b60ceeca47d7f4d722b32d190a259c5b56ae793481097bdf0c724d7d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0621",
+      "name": "風継・環紋の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a ruined ivory observatory above an ocean of stars; dramatic elevated three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "e4fa5e1464088276435912d3631abc33856d2a594cbb37d683fcaa06cb9f3823",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0653",
+      "name": "花継・環紋の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in turquoise cascades through an ancestral sanctuary; front three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "2fe492e50a011ccf7459bf5e7899129a03731efda8d186a672e84b949dbf75ab",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0685",
+      "name": "樹継・環紋の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a coral garden of floating golden terraces; full-body diagonal action view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "full-body diagonal action view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "e8ae7de9b58a1e6a4bcbb792037df3554f4c4ac37b71e552a73d45be66c81b6f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0717",
+      "name": "晶継・環紋の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a violet moonlit grove with giant flowering roots; rear three-quarter view with visible expressive face; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "0b9ed4993ad05e44509959ee846f0a573bc9ee03e6e419e68c7d3b01452a2d23",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0749",
+      "name": "月継・環紋の迎撃陣",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a shattered crystal canyon crossed by a silver stream; close dynamic view with the entire main silhouette inside the tile; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "5e372aee185f3542d78e7599613e01ddfd18c86f0f6cfb2ff2e8e191c040c7a6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0526",
+      "name": "星継・環紋の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a ruined ivory observatory above an ocean of stars; low three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "5a76c4f691e26256f19acfbcc9cad7022133ac76dcfc21404c525f779de5a867",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0558",
+      "name": "潮継・環紋の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in turquoise cascades through an ancestral sanctuary; side view with the face turned toward the viewer; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "57452ecd02de11a43039fbcfa617c75079681c2cf0992f865955399a7e5a7c36",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0590",
+      "name": "火継・環紋の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a coral garden of floating golden terraces; dramatic elevated three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "ea74e59d7934f9051228c0e2980c32ab57068a6d7e8f017365bd61e1b53aa684",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0622",
+      "name": "風継・環紋の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a violet moonlit grove with giant flowering roots; front three-quarter view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "54bb3b26b7c4f50c702ac6e6e378c1d2d592942584f14a667102d83b202bc4cc",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0654",
+      "name": "花継・環紋の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a shattered crystal canyon crossed by a silver stream; full-body diagonal action view; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "full-body diagonal action view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "d3b7d4e6eaf7d00718f71d0d08fad7f3506cddb17794d095301d81c7f9259ac5",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0686",
+      "name": "樹継・環紋の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a vast cloud citadel seen from a hanging bridge; rear three-quarter view with visible expressive face; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "87a45f980e8eacd61aaf119764f1663ab39a2175b60d3d5ce81b3f78b3cfca0f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0718",
+      "name": "晶継・環紋の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in sunken library arches lit by luminous fish; close dynamic view with the entire main silhouette inside the tile; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "14a450988dfa81e8e1956f210a523bb444a56207755ae01f8f58161f5d098ba9",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0750",
+      "name": "月継・環紋の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a copper and jade forge carved into living stone; wide cinematic view with the creature large in the foreground; partially unfolded. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-42.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "a58033d46af82c1ec0e68187bb71beef528a3ecb1d2433e5df67f2c8da507ead",
+      "cellSha256": "d025a31464733f86a7170a9154bc0a9a67e668fbdd2c7646aed8e0cf8d1f86f5",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

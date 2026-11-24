@@ -334,12 +334,21 @@ function fitOperatorConsole(modal){
  }
  return true;
 }
+function fitPagedInbox(modal){
+ if(!modal.querySelector(':scope > .player-inbox.op-inbox'))return false;
+ // Paged readers need a definite height. The generic auto-height dialog fit
+ // collapses their remaining grid track before text can be measured.
+ modal.classList.add('inbox-fullscreen');
+ for(const key of ['width','height','min-height','max-width','max-height','left','top','right','bottom','transform'])modal.style.removeProperty(key);
+ modal.dataset.fitScale='1.0000';
+ return true;
+}
 function fitModal(){
  const modal=doc.querySelector('#modal-root .modal,dialog[open]:not(.news-dialog)');
  if(!modal)return;
  const w=Math.max(1,layoutWidth()-20),h=Math.max(1,layoutHeight()-20);
  if(modal!==lastModal){lastModal=modal;modal.classList.add('bk-fit-modal');}
- if(fitOperatorConsole(modal))return;
+ if(fitOperatorConsole(modal)||fitPagedInbox(modal))return;
  const wrap=modal.parentElement;
  const inBackdrop=wrap?.classList.contains('modal-backdrop');
  // Native dialogs remain in the top layer and use its centered positioning.

@@ -1,4 +1,4 @@
-import { getCard, STARTER_DECKS, DECK_PRESETS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, DECK_COPY_LIMIT, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js?v=20261124-26';
+import { getCard, STARTER_DECKS, DECK_PRESETS, EXPANSION_DECKS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, DECK_COPY_LIMIT, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js?v=20261124-28';
 
 export const MAX_HEART_POINTS = 5000;
 // Internal .core and MAX_CORE remain compatible with saved games and callers.
@@ -120,15 +120,91 @@ function restoreDefense(state, who, value, events, source) {
   if(total===0)emit(state,events,`「${source}」：守備力の回復は0。${player.field.length?'場の魔獣はすでに最大守備力。':'場に回復対象の魔獣がいない。'}`,'heal');
   return total;
 }
+const EXPANSION_KINDS=new Set(['legacy_rally','legacy_mend','legacy_recall','legacy_aegis','legacy_bless','legacy_bond','orbit_rally','orbit_aegis','orbit_focus','orbit_pulse','echo_bolt','echo_aegis','echo_recall','echo_chorus','vow_rally','vow_aegis','vow_focus','vow_bolt','forge_rally','forge_aegis','forge_bolt','forge_restore']);
+const EXPANSION_DAMAGE=new Set(['legacy_bond','orbit_pulse','echo_bolt','vow_bolt','forge_bolt']);
+const matchesFamily=(card,family)=>family==='legacy'?['BK01','BK02'].includes(card?.setId):card?.setId==='BK04'&&card.family===family;
+const familyField=(player,family)=>player.field.filter(unit=>unit.hp>0&&matchesFamily(getCard(unit.cardId),family));
+const orbitCount=player=>Math.min(3,new Set(familyField(player,'orbit').map(unit=>getCard(unit.cardId).origin)).size);
+function echoCount(player,card,excludeCurrent=true){
+ const current=excludeCurrent&&card.type==='miracle'?player.grave.lastIndexOf(card.id):-1;
+ return Math.min(3,player.grave.filter((id,i)=>i!==current&&getCard(id)?.type==='miracle'&&matchesFamily(getCard(id),'echo')).length);
+}
+function forgeIndex(player){return player.grave.findIndex(id=>['beast','fusion'].includes(getCard(id)?.type)&&matchesFamily(getCard(id),'forge'));}
+function expansionDamage(player,card,resolving=true){
+ const {kind,value}=card.effect;
+ if(kind==='legacy_bond')return value+(new Set(familyField(player,'legacy').map(u=>getCard(u.cardId).setId)).size===2?100:0);
+ if(kind==='orbit_pulse')return value+(orbitCount(player)===3?100:0);
+ if(kind==='echo_bolt')return value+100*echoCount(player,card,resolving);
+ if(kind==='vow_bolt')return player.core>200?value+100:0;
+ if(kind==='forge_bolt')return value+(forgeIndex(player)>=0?200:0);
+ return value;
+}
+/** All expansion references stay on public zones. No random hidden-card search,
+ * generated tokens, recursive triggers or extra saved counters. */
+function expansionEffect(state,who,card,target,events){
+ const {kind,value}=card.effect;if(!EXPANSION_KINDS.has(kind))return false;
+ const player=state.players[who],enemy=1-who,family=card.family,units=familyField(player,family);
+ const text=message=>emit(state,events,`「${card.name}」：${message}`,'info');
+ const addShield=amount=>{player.shield+=amount;emit(state,events,`「${card.name}」：結界${amount}を付与（合計${player.shield}）。`,'shield');};
+ const boost=(targets,amount,defense=true)=>{
+  for(const unit of targets){unit.attack+=amount;if(defense){unit.hp+=amount;unit.maxHp+=amount;}}
+  emit(state,events,`「${card.name}」：対象${targets.length}体の攻撃力${defense?'・現在守備力・最大守備力':''}を${amount}上昇。`,'buff');
+ };
+ const restore=(targets,amount)=>{
+  let recovered=0;for(const unit of targets){const gain=Math.min(amount,Math.max(0,unit.maxHp-unit.hp));unit.hp+=gain;recovered+=gain;}
+  emit(state,events,`「${card.name}」：対象${targets.length}体の守備力を最大${amount}ずつ回復（合計${recovered}）。最大守備力を超えない。`,'heal');
+ };
+ const forge=()=>{
+  const index=forgeIndex(player);if(index<0)return false;
+  const [id]=player.grave.splice(index,1);player.banished??=[];player.banished.push(id);
+  text(`お墓の「${getCard(id).name}」1枚を異世界へ送り、封機を増幅。`);return true;
+ };
+ if(kind.startsWith('vow_')){
+  if(player.core<=200||((kind==='vow_rally'||kind==='vow_focus')&&!units.length)){text('命誓の支払い条件を満たさないため、支払わず効果なし。');return true;}
+  damageCore(state,who,200,events,card.name+'の命誓',{bypassShield:true});
+ }
+ if(kind.endsWith('_recall')){
+  const index=player.grave.findIndex(id=>getCard(id)?.type==='beast'&&getCard(id).cost<=4&&matchesFamily(getCard(id),family));
+  if(index<0||player.hand.length>=RULES.hand){text('手札の空き、または対象となるお墓の通常魔獣がない。');return true;}
+  const [id]=player.grave.splice(index,1);player.hand.push(id);text(`お墓の「${getCard(id).name}」1枚を手札へ戻した。`);return true;
+ }
+ if(EXPANSION_DAMAGE.has(kind)){
+  // Compute the forge bonus before its material leaves the grave. Vow has
+  // already paid, so its printed damage must not re-check the reduced HP.
+  let amount=kind==='vow_bolt'?value+100:expansionDamage(player,card);
+  if(kind==='forge_bolt')forge();
+  // Only an explicitly targeted miracle may consume client-supplied targets.
+  // Legacy bond and summon/start-turn damage always strike the opposing heart.
+  const chosen=card.type==='miracle'&&card.targetType==='enemy'?target:{player:enemy,core:true};
+  if(chosen.core)damageCore(state,enemy,amount,events,card.name);
+  else damageUnit(state,state.players[enemy].field.find(u=>u.uid===chosen.uid),amount,events,card.name);
+ }else if(kind==='legacy_rally')boost(units,value);
+ else if(kind==='legacy_mend')restore(units,value);
+ else if(kind==='legacy_bless')boost(units.filter(u=>u.uid===target?.uid),value);
+ else if(kind==='legacy_aegis')addShield(value*Math.min(3,units.length));
+ else if(kind==='orbit_rally')boost(units,value*orbitCount(player),false);
+ else if(kind==='orbit_aegis')addShield(value*orbitCount(player));
+ else if(kind==='orbit_focus')boost(units.filter(u=>u.uid===target?.uid),value+(orbitCount(player)===3?100:0));
+ else if(kind==='echo_aegis')addShield(value+100*echoCount(player,card));
+ else if(kind==='echo_chorus')boost(units,value+(echoCount(player,card)===3?100:0),false);
+ else if(kind==='vow_rally')boost(units,value);
+ else if(kind==='vow_focus')boost(units.filter(u=>u.uid===target?.uid),value+100);
+ else if(kind==='vow_aegis')addShield(value+200);
+ else if(kind==='forge_rally')boost(units,value+(units.length&&forge()?100:0));
+ else if(kind==='forge_aegis')addShield(value+(forge()?200:0));
+ else if(kind==='forge_restore')restore(units,value+(units.some(u=>u.hp<u.maxHp)&&forge()?200:0));
+ return true;
+}
 function activateStartTraps(state, who, events) {
   const player = state.players[who];
   for (const trap of [...player.traps]) {
     if (state.winner !== null) break;
     const card = getCard(trap.cardId);
-    if (!card || !['spring','fountain'].includes(card.effect.kind)) continue;
+    if (!card || (!['spring','fountain'].includes(card.effect.kind)&&card.trigger!=='turn_start')) continue;
     player.traps = player.traps.filter(t=>t.uid!==trap.uid);
     player.grave.push(trap.cardId);
     emit(state, events, `${label(player)}のギミック「${card.name}」が発動！`, 'gimmick');
+    if(expansionEffect(state,who,card,undefined,events)){checkWinner(state,events);continue;}
     if (card.effect.kind === 'spring') {
       for (const unit of player.field) {unit.attack+=card.effect.value;unit.hp+=card.effect.value;unit.maxHp+=card.effect.value;}
       emit(state, events, `「${card.name}」：${player.field.length?`${label(player)}の場の魔獣${player.field.length}体すべての攻撃力・現在守備力・最大守備力が${card.effect.value}上昇。`:'場に対象の魔獣がいないため、能力の変化は0。'}`, 'buff');
@@ -158,7 +234,7 @@ function beginTurn(state, events) {
 
 function defaultSpecialDeck(ids) {
   const signature=[...ids].sort().join('|');
-  const preset=DECK_PRESETS.find(d=>[...d.ids].sort().join('|')===signature) || STARTER_DECKS[0];
+  const preset=[...DECK_PRESETS,...EXPANSION_DECKS].find(d=>[...d.ids].sort().join('|')===signature) || STARTER_DECKS[0];
   return preset.specialIds;
 }
 
@@ -280,14 +356,15 @@ export function getLegalTargets(state, handIndex) {
   const card = validHandCard(state, handIndex);
   if (!card) return [];
   const own=state.active, enemy=1-own;
-  if (card.type==='miracle' && card.effect.kind==='damage_enemy') return [{player:enemy,core:true},...state.players[enemy].field.map(u=>({player:enemy,uid:u.uid}))];
+  if (card.type==='miracle' && (card.effect.kind==='damage_enemy'||card.targetType==='enemy')) return [{player:enemy,core:true},...state.players[enemy].field.map(u=>({player:enemy,uid:u.uid}))];
+  if(card.type==='miracle'&&card.targetType)return familyField(state.players[own],card.targetType).map(u=>({player:own,uid:u.uid}));
   if (card.type==='miracle' && card.effect.kind==='buff') return state.players[own].field.map(u=>({player:own,uid:u.uid}));
   return [];
 }
 function targetMatches(a,b) {
   return !!a && !!b && a.player === b.player && (a.core === true ? b.core === true && !b.uid : a.uid === b.uid && b.core !== true);
 }
-function needsTarget(card) {return card.type==='miracle' && TARGETED.has(card.effect.kind);}
+function needsTarget(card) {return card.type==='miracle' && (TARGETED.has(card.effect.kind)||!!card.targetType);}
 export function getPlayableCards(state) {
   if (!validState(state) || state.winner !== null) return [];
   const player=state.players[state.active];
@@ -301,6 +378,7 @@ function summonEffect(state, card, events) {
   const own=state.active, enemy=1-own, player=state.players[own];
   const {kind,value=0}=card.effect;
   if (kind!=='none') emit(state,events,`${label(player)}の「${card.name}」の召喚時効果が発動。`,'info');
+  if(expansionEffect(state,own,card,undefined,events))return;
   if (kind==='draw') draw(state,own,value,events,false,card.name);
   else if (kind==='heal') healCore(state,own,value,events,card.name);
   else if (kind==='damage_core') damageCore(state,enemy,value,events,card.name);
@@ -315,6 +393,7 @@ function summonEffect(state, card, events) {
 function miracleEffect(state, card, target, events) {
   const own=state.active, enemy=1-own, player=state.players[own];
   const {kind,value=0}=card.effect;
+  if(expansionEffect(state,own,card,target,events))return;
   if (kind==='damage_enemy') {
     if (target.core) damageCore(state,enemy,value,events,card.name);
     else damageUnit(state,state.players[enemy].field.find(u=>u.uid===target.uid),value,events,card.name);
@@ -397,11 +476,14 @@ export function attack(state, attackerUid, target) {
   let attackPower=unit.attack;
   for (const trap of [...defender.traps]) {
     const card=getCard(trap.cardId);
-    if (card.effect.kind==='ambush' || (card.effect.kind==='barrier' && chosen.core && attackPower>0)) {
+    const eligible=card.effect.kind.startsWith('family_')&&familyField(defender,card.family).length>0;
+    const ambush=card.effect.kind==='ambush'||eligible&&card.effect.kind==='family_ambush';
+    const barrier=card.effect.kind==='barrier'||eligible&&card.effect.kind==='family_barrier';
+    if (ambush || (barrier && chosen.core && attackPower>0)) {
       defender.traps=defender.traps.filter(t=>t.uid!==trap.uid);
       defender.grave.push(trap.cardId);
       emit(state,events,`${label(defender)}のギミック「${card.name}」が発動！`,'gimmick');
-      if (card.effect.kind==='ambush') {
+      if (ambush) {
         damageUnit(state,unit,card.effect.value,events,card.name);
         if (unit.hp<=0) {cleanup(state,events,card.name);emit(state,events,`「${card.name}」：攻撃した魔獣が消滅し、攻撃は止められた。`,'cancel');return ok(events);}
       } else {
@@ -534,6 +616,31 @@ function cardScore(state, index, difficulty) {
       score+=recovery?1+battleUnits(recovery):-2;
     }
   }
+  if(EXPANSION_KINDS.has(kind)){
+    const units=familyField(player,card.family),incoming=card.type==='beast'?1:0;
+    const body=card.type==='beast';
+    if(EXPANSION_DAMAGE.has(kind)){
+      const amount=expansionDamage(player,card,false);
+      score+=battleUnits(amount)*.85;
+      if(enemy.core+enemy.shield<=amount)score+=1000;
+    }else if(kind.endsWith('_recall')){
+      const useful=player.grave.some(id=>getCard(id)?.type==='beast'&&getCard(id).cost<=4&&matchesFamily(getCard(id),card.family));
+      score+=useful?4:-2;if(!body&&!useful)score=-2;
+    }else if(kind.endsWith('_rally')||kind==='echo_chorus'){
+      score+=(units.length+incoming)*battleUnits(value)*(kind==='orbit_rally'?Math.max(1,orbitCount(player)):1.5);
+      if(!body&&!units.length)score=-2;
+    }else if(kind.endsWith('_aegis')){
+      const amount=kind==='orbit_aegis'?value*orbitCount(player):kind==='legacy_aegis'?value*Math.min(3,units.length):value+200;
+      score+=battleUnits(amount)*(critical?1.1:.5);if(!body&&!amount)score=-2;
+    }else if(kind==='legacy_bless'||kind.endsWith('_focus'))score+=points*1.3;
+    else if(kind.endsWith('_mend')||kind==='forge_restore'){
+      const recovery=units.reduce((sum,u)=>sum+Math.min(value,u.maxHp-u.hp),0);score+=battleUnits(recovery);
+      if(!body&&!recovery)score=-2;
+    }
+    if(kind.startsWith('vow_')){score-=critical?3:1;if(player.core<=200&&!body)score=-2;}
+    if(card.type==='gimmick')score-=1.5;
+  }
+  if(kind==='family_ambush'||kind==='family_barrier')score+=familyField(player,card.family).length?2+points*.6:-2;
   if (difficulty==='easy') score+=random(state)*8;
   if (difficulty==='normal') score+=random(state)*1.2;
   return score;
@@ -544,11 +651,11 @@ function chooseCardTarget(state,index,difficulty) {
   if (!targets.length) return undefined;
   if (difficulty==='easy') return targets[Math.floor(random(state)*targets.length)];
   const card=getCard(state.players[state.active].hand[index]);
-  if (card.effect.kind==='buff') return [...targets].sort((a,b)=>{
+  if (card.effect.kind==='buff'||card.targetType&&card.targetType!=='enemy') return [...targets].sort((a,b)=>{
     const af=state.players[a.player].field.find(u=>u.uid===a.uid), bf=state.players[b.player].field.find(u=>u.uid===b.uid);
     return (bf.ready?4:0)+battleUnits(bf.hp)*0.2+(bf.keywords.includes('drain')?2:0)-((af.ready?4:0)+battleUnits(af.hp)*0.2+(af.keywords.includes('drain')?2:0));
   })[0];
-  const enemy=state.players[1-state.active], value=card.effect.value;
+  const enemy=state.players[1-state.active], value=EXPANSION_DAMAGE.has(card.effect.kind)?expansionDamage(state.players[state.active],card,false):card.effect.value;
   if (enemy.core+enemy.shield<=value) return targets.find(t=>t.core);
   const units=targets.filter(t=>t.uid).map(t=>({target:t,unit:enemy.field.find(u=>u.uid===t.uid)}));
   units.sort((a,b)=>((b.unit.hp<=value?8:0)+battleUnits(b.unit.attack)+battleUnits(b.unit.maxHp)*0.2)-((a.unit.hp<=value?8:0)+battleUnits(a.unit.attack)+battleUnits(a.unit.maxHp)*0.2));
@@ -592,9 +699,11 @@ function cpuPlayCards(state,difficulty,events) {
       // Spend only one legal, cheapest support to make room for the next draw;
       // normal targeting, cost, delayed activation and fatigue still apply.
       const player=state.players[state.active];
-      const recyclable=player.hand.length===RULES.hand?scored.filter(({i})=>
-        ['heal','renew','sweep','spring','fountain'].includes(getCard(player.hand[i]).effect.kind)
-      ).sort((a,b)=>getCard(player.hand[a.i]).cost-getCard(player.hand[b.i]).cost||a.i-b.i):[];
+      const recyclable=player.hand.length===RULES.hand?scored.filter(({i})=>{
+        const card=getCard(player.hand[i]);
+        return ['heal','renew','sweep','spring','fountain'].includes(card.effect.kind)
+          ||card.type==='miracle'&&EXPANSION_KINDS.has(card.effect.kind);
+      }).sort((a,b)=>getCard(player.hand[a.i]).cost-getCard(player.hand[b.i]).cost||a.i-b.i):[];
       if(!recyclable.length)break;
       selected=recyclable[0].i;
     }

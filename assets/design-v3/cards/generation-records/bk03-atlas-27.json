@@ -1,0 +1,994 @@
+{
+  "id": "bk03-atlas-27",
+  "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+  "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+  "sourceSha256": "deda5f7e799583ed7c9bc4907ef2688e32f250fbfb70bdbbe1395b918ec5750d",
+  "nativeMaster": "exec-56a37af4-5718-47e7-bb39-6f449f3cf679.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "fe3a282497e490d068b1e28e7cb587860b8b4d3f438275f5a2a954cac1d39929",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "F0271",
+    "F0287",
+    "F0303",
+    "F0319",
+    "F0335",
+    "F0351",
+    "F0367",
+    "F0383",
+    "F0272",
+    "F0288",
+    "F0304",
+    "F0320",
+    "F0336",
+    "F0352",
+    "F0368",
+    "F0384",
+    "M0513",
+    "M0545",
+    "M0577",
+    "M0609",
+    "M0641",
+    "M0673",
+    "M0705",
+    "M0737"
+  ],
+  "cards": [
+    {
+      "id": "F0271",
+      "name": "星継環紋大環調律獣 アウレア",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "crab-dragon with articulated claws, segmented tail and multiple horns, standing alert on a high windblown ledge, side view with the face turned toward the viewer, wearing antique shoulder plates and small ancestral bells; a violet moonlit grove with giant flowering roots. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "6852789850e332b6cdb19f19b551c3e7dc02464c18cf9d9930f5f95d771e4976",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0287",
+      "name": "潮継環紋大環調律獣 マレディ",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "two-headed wolf-crane with contrasting fur and long feather crests, standing alert on a high windblown ledge, dramatic elevated three-quarter view, wearing curling botanical engravings and crystal-tipped plumes; a shattered crystal canyon crossed by a silver stream. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "c3e7e1c9e09606e7c3b6c7a8fffac2d61c5c3f72225c03d827b1c53ed48c157c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0303",
+      "name": "火継環紋大環調律獣 イグニア",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "phoenix-stag with enormous feathered wings and branching antlers, standing alert on a high windblown ledge, front three-quarter view, wearing a flowing two-tone mantle and linked gold rings; a vast cloud citadel seen from a hanging bridge. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "e99f36f4d5315e155988260229f989c909a6813f47b3d6559d54dfc2570f8ae7",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0319",
+      "name": "風継環紋大環調律獣 ゼファル",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "sea dragon-lion with a flowing fin mane and powerful clawed limbs, standing alert on a high windblown ledge, full-body diagonal action view, wearing a delicate engraved neck harness and long silk ribbons; sunken library arches lit by luminous fish. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "full-body diagonal action view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "c417bed7329d9700142b774d586ac274d3935083441112d350edcaa87fdc85ea",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0335",
+      "name": "花継環紋大環調律獣 フロレア",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "wolf-griffin with layered feather wings and a long streaming tail, standing alert on a high windblown ledge, rear three-quarter view with visible expressive face, wearing layered scale armor with small floating gemstones; a copper and jade forge carved into living stone. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "ce8ba9e04f72560f040416db0b4de471303dc16217216ed429744fa38f4fc8e6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0351",
+      "name": "樹継環紋大環調律獣 アルシア",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "butterfly-dragon with huge patterned wings and a serpentine body, standing alert on a high windblown ledge, close dynamic view with the entire main silhouette inside the tile, wearing a sweeping feather mantle and gilt anatomical markings; a ruined ivory observatory above an ocean of stars. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "294f7acae576db35202ad30845acd03526c109795d455d651182f5825414ad7a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0367",
+      "name": "晶継環紋大環調律獣 ペトリア",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "whale-serpent curling around a small floating sanctuary, standing alert on a high windblown ledge, wide cinematic view with the creature large in the foreground, wearing a luminous chest crystal with trailing ceremonial cords; turquoise cascades through an ancestral sanctuary. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "5407092c52ee8d86b9c283076fdaabd0cd2f3c82e0f5050a01ad73f228aede5b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0383",
+      "name": "月継環紋大環調律獣 ノクレア",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "rhinoceros-phoenix with massive plated shoulders and fiery feather wings, standing alert on a high windblown ledge, low three-quarter view, wearing light crownlike antlers or decorative crest and orbiting fireflies; a coral garden of floating golden terraces. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "d84369f16b1dab630aab2b45e7b8fe7651679db447e48af5d3419906a1c41ebc",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0272",
+      "name": "星継環紋大環追憶獣 アウレア",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "two-headed wolf-crane with contrasting fur and long feather crests, descending toward a luminous pool, dramatic elevated three-quarter view, wearing a flowing two-tone mantle and linked gold rings; sunken library arches lit by luminous fish. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "descending toward a luminous pool",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "9c1d9d7d65aca40ca39f2bde6573e380f20406f49df8181bcb3d4c65d9024222",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0288",
+      "name": "潮継環紋大環追憶獣 マレディ",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "phoenix-stag with enormous feathered wings and branching antlers, descending toward a luminous pool, front three-quarter view, wearing a delicate engraved neck harness and long silk ribbons; a copper and jade forge carved into living stone. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "descending toward a luminous pool",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "60e863458b069973683d1dff50325ffb94c62d4e63962475d38ea234c4dd1339",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0304",
+      "name": "火継環紋大環追憶獣 イグニア",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "sea dragon-lion with a flowing fin mane and powerful clawed limbs, descending toward a luminous pool, full-body diagonal action view, wearing layered scale armor with small floating gemstones; a ruined ivory observatory above an ocean of stars. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "full-body diagonal action view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "descending toward a luminous pool",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "0912b59440e525fdce4b293ded6084f50691b5b1b601c2c871d00396033e0056",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0320",
+      "name": "風継環紋大環追憶獣 ゼファル",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "wolf-griffin with layered feather wings and a long streaming tail, descending toward a luminous pool, rear three-quarter view with visible expressive face, wearing a sweeping feather mantle and gilt anatomical markings; turquoise cascades through an ancestral sanctuary. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "descending toward a luminous pool",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "594927c8cabb54794f14805af90561a3364b7e4ff740db2edede0ac65b01e6ca",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0336",
+      "name": "花継環紋大環追憶獣 フロレア",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "butterfly-dragon with huge patterned wings and a serpentine body, descending toward a luminous pool, close dynamic view with the entire main silhouette inside the tile, wearing a luminous chest crystal with trailing ceremonial cords; a coral garden of floating golden terraces. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "descending toward a luminous pool",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "f72087c28238c9a0b692253ef9562b5f2841075f6e7433ec93311b1025c7a739",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0352",
+      "name": "樹継環紋大環追憶獣 アルシア",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "whale-serpent curling around a small floating sanctuary, descending toward a luminous pool, wide cinematic view with the creature large in the foreground, wearing light crownlike antlers or decorative crest and orbiting fireflies; a violet moonlit grove with giant flowering roots. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "descending toward a luminous pool",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "780d8c60478c2a2765348507979e4e8ef82da2afe2385f8f95764a1bf487cfa2",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0368",
+      "name": "晶継環紋大環追憶獣 ペトリア",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "rhinoceros-phoenix with massive plated shoulders and fiery feather wings, descending toward a luminous pool, low three-quarter view, wearing antique shoulder plates and small ancestral bells; a shattered crystal canyon crossed by a silver stream. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "descending toward a luminous pool",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "e8b6c5ee3084d09bbdb5ca7d8466f2e328c91c135dca42b8ed2bc1debeba502e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0384",
+      "name": "月継環紋大環追憶獣 ノクレア",
+      "setId": "BK03",
+      "type": "fusion",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "crab-dragon with articulated claws, segmented tail and multiple horns, descending toward a luminous pool, side view with the face turned toward the viewer, wearing curling botanical engravings and crystal-tipped plumes; a vast cloud citadel seen from a hanging bridge. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "descending toward a luminous pool",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "1b1134b6bad93ce9d5c514e12fb770a6b2029c38b3099529e158d29871d9d45a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0513",
+      "name": "星継・初灯の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in a ruined ivory observatory above an ocean of stars; low three-quarter view; diagonal flow from upper left. Tiny ivory star-antlered stag figures establish scale and story",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "low three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "06e845c97e6ef3b97911fcc0ac097e3dbd5c59567a45cae081b39f043aca90c3",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0545",
+      "name": "潮継・初灯の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in turquoise cascades through an ancestral sanctuary; side view with the face turned toward the viewer; diagonal flow from upper left. Tiny sleek turquoise river fox with flowing multiple tails figures establish scale and story",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "8ada68b37d09163ab25d871f16c74ed4fadad777d8ea2f9a8db99dbf559a581b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0577",
+      "name": "火継・初灯の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in a coral garden of floating golden terraces; dramatic elevated three-quarter view; diagonal flow from upper left. Tiny coral-maned red wolf with ember-patterned coat figures establish scale and story",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "3d2f5af020a2385615b17864c25a69366b1a2b08d0bca217bbf472662b27dce7",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0609",
+      "name": "風継・初灯の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in a violet moonlit grove with giant flowering roots; front three-quarter view; diagonal flow from upper left. Tiny white winged horse with long windblown mane figures establish scale and story",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "front three-quarter view",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "79bbcc15048484b6dead5839c75e1e90c752a0be5ab63bc05dba43c10695ea25",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0641",
+      "name": "花継・初灯の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in a shattered crystal canyon crossed by a silver stream; full-body diagonal action view; diagonal flow from upper left. Tiny elegant flower crane with layered petal plumage figures establish scale and story",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "full-body diagonal action view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "0f005e5fcf4cc5be5b8026ca6b7814397645ebfdd63f69f6aa00615007d93e44",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0673",
+      "name": "樹継・初灯の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in a vast cloud citadel seen from a hanging bridge; rear three-quarter view with visible expressive face; diagonal flow from upper left. Tiny powerful moss bear with living branch armor figures establish scale and story",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "a693654cdee5ff911c698eae63a824b2ce35644cfac4960baf5142b07ebbd2f3",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0705",
+      "name": "晶継・初灯の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in sunken library arches lit by luminous fish; close dynamic view with the entire main silhouette inside the tile; diagonal flow from upper left. Tiny massive crystal rhinoceros with faceted stone armor figures establish scale and story",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "3f48ce1e251030d4f3526c44c1665ad66a2ae2fa4c980358a9a0b06fb9d59e98",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0737",
+      "name": "月継・初灯の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in a copper and jade forge carved into living stone; wide cinematic view with the creature large in the foreground; diagonal flow from upper left. Tiny silver panther with flowing moon markings figures establish scale and story",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-27.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "562b7e23727301762ce5569106dd9283f98eaf2f56fb3a09413c1c349d310f21",
+      "cellSha256": "186b0f7f57e711bb4018e0cdacf38f67ffe40f70f0dceaf08b2d298821147ebc",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}
