@@ -60,10 +60,14 @@ const fusionNouns=['双冠獣','極翼獣','天環獣','万象獣'];
 export const REGALIA_ART_ASSET='assets/design-v2/cards/individual/king.webp';
 // Freeze the original mechanics for existing rebuild saves; published names/art
 // are shared with the new catalogue while card IDs, costs and effects stay stable.
-const first=LEGACY.map(c=>Object.freeze({...c,pack:'BK01',artStatus:'existing',...(c.id==='B0512'?{artAsset:REGALIA_ART_ASSET}:{})}));
+// The saved rebuild IDs stay valid: its historical BK01 slot B0512 is
+// restored as the mechanical spirit, while B1024 is the sole Regalia.
+const first=LEGACY.map(c=>{
+ const visual=getPublishedCard(c.id==='B0512'?'B1024':c.id);
+ return Object.freeze({...c,pack:'BK01',artStatus:'existing',...(c.id==='B0512'?{name:visual.name,flavor:visual.flavor,origin:visual.origin,element:visual.origin,artSourceId:'B1024'}:{})});
+});
 const byKind={beast:512,miracle:256,gimmick:256,fusion:128};
 const prefixes={beast:'B',miracle:'M',gimmick:'G',fusion:'F'};
-const newOrigins=['mountain','river','seed','grass','flower','tree','mountain','king'];
 const second=[];
 for(const [type,count] of Object.entries(byKind)){
  const source=first.filter(c=>c.type===type);
@@ -80,11 +84,11 @@ for(const [type,count] of Object.entries(byKind)){
   let name=type==='beast'?domains[realm][rank]+creatures[realm][variant]+' '+names[realm][variant]:
    type==='fusion'?domains[realm][rank]+fusionNouns[variant]+' '+names[realm][variant]+'ル':
    domains[realm][rank]+'の'+(type==='miracle'?miracleNouns[variant]:gimmickNouns[variant]);
-  const visual=getPublishedCard(id);
+  const visual=getPublishedCard(id==='B1024'?'B0512':id);
   if(visual)name=visual.name;
   if(type==='beast'&&n===511)name='王冠竜 レガリア';
   if(type==='miracle'&&n===255)name='合成';
-  const origin=newOrigins[realm];
+  const origin=visual.origin;
   second.push(Object.freeze({...template,id,index:1153+second.length,name,origin,element:origin,pack:'BK02',
    flavor:visual?.flavor||'王源の継承 — '+domains[realm][rank]+'に伝わる新たな契約。',
    artStatus:'existing',art:null,...(id==='B1024'?{artAsset:REGALIA_ART_ASSET}:{})}));
@@ -94,7 +98,7 @@ export const FIRST_CARDS=Object.freeze(first);
 export const SECOND_CARDS=Object.freeze(second);
 export const CARDS=Object.freeze([...first,...second]);
 export const SECOND_REGALIA_ID='B1024';
-// The discontinued exclusive print is not a valid card ID. All Regalia cards use the normal artwork.
+// Only B1024 is Regalia. The alternate illustration is an authenticated skin, not a card.
 export const CARD_MAP=new Map(CARDS.map(c=>[c.id,c]));
 export const getCard=id=>CARD_MAP.get(id);
 export const SECOND_FUSION_CARD_ID='M0512';

@@ -429,11 +429,49 @@ const restoredAether = Object.freeze({
   name: '霊極機精 エトリア', flavor: REALMS[7].lore, element: 'grass', origin: 'grass', series: 'aether',
   artBrief: Object.freeze({ species: 'ancient mechanical spirit', anatomy: 'a small empty copper torso surrounded by independently floating gear limbs, translucent luminous membrane wings, a single delicate eye suspended inside an open ring-shaped head; no humanoid face', material: 'verdigris copper, clear glass, pale grass-green energy', palette: 'dark olive, amber brass and luminous lime', environment: 'abandoned clockwork garden under warm early-morning sun', composition: 'full-body suspended pose with limbs widely separated' }),
 });
-export const CARDS = Object.freeze([
+// Keep the four starter decks and all historical first-pack identities intact.
+// Redistribute only BK02 origin labels; stats, names, ID, rarity, pack and art
+// do not change. Six regular origins differ by at most one card within each
+// type, and five have 384 cards overall (flower has 383).
+const REGULAR_ORIGINS=['mountain','river','seed','grass','flower','tree'];
+const BK02_ORIGIN_QUOTAS=Object.freeze({
+  beast:[107,107,42,42,107,106],
+  miracle:[53,53,22,21,53,54],
+  gimmick:[53,53,21,22,53,54],
+  fusion:[27,27,11,11,26,26],
+});
+function balanceSecondOrigins(cards){
+  const overrides=new Map();
+  for(const [type,quotas] of Object.entries(BK02_ORIGIN_QUOTAS)){
+    const group=cards.filter(c=>c.setId==='BK02'&&c.type===type&&c.id!=='B0512');
+    const remaining=new Map(REGULAR_ORIGINS.map((o,i)=>[o,quotas[i]]));
+    const pool=[];
+    // Interleave tier/effect/variant patterns rather than moving only the
+    // most expensive cards or a single effect family to one origin.
+    const width=type==='beast'?64:type==='fusion'?16:32;
+    const order=c=>{const n=Number(c.id.slice(1))-1,local=n%width;return ((local*13)%width)*16+Math.floor(n/width)%16;};
+    for(const card of [...group].sort((a,b)=>order(a)-order(b)||a.index-b.index)){
+      const slots=remaining.get(card.origin)||0;
+      if(slots>0)remaining.set(card.origin,slots-1);
+      else pool.push(card);
+    }
+    for(const card of pool){
+      const available=REGULAR_ORIGINS.filter(o=>remaining.get(o)>0);
+      if(!available.length)throw new Error('Origin quotas are too small for '+type);
+      // Spread spare cards by the ratio of unfilled slots, keeping the
+      // distribution deterministic across browser and Worker.
+      const next=available.sort((a,b)=>remaining.get(b)/quotas[REGULAR_ORIGINS.indexOf(b)]-remaining.get(a)/quotas[REGULAR_ORIGINS.indexOf(a)])[0];
+      overrides.set(card.id,next);remaining.set(next,remaining.get(next)-1);
+    }
+    if([...remaining.values()].some(n=>n!==0))throw new Error('Origin quota mismatch for '+type);
+  }
+  return cards.map(card=>overrides.has(card.id)?Object.freeze({...card,origin:overrides.get(card.id),element:overrides.get(card.id)}):card);
+}
+export const CARDS = Object.freeze(balanceSecondOrigins([
   ...legacyCards, ...makeSecondBeasts(), restoredAether,
   ...makeSecondMiracles(legacyCards.find(card => card.id === FUSION_CARD_ID).text),
   ...makeSecondGimmicks(), ...makeSecondFusions(),
-]);
+]));
 const cardsBySet = new Map(CARD_SETS.map(set => [set.id, Object.freeze(CARDS.filter(card => card.setId === set.id))]));
 const EMPTY_SET = Object.freeze([]);
 export const getCardsForSet = id => cardsBySet.get(id) || EMPTY_SET;

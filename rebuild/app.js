@@ -41,8 +41,8 @@ function art(c,operatorArt=false){
  const custom=artOverride(c);if(custom)return "background-image:url('../"+custom+"');background-position:center;background-size:cover";
  if(isPendingArt(c))return 'background:radial-gradient(ellipse at 50% 30%,'+(origin(c.origin)?.color||'#afc2b9')+'33,#0a201e 80%)';
  if(c.artAsset)return "background-image:url('../"+c.artAsset+"');background-position:center;background-size:cover";
- const n=Number(c.id.slice(1))-1,b=String(Math.floor(n/16)+1).padStart(2,'0'),cell=n%16;
- const base="background-image:url('../assets/design-v2/cards/individual/"+c.type+"-"+b+".webp?art=20261124');",crop=CARD_ART_CROPS[c.id];
+ const artId=c.artSourceId||c.id,n=Number(artId.slice(1))-1,b=String(Math.floor(n/16)+1).padStart(2,'0'),cell=n%16;
+ const base="background-image:url('../assets/design-v2/cards/individual/"+c.type+"-"+b+".webp?art=20261124');",crop=CARD_ART_CROPS[artId];
  if(crop)return base+'background-position:'+crop.x*100/(crop.width-crop.size)+'% '+crop.y*100/(crop.height-crop.size)+'%;background-size:'+crop.width*100/crop.size+'% '+crop.height*100/crop.size+'%';
  return base+'background-position:'+((cell%4+.01)*100/3.02)+'% '+((Math.floor(cell/4)+.01)*100/3.02)+'%;background-size:408.163% 408.163%';
 }

@@ -88,11 +88,22 @@ test('seven origins preserve the card counts with one maximum-cost King beast', 
   }
 });
 
+test('six regular origins are balanced across both packs and each card type', () => {
+  const ids=['mountain','river','seed','grass','flower','tree'];
+  const expected=[384,384,384,384,383,384];
+  assert.deepEqual(ids.map(o=>CARDS.filter(c=>c.origin===o).length),expected);
+  assert.deepEqual(ids.map(o=>getCardsForSet('BK01').filter(c=>c.origin===o).length),[144,144,288,288,144,144]);
+  assert.deepEqual(ids.map(o=>getCardsForSet('BK02').filter(c=>c.origin===o).length),[240,240,96,96,239,240]);
+  for(const type of ['beast','miracle','gimmick','fusion']){
+    const totals=ids.map(o=>CARDS.filter(c=>c.origin===o&&c.type===type).length);
+    assert.ok(Math.max(...totals)-Math.min(...totals)<=1,type);
+  }
+});
 test('King representative remains a normal beast at the maximum cost', () => {
   const king=getCard('B0512');
   assert.equal(king.name,'王冠竜 レガリア');assert.equal(king.type,'beast');assert.equal(king.origin,'king');
   assert.equal(king.cost,Math.max(...CARDS.filter(c=>c.type==='beast').map(c=>c.cost)));
-  assert.equal(king.cost,8);assert.equal(king.rarity,'GGR');assert.equal(CARDS.filter(c=>c.origin==='king').length,288);assert.equal(king.setId,'BK02');
+  assert.equal(king.cost,8);assert.equal(king.rarity,'GGR');assert.deepEqual(CARDS.filter(c=>c.origin==='king').map(c=>c.id),['B0512']);assert.equal(king.setId,'BK02');
 });
 
 test('four starters each provide exactly 32 main plus 4 special cards', () => {

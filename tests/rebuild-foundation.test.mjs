@@ -65,10 +65,13 @@ test('both packs contain every public card in their own set, exclude the retired
 });
 test('normal Regalia has the original artwork, is collectible, and the old alternate print is invalid',()=>{
  const first=getCard('B0512'),normal=getCard(SECOND_REGALIA_ID);
- for(const prop of ['name','type','origin','cost','rarity','attack','hp','model','effect','text','keywords'])assert.deepEqual(normal[prop],first[prop]);
- assert.equal(first.artAsset,REGALIA_ART_ASSET);assert.equal(normal.artAsset,REGALIA_ART_ASSET);assert.equal(normal.artStatus,'existing');
+ for(const prop of ['type','cost','rarity','attack','hp','model','effect','text','keywords'])assert.deepEqual(normal[prop],first[prop]);
+ assert.equal(first.origin,'grass');assert.equal(first.name,'霊極機精 エトリア');assert.equal(first.artSourceId,'B1024');assert.equal(first.artAsset,undefined);
+ assert.equal(normal.origin,'king');assert.equal(normal.artAsset,REGALIA_ART_ASSET);assert.equal(normal.artStatus,'existing');
  assert.equal(getCard('OP-B1024'),undefined);assert.equal(CARDS.length,2304);
- assert.deepEqual(CARDS.filter(c=>c.name.includes('レガリア')).map(c=>c.id).sort(),['B0512','B1024']);
+ assert.deepEqual(CARDS.filter(c=>c.name.includes('レガリア')).map(c=>c.id),[SECOND_REGALIA_ID]);
+ assert.deepEqual(CARDS.filter(c=>c.origin==='king').map(c=>c.id),[SECOND_REGALIA_ID]);
+ assert.deepEqual(['mountain','river','seed','grass','flower','tree'].map(o=>CARDS.filter(c=>c.origin===o).length),[384,384,384,384,383,384]);
  assert.deepEqual(normalizeCollection({[normal.id]:2,'OP-B1024':2}),{[normal.id]:2});
  assert.deepEqual(grantDeckCollection({},[normal.id,normal.id]),{[normal.id]:2});
  assert.deepEqual(grantDeckCollection({},['OP-B1024']),{});
@@ -86,7 +89,7 @@ test('Kirahara recipe has two normal Regalia cards, legal 20/16 expansion split,
  assert.equal(all.filter(id=>getCard(id).pack==='BK02').length,16);
  assert.equal(requiredCards()[SECOND_REGALIA_ID],2);assert.equal(requiredCards()['OP-B1024'],undefined);
  assert.equal(validateDeck(main).valid,true);assert.equal(validateSpecialDeck(special).valid,true);
- const i=main.findIndex(id=>id!==SECOND_REGALIA_ID),excess=[...main];excess[i]='B0512';assert.equal(validateDeck(excess).valid,false);
+ const i=main.findIndex(id=>id!==SECOND_REGALIA_ID),excess=[...main];excess[i]=SECOND_REGALIA_ID;assert.equal(validateDeck(excess).valid,false);
  const p=fresh(),g=newGame({playerDeck:main,playerSpecialDeck:special,cpuDeck:p.main,cpuSpecialDeck:p.special,seed:122});
  assert.equal(g.players[0].core,5000);assert.equal(endTurn(g).ok,true);assert.equal(runCpuTurn(g).ok,true);
 });
