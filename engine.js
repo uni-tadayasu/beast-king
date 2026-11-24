@@ -1,4 +1,4 @@
-import { getCard, STARTER_DECKS, DECK_PRESETS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, DECK_COPY_LIMIT, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js';
+import { getCard, STARTER_DECKS, DECK_PRESETS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, DECK_COPY_LIMIT, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js?v=20261124-26';
 
 export const MAX_HEART_POINTS = 5000;
 // Internal .core and MAX_CORE remain compatible with saved games and callers.
@@ -579,8 +579,19 @@ function cpuPlayCards(state,difficulty,events) {
     const playable=getPlayableCards(state);
     if (!playable.length) break;
     const scored=playable.map(i=>({i,score:cardScore(state,i,difficulty)})).sort((a,b)=>b.score-a.score);
-    if (difficulty!=='easy' && scored[0].score<0) break;
-    const selected=scored[0].i;
+    let selected=scored[0].i;
+    if (difficulty!=='easy' && scored[0].score<0) {
+      // A full hand prevents the next turn's refill. Keeping four currently
+      // useless support cards forever can deadlock an otherwise legal game.
+      // Spend only one legal, cheapest support to make room for the next draw;
+      // normal targeting, cost, delayed activation and fatigue still apply.
+      const player=state.players[state.active];
+      const recyclable=player.hand.length===RULES.hand?scored.filter(({i})=>
+        ['heal','renew','sweep','spring','fountain'].includes(getCard(player.hand[i]).effect.kind)
+      ).sort((a,b)=>getCard(player.hand[a.i]).cost-getCard(player.hand[b.i]).cost||a.i-b.i):[];
+      if(!recyclable.length)break;
+      selected=recyclable[0].i;
+    }
     const result=playCard(state,selected,chooseCardTarget(state,selected,difficulty));
     if (!result.ok) break;
     events.push(...result.events);

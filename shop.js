@@ -1,4 +1,4 @@
-import { CARD_SETS, CARD_MAP, STARTER_DECKS, getCardsForSet } from './catalog.js';
+import { CARD_SETS, CARD_MAP, STARTER_DECKS, getCardsForSet } from './catalog.js?v=20261124-26';
 
 // Pure economy rules shared by the browser and an authoritative server.
 // A server should inject its own secure random function into openPack.

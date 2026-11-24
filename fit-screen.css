@@ -1,7 +1,7 @@
 /* One-screen mode: CSS reflow first, bounded fit second. No page scrollbars.
    The JS fitter uses a logical canvas, never changes browser zoom or saved data. */
 html.bk-fit,html.bk-fit body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
-html.bk-fit body{height:100dvh}
+html.bk-fit body{height:var(--app-viewport-height,100dvh)}
 html.bk-fit #app{position:relative;min-width:0;min-height:0;overflow:hidden}
 html.bk-fit body:not(.has-profile):has(#app){display:flex;flex-direction:column}
 html.bk-fit body:not(.has-profile)>#app{flex:1 1 0;height:auto}
@@ -57,8 +57,8 @@ html.bk-fit .duel-shell .arena{height:auto!important;min-height:0!important;max-
 html.bk-fit .duel-shell .duel-sidebar{height:auto!important;max-height:none!important;overflow:visible!important}
 html.bk-fit .duel-shell .duel-sidebar .battle-log-panel{display:none}
 html.bk-fit .duel-shell .duel-sidebar .duel-help{min-height:0}
-html.bk-fit .duel-shell .field-row>.field-slot{width:min(100%,clamp(46px,calc((100dvh - 230px)*.23),112px))!important}
-html.bk-fit .duel-shell .hand-cards>.hand-card{width:min(100%,clamp(48px,calc((100dvh - 230px)*.22),106px))!important}
+html.bk-fit .duel-shell .field-row>.field-slot{width:min(100%,clamp(46px,calc((var(--app-viewport-height,100dvh) - 230px)*.23),112px))!important}
+html.bk-fit .duel-shell .hand-cards>.hand-card{width:min(100%,clamp(48px,calc((var(--app-viewport-height,100dvh) - 230px)*.22),106px))!important}
 html.bk-fit .duel-shell .hand-section{min-height:0!important;height:auto!important}
 html.bk-fit .bk-fit-target .hand-inspector[data-open=true],html.bk-fit .bk-fit-target .battle-log-drawer:not([hidden]){position:fixed!important}
 html.bk-fit .bk-fit-modal{position:absolute!important;max-height:none!important;min-height:0!important;overflow:visible!important;margin:0!important;transform-origin:top left!important}
@@ -290,7 +290,7 @@ html.bk-fit .bk-native-screen .hand-cards>.hand-card{width:min(100%,clamp(42px,c
 html.bk-fit .bk-native-screen .hand-cards{justify-content:center;align-content:center}
 html.bk-fit .bk-native-screen .duel-layout>.hand-inspector[data-open=true]{max-height:calc(var(--bk-canvas-h,420px) - 14px)}
 html.bk-fit .bk-native-screen .duel-layout>.hand-inspector[data-open=true] .hand-inspector-scroll{overflow:hidden}
-html.bk-fit .bk-native-screen .battle-log-drawer:not([hidden]){max-height:calc(100dvh - 16px)}
+html.bk-fit .bk-native-screen .battle-log-drawer:not([hidden]){max-height:calc(var(--app-viewport-height,100dvh) - 16px)}
 html.bk-fit .bk-native-screen .battle-log-drawer .battle-log-scroll{overflow:hidden}
 html.bk-fit .bk-native-screen>.mobile-action{flex:0 0 auto;min-height:36px;padding:4px 8px;gap:5px}
 html.bk-fit .bk-native-screen>.mobile-action .selection-text{flex:1 1 100px;min-width:0}

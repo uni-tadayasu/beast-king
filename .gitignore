@@ -1,5 +1,7 @@
 node_modules/
 /dist/
+# Operator artwork is kept only in the private Sites source repository.
+/server/private/
 .openai/*.local.*
 .DS_Store
 *.tar.gz

@@ -2,209 +2,162 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+<script type="module" src="orientation.js?v=20261124-26"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>ビーストキングとは｜王源の継承・パック・対戦ルール</title>
-<meta name="description" content="ビーストキングの第一弾「六源の覚醒」と第二弾「王源の継承」全2,304枚、100秘宝で開く12枚入りパック、メイン32枚＋特殊4枚のデッキと合成召喚を紹介。CPU・オンラインルーム・ランクマッチの遊び方、保存とバックアップ、BGMも案内します。">
-<meta name="theme-color" content="#201b45">
-<meta name="color-scheme" content="dark">
+<title>ビーストキングの遊び方｜カード・デッキ・バトルの基本ルール</title>
+<meta name="description" content="ビーストキングの遊び方を項目ごとに紹介。全2,304枚のカード、32枚＋4枚のデッキ、12枚入りパック、合成召喚、CPU・オンライン対戦、端末連携まで基本ルールを確認できます。">
+<meta name="theme-color" content="#06131e"><meta name="color-scheme" content="dark">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://www.beast-king.com/about.html">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="ja_JP">
+<meta property="og:type" content="website"><meta property="og:locale" content="ja_JP">
 <meta property="og:site_name" content="ビーストキング｜BEAST KING">
-<meta property="og:title" content="ビーストキングとは｜二つのパックとオンライン対戦">
-<meta property="og:description" content="ビーストキングの第一弾「六源の覚醒」と第二弾「王源の継承」全2,304枚、100秘宝で開く12枚入りパック、メイン32枚＋特殊4枚のデッキと合成召喚を紹介。CPU・オンラインルーム・ランクマッチの遊び方、保存とバックアップ、BGMも案内します。">
-<meta property="og:url" content="https://www.beast-king.com/about.html">
-<meta property="og:image" content="https://www.beast-king.com/assets/social-ogp.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/jpeg">
-<meta property="og:image:alt" content="ビーストキングの六芽の獣冠とタイトルロゴ">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ビーストキング｜ゲーム紹介・パック・対戦ルール">
-<meta name="twitter:description" content="第一弾「六源の覚醒」・第二弾「王源の継承」、全2,304枚。秘宝でカードを集め、メイン32枚＋特殊4枚でCPU・オンライン対戦へ。収録内容と基本ルールを紹介。">
-<meta name="twitter:image" content="https://www.beast-king.com/assets/social-ogp.jpg">
-<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="style.css">
-<style>
-  .about-page{margin:0;background:#08121d;color:#e8edf3;font-family:Inter,"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;font-size:16px;line-height:1.85;min-height:100vh;overflow-x:hidden;user-select:text}
-  .about-page *{box-sizing:border-box}.about-page a{color:inherit}.about-page button,.about-page a,.about-page summary{touch-action:manipulation}
-  .about-wrap{width:min(1100px,calc(100% - 48px));margin:auto}
-  .about-header{background:rgba(8,18,29,.94);border-bottom:1px solid #293343;padding:17px 0}
-  .about-header .about-wrap{display:flex;align-items:center;justify-content:space-between;gap:20px}
-  .about-brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-size:21px;font-weight:700;letter-spacing:.12em;line-height:1.3}
-  .about-brand img{width:42px;height:42px}.about-brand small{display:block;font-size:12px;font-weight:400;letter-spacing:.2em;color:#a6aebc;margin-top:4px}
-  .about-play{display:inline-flex;justify-content:center;align-items:center;min-height:48px;padding:10px 24px;border:1px solid #d8b66d;border-radius:5px;background:linear-gradient(120deg,#e5ca8b,#bd9750);color:#14202d!important;text-decoration:none;font-weight:700;font-size:15px;line-height:1.5;box-shadow:0 4px 24px #c6a35618}
-  .about-play:hover{filter:brightness(1.1)}.about-page a:focus-visible,.about-page summary:focus-visible{outline:3px solid #f3d18b;outline-offset:4px}
-  .about-hero{position:relative;padding:94px 0 84px;background:linear-gradient(90deg,rgba(8,18,29,.97) 0%,rgba(8,18,29,.85) 40%,rgba(8,18,29,.3) 100%),url('assets/design-v2/backgrounds/entry.webp') center 42%/cover;border-bottom:1px solid #283541}
-  .about-eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:13px;color:#dfc58c;margin:0 0 17px}.about-hero h1{font-size:clamp(34px,5.4vw,64px);font-weight:700;letter-spacing:.025em;line-height:1.4;margin:0 0 24px;color:#fff}.about-hero h1 span{display:block;font-size:.46em;color:#e3c991;margin-bottom:9px;letter-spacing:.1em}
-  .about-lead{max-width:650px;font-size:17px;color:#ccd3df;margin:0 0 29px;line-height:2}.about-kicker{display:flex;flex-wrap:wrap;gap:10px 20px;font-size:14px;color:#d9c69e;margin-top:22px}.about-kicker span{border-left:2px solid #a4864d;padding-left:10px}
-  .about-section{padding:68px 0;border-bottom:1px solid #202c3b}.about-section h2{font-size:clamp(24px,3.2vw,33px);line-height:1.5;letter-spacing:.04em;margin:0 0 15px;color:#f0f1f5}.about-section>p,.about-section .about-intro{color:#aebaca;max-width:740px;margin:0 0 28px}
-  .about-type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:30px}.about-panel{padding:26px;background:linear-gradient(150deg,#152333,#101b29);border:1px solid #354252;border-radius:8px}.about-panel h3{font-size:20px;color:#f4f0e5;margin:0 0 12px;line-height:1.5}.about-panel p{color:#b9c5d1;margin:0;font-size:15px}.about-panel .about-count{display:block;font-size:46px;line-height:1.2;font-family:Georgia,serif;color:#e7c686;margin:10px 0 20px}.about-count small{font-size:15px;margin-left:7px;color:#acb8c7}.about-type-grid .about-panel:nth-child(2){border-top:2px solid #88c4e5}.about-type-grid .about-panel:nth-child(3){border-top:2px solid #b196d4}.about-type-grid .about-panel:first-child{border-top:2px solid #dbbc7c}
-  .about-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;border:1px solid #2e3b49;background:#2e3b49;border-radius:8px;overflow:hidden;margin:28px 0}.about-stat{padding:24px;background:#101c2a}.about-stat b{display:block;font-size:28px;color:#e7c686;font-weight:600;line-height:1.5}.about-stat span{font-size:15px;color:#bdc7d3}.about-note{padding:19px 23px;border-left:3px solid #ab8b52;background:#162231;color:#bbc6d3;font-size:15px}
-  .about-flow{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;list-style:none;padding:0;margin:28px 0}.about-flow li{padding:25px;border:1px solid #2b3949;border-radius:8px;background:#101c2a}.about-flow h3{margin:0 0 10px;color:#e9d3a3;font-size:19px}.about-flow p{margin:0;color:#b5c2cf;font-size:15px}
-  .about-keywords{display:flex;flex-wrap:wrap;gap:12px}.about-keywords p{margin:0;flex:1 1 250px;padding:20px;border:1px solid #2e3b49;border-radius:6px;font-size:15px;color:#b5c2cf}.about-keywords b{display:block;color:#e7c686;margin-bottom:7px;font-size:17px}
-  .about-elements{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}.about-element{padding:21px 18px;border:1px solid #2c3947;border-radius:7px;background:#101c2a}.about-element h3{color:var(--element);font-size:19px;margin:0 0 7px;line-height:1.5}.about-element p{color:#afbdca;font-size:14px;line-height:1.85;margin:0}
-  .about-faq{margin-top:25px}.about-faq details{padding:21px 0;border-bottom:1px solid #2c3947}.about-faq summary{font-weight:600;color:#e5e8ee;font-size:17px;cursor:pointer;padding:3px 22px 3px 0}.about-faq details p{color:#b4c0ce;font-size:15px;margin:15px 0 0;max-width:880px}.about-faq details[open] summary{color:#e7c686}
-  .about-end{text-align:center;padding:65px 0}.about-end h2{font-size:29px;margin:0 0 12px}.about-end p{color:#aebaca;margin:0 0 25px}.about-footer{padding:24px 0;border-top:1px solid #283441;color:#8797a9;font-size:13px}.about-footer .about-wrap{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}.about-footer a{color:#b4c2d1;text-decoration:none}
-  @media(max-width:1020px){.about-type-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-  @media(max-width:760px){.about-wrap{width:min(100% - 32px,1100px)}.about-header .about-play{min-height:44px;font-size:14px;padding:10px 14px}.about-brand{font-size:18px;gap:8px}.about-brand img{width:35px;height:35px}.about-brand small{font-size:10px;letter-spacing:.13em}.about-hero{padding:65px 0 59px;background:linear-gradient(90deg,rgba(8,18,29,.95),rgba(8,18,29,.68)),url('assets/design-v2/backgrounds/entry.webp') 62% center/cover}.about-lead{font-size:16px}.about-section{padding:45px 0}.about-type-grid{grid-template-columns:1fr}.about-panel{padding:24px}.about-panel .about-count{font-size:38px;margin:0 0 14px}.about-stat-grid{grid-template-columns:repeat(2,1fr)}.about-stat{padding:20px}.about-stat b{font-size:26px}.about-flow{grid-template-columns:1fr}.about-elements{grid-template-columns:repeat(2,1fr)}.about-element{padding:17px 14px}.about-end h2{font-size:25px}.about-kicker{gap:9px 14px;font-size:13px}}
-  @media(prefers-reduced-motion:reduce){.about-page *{scroll-behavior:auto!important;transition:none!important}}
-.about-position-table{width:100%;border-collapse:collapse;margin-top:22px;font-size:14px;line-height:1.8;background:#10212e}.about-position-table th,.about-position-table td{padding:15px 18px;border:1px solid #30434d;text-align:left;vertical-align:top}.about-position-table thead th{color:#d8c595;background:#172d35;font-weight:500}.about-position-table tbody th{width:52%;font-weight:500;color:#c8d9d8}.about-position-table td{color:#a4b8c5}@media(max-width:500px){.about-position-table{font-size:12px}.about-position-table th,.about-position-table td{padding:12px 10px}}
-</style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"AboutPage","@id":"https://www.beast-king.com/about.html#page","url":"https://www.beast-king.com/about.html","name":"ビーストキングとは｜王源の継承・パック・対戦ルール","description":"ビーストキングの第一弾「六源の覚醒」と第二弾「王源の継承」全2,304枚、100秘宝で開く12枚入りパック、メイン32枚＋特殊4枚のデッキと合成召喚を紹介。CPU・オンラインルーム・ランクマッチの遊び方、保存とバックアップ、BGMも案内します。","inLanguage":"ja","mainEntity":{"@id":"https://www.beast-king.com/#game"}},{"@type":"VideoGame","@id":"https://www.beast-king.com/#game","name":"ビーストキング","alternateName":"BEAST KING","url":"https://www.beast-king.com/","image":"https://www.beast-king.com/assets/social-ogp.jpg","description":"第一弾「六源の覚醒」・第二弾「王源の継承」、全2,304枚。秘宝で12枚入りパックを開封し、メイン32枚＋特殊4枚を編成。全10章・20戦のソロ、1対1ルーム、ランクマッチを楽しめる無料ブラウザカードゲーム。PC・スマホ・タブレット対応。","genre":["カードゲーム","ストラテジー"],"gamePlatform":["Web browser","PC","Smartphone","Tablet"],"operatingSystem":"Any","applicationCategory":"GameApplication","playMode":["SinglePlayer","MultiPlayer"],"inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"keywords":["王源の継承","六源の覚醒","ろくげんのかくせい","オンラインカードゲーム","合成魔獣"]},{"@type":"FAQPage","@id":"https://www.beast-king.com/about.html#faq","mainEntity":[{"@type":"Question","name":"どこからゲームを始めればよいですか？","acceptedAnswer":{"@type":"Answer","text":"最初の起動時にだけ名前とアイコンを登録します。次回からはトップメニューが直接開きます。ソロは全10章・各章2回戦の20戦とCPU練習戦、マルチはルームコードを使う1対1対戦、ランクはレートを競うオンライン対戦です。名前はこのブラウザに保存し、あとから変更できます。"}},{"@type":"Question","name":"無料で遊べますか？","acceptedAnswer":{"@type":"Answer","text":"はい。CPU対戦やオンライン対戦を無料で楽しめます。選んだ1種類のスターター36枚と100秘宝を最初から受け取り、対戦で秘宝を貯めてカードを集められます。"}},{"@type":"Question","name":"パックには何が入っていますか？","acceptedAnswer":{"@type":"Answer","text":"第一弾「六源の覚醒」と第二弾「王源の継承」は、各弾に通常魔獣512枚・合成魔獣128枚・ミラクル256枚・ギミック256枚を収録。各1,152枚、合わせて全2,304枚です。1パック100秘宝で12枚入り、うち1枚はレア以上です。同じカードの4枚目以降は1枚につき5秘宝へ変わります。"}},{"@type":"Question","name":"どの端末で遊べますか？","acceptedAnswer":{"@type":"Answer","text":"PC・スマートフォン・タブレットのブラウザで遊べます。スマホ・タブレットは横向き専用です。対応ブラウザでは開始操作で横向き固定を試み、自動で固定できない場合は端末を横に向けてください。ゲームの実行にはJavaScriptが、オンライン対戦にはインターネット接続が必要です。"}},{"@type":"Question","name":"誰と対戦できますか？","acceptedAnswer":{"@type":"Answer","text":"全10章・各章2回戦のソロと3段階のCPU練習戦、コードを共有する1対1のオンラインルーム、オンラインのランクマッチを選べます。ランクマッチで60秒たっても相手が見つからない場合は、画面に明示されたBOTとの対戦になります。"}},{"@type":"Question","name":"オンライン対戦を途中で止められますか？","acceptedAnswer":{"@type":"Answer","text":"オンライン対戦は1手番120秒で、時間切れは敗北です。画面を離れたりブラウザを閉じたりしても一時停止されません。対戦を終える場合は降参してください。降参の秘宝報酬は0です。"}},{"@type":"Question","name":"所持カード・秘宝・レートはどこに保存されますか？","acceptedAnswer":{"@type":"Answer","text":"プレイヤー名とアイコン、デッキ、所持カード、秘宝、ソロ進行や戦績、設定をブラウザとクラウドへ保存します。設定の「端末連携と同期」で別端末を同じプレイヤーに連携すると、保存内容を同期できます。オンラインのレートはサーバーで管理し、連携端末でも共通です。"}},{"@type":"Question","name":"バックアップでオンラインのプロフィールも引き継げますか？","acceptedAnswer":{"@type":"Answer","text":"JSONバックアップに認証情報やサーバー上のレートは含めません。同じプレイヤーで引き継ぐには、元の端末の設定から10分間有効な連携コードを発行し、別端末へ入力してください。連携先のデータでその端末の保存内容を置き換えます。コードは1回だけ使用できます。"}},{"@type":"Question","name":"合成魔獣のモデルは何ですか？","acceptedAnswer":{"@type":"Answer","text":"合成魔獣256枚はすべて、アタック型とディフェンス型の両方を兼ねる「アタック・ディフェンス型」です。攻撃時は攻撃力を使い、攻撃されたときは守備力を相手の攻撃力と比較します。守備力が同値以上なら生存して無傷、下回ると消滅して持ち主が超過分のダメージを受けます。配置はすべて縦向きで、出場ゾーンの枠の中央にぴったり合わせます。"}},{"@type":"Question","name":"BGMを止めたり、音量を変えたりできますか？","acceptedAnswer":{"@type":"Answer","text":"メニュー用・通常バトル用・クライマックス用の3曲が切り替わり、ループ再生します。対戦中にどちらかのハートポイントが2,500以下になるとクライマックス曲に切り替わり、両者が2,500を超えると通常バトル曲へ戻ります。初期設定はオン・音量50%。ゲーム画面でオン・オフと音量を変更でき、設定はこのブラウザに保存されます。ブラウザが許可していれば自動で再生し、制限される場合は最初のクリック・タップ後に再生します。タブを離れると音楽は一時停止し、戻ると再開を試みます。音楽の停止でオンライン対戦の進行は止まりません。"}},{"@type":"Question","name":"カードゲームが初めてでも遊べますか？","acceptedAnswer":{"@type":"Answer","text":"まずはスターターデッキ「星冠の契約」と、見習いCPUから始められます。コストの小さい魔獣を召喚し、次のターンに攻撃する流れを覚えたら、ミラクル・ギミック・合成召喚を組み合わせてみてください。"}}]}]}</script>
-<link rel="stylesheet" href="news.css">
-<script type="module" src="news.js"></script>
-<link rel="stylesheet" href="theme-violet.css">
-<link rel="stylesheet" href="design-v2.css">
-<link rel="stylesheet" href="interaction-guard.css">
-<script type="module" src="interaction-guard.js"></script>
-<link rel="stylesheet" href="layout-safe.css?v=20261124-2">
-<link rel="stylesheet" href="fit-screen.css?v=20261124-25">
+<meta property="og:title" content="ビーストキングの遊び方｜カード・デッキ・バトルの基本ルール"><meta property="og:description" content="ビーストキングの遊び方を項目ごとに紹介。全2,304枚のカード、32枚＋4枚のデッキ、12枚入りパック、合成召喚、CPU・オンライン対戦、端末連携まで基本ルールを確認できます。">
+<meta property="og:url" content="https://www.beast-king.com/about.html"><meta property="og:image" content="https://www.beast-king.com/assets/social-ogp.jpg?v=20261124-26">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="ビーストキングの王冠の紋章とタイトル">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="ビーストキングの遊び方｜カード・デッキ・バトルの基本ルール"><meta name="twitter:description" content="ビーストキングの遊び方を項目ごとに紹介。全2,304枚のカード、32枚＋4枚のデッキ、12枚入りパック、合成召喚、CPU・オンライン対戦、端末連携まで基本ルールを確認できます。"><meta name="twitter:image" content="https://www.beast-king.com/assets/social-ogp.jpg?v=20261124-26">
+<link rel="icon" href="assets/icon.svg?v=20261124-26" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png?v=20261124-26" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20261124-26"><link rel="manifest" href="manifest.webmanifest?v=20261124-26">
+<link rel="stylesheet" href="style.css?v=20261124-26"><link rel="stylesheet" href="fit-screen.css?v=20261124-26">
+<link rel="stylesheet" href="crown-ui.css?v=20261124-26"><link rel="stylesheet" href="guide-ui.css?v=20261124-26"><link rel="stylesheet" href="experience-fx.css?v=20261124-26">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"AboutPage","@id":"https://www.beast-king.com/about.html#page","url":"https://www.beast-king.com/about.html","name":"ビーストキングの遊び方｜カード・デッキ・バトルの基本ルール","description":"ビーストキングの遊び方を項目ごとに紹介。全2,304枚のカード、32枚＋4枚のデッキ、12枚入りパック、合成召喚、CPU・オンライン対戦、端末連携まで基本ルールを確認できます。","inLanguage":"ja","isPartOf":{"@id":"https://www.beast-king.com/#website"},"about":{"@id":"https://www.beast-king.com/#game"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ビーストキング","item":"https://www.beast-king.com/"},{"@type":"ListItem","position":2,"name":"遊び方・基本ルール","item":"https://www.beast-king.com/about.html"}]}]}</script>
+<link rel="stylesheet" href="loading.css?v=20261124-26">
+<link rel="stylesheet" href="card-art-direction.css?v=20261124-26">
+<script type="module" src="card-art-direction.js?v=20261124-26"></script>
+<script type="module" src="loading.js?v=20261124-26"></script>
+<link rel="stylesheet" href="orientation.css?v=20261124-26">
 </head>
-<body class="about-page"><div id="news-root"></div>
-<a class="skip-link" href="#about-main">メインコンテンツへ</a>
-<header class="about-header">
-  <div class="about-wrap">
-    <a class="about-brand" href="./" aria-label="ビーストキングのゲームへ"><img src="assets/icon.svg" alt="" width="42" height="42"><span>ビーストキング<small>BEAST KING</small></span></a>
-    <a class="about-play" href="./">ゲームをはじめる</a>
-  </div>
-</header>
-<main id="about-main">
-  <section class="about-hero">
-    <div class="about-wrap">
-      <p class="about-eyebrow">Original card battle</p>
-      <h1><span>ビーストキングとは</span>その一手が、<br>王を決める。</h1>
-      <p class="about-lead">魔獣を呼び、奇跡を起こし、仕掛けで流れを変える。<br>第一弾「六源の覚醒」・第二弾「王源の継承」、全2,304枚。ビーストキングは、カードを集めてメインデッキ32枚と特殊デッキ4枚を組み、CPUやオンラインの相手と戦うオリジナルカードゲームです。</p>
-      <a class="about-play" href="./">2,304枚の世界へ</a>
-      <div class="about-kicker"><span>PC・スマホ・タブレット</span><span>無料プレイ</span><span>CPU・オンライン対戦</span></div>
-    </div>
-  </section>
-  <div class="about-wrap">
-    <section class="about-section" aria-labelledby="cards-heading">
-      <p class="about-eyebrow">Two sets / 2,304 cards</p>
-      <h2 id="cards-heading">3種類のカードが、戦略になる。</h2>
-      <p class="about-intro">第一弾「六源の覚醒」と第二弾「王源の継承」は、それぞれ通常魔獣512枚・合成魔獣128枚・ミラクル256枚・ギミック256枚の1,152枚を収録。合わせて全2,304枚です。最初は4種類のスターターから1種類だけ無料で選択し、残りは各300秘宝で購入できます。その他のカードはパックなどから集めます。</p>
-      <p class="about-intro">各スターターは、通常魔獣16枚・ミラクル8枚・ギミック8枚のメイン32枚と、合成魔獣4枚の合計36枚です。カード図鑑では全カードの効果を確認できます。通常・合成の魔獣を含め、編成できるのは所持枚数までです。</p>
-      <p class="about-intro">レアリティは、ノーマル・レア・キラレア・キラキラレア・ギラレア・ギラギラレアの6段階。この順に高くなり、ギラギラレアが最高位です。</p>
-      <div class="about-type-grid">
-        <article class="about-panel"><h3>魔獣カード</h3><span class="about-count">1,280<small>枚</small></span><p>通常の魔獣はアタック型・ディフェンス型の計1,024枚。さらに、アタック型とディフェンス型の両方を兼ねる合成魔獣256枚を収録。攻撃力・守備力とカード効果を組み合わせて戦います。合成魔獣は特殊デッキに入ります。</p></article>
-        <article class="about-panel"><h3>ミラクルカード</h3><span class="about-count">512<small>枚</small></span><p>各弾に威力カード128枚と再生カード128枚、計512枚。威力はダメージ・強化・手札補給、再生はハートポイントや守備力の回復、合成召喚を担います。「合成」は再生カードに含まれます。</p></article>
-        <article class="about-panel"><h3>ギミックカード</h3><span class="about-count">512<small>枚</small></span><p>各弾に反射カード128枚と魔獣サポートカード128枚、計512枚。反射は敵の攻撃に反応してダメージを返し、サポートは次の自分のターンに味方の強化や守備力回復を行います。</p></article>
-      </div>
-    </section>
-    <section class="about-section" aria-labelledby="pack-heading">
-      <p class="about-eyebrow">Collect your possibilities</p>
-      <h2 id="pack-heading">秘宝でひらく、12枚の出会い。</h2>
-      <p class="about-intro">ショップでは、第一弾「六源の覚醒」と第二弾「王源の継承」を選んで開封できます。各パックは、それぞれの収録カード1,152枚から抽選。最初に100秘宝を受け取り、対戦を重ねて次のパックへ。王冠竜レガリアも第二弾に収録され、手に入れた人はどのモードでも使えます。</p>
-      <div class="about-stat-grid"><div class="about-stat"><b>100秘宝</b><span>1パックの価格</span></div><div class="about-stat"><b>12枚</b><span>1パックの封入枚数</span></div><div class="about-stat"><b>レア以上</b><span>12枚のうち1枚は確定</span></div><div class="about-stat"><b>初回100</b><span>はじめにもらえる秘宝</span></div></div>
-      <div class="about-note"><p>対戦報酬は勝利60秘宝・敗北20秘宝・引き分け30秘宝。降参した場合は0です。</p><p>同じカードは3枚まで所持できます。4枚目以降が出た場合は、1枚につき5秘宝へ自動で変わります。手に入れたカードは、所持枚数の範囲で、同じカードは2枚までメインデッキや特殊デッキへ編成できます。</p></div>
-    </section>
-    <section class="about-section" aria-labelledby="online-heading">
-      <p class="about-eyebrow">Choose your opponent</p>
-      <h2 id="online-heading">ソロ・マルチ・ランク。次の一戦へ。</h2>
-      <p class="about-intro">端末のブラウザで最初の起動時だけ、プレイヤー名を1〜16文字で設定し、山・川・種・草・花・木・王の7種類からプロフィールアイコンを選びます。名前とアイコンはこのブラウザに保存され、次回からはトップメニューが直接開きます。設定から変更でき、3つのモードを選べます。オンラインでも、このプレイヤー名が相手に表示されます。</p>
-      <div class="about-type-grid"><article class="about-panel"><h3>ソロ — 全10章・20戦</h3><p>全10章・各章2回戦、合計20戦の物語に挑みます。勝利で次の回戦へ進み、敗北した場合は同じ回戦に再挑戦。進行は自動保存し、クリア済みの戦いも再戦できます。3段階の自由なCPU練習戦も用意しています。</p></article><article class="about-panel"><h3>マルチ — 1対1ルーム</h3><p>ルームを作り、コードを相手に共有して対戦できます。ルーム対戦ではランクのレートは変わりません。</p></article><article class="about-panel"><h3>ランク — ランクマッチ</h3><p>オンラインで相手を探し、対戦結果をレートに反映します。60秒たっても相手が見つからなければBOTと対戦。BOTであることは画面に表示します。</p></article></div>
-      <div class="about-note"><p>オンライン対戦は1手番120秒で、時間切れは敗北です。別の画面へ移動したり、タブやブラウザを閉じたりしても、対戦は一時停止されません。</p><p>王庭の3つの扉からソロ・マルチ・ランクへ。7オリジンから図鑑を絞り込めます。カード図鑑・デッキ編成に加え、ショップとオンライン対戦への入口も用意しています。</p></div>
-    </section>
-    <section class="about-section" aria-labelledby="rules-heading">
-      <p class="about-eyebrow">The rules</p>
-      <h2 id="rules-heading">相手のハートポイントを0にしたら、勝利。</h2>
-      <p class="about-intro">お互いのハートポイントは5,000から開始し、0になると敗北します。対戦はターン制。メインデッキ32枚ちょうどと、特殊ゾーンに置く特殊デッキ4枚ちょうどが必須です。増えていくエーテルを使ってカードを展開し、合成召喚のタイミングを見極めましょう。</p>
-      <div class="about-stat-grid">
-        <div class="about-stat"><b>32枚</b><span>メインデッキ</span></div>
-        <div class="about-stat"><b>4枚</b><span>特殊デッキ・特殊ゾーン</span></div>
-        <div class="about-stat"><b>合計36枚</b><span>対戦に使用するカード</span></div>
-        <div class="about-stat"><b>2枚まで</b><span>デッキ内の同名カード上限</span></div>
-        <div class="about-stat"><b>5,000</b><span>開始時のハートポイント・回復上限</span></div>
-        <div class="about-stat"><b>4枚まで</b><span>手札・ターン開始時に補充</span></div>
-        <div class="about-stat"><b>4体まで</b><span>魔獣の出場数（合成魔獣を含む）</span></div>
-        <div class="about-stat"><b>2枚まで</b><span>自分の場のギミック</span></div>
-        <div class="about-stat"><b>1から10へ</b><span>ターンごとの最大エーテル</span></div>
-      </div>
-      <div class="about-note">最初の手札は4枚で、手札の上限も4枚です。自分のターン開始時には手札が4枚になるまで補充し、最大エーテルが1ずつ増えて最大値まで回復します。</div>
-    </section>
-    <section class="about-section" aria-labelledby="fusion-heading">
-      <p class="about-eyebrow">Fusion summon</p>
-      <h2 id="fusion-heading">魔獣の記憶を重ねて、合成召喚。</h2>
-      <p class="about-intro">再生カードに属するミラクル「合成」を使い、特殊ゾーンの特殊デッキから合成魔獣を呼び出せます。全スターターに「合成」を2枚収録しています。</p>
-      <ol class="about-flow">
-        <li><h3>特殊ゾーンから1体を選ぶ</h3><p>特殊デッキに残っている合成魔獣から、召喚したい1体を選びます。合成魔獣は通常の手札には入りません。</p></li>
-        <li><h3>自分の魔獣を1枚以上選ぶ</h3><p>手持ち（手札）だけ、出場ゾーンだけ、お墓ゾーンだけでも合成できます。複数のゾーンを混ぜてもよく、素材の指定枚数に上限はありません。合成魔獣も素材に使えます。</p></li>
-        <li><h3>素材を異世界ゾーンへ送って召喚する</h3><p>選んだ素材はすべて異世界ゾーンへ送られ、この対戦中は再利用できません。「合成」はお墓ゾーンへ、選んだ合成魔獣は出場ゾーンへ移動します。</p></li>
-        <li><h3>素材の枚数だけ強くなる</h3><p>素材2枚目以降は、1枚につき攻撃力と守備力がそれぞれ+100。素材1枚なら基礎値、2枚なら+100、5枚なら+400です。消費するエーテルは「合成」の3だけです。</p></li>
-      </ol>
-      <div class="about-note">素材に使えるのは、自分の通常の魔獣と合成魔獣です。異世界ゾーンへ送ったカードは再利用できません。素材のオリジンや組み合わせの指定はありません。出場ゾーンが4体で埋まっていても、出場中の魔獣を素材にして召喚先を空けることができます。</div>
-    </section>
-    <section class="about-section" aria-labelledby="turn-heading">
-      <p class="about-eyebrow">How to play</p>
-      <h2 id="turn-heading">1ターンの流れ</h2>
-      <ol class="about-flow">
-        <li><h3>ターン開始</h3><p>エーテルが回復し、手札が4枚になるまで山札から補充します。前のターンに出した魔獣も攻撃できるようになります。</p></li>
-        <li><h3>カードを使う</h3><p>カードのコスト分のエーテルを支払います。魔獣は召喚、ミラクルは即時発動、ギミックは場に設置。「合成」では特殊ゾーンと素材を選びます。エーテルと場の空きがあれば、複数のカードを使えます。</p></li>
-        <li><h3>魔獣で攻撃する</h3><p>攻撃できる魔獣を選び、相手の魔獣またはハートポイントを指定します。各魔獣の攻撃は1ターンに1回。攻撃を受ける魔獣のモデルと守備力に応じて、消滅と持ち主へのダメージを判定します。通常の戦闘では反撃しません。</p></li>
-        <li><h3>ターンを終える</h3><p>カードの使用や攻撃を終えたら、ターン終了を選びます。相手の行動が終わると再び自分のターンです。カードの使用と攻撃は、自分のターン中に組み合わせられます。</p></li>
-      </ol>
-      <div class="about-keywords">
-        <p><b>守護</b>相手は守護を持つ魔獣を先に攻撃する必要があります。ハートポイントや他の魔獣を守る役割です。</p>
-        <p><b>速攻</b>召喚したターンから攻撃できます。通常の魔獣は、次の自分のターンから攻撃できます。</p>
-        <p><b>吸収</b>戦闘で相手のハートポイントを実際に減らした分、自分のハートポイントを回復します。</p>
-      </div>
-      <div class="about-faq">
-        <details><summary>結界・ギミック・山札切れについて</summary><p>結界は、ハートポイントが受けるダメージをその値の分だけ吸収します。ただし、魔獣への攻撃によって持ち主が受けるダメージは、モデルにかかわらず軽減しません。攻撃に反応するギミックは条件を満たすと自動発動し、使用後にお墓ゾーンへ送られます。魔獣サポートカードは、次の自分のターン開始時に味方全体を強化したり、守備力を回復したりします。</p><p>カード効果で引く場合も、手札が4枚に達したら止まります。上限により引けないカードは山札に残ります。山札が空の状態でカードを引こうとすると疲労ダメージを受け、繰り返すたびにそのダメージが増えていきます。</p></details>
-      </div>
-    </section>
-    <section class="about-section" aria-labelledby="models-heading">
-      <p class="about-eyebrow">Card models</p>
-      <h2 id="models-heading">モデルで見分ける、魔獣の立ち位置。</h2>
-      <p class="about-intro">通常魔獣のモデルは「アタック型」「ディフェンス型」。合成魔獣256枚はすべて、両方を兼ねる「アタック・ディフェンス型」です。魔獣・ミラクル・ギミックは、すべてまっすぐ縦向きに置きます。相手へ向かう方向が前、自分側が後ろです。</p>
-      <table class="about-position-table"><thead><tr><th scope="col">カードの種類・モデル</th><th scope="col">基準枠に対する配置</th></tr></thead><tbody><tr><th scope="row">通常魔獣・アタック型</th><td>少し前（相手側）</td></tr><tr><th scope="row">通常魔獣・ディフェンス型</th><td>少し後ろ（自分側）</td></tr><tr><th scope="row">合成魔獣・アタック・ディフェンス型</th><td>枠の中央にぴったり合わせる</td></tr><tr><th scope="row">ミラクル</th><td>枠より少し左</td></tr><tr><th scope="row">ギミック</th><td>枠より少し右</td></tr></tbody></table>
-      <p class="about-intro" style="margin-top:20px">ミラクルは使用後にお墓ゾーンへ移動します。左寄せの枠は「直前の発動」の表示で、そのカードを再使用する場所ではありません。ギミックは右寄せで2枚まで設置できます。</p>
-      <div class="about-note" style="margin-top:20px"><p><strong>通常魔獣のアタック型：</strong>攻撃を受けると、守備力にかかわらず消滅してお墓ゾーンへ移動します。持ち主のハートポイントは、相手の攻撃力分を全て受けます。</p><p><strong>通常魔獣のディフェンス型・合成魔獣：</strong>守備力が相手の攻撃力以上なら生存し、守備力も持ち主のハートポイントも減りません。同値も無傷です。相手の攻撃力が守備力を上回ると消滅し、持ち主はその超過分だけハートポイントが減ります。</p><p>通常魔獣・合成魔獣とも、通常の戦闘では反撃しません。魔獣への攻撃で持ち主が受けるダメージは結界で軽減されません。ミラクルや反射など、カード効果による守備力の減少は別に処理されます。</p></div>
-    </section>
-    <section class="about-section" aria-labelledby="elements-heading">
-      <p class="about-eyebrow">Seven origins</p>
-      <h2 id="elements-heading">7つのオリジン、広がる戦い方。</h2>
-      <p class="about-intro">オリジンは山・川・種・草・花・木・王の7種類で、この順に表示します。4種類のスターターデッキを用意し、異なるオリジンを混ぜたデッキも構築できます。</p>
-      <div class="about-elements">
-        <article class="about-element" style="--element:#bca789"><h3>▲ 山</h3><p>山の不動の力。守護と結界で戦線を支える。</p></article>
-        <article class="about-element" style="--element:#75c8e6"><h3>≈ 川</h3><p>流れを読む知恵。回復と手札補給で次の一手を整える。</p></article>
-        <article class="about-element" style="--element:#dcc17e"><h3>◉ 種</h3><p>小さな可能性を育て、ダメージと吸収で勝機をつかむ。</p></article>
-        <article class="about-element" style="--element:#8dce89"><h3>❧ 草</h3><p>しなやかな展開力。速さと連携で戦場を動かす。</p></article>
-        <article class="about-element" style="--element:#e6a4be"><h3>✿ 花</h3><p>花ひらく守りの力。守護と回復で味方を支える。</p></article>
-        <article class="about-element" style="--element:#a2bc7d"><h3>♧ 木</h3><p>重なり合う生命の力。回復と強化で戦線を育てる。</p></article>
-        <article class="about-element" style="--element:#edbd65"><h3>♛ 王</h3><p>黄金の装甲と王冠を戴く魔獣。通常魔獣「王冠竜 レガリア」は最大コスト8。</p></article>
-      </div>
-    </section>
-    <section class="about-section" id="faq" aria-labelledby="faq-heading">
-      <p class="about-eyebrow">Questions &amp; answers</p>
-      <h2 id="faq-heading">よくある質問</h2>
-      <div class="about-faq">
-        <details><summary>どこからゲームを始めればよいですか？</summary><p>最初の起動時にだけ名前とアイコンを登録します。次回からはトップメニューが直接開きます。ソロは全10章・各章2回戦の20戦とCPU練習戦、マルチはルームコードを使う1対1対戦、ランクはレートを競うオンライン対戦です。名前はこのブラウザに保存し、あとから変更できます。</p></details>
-        <details open><summary>無料で遊べますか？</summary><p>はい。CPU対戦やオンライン対戦を無料で楽しめます。選んだ1種類のスターター36枚と100秘宝を最初から受け取り、対戦で秘宝を貯めてカードを集められます。</p></details>
-        <details><summary>パックには何が入っていますか？</summary><p>第一弾「六源の覚醒」と第二弾「王源の継承」は、各弾に通常魔獣512枚・合成魔獣128枚・ミラクル256枚・ギミック256枚を収録。各1,152枚、合わせて全2,304枚です。1パック100秘宝で12枚入り、うち1枚はレア以上です。同じカードの4枚目以降は1枚につき5秘宝へ変わります。</p></details>
-        <details><summary>どの端末で遊べますか？</summary><p>PC・スマートフォン・タブレットのブラウザで遊べます。スマホ・タブレットは横向き専用です。対応ブラウザでは開始操作で横向き固定を試み、自動で固定できない場合は端末を横に向けてください。ゲームの実行にはJavaScriptが、オンライン対戦にはインターネット接続が必要です。</p></details>
-        <details><summary>誰と対戦できますか？</summary><p>全10章・各章2回戦のソロと3段階のCPU練習戦、コードを共有する1対1のオンラインルーム、オンラインのランクマッチを選べます。ランクマッチで60秒たっても相手が見つからない場合は、画面に明示されたBOTとの対戦になります。</p></details>
-        <details><summary>オンライン対戦を途中で止められますか？</summary><p>オンライン対戦は1手番120秒で、時間切れは敗北です。画面を離れたりブラウザを閉じたりしても一時停止されません。対戦を終える場合は降参してください。降参の秘宝報酬は0です。</p></details>
-        <details><summary>所持カード・秘宝・レートはどこに保存されますか？</summary><p>プレイヤー名とアイコン、デッキ、所持カード、秘宝、ソロ進行や戦績、設定をブラウザとクラウドへ保存します。設定の「端末連携と同期」で別端末を同じプレイヤーに連携すると、保存内容を同期できます。オンラインのレートはサーバーで管理し、連携端末でも共通です。</p></details>
-        <details><summary>バックアップでオンラインのプロフィールも引き継げますか？</summary><p>JSONバックアップに認証情報やサーバー上のレートは含めません。同じプレイヤーで引き継ぐには、元の端末の設定から10分間有効な連携コードを発行し、別端末へ入力してください。連携先のデータでその端末の保存内容を置き換えます。コードは1回だけ使用できます。</p></details>
-        <details><summary>合成魔獣のモデルは何ですか？</summary><p>合成魔獣256枚はすべて、アタック型とディフェンス型の両方を兼ねる「アタック・ディフェンス型」です。攻撃時は攻撃力を使い、攻撃されたときは守備力を相手の攻撃力と比較します。守備力が同値以上なら生存して無傷、下回ると消滅して持ち主が超過分のダメージを受けます。配置はすべて縦向きで、出場ゾーンの枠の中央にぴったり合わせます。</p></details>
-        <details><summary>BGMを止めたり、音量を変えたりできますか？</summary><p>メニュー用・通常バトル用・クライマックス用の3曲が切り替わり、ループ再生します。対戦中にどちらかのハートポイントが2,500以下になるとクライマックス曲に切り替わり、両者が2,500を超えると通常バトル曲へ戻ります。初期設定はオン・音量50%。ゲーム画面でオン・オフと音量を変更でき、設定はこのブラウザに保存されます。ブラウザが許可していれば自動で再生し、制限される場合は最初のクリック・タップ後に再生します。タブを離れると音楽は一時停止し、戻ると再開を試みます。音楽の停止でオンライン対戦の進行は止まりません。</p></details>
-        <details><summary>カードゲームが初めてでも遊べますか？</summary><p>まずはスターターデッキ「星冠の契約」と、見習いCPUから始められます。コストの小さい魔獣を召喚し、次のターンに攻撃する流れを覚えたら、ミラクル・ギミック・合成召喚を組み合わせてみてください。</p></details>
-      </div>
-    </section>
-    <section class="about-section about-wrap"><h2>追い込まれた戦いに、もう一つのBGM。</h2><p class="about-intro">ソロ・マルチ・ランクのいずれも、自分か相手のHPが2,500以下になるとクライマックス用BGMに切り替わります。両者とも2,500を超えるまで回復すると通常曲に戻ります。音量とオン・オフは共通です。</p></section>
-<section class="about-end">
-      <h2>あなたの一手から、物語が始まる。</h2>
-      <p>スターターデッキを選んで、最初の対戦へ。</p>
-      <a class="about-play" href="./">ビーストキングを遊ぶ</a>
-    </section>
-  </div>
+<body class="about-page guide-page">
+<a class="skip-link" href="#about-main">本文へ</a>
+<header class="guide-header"><a class="guide-brand" href="./"><img src="assets/icon.svg" width="40" height="40" alt=""><span>BEAST KING<small>遊び方・基本ルール</small></span></a><label class="guide-jump-label" for="guide-chapter">読む項目<select id="guide-chapter" data-guide-select disabled><option value="0">01　はじめに</option><option value="1">02　最初の一歩</option><option value="2">03　カードの種類</option><option value="3">04　パックと秘宝</option><option value="4">05　デッキを組む</option><option value="5">06　対戦の基本</option><option value="6">07　ターンの流れ</option><option value="7">08　攻撃とダメージ</option><option value="8">09　場の見方</option><option value="9">10　合成召喚</option><option value="10">11　魔獣のキーワード</option><option value="11">12　結界とカード効果</option><option value="12">13　オリジン</option><option value="13">14　3つの対戦</option><option value="14">15　保存と端末連携</option><option value="15">16　音と演出</option><option value="16">17　よくある質問</option><option value="17">18　王庭へ</option></select></label><a class="guide-cta" href="./">本編を遊ぶ</a></header>
+<main id="about-main" aria-label="ビーストキングの遊び方">
+<section id="welcome" class="guide-section guide-hero" data-guide-title="はじめに" aria-labelledby="welcome-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / はじめに</p><h1 id="welcome-heading">その一手に、<em>王の意志を。</em></h1>
+<div class="guide-hero-grid"><div><p class="guide-lead">魔獣を呼び、奇跡を起こし、仕掛けで流れを変える。<br>ビーストキングは、集めたカードから36枚のデッキを組んで戦う、無料のブラウザカードゲームです。</p><dl class="guide-metrics"><div><dt>カード</dt><dd>2,304枚</dd></div><div><dt>デッキ</dt><dd>32＋4枚</dd></div><div><dt>ソロ</dt><dd>全20戦</dd></div></dl><a class="guide-cta" href="./">ビーストキングを遊ぶ</a><p class="guide-caption">PC・スマホ・タブレット対応。スマホは横向きでプレイ。</p></div><figure class="guide-hero-art"><img src="assets/design-v2/cards/individual/king.webp" width="1254" height="1254" alt="黄金の装甲と王冠を持つ、王冠竜レガリア"><figcaption>王冠竜 レガリア / 王のオリジン</figcaption></figure></div></div>
+</section>
+<section id="start" class="guide-section" data-guide-title="最初の一歩" aria-labelledby="start-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / 最初の一歩</p><h2 id="start-heading">選んだ36枚から、冒険が始まる。</h2>
+<div class="guide-panels ">
+<article class="guide-panel"><h3>名前とアイコンを選ぶ</h3><p>プレイヤー名は1〜16文字。7種類のオリジンからアイコンを選びます。あとから設定で変更できます。</p></article>
+<article class="guide-panel"><h3>スターターを1種類選ぶ</h3><p>4種類のうち、選んだ1種類の36枚と100秘宝を受け取ります。残りのスターターは各300秘宝で購入できます。</p></article>
+<article class="guide-panel"><h3>見習いCPUから試す</h3><p>ソロの練習戦で、召喚・攻撃・ターン終了を体験。覚えたら章の攻略やオンライン対戦へ進みましょう。</p></article>
+</div><p class="guide-note">手に入れたカードとデッキは保存されます。所持していないスターターが自動配布されることはありません。</p></div>
+</section>
+<section id="cards" class="guide-section" data-guide-title="カードの種類" aria-labelledby="cards-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / カードの種類</p><h2 id="cards-heading">4つの役割を、ひとつの戦略に。</h2>
+<p class="guide-lead">第一弾「六源の覚醒」・第二弾「王源の継承」は各1,152枚。両方の弾を混ぜて編成できます。</p><div class="guide-panels four">
+<article class="guide-panel"><h3>通常魔獣 · 1,024枚</h3><p>出場して戦うカード。アタック型とディフェンス型があります。</p></article>
+<article class="guide-panel"><h3>合成魔獣 · 256枚</h3><p>特殊デッキに入れる魔獣。「合成」で召喚し、攻撃・守備の両方を使います。</p></article>
+<article class="guide-panel"><h3>ミラクル · 512枚</h3><p>使うとすぐに発動。ダメージ・強化・ドロー・回復・合成召喚を担います。</p></article>
+<article class="guide-panel"><h3>ギミック · 512枚</h3><p>場に設置する仕掛け。敵の攻撃への反射や、次の自分のターンの支援を行います。</p></article>
+</div><p class="guide-note">各弾の内訳：通常魔獣512・合成魔獣128・ミラクル256・ギミック256枚。</p></div>
+</section>
+<section id="packs" class="guide-section" data-guide-title="パックと秘宝" aria-labelledby="packs-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / パックと秘宝</p><h2 id="packs-heading">12枚の出会いが、戦い方を変える。</h2>
+<dl class="guide-metrics"><div><dt>1パック</dt><dd>100秘宝</dd></div><div><dt>封入枚数</dt><dd>12枚</dd></div><div><dt>保証</dt><dd>1枚はレア以上</dd></div></dl><div class="guide-panels two">
+<article class="guide-panel"><h3>六源の覚醒 / 王源の継承</h3><p>ショップで弾を選び、それぞれの収録1,152枚から抽選します。レガリアは第二弾に収録されています。</p></article>
+<article class="guide-panel"><h3>重なったカードも次の力へ</h3><p>同じカードの所持上限は3枚。4枚目以降は1枚につき5秘宝へ自動で変わります。</p></article>
+</div><p class="guide-note">対戦報酬：勝利60秘宝・敗北20秘宝・引き分け30秘宝。降参は0秘宝です。</p><p class="guide-caption">レアリティ：ノーマル → レア → キラレア → キラキラレア → ギラレア → ギラギラレア。</p></div>
+</section>
+<section id="deck" class="guide-section" data-guide-title="デッキを組む" aria-labelledby="deck-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / デッキを組む</p><h2 id="deck-heading">メイン32枚。特殊4枚。</h2>
+<div class="guide-panels two">
+<article class="guide-panel"><h3>メインデッキ</h3><p>通常魔獣・ミラクル・ギミックで、ちょうど32枚。対戦中は山札から手札へ補充します。</p></article>
+<article class="guide-panel"><h3>特殊デッキ</h3><p>合成魔獣だけで、ちょうど4枚。通常の手札には入らず、特殊ゾーンから合成召喚します。</p></article>
+</div><dl class="guide-metrics"><div><dt>同じカード</dt><dd>各デッキ2枚まで</dd></div><div><dt>編成できる数</dt><dd>所持枚数の範囲</dd></div><div><dt>合計</dt><dd>36枚</dd></div></dl><p class="guide-note">スターターの内訳は通常魔獣16・ミラクル8・ギミック8・合成魔獣4枚。全スターターに「合成」が2枚入っています。</p></div>
+</section>
+<section id="battle" class="guide-section" data-guide-title="対戦の基本" aria-labelledby="battle-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / 対戦の基本</p><h2 id="battle-heading">5,000のハートポイントを守り抜く。</h2>
+<p class="guide-lead">相手のハートポイントを0にすると勝利。回復しても5,000を超えません。</p><dl class="guide-metrics"><div><dt>初期・最大手札</dt><dd>4枚</dd></div><div><dt>出場できる魔獣</dt><dd>4体</dd></div><div><dt>設置ギミック</dt><dd>2枚</dd></div><div><dt>最大エーテル</dt><dd>10</dd></div></dl><p class="guide-note">自分のターン開始時に最大エーテルが1増え、最大値まで回復します。カードを使うと、表示されたコスト分のエーテルを消費します。</p></div>
+</section>
+<section id="turn" class="guide-section" data-guide-title="ターンの流れ" aria-labelledby="turn-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / ターンの流れ</p><h2 id="turn-heading">召喚と攻撃を、自由に組み立てる。</h2>
+<div class="guide-panels four">
+<article class="guide-panel"><h3>開始する</h3><p>エーテルが回復し、手札が4枚になるまで山札から補充されます。</p></article>
+<article class="guide-panel"><h3>カードを使う</h3><p>魔獣を召喚、ミラクルを発動、ギミックを設置。エーテルと場の空きがあれば複数使えます。</p></article>
+<article class="guide-panel"><h3>攻撃する</h3><p>魔獣を選び、相手の魔獣かハートポイントを指定。各魔獣は1ターンに1回攻撃できます。</p></article>
+<article class="guide-panel"><h3>ターンを終える</h3><p>使いたいカードと攻撃が終わったら、ターン終了。相手の行動を待ちます。</p></article>
+</div><p class="guide-note">通常は召喚した次の自分のターンから攻撃できます。「速攻」を持つ魔獣は、召喚したターンから攻撃できます。</p></div>
+</section>
+<section id="attack" class="guide-section" data-guide-title="攻撃とダメージ" aria-labelledby="attack-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / 攻撃とダメージ</p><h2 id="attack-heading">受ける魔獣のモデルで、結果が変わる。</h2>
+<div class="guide-panels two">
+<article class="guide-panel"><h3>アタック型を攻撃</h3><p>守備力にかかわらず消滅。持ち主のハートポイントに、攻撃した魔獣の攻撃力すべてが入ります。</p></article>
+<article class="guide-panel"><h3>ディフェンス型・合成魔獣を攻撃</h3><p>攻撃力が守備力以下なら無傷。同値も生存します。上回ると消滅し、持ち主は超過分のダメージを受けます。</p></article>
+</div><table class="guide-table"><caption>攻撃力800で、守備力600の魔獣を攻撃した場合</caption><thead><tr><th scope="col">受けるモデル</th><th scope="col">魔獣</th><th scope="col">持ち主のダメージ</th></tr></thead><tbody><tr><th scope="row">アタック型</th><td>消滅</td><td>800</td></tr><tr><th scope="row">ディフェンス型・合成魔獣</th><td>消滅</td><td>200</td></tr></tbody></table><p class="guide-note">通常の戦闘に反撃はありません。魔獣への攻撃で持ち主が受けるダメージは、結界で軽減できません。</p></div>
+</section>
+<section id="position" class="guide-section" data-guide-title="場の見方" aria-labelledby="position-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / 場の見方</p><h2 id="position-heading">カードの立ち位置にも、意味がある。</h2>
+<p class="guide-lead">すべてのカードを縦向きに表示します。相手へ向かう方向が前、自分側が後ろです。</p><table class="guide-table"><thead><tr><th scope="col">種類・モデル</th><th scope="col">基準枠からの位置</th></tr></thead><tbody><tr><th scope="row">通常魔獣・アタック型</th><td>少し前（相手側）</td></tr><tr><th scope="row">通常魔獣・ディフェンス型</th><td>少し後ろ（自分側）</td></tr><tr><th scope="row">合成魔獣</th><td>中央</td></tr><tr><th scope="row">ミラクル</th><td>少し左・直前の発動を表示</td></tr><tr><th scope="row">ギミック</th><td>少し右・2枚まで設置</td></tr></tbody></table><p class="guide-note">使ったミラクルはお墓へ移動します。直前の発動を表示する枠から再使用はできません。</p></div>
+</section>
+<section id="fusion" class="guide-section" data-guide-title="合成召喚" aria-labelledby="fusion-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / 合成召喚</p><h2 id="fusion-heading">魔獣の記憶を重ね、新たな力へ。</h2>
+<p class="guide-lead">コスト3のミラクル「合成」を使い、特殊デッキの合成魔獣を1体選びます。</p><div class="guide-panels ">
+<article class="guide-panel"><h3>素材を選ぶ</h3><p>自分の手札・出場ゾーン・お墓の魔獣を1枚以上。通常魔獣も合成魔獣も使え、複数の場所から混ぜられます。</p></article>
+<article class="guide-panel"><h3>異世界へ送り、召喚</h3><p>素材は異世界へ移り、その対戦では再利用できません。「合成」はお墓へ、合成魔獣は出場ゾーンへ移ります。</p></article>
+<article class="guide-panel"><h3>2枚目から強化</h3><p>素材2枚目以降、1枚につき攻撃力・守備力がそれぞれ+100。素材5枚なら両方+400です。</p></article>
+</div><p class="guide-note">素材の枚数やオリジンに上限・組み合わせ指定はありません。場が4体でも、出場中の魔獣を素材にして空きを作れます。選択中のキャンセルではカードとエーテルを消費しません。</p></div>
+</section>
+<section id="keywords" class="guide-section" data-guide-title="魔獣のキーワード" aria-labelledby="keywords-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / 魔獣のキーワード</p><h2 id="keywords-heading">守る。急ぐ。奪い返す。</h2>
+<div class="guide-panels ">
+<article class="guide-panel"><h3>守護</h3><p>敵に守護持ちがいるときは、その魔獣を先に攻撃する必要があります。他の魔獣やハートポイントを守ります。</p></article>
+<article class="guide-panel"><h3>速攻</h3><p>召喚したターンから攻撃できます。召喚後すぐに動いて、相手の場やハートポイントへ圧力をかけられます。</p></article>
+<article class="guide-panel"><h3>吸収</h3><p>戦闘で相手のハートポイントを実際に減らした分、自分のハートポイントを回復します。守備力へのダメージでは回復しません。</p></article>
+</div><p class="guide-note">カードごとの効果は、図鑑・手札・出場中の魔獣などの詳細から確認できます。相手の非公開カードは表示されません。</p></div>
+</section>
+<section id="effects" class="guide-section" data-guide-title="結界とカード効果" aria-labelledby="effects-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / 結界とカード効果</p><h2 id="effects-heading">効果の違いを知れば、一手が変わる。</h2>
+<div class="guide-panels ">
+<article class="guide-panel"><h3>結界と守備力</h3><p>結界はハートポイントへのダメージを吸収します。ただし、魔獣への攻撃による持ち主のダメージは防ぎません。</p></article>
+<article class="guide-panel"><h3>ギミックの発動</h3><p>反射は攻撃に反応。魔獣サポートは次の自分のターンに発動します。使用したギミックはお墓へ移ります。</p></article>
+<article class="guide-panel"><h3>手札補充と山札切れ</h3><p>ドロー効果も手札4枚で止まり、余分なカードは山札に残ります。山札が空のまま引くと、回数に応じて増える疲労ダメージを受けます。</p></article>
+</div><p class="guide-note">ミラクル・反射などの効果は守備力を減らすことがあります。守備力が0になると消滅し、回復は最大守備力までです。</p></div>
+</section>
+<section id="origins" class="guide-section" data-guide-title="オリジン" aria-labelledby="origins-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / オリジン</p><h2 id="origins-heading">七つの紋章を、自分のデッキに。</h2>
+<p class="guide-lead">山・川・種・草・花・木・王。異なるオリジンを混ぜて編成できます。</p><div class="guide-origins"><figure><img src="assets/profiles/mountain.svg" width="90" height="90" alt=""><figcaption>山</figcaption></figure><figure><img src="assets/profiles/river.svg" width="90" height="90" alt=""><figcaption>川</figcaption></figure><figure><img src="assets/profiles/seed.svg" width="90" height="90" alt=""><figcaption>種</figcaption></figure><figure><img src="assets/profiles/grass.svg" width="90" height="90" alt=""><figcaption>草</figcaption></figure><figure><img src="assets/profiles/flower.svg" width="90" height="90" alt=""><figcaption>花</figcaption></figure><figure><img src="assets/profiles/tree.svg" width="90" height="90" alt=""><figcaption>木</figcaption></figure><figure><img src="assets/profiles/king.svg" width="90" height="90" alt=""><figcaption>王</figcaption></figure></div><p class="guide-note">「王」は通常魔獣・王冠竜レガリアのオリジン。第二弾で入手できる最大コスト8のカードです。オリジンは図鑑の絞り込みにも使えます。</p></div>
+</section>
+<section id="modes" class="guide-section" data-guide-title="3つの対戦" aria-labelledby="modes-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / 3つの対戦</p><h2 id="modes-heading">ひとりでも、友達とも、王座を目指しても。</h2>
+<div class="guide-panels ">
+<article class="guide-panel"><h3>ソロ</h3><p>全10章・各2回戦、合計20戦。勝利で次へ進み、クリアした戦いは再戦できます。自由な練習戦はCPU3段階。</p></article>
+<article class="guide-panel"><h3>マルチ</h3><p>ルームを作り、コードを相手に共有する1対1対戦。ランクのレートは変わりません。</p></article>
+<article class="guide-panel"><h3>ランク</h3><p>対戦結果をレートへ反映。60秒で相手が見つからない場合はBOT戦となり、相手がBOTであることを表示します。</p></article>
+</div><p class="guide-note">オンラインは1手番120秒。時間切れは敗北です。タブを閉じたり別画面に移動しても、対戦は一時停止されません。</p></div>
+</section>
+<section id="save" class="guide-section" data-guide-title="保存と端末連携" aria-labelledby="save-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / 保存と端末連携</p><h2 id="save-heading">次の端末でも、同じ冒険を。</h2>
+<div class="guide-panels ">
+<article class="guide-panel"><h3>自動保存</h3><p>名前・アイコン・所持カード・秘宝・デッキ・ソロ進行・戦績・設定を端末とクラウドに保存。レートはサーバーで管理します。</p></article>
+<article class="guide-panel"><h3>別の端末へ</h3><p>設定の「端末連携と同期」から連携コードを発行。10分以内に別端末で入力します。コードは1回だけ使えます。</p></article>
+<article class="guide-panel"><h3>バックアップ</h3><p>JSONバックアップに認証情報やサーバーのレートは含まれません。同じプレイヤーを引き継ぐには端末連携を使います。</p></article>
+</div><p class="guide-note">端末連携では、連携先の保存データでこの端末を置き換えます。異なるアカウントのデータは合成されません。同期が競合したときは、使うデータを設定で選びます。</p></div>
+</section>
+<section id="sound" class="guide-section" data-guide-title="音と演出" aria-labelledby="sound-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / 音と演出</p><h2 id="sound-heading">一手ごとの手応えを、自分の好みに。</h2>
+<div class="guide-panels ">
+<article class="guide-panel"><h3>BGM</h3><p>メニュー・通常バトル・クライマックスで曲が切り替わります。どちらかのHPが2,500以下になるとクライマックス曲へ。</p></article>
+<article class="guide-panel"><h3>効果音</h3><p>ボタン・カード選択・召喚・攻撃・合成・パック開封に反応します。設定からオン・オフと音量を調整できます。</p></article>
+<article class="guide-panel"><h3>アニメーション</h3><p>演出の強さを設定できます。動きを減らすOS設定にも対応。パック開封の演出はスキップできます。</p></article>
+</div><p class="guide-note">音はブラウザが許可した操作後に再生します。BGMの停止やタブの切替で、オンライン対戦が一時停止することはありません。</p></div>
+</section>
+<section id="faq" class="guide-section" data-guide-title="よくある質問" aria-labelledby="faq-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / よくある質問</p><h2 id="faq-heading">はじめる前の、小さな疑問。</h2>
+<div class="guide-panels four">
+<article class="guide-panel"><h3>無料で遊べますか？</h3><p>無料で遊べます。スターター1種類と100秘宝で始め、対戦で秘宝を貯めてカードを集められます。</p></article>
+<article class="guide-panel"><h3>スマホで遊べますか？</h3><p>横向きで遊べます。自動固定されないときは、端末の回転ロックを解除して横に向けてください。</p></article>
+<article class="guide-panel"><h3>通信がなくても遊べますか？</h3><p>読み込み済みのゲームではCPU戦と端末内保存を利用できます。オンライン対戦・同期には通信が必要です。</p></article>
+<article class="guide-panel"><h3>効果を読み直せますか？</h3><p>図鑑やカード詳細で確認できます。対戦中の手札・公開された魔獣・使用済みミラクルにも効果確認があります。</p></article>
+</div></div>
+</section>
+<section id="ready" class="guide-section" data-guide-title="王庭へ" aria-labelledby="ready-heading">
+<div class="guide-section-inner"><p class="guide-eyebrow">BEAST KING / 王庭へ</p><h2 id="ready-heading">あなたの36枚で、<em>次の一戦へ。</em></h2>
+<p class="guide-lead">スターターを選び、まずは見習いCPUと対戦。<br>慣れてきたら、自分だけのカードの組み合わせを見つけましょう。</p><div class="guide-actions"><a class="guide-cta" href="./">ゲームを始める</a><a class="guide-link" href="#start" data-guide-jump="start">最初の一歩を読み直す</a></div></div>
+</section>
 </main>
-<footer class="about-footer"><div class="about-wrap"><span>© 2026 Beast King</span><a href="./">ビーストキング｜BEAST KING</a></div></footer>
-<script type="module" src="fit-screen.js?v=20261124-24"></script>
+<footer class="guide-footer"><span>© 2026 Beast King</span><a href="about.html">ゲーム紹介・基本ルール</a><a href="rebuild/">旧セーブ互換版</a></footer>
+<script type="module" src="fit-screen.js?v=20261124-26"></script>
+<script type="module" src="guide-pages.js?v=20261124-26"></script>
+<script type="module" src="experience-static.js?v=20261124-26"></script>
 </body>
 </html>

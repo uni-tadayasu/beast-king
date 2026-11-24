@@ -1,2 +1,262 @@
-.orientation-gate[hidden]{display:none}.orientation-gate{position:fixed;inset:0;z-index:1500;display:grid;place-items:center;padding:32px 24px;background:radial-gradient(ellipse at 50% 32%,#193d3a 0,#0c1d29 50%,#07141e 100%);color:#d9dfd4;text-align:center;overflow:auto}.orientation-content{max-width:440px;margin:auto}.orientation-content>img{margin:0 auto 14px}.orientation-brand{font:11px Georgia,serif;letter-spacing:.23em;color:#d1bf89}.orientation-device{width:126px;height:105px;margin:28px auto 16px;stroke:#baa467;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.orientation-gate h1{font-size:19px;line-height:1.7;color:#e8dfc7;margin:0 0 18px}.orientation-gate p{font-size:12px;line-height:1.9;color:#9cb4b6}.orientation-gate p.orientation-brand{font-size:11px;color:#d1bf89}.orientation-start{margin:25px auto 18px;min-height:48px;min-width:200px;border:1px solid #dbc78c;border-radius:5px;color:#172c2a;background:linear-gradient(120deg,#e2cc97,#b8a371);font-size:13px;font-weight:600;cursor:pointer}.orientation-help{max-width:320px;margin:auto}.orientation-start:focus-visible{outline:2px solid #e7edc6;outline-offset:5px}.needs-landscape{overflow:hidden!important}.orientation-gate~*{isolation:isolate}
-@media(orientation:landscape) and (max-height:560px){.entry-screen{min-height:calc(100svh - var(--news-height,0px))}.entry-header{padding-top:14px;padding-bottom:8px}.entry-layout{padding-top:10px;padding-bottom:24px}.entry-content{max-width:540px}.entry-title{margin:12px 0}.entry-title-ja{font-size:38px}.entry-invitation{font-size:15px;margin:10px 0 18px}.entry-start-panel{max-width:430px}.entry-footer{padding-top:12px;padding-bottom:18px}}
+/* The screen is one bounded landscape canvas, even when the OS keeps portrait.
+   Rotate the live DOM, without scaling it or changing native input semantics. */
+html.bk-landscape-canvas,html.bk-landscape-canvas body{margin:0;width:100%;height:100%;overflow:hidden!important;overscroll-behavior:none}
+#orientation-stage{position:fixed;left:var(--physical-viewport-left,0px);top:var(--physical-viewport-top,0px);width:var(--app-viewport-width,100vw);height:var(--app-viewport-height,100dvh);min-width:0;min-height:0;max-width:none;max-height:none;display:flex;flex-direction:column;overflow:hidden;transform:none;transform-origin:0 0;isolation:isolate;container:beast-viewport/size}
+body[data-virtual-landscape=true] #orientation-stage{left:calc(var(--physical-viewport-left,0px) + var(--physical-viewport-width));transform:rotate(90deg)}
+#orientation-stage>#news-root{flex:none;min-width:0;max-width:100%}
+#orientation-stage>#app{flex:1 1 0;min-width:0;min-height:0;width:100%;overflow:hidden}
+#orientation-stage>:is(header,footer){flex:none}
+#orientation-stage>.bk-fit-frame{flex:1 1 0}
+#orientation-stage>:is(#modal-root,#toasts,.bk-experience-layer,.bk-pack-ceremony,#bk-loading-layer){max-width:100%}
+body[data-virtual-landscape=true] :is(.bk-experience-layer,.bk-pack-ceremony,#bk-loading-layer:not(.is-compact)){width:var(--app-viewport-width);height:var(--app-viewport-height);max-height:var(--app-viewport-height)}
+.orientation-gate{display:none!important}
+
+/* Entry keeps its controls at native size. On shallow screens the identity
+   and form share a row; the form's four rows stay visible before starting. */
+html.bk-fit body .entry-screen.bk-entry-native{display:grid!important;grid-template-rows:auto minmax(0,1fr) auto;width:100%!important;height:100%!important;min-height:0!important;overflow:hidden}
+body .bk-entry-native .entry-header{padding:14px 28px 8px;gap:16px}
+body .bk-entry-native .entry-mark img{width:36px;height:36px}
+body .bk-entry-native .entry-audio .bgm-button{width:36px;height:36px}
+body .bk-entry-native .entry-layout{width:100%;height:100%;max-width:none;min-height:0!important;margin:0;padding:16px clamp(22px,calc(var(--app-viewport-width)*.05),72px);gap:30px;overflow:hidden}
+body .bk-entry-native .entry-content{max-width:none;width:min(540px,62%)}
+body .bk-entry-native .entry-profile-options{grid-template-columns:repeat(7,minmax(0,1fr))}
+body .bk-entry-native .entry-profile-option{min-width:0}
+body .bk-entry-native .entry-footer{padding:8px 28px;flex-wrap:nowrap;font-size:11px;gap:12px}
+@container beast-viewport (max-height:820px){
+ body .bk-entry-native .entry-layout{padding:12px 32px;display:block}
+ body .bk-entry-native .entry-content{width:min(1080px,100%);height:100%;display:grid;grid-template-columns:minmax(0,.9fr) minmax(330px,1fr);grid-template-rows:repeat(4,auto);align-content:center;align-items:center;gap:12px 40px}
+ body .bk-entry-native .entry-edition{grid-column:1;grid-row:1;margin:0;justify-self:start}
+ body .bk-entry-native .entry-title{grid-column:1;grid-row:2}
+ body .bk-entry-native .entry-title-en{font-size:clamp(22px,calc(var(--app-viewport-width)*.03),40px)}
+ body .bk-entry-native .entry-title-ja{font-size:clamp(28px,calc(var(--app-viewport-width)*.038),48px);white-space:normal}
+ body .bk-entry-native .entry-invitation{grid-column:1;grid-row:3;margin:0;font-size:15px}
+ body .bk-entry-native .entry-start-panel{grid-column:2;grid-row:1/5;width:100%;max-width:460px;align-self:center;padding:16px 18px}
+ body .bk-entry-native .entry-deck-rule{grid-column:1;grid-row:4;margin:8px 0 0;font-size:12px}
+ body .bk-entry-native .entry-art-caption{display:none}
+}
+@container beast-viewport (max-height:540px){
+ body .bk-entry-native .entry-header{padding:4px 16px;gap:10px}
+ body .bk-entry-native .entry-mark{gap:8px}
+ body .bk-entry-native .entry-mark img{width:26px;height:26px}
+ body .bk-entry-native .entry-mark>span{font-size:9px}
+ body .bk-entry-native .entry-audio .bgm-button{width:28px;height:28px}
+ body .bk-entry-native .entry-layout{padding:5px 16px}
+ body .bk-entry-native .entry-content{grid-template-columns:minmax(150px,.8fr) minmax(300px,1.4fr);gap:9px 16px}
+ body .bk-entry-native .entry-edition{font-size:10px;padding:4px 7px;gap:5px;line-height:1.4}
+ body .bk-entry-native .entry-card-total{font-size:10px}
+ body .bk-entry-native .entry-title-en{font-size:clamp(22px,calc(var(--app-viewport-width)*.04),34px);margin-bottom:8px;letter-spacing:.12em}
+ body .bk-entry-native .entry-title-ja{font-size:clamp(22px,calc(var(--app-viewport-width)*.034),32px);line-height:1.3}
+ body .bk-entry-native .entry-invitation{font-size:13px;line-height:1.6;letter-spacing:.03em}
+ body .bk-entry-native .entry-deck-rule{font-size:11px;gap:5px;line-height:1.4}
+ body .bk-entry-native .entry-start-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:repeat(4,auto);gap:7px 9px;padding:10px;max-width:500px}
+ body .bk-entry-native .entry-name-heading{grid-column:1;grid-row:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;margin:0}
+ body .bk-entry-native .entry-name-heading label{font-size:13px}
+ body .bk-entry-native .entry-name-heading>span{font-size:10px}
+ body .bk-entry-native .entry-input-wrap{grid-column:2;grid-row:1}
+ body .bk-entry-native #entry-player-name{height:36px;padding:5px 8px 5px 30px;font-size:16px}
+ body .bk-entry-native .entry-input-mark{left:8px}
+ body .bk-entry-native .entry-input-mark .icon{width:16px;height:16px}
+ body .bk-entry-native .entry-profile-picker{grid-column:1/-1;grid-row:2;margin:0}
+ body .bk-entry-native #entry-profile-label{font-size:10px;margin:0 0 4px}
+ body .bk-entry-native .entry-profile-options{gap:4px;margin:0;grid-template-columns:repeat(7,minmax(0,1fr))}
+ body .bk-entry-native .entry-profile-option{min-height:44px;padding:2px;gap:0}
+ body .bk-entry-native .entry-profile-option img{width:26px;height:26px}
+ body .bk-entry-native .entry-profile-option>span{font-size:10px}
+ body .bk-entry-native .entry-starter-choice{grid-column:1/-1;grid-row:3;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:3px 7px;align-items:center;margin:0}
+ body .bk-entry-native .entry-starter-choice label{font-size:11px;line-height:1.35;margin:0}
+ body .bk-entry-native .entry-starter-choice select{font-size:12px;min-height:32px;padding:4px 23px 4px 7px;margin:0;max-width:100%;width:100%}
+ body .bk-entry-native .entry-starter-choice small{grid-column:1/-1;font-size:10px;line-height:1.35;margin:0}
+ body .bk-entry-native .entry-start-button{grid-column:1;grid-row:4;min-height:34px;margin:0;font-size:14px;gap:7px}
+ body .bk-entry-native .entry-name-note{grid-column:2;grid-row:4;font-size:10px;line-height:1.4;text-align:left;margin:0;align-self:center}
+ body .bk-entry-native .entry-name-error:not([hidden]){grid-column:2;grid-row:4;font-size:11px;line-height:1.4;margin:0;align-self:center}
+ body .bk-entry-native .entry-start-panel:has(.entry-name-error:not([hidden])) .entry-name-note{display:none}
+ body .bk-entry-native .entry-footer{padding:4px 16px;font-size:9px;gap:8px}
+}
+@container beast-viewport (max-width:600px){
+ body .bk-entry-native:has(#entry-player-name:focus) .entry-content{display:flex;justify-content:center;width:100%}
+ body .bk-entry-native:has(#entry-player-name:focus) .entry-content>:not(.entry-start-panel){display:none}
+ body .bk-entry-native:has(#entry-player-name:focus) .entry-start-panel{width:100%;min-width:0}
+}
+
+/* showModal() dialogs escape ancestor transforms into the browser top layer.
+   They are centered and rotated exactly once, retaining native focus trapping,
+   Escape/form-method=dialog and the OS-provided inert background. */
+html body[data-virtual-landscape=true] dialog:modal{
+ position:fixed!important;inset:auto!important;
+ left:calc(var(--physical-viewport-left,0px) + var(--physical-viewport-width)/2)!important;
+ top:calc(var(--physical-viewport-top,0px) + var(--physical-viewport-height)/2)!important;
+ margin:0!important;width:min(960px,calc(var(--app-viewport-width) - 20px));
+ max-width:calc(var(--app-viewport-width) - 20px)!important;
+ max-height:calc(var(--app-viewport-height) - 20px);
+ transform:translate(-50%,-50%) rotate(90deg) scale(var(--bk-dialog-scale,1))!important;
+ transform-origin:center center!important;overflow:clip;
+}
+html body[data-virtual-landscape=true] #news-dialog.news-dialog[open]{
+ inset:auto!important;left:calc(var(--physical-viewport-left,0px) + var(--physical-viewport-width)/2)!important;
+ top:calc(var(--physical-viewport-top,0px) + var(--physical-viewport-height)/2)!important;
+ width:calc(var(--app-viewport-width) - 12px)!important;height:calc(var(--app-viewport-height) - 12px)!important;
+ max-width:none!important;max-height:none!important;transform:translate(-50%,-50%) rotate(90deg)!important;
+ margin:0!important;overflow:hidden!important;
+}
+body[data-virtual-landscape=true] #news-dialog .news-dialog-footer{grid-template-columns:minmax(0,1fr) auto}
+body[data-virtual-landscape=true][data-layout-short=true] #news-dialog.news-dialog{padding:8px!important;gap:6px}
+body[data-virtual-landscape=true][data-layout-short=true] #news-dialog .news-dialog-intro{display:none}
+body[data-virtual-landscape=true][data-layout-short=true] #news-dialog .news-dialog-header{padding-bottom:4px}
+body[data-virtual-landscape=true][data-layout-short=true] #news-dialog .news-dialog-header h2{font-size:23px}
+body[data-virtual-landscape=true][data-layout-short=true] #news-dialog .news-close{width:32px;height:32px}
+body[data-virtual-landscape=true][data-layout-short=true] #news-dialog .news-items article{padding:8px;gap:4px}
+body[data-virtual-landscape=true][data-layout-short=true] #news-dialog .news-items h3{font-size:15px}
+body[data-virtual-landscape=true][data-layout-short=true] #news-dialog .news-items p{font-size:12px;line-height:1.45}
+body[data-virtual-landscape=true][data-layout-short=true] #news-dialog .news-page-nav button,
+body[data-virtual-landscape=true][data-layout-short=true] #news-dialog .news-return{min-height:30px;font-size:12px;padding:4px 8px}
+
+/* Portrait media queries still see the physical screen. Restore complete
+   landscape tracks using measured layout attributes, not device guesses. */
+html.bk-fit body[data-virtual-landscape=true] .bk-native-screen .product-home[data-bk-home-mode=showcase]>.home-showcase{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:10px}
+html.bk-fit body[data-virtual-landscape=true] .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-intro{grid-column:1;grid-row:1}
+html.bk-fit body[data-virtual-landscape=true] .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-card-fan{grid-column:2;grid-row:1;margin:0;width:100%}
+body[data-virtual-landscape=true][data-layout-width=wide] .site-location{display:grid}
+body[data-virtual-landscape=true] .entry-scene{background-position:68% center}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen.royal-shell .site-header{min-height:38px;padding:3px 10px}
+body[data-virtual-landscape=true][data-layout-short=true] .site-brand img{width:27px;height:27px}
+body[data-virtual-landscape=true][data-layout-short=true] .site-controls .icon-btn,
+body[data-virtual-landscape=true][data-layout-short=true] .profile-button{width:29px;height:29px;min-height:29px}
+body[data-virtual-landscape=true][data-layout-short=true] .site-location small{display:none}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen.royal-shell .dock-link{min-height:30px;font-size:12px}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .page{padding:5px 9px!important;--bk-pad:5px;gap:4px}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .page-title h1{font-size:21px}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .page-title p{display:none}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home:not([data-bk-home-mode=all]){gap:5px}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home:not([data-bk-home-mode=all])>.home-mode-rail>.home-mode{padding:5px 9px;gap:7px}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home:not([data-bk-home-mode=all]) .home-mode strong{font-size:14px}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home:not([data-bk-home-mode=all]) .home-mode small{display:none}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home:not([data-bk-home-mode=all]) .home-mode>i{width:28px;height:28px}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=showcase]>.home-showcase{padding:8px 18px}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-intro h1{font-size:26px;margin:5px 0}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-intro>p:last-of-type{font-size:12px;line-height:1.5}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-card-fan .game-card{max-width:clamp(65px,calc((var(--app-viewport-height) - 166px)*.52),150px)!important}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-stage-foot{display:none}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=command]>.home-command{gap:7px}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .home-command .home-deckbox{padding:8px 12px}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .home-command .home-deckbox h2{font-size:17px;margin:5px 0}
+body[data-virtual-landscape=true][data-layout-short=true] .home-deck-count{padding:5px}
+body[data-virtual-landscape=true][data-layout-short=true] .home-deck-count b{font-size:22px}
+body[data-virtual-landscape=true][data-layout-short=true] .home-deck-tools{margin-top:0}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .home-command .home-shortcuts>button{min-height:31px;padding:5px 10px;font-size:12px}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .home-command .home-shortcuts>button small{display:none}
+body[data-virtual-landscape=true][data-layout-short=true] .settings-tabs{padding-bottom:6px;margin-bottom:4px}
+body[data-virtual-landscape=true][data-layout-short=true] .settings-tabs button{min-height:31px}
+body[data-virtual-landscape=true][data-layout-short=true] .settings-section :is(.setting-row,.setting-volume){padding:8px 0}
+
+@container beast-viewport (max-height:570px){
+ html.bk-fit body[data-virtual-landscape=true] .bk-native-screen .duel-layout>.arena{grid-template-columns:minmax(0,1fr) minmax(108px,21%) minmax(135px,25%);grid-template-rows:auto minmax(min-content,1fr) auto minmax(min-content,1fr) auto!important}
+ html.bk-fit body[data-virtual-landscape=true] .bk-native-screen .arena>.hand-section{grid-area:1/3/6/4;display:flex;flex-direction:column;align-self:stretch;border:1px solid #9c87a53d}
+ html.bk-fit body[data-virtual-landscape=true] .bk-native-screen .hand-cards{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:4px}
+ html.bk-fit body[data-virtual-landscape=true] .bk-native-screen .field-row>.field-slot{width:min(100%,clamp(38px,calc((var(--bk-canvas-h,260px) - 90px)*.28),90px))!important}
+ html.bk-fit body[data-virtual-landscape=true] .bk-native-screen .hand-cards>.hand-card{width:min(100%,clamp(42px,calc((var(--bk-canvas-h,260px) - 34px)*.29),92px))!important}
+ html.bk-fit body[data-virtual-landscape=true] .bk-native-screen .arena .zone-strip button{font-size:9px;min-height:26px;padding:2px}
+ html.bk-fit body[data-virtual-landscape=true] .bk-native-screen .midline>.end-turn{min-height:28px}
+ body[data-virtual-landscape=true] .bk-loading-orbit{width:84px;height:84px;margin-bottom:13px}
+ body[data-virtual-landscape=true] .bk-loading-orbit>img{width:44px;height:44px}
+ body[data-virtual-landscape=true] .bk-loading-card{padding:15px}
+ body[data-virtual-landscape=true] .bk-loading-brand{font-size:18px}
+ body[data-virtual-landscape=true] .bk-loading-card p{margin:10px 0}
+ body[data-virtual-landscape=true] .bk-network-status{top:calc(var(--news-height,34px) + 43px);right:10px;font-size:11px;padding:6px 10px}
+}
+
+/* The preserved rebuild client also uses actual-size header/nav/content/footer
+   tracks. Its collection, deck rows and log already have explicit page controls. */
+html.bk-fit body .shell.bk-rebuild-native{height:100%!important;width:100%!important;max-width:none;min-height:0!important;overflow:hidden!important;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto!important;padding:8px;gap:6px;transform:none!important}
+html.bk-fit body .shell.bk-rebuild-native>header{display:flex;flex-wrap:nowrap;padding:5px 9px;gap:8px;min-height:35px}
+html.bk-fit body .shell.bk-rebuild-native>nav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+html.bk-fit body .shell.bk-rebuild-native>nav>button{min-height:30px;padding:4px;font-size:12px}
+html.bk-fit body .shell.bk-rebuild-native>main{display:grid;min-height:0!important;height:auto!important;overflow:hidden!important;align-content:stretch}
+html.bk-fit body .shell.bk-rebuild-native>footer{flex-wrap:nowrap;min-height:23px;gap:8px}
+body .shell.bk-rebuild-native .identity{flex-wrap:nowrap;gap:8px}
+body .shell.bk-rebuild-native .profile-mark{max-width:calc(var(--app-viewport-width,100vw)*.26)}
+body .shell.bk-rebuild-native .home{height:100%;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);align-content:stretch;gap:8px}
+body .shell.bk-rebuild-native .home-side{min-height:0;grid-template-rows:auto minmax(0,1fr)}
+body .shell.bk-rebuild-native .hero{min-height:0;padding:18px;gap:8px}
+body .shell.bk-rebuild-native .hero h1{font-size:clamp(22px,calc(var(--app-viewport-width,100vw)*.035),42px)}
+body .shell.bk-rebuild-native .modes{min-height:0;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(0,1fr)}
+body .shell.bk-rebuild-native .mode{min-height:0;padding:10px;gap:4px}
+body .shell.bk-rebuild-native .deck-layout{height:100%;min-height:0;grid-template-columns:minmax(0,1fr) minmax(220px,29%);grid-template-rows:minmax(0,1fr);align-items:stretch}
+body .shell.bk-rebuild-native .deck-list{height:100%;min-height:0;display:flex;flex-direction:column;gap:5px}
+body .shell.bk-rebuild-native .deck-list>.deck-rows{flex:1 1 0;max-height:none;min-height:0;overflow:hidden;justify-content:center}
+body .shell.bk-rebuild-native .deck-list>.actions{flex:none;gap:4px}
+body .shell.bk-rebuild-native .deck-layout>.deck-list{grid-row:auto}
+body .shell.bk-rebuild-native .catalog-layout,body .shell.bk-rebuild-native .shop{height:100%;min-height:0;grid-template-rows:auto minmax(0,1fr) auto;align-content:stretch}
+body .shell.bk-rebuild-native .card-grid{min-height:0;height:100%;grid-template-columns:repeat(var(--rebuild-card-columns,3),minmax(0,1fr));grid-template-rows:minmax(0,1fr);grid-auto-rows:0;align-items:stretch;justify-items:center;gap:8px;overflow:hidden}
+body .shell.bk-rebuild-native .card-grid>.card{width:auto;height:100%;max-height:100%;max-width:100%;min-width:0;min-height:0;aspect-ratio:360/520;justify-self:center}
+body .shell.bk-rebuild-native .filters{gap:4px}
+body .shell.bk-rebuild-native .filters :is(input,select,button){min-height:29px;padding:4px 6px;font-size:12px}
+body .shell.bk-rebuild-native .filters select{max-width:130px}
+body .shell.bk-rebuild-native .arena{height:100%;grid-template-columns:minmax(0,1fr) minmax(160px,21%);grid-template-rows:minmax(0,1fr);align-items:stretch}
+body .shell.bk-rebuild-native .table{height:100%;min-height:0;grid-template-rows:28px minmax(0,1fr) 24px minmax(0,1fr) 28px minmax(0,.9fr);align-content:stretch;padding:5px;gap:4px}
+body .shell.bk-rebuild-native .zones,body .shell.bk-rebuild-native .hand{height:100%;grid-template-rows:minmax(0,1fr);gap:4px;min-height:0;overflow:visible}
+body .shell.bk-rebuild-native :is(.zones,.hand)>:is(.card,.slot){max-width:120px;width:100%;height:100%;max-height:100%;min-height:0;aspect-ratio:auto}
+body .shell.bk-rebuild-native .side{min-height:0;display:flex;flex-direction:column;gap:5px}
+body .shell.bk-rebuild-native .side>.log{flex:1 1 0;min-height:0;max-height:none;overflow:hidden}
+body .shell.bk-rebuild-native .side>.actions{flex:none;display:grid;grid-template-columns:1fr;gap:4px}
+body .shell.bk-rebuild-native .side :is(button,.log p){font-size:11px;line-height:1.4}
+body .shell.bk-rebuild-native .side button{min-height:27px;padding:3px 5px}
+body[data-layout-short=true] .shell.bk-rebuild-native{padding:5px;gap:4px;font-size:12px}
+body[data-layout-short=true] .shell.bk-rebuild-native .brand img{width:27px;height:27px}
+body[data-layout-short=true] .shell.bk-rebuild-native .brand b{font-size:13px}
+body[data-layout-short=true] .shell.bk-rebuild-native .brand small{display:none}
+body[data-layout-short=true] .shell.bk-rebuild-native .panel{padding:7px}
+body[data-layout-short=true] .shell.bk-rebuild-native .hero{gap:5px;padding:10px}
+body[data-layout-short=true] .shell.bk-rebuild-native .hero h1{font-size:24px}
+body[data-layout-short=true] .shell.bk-rebuild-native .hero :is(p,small){font-size:11px;line-height:1.45}
+body[data-layout-short=true] .shell.bk-rebuild-native .mode{padding:5px;gap:3px}
+body[data-layout-short=true] .shell.bk-rebuild-native .mode b{font-size:12px}
+body[data-layout-short=true] .shell.bk-rebuild-native .mode :is(span,.bk-icon){font-size:10px}
+body[data-layout-short=true] .shell.bk-rebuild-native .summary{gap:5px}
+body[data-layout-short=true] .shell.bk-rebuild-native .summary>div{padding-top:3px}
+body[data-layout-short=true] .shell.bk-rebuild-native .summary strong{font-size:18px}
+body[data-layout-short=true] .shell.bk-rebuild-native .panel-head{margin-bottom:4px}
+body[data-layout-short=true] .shell.bk-rebuild-native h2{font-size:15px}
+body[data-layout-short=true] .shell.bk-rebuild-native .card .effect{display:none}
+body[data-layout-short=true] .shell.bk-rebuild-native .cardtop,
+body[data-layout-short=true] .shell.bk-rebuild-native .cardbottom{font-size:10px}
+body[data-layout-short=true] .shell.bk-rebuild-native .card .rarity{display:inline;font-size:9px}
+body[data-layout-short=true] .shell.bk-rebuild-native .edition-links{font-size:10px;gap:7px}
+body[data-virtual-landscape=true] .onboard{height:var(--app-viewport-height);overflow:hidden}
+body[data-virtual-landscape=true] .onboard .origins,
+body[data-virtual-landscape=true] .onboard .starter-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+body[data-virtual-landscape=true] dialog .detail{grid-template-columns:minmax(0,200px) minmax(0,1fr)}
+body[data-virtual-landscape=true] dialog .detail .preview{width:100%;max-height:calc(var(--app-viewport-height) - 70px);margin:0}
+body[data-virtual-landscape=true] .cloud-panel{max-width:min(560px,calc(var(--app-viewport-width) - 50px))}
+body[data-virtual-landscape=true] .cloud-compare{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+/* Public guides use the same short landscape chapter layout in virtual mode. */
+body.guide-page[data-virtual-landscape=true] .guide-header{grid-template-columns:1fr minmax(180px,260px) auto;min-height:52px;padding:6px 20px;gap:14px}
+body.guide-page[data-virtual-landscape=true] .guide-jump-label{grid-column:auto;grid-row:auto}
+body.guide-page[data-virtual-landscape=true] .guide-brand{font-size:16px;gap:8px}
+body.guide-page[data-virtual-landscape=true] .guide-brand img{width:32px;height:32px}
+body.guide-page[data-virtual-landscape=true] .guide-brand small{font-size:10px;margin-top:3px}
+body.guide-page[data-virtual-landscape=true] .guide-header .guide-cta{min-height:34px;padding:6px 14px}
+body.guide-page[data-virtual-landscape=true] .guide-jump-label select{min-height:34px;padding-block:4px}
+body.guide-page[data-virtual-landscape=true] .guide-hero-grid{grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr);gap:24px}
+body.guide-page[data-virtual-landscape=true] .guide-hero-art{display:block;max-width:210px;margin:0}
+body.guide-page[data-virtual-landscape=true] .guide-panels{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+body.guide-page[data-virtual-landscape=true] .guide-panels.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+body.guide-page[data-virtual-landscape=true] .guide-panels.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+body.guide-page[data-virtual-landscape=true] .guide-origins{grid-template-columns:repeat(7,minmax(0,1fr))}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-section{padding:14px 26px}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] :is(h1,h2){font-size:28px;margin-bottom:14px}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] h3{font-size:17px;margin-bottom:8px}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-lead{font-size:15px;line-height:1.55;margin-bottom:14px}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-panel{padding:13px 15px}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-panel p{font-size:14px;line-height:1.55}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-metrics{margin:12px 0;gap:8px}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-metrics>div{padding:8px 10px}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-metrics dt{font-size:12px}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-metrics dd{font-size:23px;margin-top:2px}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-note{padding:9px 12px;margin-top:12px!important;font-size:13px;line-height:1.55}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-table{font-size:14px;margin:10px 0}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-table :is(th,td){padding:7px 12px}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-origins{margin:15px 0}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-origins img{width:65px;margin-bottom:4px}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-actions{margin-top:14px}
+body.guide-page[data-virtual-landscape=true][data-layout-short=true] .guide-footer{padding:5px 20px;font-size:10px}

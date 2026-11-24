@@ -11,6 +11,7 @@ import {createHash,randomUUID} from 'node:crypto';
 import {DatabaseSync} from 'node:sqlite';
 import {dirname,resolve,relative,isAbsolute} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
+import {readPrivateOperatorArtwork,injectPrivateOperatorArtwork} from './private-operator-art.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const args=new Set(process.argv.slice(2));
@@ -119,6 +120,7 @@ async function validateMigrations(schema){
 }
 async function bundleWorker(){
   const modules=[],loaded=new Map(),visiting=new Set();
+  const privateArtwork=await readPrivateOperatorArtwork(root);
   const rootFrontend=await stat(resolve(root,'catalog.js')).then(s=>s.isFile()).catch(()=>false);
   const frontend=rootFrontend?'':'dist/';
   async function visit(file){
@@ -126,7 +128,8 @@ async function bundleWorker(){
     assert(!rel.startsWith('..')&&!isAbsolute(rel),'Module is outside the project');
     if(loaded.has(file))return loaded.get(file);
     assert(!visiting.has(file),'Circular modules are not supported by this focused build');visiting.add(file);
-    const source=await readFile(file,'utf8'),imports=[];
+    const originalSource=await readFile(file,'utf8');
+    const source=rel==='server/operator-art.js'?injectPrivateOperatorArtwork(originalSource,privateArtwork):originalSource,imports=[];
     const pattern=/^import\s+\{([^}]+)\}\s+from\s+(['"])([^'"]+)\2\s*;?\s*$/gm;
     let match;
     while((match=pattern.exec(source))){
@@ -156,6 +159,11 @@ async function bundleWorker(){
   const built=await import(url(bundle));assert.equal(typeof built.default?.fetch,'function');assert.deepEqual(Object.keys(built),entry.exports);
   const inspection=await import(url(bundle+'\nexport const __inspection=['+modules.map(m=>'__bkModule'+m.id).join(',')+'];\n'));
   for(const m of modules)assert.deepEqual(Object.keys(inspection.__inspection[m.id]),m.exports,'Bundled exports must match '+m.rel);
+  if(privateArtwork){
+    const artModule=modules.find(m=>m.rel==='server/operator-art.js');assert(artModule,'Private artwork module is missing');
+    assert.equal(await inspection.__inspection[artModule.id].operatorRegaliaArtwork('build-validation'),privateArtwork,'Private illustration must be the automatic Worker default');
+    assert.equal(await inspection.__inspection[artModule.id].operatorRegaliaArtwork(null),null,'An absent entitlement seed must not return artwork');
+  }
   const catalog=modules.find(m=>m.file===resolve(root,frontend+'catalog.js')),engine=modules.find(m=>m.file===resolve(root,frontend+'engine.js'));assert(catalog&&engine);
   const builtCatalog=inspection.__inspection[catalog.id],builtEngine=inspection.__inspection[engine.id];
   assert.deepEqual(builtCatalog.CARDS,catalog.original.CARDS);assert.deepEqual(builtCatalog.STARTER_DECKS,catalog.original.STARTER_DECKS);
@@ -164,7 +172,7 @@ async function bundleWorker(){
   engine.original.endTurn(sourceGame);builtEngine.endTurn(builtGame);engine.original.runCpuTurn(sourceGame);builtEngine.runCpuTurn(builtGame);assert.deepEqual(builtGame,sourceGame,'Bundled module scopes must preserve card and engine behavior');
   const redirect=await built.default.fetch(new Request('https://beast-king.hisa-0128-1996.chatgpt.site/'),{},{});assert.equal(redirect.status,302);assert.equal(redirect.headers.get('location'),'https://www.beast-king.com/');
   await write('dist/server/index.js',bundle);
-  return {bytes:Buffer.byteLength(bundle),modules:modules.map(m=>m.rel),sourceHash:digest};
+  return {bytes:Buffer.byteLength(bundle),modules:modules.map(m=>m.rel),sourceHash:digest,operatorArtwork:privateArtwork?'private-illustration':'procedural-fallback'};
 }
 
 const schema=await read('server/schema.sql');

@@ -6,7 +6,8 @@
 import {
   SECOND_SET_CLANS, secondBeastDefinition, secondMiracleDefinition,
   secondGimmickDefinition, secondFusionDefinition,
-} from './second-set-data.js';
+} from './second-set-data.js?v=20261124-26';
+import {balanceCreature, balancedMiracleStats, balancedGimmickStats} from './catalog-balance.js?v=20261124-26';
 
 export const CARD_SETS = Object.freeze([
   { id: 'BK01', edition: 1, editionLabel: '第一弾', name: '六源の覚醒', reading: 'ろくげんのかくせい', coverId: 'B0001', cardCount: 1152 },
@@ -158,7 +159,8 @@ const KEYWORD_TEXT = {
 };
 const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
 const idFor = (prefix, index) => `${prefix}${String(index + 1).padStart(4, '0')}`;
-const freezeCard = card => {
+const freezeCard = input => {
+  const card = balanceCreature(input);
   const kind = card.effect.kind;
   const value = ['none', 'draw', 'fusion'].includes(kind) ? card.effect.value : card.effect.value * POINT_SCALE;
   const effect = Object.freeze({ kind, value });
@@ -234,19 +236,7 @@ function makeBeasts() {
 }
 
 const MIRACLE_KINDS = ['damage_enemy', 'heal', 'draw', 'buff', 'sweep', 'shield', 'drain', 'renew'];
-function miracleStats(kind, rank, element) {
-  const extra = (element === 'ember' && kind === 'damage_enemy') || (element === 'grove' && (kind === 'heal' || kind === 'renew')) || (element === 'stone' && kind === 'shield') ? 1 : 0;
-  switch (kind) {
-    case 'damage_enemy': return { cost: rank + 2, value: rank + 2 + extra };
-    case 'heal': return { cost: rank + 1, value: 4 + rank * 2 + extra };
-    case 'draw': return { cost: 2 + rank * 2, value: 1 + rank };
-    case 'buff': return { cost: 2 + rank * 2, value: 1 + rank };
-    case 'sweep': return { cost: 2 + rank * 2, value: 1 + rank };
-    case 'shield': return { cost: 1 + rank, value: 3 + rank * 2 + extra };
-    case 'drain': return { cost: 2 + rank, value: 1 + rank };
-    case 'renew': return { cost: 1 + rank, value: 2 + rank + extra };
-  }
-}
+const miracleStats = balancedMiracleStats;
 function miracleText(kind, value) {
   return {
     damage_enemy: `敵の魔獣1体の守備力を${value}減らすか、相手のハートポイントに${value}ダメージ。`,
@@ -284,11 +274,7 @@ function makeMiracles() {
 }
 
 const GIMMICK_KINDS = ['ambush', 'barrier', 'spring', 'fountain'];
-function gimmickStats(kind, rank, element) {
-  const bonus = kind === 'ambush' && element === 'dusk' || kind === 'barrier' && element === 'dawn' ? 1 : 0;
-  const value = kind === 'ambush' ? 2 + rank + bonus : kind === 'barrier' ? 3 + rank * 2 + bonus : kind === 'spring' ? 1 + Math.floor(rank / 3) : 4 + rank * 2;
-  return { cost: kind === 'spring' ? Math.min(8, 1 + rank) : 1 + rank, value };
-}
+const gimmickStats = balancedGimmickStats;
 function gimmickText(kind, value) {
   return {
     ambush: `相手の魔獣が攻撃した時、攻撃した魔獣に${value}の反射ダメージ。消滅させた場合はその攻撃を止める。発動後、お墓ゾーンへ送る。`,
@@ -421,8 +407,8 @@ function makeSecondFusions() {
   });
 }
 
-// Existing indices, IDs, names and balance values remain fixed. Regalia changes
-// only its pack membership; the restored original design receives a new ID.
+// Existing indices, IDs, names and pack membership remain fixed. Balance
+// revision 4 is applied before public rules text and frozen values are created.
 const legacyCards = [...makeBeasts(), ...makeMiracles(), ...makeGimmicks(), ...makeFusions()];
 const restoredAether = Object.freeze({
   ...legacyCards[511], id: 'B1024', index: 1664, setId: 'BK01',
@@ -465,7 +451,7 @@ function balanceOrigins(cards){
  return cards.map(card=>overrides.has(card.id)?Object.freeze({...card,origin:overrides.get(card.id),element:overrides.get(card.id)}):card);
 }
 export const CARDS = Object.freeze(balanceOrigins([
-  ...legacyCards, ...makeSecondBeasts(), restoredAether,
+  ...legacyCards.map(card => card.id === 'B0512' ? Object.freeze({...card, attack:1000, hp:1100}) : card), ...makeSecondBeasts(), restoredAether,
   ...makeSecondMiracles(legacyCards.find(card => card.id === FUSION_CARD_ID).text),
   ...makeSecondGimmicks(), ...makeSecondFusions(),
 ]));
@@ -519,10 +505,13 @@ export const DECK_PRESETS = Object.freeze(CARD_SERIES.map((element, e) => {
   const b = local => idFor('B', e * 64 + local);
   const m = local => idFor('M', e * 32 + local);
   const g = local => idFor('G', e * 32 + local);
-  const beastLocals = [1, 2, 8, 11, 16, 19, 24];
+  // The water starter needs a guard to protect its draw engines and a threat
+  // that can convert that hand advantage into pressure. Saved decks are never
+  // rewritten; only a newly chosen/purchased preset uses these four cards.
+  const beastLocals = e === 1 ? [1, 2, 6, 11, 16, 18, 24] : [1, 2, 8, 11, 16, 19, 24];
   const ids = beastLocals.flatMap(n => [b(n), b(n)]).concat(b(0), b(47));
   // Low-cost answers, one draw tool, and a faction-flavoured second-rank option.
-  const themeSpell = [5, 1, 0, 4, 7, 5, 6, 3][e];
+  const themeSpell = [5, 2, 0, 4, 7, 5, 6, 3][e];
   for (const local of [0, 3, 8 + themeSpell]) ids.push(m(local), m(local));
   ids.push(FUSION_CARD_ID, FUSION_CARD_ID);
   // Every starter follows the requested 16 beasts / 8 miracles / 8 gimmicks.
@@ -538,4 +527,4 @@ export const STARTER_DECKS = Object.freeze(DECK_PRESETS.slice(0, 4));
 const deckPresetById = new Map(DECK_PRESETS.map(deck => [deck.id, deck]));
 export const getDeckPreset = id => deckPresetById.get(id);
 
-export const CATALOG_VERSION = 3;
+export const CATALOG_VERSION = 4;

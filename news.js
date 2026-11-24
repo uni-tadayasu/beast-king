@@ -1,4 +1,4 @@
-import {ONLINE_API_BASE} from './online.js';
+import {ONLINE_API_BASE} from './online.js?v=20261124-26';
 /** Built-in release notices. Update these entries when a new game version is published. */
 export const NEWS_ITEMS = Object.freeze([
  {date:'2026.11.24',title:'4種類のスターターデッキを販売',text:'初回は4種類から1種類だけ無料で選択。残りは秘宝ショップで各300秘宝で購入できます。未所持のスターターの読み込みと自動補充を廃止しました。既存の所持カード・保存デッキは維持します。'},
@@ -56,11 +56,11 @@ function layoutNews(dialog){
  grid.style.setProperty('--news-columns',String(cols));
  grid.classList.add('news-measuring');grid.style.gridTemplateRows='none';
  cards.forEach(card=>card.hidden=false);
- let heights=cards.map(card=>Math.ceil(card.getBoundingClientRect().height));
+ let heights=cards.map(card=>card.offsetHeight);
  // A long official notice on a shallow display can use the entire width.
  if(Math.max(...heights)>available&&cols>1){
   cols=1;grid.style.setProperty('--news-columns','1');
-  heights=cards.map(card=>Math.ceil(card.getBoundingClientRect().height));
+  heights=cards.map(card=>card.offsetHeight);
  }
  const gap=Number.parseFloat(getComputedStyle(grid).rowGap)||0;
  let start=0,rows=[],used=0,pages=[];
@@ -106,7 +106,7 @@ function mountNews(){
 }
 if(typeof document!=='undefined'){
  mountNews();
- window.addEventListener('resize',scheduleNewsLayout,{passive:true});window.visualViewport?.addEventListener('resize',scheduleNewsLayout,{passive:true});document.fonts?.ready.then(scheduleNewsLayout);
+ window.addEventListener('resize',scheduleNewsLayout,{passive:true});window.visualViewport?.addEventListener('resize',scheduleNewsLayout,{passive:true});window.addEventListener('beastking:viewport',scheduleNewsLayout);document.fonts?.ready.then(scheduleNewsLayout);
  const refresh=async()=>{if(document.hidden)return;try{const response=await fetch(ONLINE_API_BASE+'/public-status',{credentials:'omit',cache:'no-store'});if(!response.ok)return;const status=await response.json();if(status.ok===true)setPublicNotice(status);}catch{}};
  void refresh();setInterval(refresh,60000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refresh();});
 }

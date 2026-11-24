@@ -21,11 +21,20 @@ if (!['https:', 'http:'].includes(base.protocol) || base.username || base.passwo
 if (!base.pathname.endsWith('/')) base.pathname += '/';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = process.argv[3] ? resolve(process.argv[3]) : root;
-const imageUrl = new URL('assets/social-ogp.jpg', base).href;
+const imageUrl = new URL('assets/social-ogp.jpg?v=20261124-26', base).href;
 const escapeAttribute = value => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
 const escapeXml = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
-const pageDefinitions = [ ['index.html', ''], ['about.html', 'about.html'] ];
-const pages = await Promise.all(pageDefinitions.map(async ([filename, relative]) => ({ filename, relative, html: await readFile(resolve(dist, filename), 'utf8') })));
+const pageDefinitions = [
+  {filename:'index.html',relative:'',index:true,required:true},
+  {filename:'about.html',relative:'about.html',index:true,required:true},
+  {filename:'rebuild/index.html',relative:'rebuild/',index:false},
+  {filename:'rebuild/about.html',relative:'rebuild/about.html',index:false},
+  {filename:'404.html',relative:'404.html',index:false,canonical:false},
+];
+const pages = (await Promise.all(pageDefinitions.map(async page => {
+  try{return {...page,html:await readFile(resolve(dist,page.filename),'utf8')};}
+  catch(error){if(!page.required&&error.code==='ENOENT')return null;throw error;}
+}))).filter(Boolean);
 
 // Record prior canonical bases before rewriting, so repeated runs can move safely
 // between a domain root and GitHub Pages' repository subpath.
@@ -34,7 +43,10 @@ for (const page of pages) {
   const tag = page.html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/i)?.[0];
   const href = tag?.match(/\bhref=["']([^"']+)["']/i)?.[1];
   if (href) {
-    try { oldBases.add(new URL('./', href.replaceAll('&amp;', '&')).href); } catch { /* The new canonical below repairs malformed values. */ }
+    try {
+      const old=new URL(href.replaceAll('&amp;', '&'));old.hash='';old.search='';
+      oldBases.add(page.relative&&old.href.endsWith(page.relative)?old.href.slice(0,-page.relative.length):new URL('./',old).href);
+    } catch { /* The new canonical below repairs malformed values. */ }
   }
 }
 const oldBaseList = [...oldBases].sort((a, b) => b.length - a.length);
@@ -55,16 +67,21 @@ function remapStructured(value) {
 function setMeta(html, attribute, key, content) {
   const tag = `<meta ${attribute}="${key}" content="${escapeAttribute(content)}">`;
   const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const pattern = new RegExp(`<meta\\b(?=[^>]*\\b${attribute}=["']${escapedKey}["'])[^>]*>`, 'i');
-  return pattern.test(html) ? html.replace(pattern, tag) : html.replace(/<\/head>/i, `${tag}\n</head>`);
+  const pattern = new RegExp(`<meta\\b(?=[^>]*\\b${attribute}=["']${escapedKey}["'])[^>]*>`, 'gi');
+  let found=false;
+  const result=html.replace(pattern,()=>{if(found)return '';found=true;return tag;});
+  return found ? result : html.replace(/<\/head>/i, `${tag}\n</head>`);
 }
 for (const page of pages) {
   const pageUrl = new URL(page.relative, base).href;
   const canonical = `<link rel="canonical" href="${escapeAttribute(pageUrl)}">`;
   let html = page.html;
-  const canonicalPattern = /<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/i;
-  html = canonicalPattern.test(html) ? html.replace(canonicalPattern, canonical) : html.replace(/<\/head>/i, `${canonical}\n</head>`);
+  const canonicalPattern = /<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/gi;
+  let foundCanonical=false;
+  html=html.replace(canonicalPattern,()=>{if(page.canonical===false||foundCanonical)return '';foundCanonical=true;return canonical;});
+  if(page.canonical!==false&&!foundCanonical)html=html.replace(/<\/head>/i,`${canonical}\n</head>`);
   for (const [attribute, key, value] of [
+    ['name', 'robots', page.index ? 'index,follow,max-image-preview:large' : 'noindex,follow'],
     ['property', 'og:url', pageUrl],
     ['property', 'og:image', imageUrl],
     ['property', 'og:image:width', '1200'],
@@ -81,7 +98,9 @@ for (const page of pages) {
 }
 // Validate all inputs and JSON-LD before writing any output file.
 for (const page of pages) await writeFile(resolve(dist, page.filename), page.output);
-const urls = pageDefinitions.map(([, relative]) => new URL(relative, base).href);
+// Saved-game compatibility pages stay usable but are deliberately outside the
+// search index. Keep crawling allowed so their HTML noindex can be read.
+const urls = pages.filter(page=>page.index).map(page=>new URL(page.relative, base).href);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(url => `  <url><loc>${escapeXml(url)}</loc></url>`).join('\n')}\n</urlset>\n`;
 await writeFile(resolve(dist, 'sitemap.xml'), sitemap);
 await writeFile(resolve(dist, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${new URL('sitemap.xml', base).href}\n`);

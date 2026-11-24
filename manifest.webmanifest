@@ -2,23 +2,23 @@
   "id": "./",
   "name": "ビーストキング｜BEAST KING",
   "short_name": "ビーストキング",
-  "description": "全2,304枚、通常32枚＋特殊4枚。5,000ハートポイントで戦う無料ブラウザカードゲーム",
+  "description": "その一手に、王の意志を。全2,304枚から選ぶ36枚で、ソロ・友達との対戦・ランクマッチへ。無料オンラインカードゲーム。",
   "lang": "ja",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "landscape",
-  "background_color": "#101329",
-  "theme_color": "#201b45",
+  "background_color": "#06131e",
+  "theme_color": "#0c2938",
   "icons": [
     {
-      "src": "assets/icon-192.png",
+      "src": "assets/icon-192.png?v=20261124-26",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/icon-512.png",
+      "src": "assets/icon-512.png?v=20261124-26",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
