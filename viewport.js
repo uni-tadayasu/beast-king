@@ -24,7 +24,7 @@ export function calculateFittedCardLayout({width,height,edit=false,compact=false
  const gap=compact?8:14,caption=edit?76:28,ratio=520/360;
  const min=compact?68:120,max=compact?230:360;
  let best=null;
- for(let rows=1;rows<=(compact?2:2);rows++)for(let columns=1;columns<=14;columns++){
+ for(let rows=1;rows<=2;rows++)for(let columns=1;columns<=14;columns++){
   const cardWidth=Math.floor(Math.min(max,(w-gap*(columns-1))/columns,((h-gap*(rows-1))/rows-caption)/ratio));
   if(cardWidth<min)continue;
   // Cover the available canvas, preferring legibility on equally filled grids.

@@ -1235,3 +1235,15 @@ html.bk-fit .bk-fit-modal .inspect-gallery .game-card,html.bk-fit .bk-fit-modal 
  html.bk-fit .bk-native-screen .product-home[data-bk-home-mode=showcase]>.home-showcase{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
  html.bk-fit .bk-native-screen .product-shop .starter-shelf>.starter-offer{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr);gap:7px}
 }
+
+/* Logs use dedicated, fixed page buttons outside the reading area. The
+   optional drawer uses the viewport rather than a narrow scrolling strip. */
+html.bk-fit .bk-reading-frame{position:relative;overflow:clip!important;min-height:0;min-width:0;scrollbar-gutter:auto!important;padding-right:0}
+html.bk-fit .bk-reading-frame>.bk-reading-content{position:absolute!important;inset:0 auto auto 0!important;box-sizing:border-box;transform-origin:top left;min-width:0;max-width:none!important;max-height:none!important;overflow:visible!important}
+html.bk-fit .duel-shell .battle-log-drawer:not([hidden]){position:fixed!important;inset:8px!important;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;display:flex!important;flex-direction:column;gap:6px;padding:clamp(10px,1.4vw,24px);overflow:clip!important;z-index:75}
+html.bk-fit .battle-log-drawer .battle-log-event p{font-size:clamp(14px,1.25vw,19px);line-height:1.6}
+html.bk-fit .battle-log-drawer .battle-log-event{padding:12px 15px}
+html.bk-fit .battle-log-drawer .bk-fit-inline-pager{flex:none}
+html.bk-fit .battle-log-panel .bk-fit-inline-pager{gap:4px;font-size:10px;margin:2px 0}
+html.bk-fit .battle-log-panel .bk-fit-inline-pager button{min-width:38px;min-height:24px;padding:2px 4px}
+html.bk-fit .hand-inspector-scroll .hand-inspector-effect p{font-size:clamp(14px,1.2vw,18px);line-height:1.6}

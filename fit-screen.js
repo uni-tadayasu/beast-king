@@ -255,7 +255,7 @@ function paginateList(list,size,label='一覧'){
  if(!state){
   const bar=doc.createElement('div'),prev=doc.createElement('button'),next=doc.createElement('button'),count=doc.createElement('span');
   bar.className='bk-fit-inline-pager';bar.setAttribute('aria-label',label+'のページ');
-  prev.type=next.type='button';prev.textContent='前へ';next.textContent='次へ';count.setAttribute('aria-live','polite');bar.append(prev,count,next);list.after(bar);
+  prev.type=next.type='button';prev.textContent='前へ';next.textContent='次へ';count.setAttribute('aria-live','polite');bar.append(prev,count,next);const scroll=list.closest('.battle-log-scroll');if(scroll&&list.parentElement===scroll)scroll.after(bar);else list.after(bar);
   state={bar,prev,next,label:count,index:0,size};pagedLists.set(list,state);list.dataset.fitPaged='true';
   prev.addEventListener('click',()=>{state.index--;updatePagedList(list,state);schedule();});next.addEventListener('click',()=>{state.index++;updatePagedList(list,state);schedule();});
  }
@@ -269,8 +269,9 @@ function paginateLongLists(){
   ['.pack-result-grid',phone?2:short?3:innerWidth<1100?4:6,'開封カード'],
   ['.rulebook-spread',phone||short?1:2,'ルール'],
   ['.campaign-chapters',phone||short?2:5,'章'],
-  ['.battle-log-entries',general,'対戦履歴'],
-  ['.operator-player-list,.operator-audit,.account-device-list,.zone-card-list',general,'一覧'],
+  ['.battle-log-panel .battle-log-entries',1,'対戦履歴'],
+  ['.battle-log-drawer .battle-log-entries',short?2:4,'対戦履歴'],
+  ['.operator-player-list,.operator-audit,.account-device-list,.zone-card-list,.special-deck-list',general,'一覧'],
   ['.operator-event-list,.operator-delivery-history',general,'履歴'],
   ['.shell .deck-rows',phone||short?3:6,'編成カード'],
   ['.shell .side .log',general,'対戦履歴'],
@@ -340,6 +341,14 @@ function fitModal(){
 }
 // Block native scroll containers left by older component styles. Clip only
 // those containers, not card artwork or absolute decorative layers.
+function fitAuxiliary(){
+ for(const frame of doc.querySelectorAll('.battle-log-scroll,.hand-inspector-scroll')){
+  const content=frame.firstElementChild;
+  if(!content||frame.clientWidth<1||frame.clientHeight<1)continue;
+  frame.classList.add('bk-reading-frame');content.classList.add('bk-reading-content');
+  fit(content,frame.clientWidth,frame.clientHeight,{fill:true});
+ }
+}
 function lockOverflow(){
  const scopes=[doc.getElementById('app'),doc.getElementById('modal-root'),doc.querySelector('dialog[open]'),doc.querySelector('.bk-fit-article')].filter(Boolean);
  for(const scope of scopes)for(const el of [scope,...scope.querySelectorAll('*')]){
@@ -352,7 +361,7 @@ function lockOverflow(){
 }
 function run(){
  pending=false;if(running)return;running=true;
- try{paginateAbout();paginateLongLists();fitApp();if(about){const {frame,main}=about;fit(main,frame.clientWidth,frame.clientHeight,{fill:true});}fitModal();lockOverflow();}finally{running=false;}
+ try{paginateAbout();paginateLongLists();fitApp();if(about){const {frame,main}=about;fit(main,frame.clientWidth,frame.clientHeight,{fill:true});}fitModal();fitAuxiliary();lockOverflow();}finally{running=false;}
 }
 function schedule(){if(pending)return;pending=true;requestAnimationFrame(run);}
 new MutationObserver(records=>{if(records.some(r=>r.type==='childList'&&(r.addedNodes.length||r.removedNodes.length)))schedule();}).observe(doc.body,{childList:true,subtree:true});
