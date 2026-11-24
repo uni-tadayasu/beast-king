@@ -377,7 +377,7 @@ export function createOnlineClient({
   const getPublicStatus = () => auxiliary('public', '/public-status', { authenticate: false });
   const updatePresence = (values = {}, options = {}) => auxiliary('presence', '/presence', { method: 'POST', body: { online: values.online === true, ...(values.login === true ? { login: true } : {}) }, keepalive: options.keepalive === true });
   const activateOperator = code => auxiliary('operator', '/operator/activate', { method: 'POST', body: { code } });
-  const claimOperatorRegalia = (code, revision) => auxiliary('cloud', '/operator/regalia/claim', { method: 'POST', body: { code, revision } });
+  const claimOperatorRegalia = (code, revision, options={}) => auxiliary('cloud', '/operator/regalia/claim', { method: 'POST', body: { code, revision, ...(options.upgrade?{upgrade:true}:{}) } });
   const getOperator = () => auxiliary('operator', '/operator');
   const getOperatorDeck = () => auxiliary('operator', '/operator/deck');
   const updateOperatorSettings = settings => auxiliary('operator', '/operator/settings', { method: 'POST', body: { notice: settings?.notice, maintenance: settings?.maintenance } });

@@ -14,7 +14,7 @@ const ORIGIN_IDS=new Set(ORIGINS.map(x=>x.id)),TOKEN=/^[A-Za-z0-9_-]{43}$/;
 const IDENTIFIER=/^[A-Za-z0-9_-]{8,100}$/;
 const identifier=value=>typeof value==='string'&&IDENTIFIER.test(value);
 const LINK_LIFE=600_000,MAX_SAVE_BYTES=1_000_000;
-const REGALIA_REWARD_ID='operator-regalia-v1',REGALIA_CARD_ID='B0512',OPERATOR_DECK_REWARD_ID='operator-kirahara-deck-v1';
+const REGALIA_REWARD_ID='operator-regalia-v1',REGALIA_CARD_ID='B0512',OPERATOR_DECK_REWARD_ID='operator-kirahara-deck-v2',OLD_OPERATOR_DECK_REWARD_ID='operator-kirahara-deck-v1';
 const statement=(db,sql,...args)=>db.prepare(sql).bind(...args);
 const first=(db,sql,...args)=>statement(db,sql,...args).first();
 const all=async(db,sql,...args)=>(await statement(db,sql,...args).all()).results;
@@ -116,7 +116,7 @@ export function validateCloudData(raw,player,fail){
     data.deckLibrary=raw.deckLibrary.map(d=>{
       check(plain(d)&&validId(d.id)&&text(d.name,28,{empty:false})&&validateDeck(d.ids).valid&&validateSpecialDeck(d.specialIds).valid,fail,'invalid_save','保存デッキを確認してください。');
       const cards=[...d.ids,...d.specialIds];check(cards.every(id=>cards.filter(x=>x===id).length<=(collection[id]||0)),fail,'invalid_save','保存デッキの所持枚数が不足しています。');
-      const out={id:d.id,name:d.name,ids:[...d.ids],specialIds:[...d.specialIds]};
+      const out={id:d.id,name:d.name,ids:[...d.ids],specialIds:[...d.specialIds]};if(integer(d.recipeRevision,1,1000))out.recipeRevision=d.recipeRevision;
       if(d.draft!=null){check(plain(d.draft)&&text(d.draft.name,28),fail,'invalid_save');const ids=cardIds(d.draft.ids,['beast','miracle','gimmick'],32,fail),specialIds=cardIds(d.draft.specialIds,['fusion'],4,fail);const pool=[...ids,...specialIds];check(pool.every(id=>pool.filter(x=>x===id).length<=DECK_COPY_LIMIT),fail,'invalid_save');out.draft={name:d.draft.name,ids,specialIds};}
       return out;
     });
@@ -224,9 +224,9 @@ async function dashboard(db,now){
     all(db,players+' HAVING online=1 ORDER BY lastSeenAt DESC,p.id LIMIT 100',now),
     all(db,players+' HAVING lastLoginAt>? ORDER BY lastLoginAt DESC,p.id LIMIT 100',now,cutoff),
     first(db,"SELECT c.claimed_at FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.item_type='gift' AND c.item_id=?",REGALIA_REWARD_ID),
-    first(db,"SELECT c.claimed_at,c.player_id FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.item_type='gift' AND c.item_id=?",OPERATOR_DECK_REWARD_ID)
+    first(db,"SELECT c.claimed_at,c.player_id,c.item_id FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.item_type='gift' AND c.item_id IN (?,?) ORDER BY (c.item_id=?) DESC LIMIT 1",OPERATOR_DECK_REWARD_ID,OLD_OPERATOR_DECK_REWARD_ID,OPERATOR_DECK_REWARD_ID)
   ]);
-  return {ok:true,operator:{stats,recentPlayers,onlinePlayers:onlineRows.map(({online,...row})=>row),recentLogins:recentRows.map(row=>({...row,online:row.online===1})),settings:{notice:status.notice,maintenance:status.maintenance},regalia:{claimedAt:regalia?.claimed_at??null},deck:await unlockedOperatorDeck(db,privateDeck?.player_id,privateDeck?.claimed_at),audit,messages:items.filter(x=>x.kind==='message').map(announcementPublic),gifts:items.filter(x=>x.kind==='gift').map(announcementPublic),events:events.map(eventPublic)}};
+  return {ok:true,operator:{stats,recentPlayers,onlinePlayers:onlineRows.map(({online,...row})=>row),recentLogins:recentRows.map(row=>({...row,online:row.online===1})),settings:{notice:status.notice,maintenance:status.maintenance},regalia:{claimedAt:regalia?.claimed_at??null},deck:await unlockedOperatorDeck(db,privateDeck?.player_id,privateDeck?.claimed_at,privateDeck?.item_id===OLD_OPERATOR_DECK_REWARD_ID),audit,messages:items.filter(x=>x.kind==='message').map(announcementPublic),gifts:items.filter(x=>x.kind==='gift').map(announcementPublic),events:events.map(eventPublic)}};
 }
 async function requireOperator(c,player,{setup=false}={}){
   const row=await first(c.db,'SELECT player_id FROM bk_operator WHERE singleton=1');
@@ -237,11 +237,11 @@ async function privateRegaliaArt(db,playerId){
  const row=await first(db,"SELECT a.id FROM bk_operator_audit a JOIN bk_operator o ON o.player_id=a.player_id WHERE o.singleton=1 AND a.player_id=? AND a.action='operator.activated' ORDER BY a.created_at,a.id LIMIT 1",playerId);
  return row?operatorRegaliaArtwork(row.id):null;
 }
-const unlockedOperatorDeck=async(db,playerId,claimedAt)=>claimedAt==null?null:{...OPERATOR_DECK,unlockedAt:claimedAt,artwork:await privateRegaliaArt(db,playerId)};
+const unlockedOperatorDeck=async(db,playerId,claimedAt,upgradeRequired=false)=>claimedAt==null?null:{...OPERATOR_DECK,unlockedAt:claimedAt,upgradeRequired,artwork:await privateRegaliaArt(db,playerId)};
 async function readOperatorDeck(c,player){
   await requireOperator(c,player);
-  const row=await first(c.db,"SELECT c.claimed_at FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.player_id=? AND c.item_type='gift' AND c.item_id=?",player.id,OPERATOR_DECK_REWARD_ID);
-  return {ok:true,deck:await unlockedOperatorDeck(c.db,player.id,row?.claimed_at)};
+  const row=await first(c.db,"SELECT c.claimed_at,c.item_id FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.player_id=? AND c.item_type='gift' AND c.item_id IN (?,?) ORDER BY (c.item_id=?) DESC LIMIT 1",player.id,OPERATOR_DECK_REWARD_ID,OLD_OPERATOR_DECK_REWARD_ID,OPERATOR_DECK_REWARD_ID);
+  return {ok:true,deck:await unlockedOperatorDeck(c.db,player.id,row?.claimed_at,row?.item_id===OLD_OPERATOR_DECK_REWARD_ID)};
 }
 async function activate(c,player){
   const {db,request,env,now,fail,bodyJSON}=c;
@@ -271,9 +271,10 @@ async function claimRegalia(c,player){
   const normalize=value=>typeof value==='string'&&value.length<=1024?value.normalize('NFKC').trim():'';
   const candidate=normalize(body.code),configured=normalize(env.BK_OPERATOR_REGALIA_CODE);
   const matches=await equalSecret(candidate,configured||'unconfigured-regalia-reward');
-  if(!configured||!candidate||!matches)noAccess(fail);
-  check(integer(body.revision),fail,'invalid_revision');
   const receipt=async id=>{const row=await first(db,"SELECT result_json FROM bk_reward_claims WHERE player_id=? AND item_type='gift' AND item_id=?",player.id,id);return row?JSON.parse(row.result_json):null;};
+  const upgrade=body.upgrade===true;
+  if(upgrade){if(!await receipt(OLD_OPERATOR_DECK_REWARD_ID)&&!await receipt(OPERATOR_DECK_REWARD_ID))noAccess(fail);}else if(!configured||!candidate||!matches)noAccess(fail);
+  check(integer(body.revision),fail,'invalid_revision');
   const replay=async()=>{
     const deckClaim=await receipt(OPERATOR_DECK_REWARD_ID);
     return deckClaim?{ok:true,save:await currentSave(db,player.id),claim:await receipt(REGALIA_REWARD_ID),deckClaim,deck:await unlockedOperatorDeck(db,player.id,deckClaim.claimedAt),replayed:true}:null;

@@ -72,6 +72,7 @@ test('normal Regalia has the original artwork, is collectible, and the old alter
  assert.deepEqual(CARDS.filter(c=>c.name.includes('レガリア')).map(c=>c.id),[SECOND_REGALIA_ID]);
  assert.deepEqual(CARDS.filter(c=>c.origin==='king').map(c=>c.id),[SECOND_REGALIA_ID]);
  assert.deepEqual(['mountain','river','seed','grass','flower','tree'].map(o=>CARDS.filter(c=>c.origin===o).length),[384,384,384,384,383,384]);
+ for(const [pack,expected] of [['BK01',[192,192,192,192,192,192]],['BK02',[192,192,192,192,191,192]]])assert.deepEqual(['mountain','river','seed','grass','flower','tree'].map(o=>CARDS.filter(c=>c.pack===pack&&c.origin===o).length),expected);
  assert.deepEqual(normalizeCollection({[normal.id]:2,'OP-B1024':2}),{[normal.id]:2});
  assert.deepEqual(grantDeckCollection({},[normal.id,normal.id]),{[normal.id]:2});
  assert.deepEqual(grantDeckCollection({},['OP-B1024']),{});

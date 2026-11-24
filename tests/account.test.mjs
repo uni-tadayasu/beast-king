@@ -375,8 +375,8 @@ test('operator deck code requires the stored role and grants the normal Regalia 
  assert.equal(deck.ids.length,32);assert.equal(deck.specialIds.length,4);
  const all=[...deck.ids,...deck.specialIds];
  assert.equal(all.filter(id=>id==='B0512').length,2);
- assert.equal(all.filter(id=>getCard(id).setId==='BK01').length,20);
- assert.equal(all.filter(id=>getCard(id).setId==='BK02').length,16);
+ assert.equal(all.filter(id=>getCard(id).setId==='BK01').length,22);
+ assert.equal(all.filter(id=>getCard(id).setId==='BK02').length,14);
  assert.ok(all.every(id=>save.data.collection[id]>=all.filter(x=>x===id).length));
  const linked=await f.link(operator);
  const replay=await f.api('POST',route,linked.token,{code:f.env.BK_OPERATOR_REGALIA_CODE,revision:1});
@@ -407,4 +407,16 @@ test('multiple named decks survive cloud validation and device restoration indep
  const saved=await f.save(p,data);assert.equal(saved.status,200,JSON.stringify(saved.data));assert.equal(saved.data.save.data.deckLibrary.length,4);assert.equal(saved.data.save.data.editingDeckId,data.editingDeckId);assert.equal(saved.data.save.data.deckLibrary[1].draft.ids.length,31);
  const linked=await f.link(p),restored=await f.api('GET','/api/cloud-save',linked.token);assert.deepEqual(restored.data.save.data.deckLibrary,saved.data.save.data.deckLibrary);
  const bad=structuredClone(data);bad.deckLibrary[1].ids=Array(32).fill('B0001');assert.equal((await f.save(p,bad,1)).status,400);
+});
+
+test('an already entitled operator can upgrade the recipe once without losing existing inventory',async t=>{
+ const f=fixture(t),operator=await f.operator(),ordinary=await f.profile('一般');f.env.BK_OPERATOR_REGALIA_CODE='fixture-regalia-upgrade';
+ await f.save(operator);const path='/api/operator/regalia/claim';
+ const first=await f.api('POST',path,operator.token,{code:f.env.BK_OPERATOR_REGALIA_CODE,revision:1});assert.equal(first.status,200);
+ f.sqlite.prepare("UPDATE bk_reward_claims SET item_id='operator-kirahara-deck-v1' WHERE item_id='operator-kirahara-deck-v2'").run();
+ const deck=await f.api('GET','/api/operator/deck',operator.token);assert.equal(deck.data.deck.upgradeRequired,true);
+ assert.equal((await f.api('POST',path,ordinary.token,{upgrade:true,revision:0})).status,404);
+ const next=await f.api('POST',path,operator.token,{upgrade:true,revision:first.data.save.revision});assert.equal(next.status,200,JSON.stringify(next.data));assert.equal(next.data.deck.revision,2);assert.equal(next.data.deck.upgradeRequired,false);
+ assert.equal(next.data.save.data.collection.B0512,2);
+ const replay=await f.api('POST',path,operator.token,{upgrade:true,revision:first.data.save.revision});assert.equal(replay.status,200);assert.equal(replay.data.replayed,true);assert.deepEqual(replay.data.save,next.data.save);
 });

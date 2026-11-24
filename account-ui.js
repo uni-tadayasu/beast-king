@@ -194,7 +194,8 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     const owner=operator;operator.busy=true;
     try{
       await ensureReady();await cloud.flush();if(operator!==owner)return;
-      const result=await client.getOperatorDeck();if(operator!==owner)return;
+      let result=await client.getOperatorDeck();if(operator!==owner)return;
+      if(result.deck?.upgradeRequired){result=await client.claimOperatorRegalia('',cloud.getState().revision,{upgrade:true});if(operator!==owner)return;await cloud.acceptServerSave(result.save);if(operator!==owner)return;}
       acceptOperatorDeck(result.deck);
       if(!operatorDeck)throw new Error('専用デッキの開放を確認してください。');
       await onEquipOperatorDeck(getOperatorDeck());if(operator!==owner)return;

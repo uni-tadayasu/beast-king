@@ -586,14 +586,14 @@ function cpuPlayCards(state,difficulty,events) {
     events.push(...result.events);
   }
 }
-export function runCpuTurn(state,difficulty=state?.difficulty || 'normal') {
+// Use the same automation for either seat in offline deck benchmarks.
+export function runAutomatedTurn(state,difficulty=state?.difficulty || 'normal') {
   if (!validState(state)) return fail('対戦データを確認できません。');
   if (state.winner !== null) return fail('対戦は終了しています。');
-  if (state.active!==1) return fail('CPUのターンではありません。');
   const level=LEVELS.has(difficulty)?difficulty:'normal', events=[];
   cpuPlayCards(state,level,events);
   for (let step=0;step<RULES.field && state.winner===null;step++) {
-    const units=state.players[1].field.filter(u=>canAttack(state,u.uid)).sort((a,b)=>level==='hard'?a.attack-b.attack:b.attack-a.attack);
+    const units=state.players[state.active].field.filter(u=>canAttack(state,u.uid)).sort((a,b)=>level==='hard'?a.attack-b.attack:b.attack-a.attack);
     if (!units.length) break;
     const unit=units[0], target=chooseAttackTarget(state,unit.uid,level);
     if (!target) break;
@@ -605,7 +605,7 @@ export function runCpuTurn(state,difficulty=state?.difficulty || 'normal') {
   if (state.winner===null) cpuPlayCards(state,level,events);
   // New rush units in that second window may still attack once.
   for (let step=0;step<RULES.field && state.winner===null;step++) {
-    const unit=state.players[1].field.find(u=>canAttack(state,u.uid));
+    const unit=state.players[state.active].field.find(u=>canAttack(state,u.uid));
     if (!unit) break;
     const target=chooseAttackTarget(state,unit.uid,level);
     if (!target) break;
@@ -615,4 +615,11 @@ export function runCpuTurn(state,difficulty=state?.difficulty || 'normal') {
   }
   if (state.winner===null) events.push(...endTurn(state).events);
   return ok(events);
+}
+
+export function runCpuTurn(state,difficulty=state?.difficulty || 'normal') {
+  if (!validState(state)) return fail('対戦データを確認できません。');
+  if (state.winner!==null) return fail('対戦は終了しています。');
+  if (state.active!==1) return fail('CPUのターンではありません。');
+  return runAutomatedTurn(state,difficulty);
 }

@@ -64,7 +64,7 @@ export const REGALIA_ART_ASSET='assets/design-v2/cards/individual/king.webp';
 // restored as the mechanical spirit, while B1024 is the sole Regalia.
 const first=LEGACY.map(c=>{
  const visual=getPublishedCard(c.id==='B0512'?'B1024':c.id);
- return Object.freeze({...c,pack:'BK01',artStatus:'existing',...(c.id==='B0512'?{name:visual.name,flavor:visual.flavor,origin:visual.origin,element:visual.origin,artSourceId:'B1024'}:{})});
+ return Object.freeze({...c,pack:'BK01',origin:visual.origin,element:visual.origin,artStatus:'existing',...(c.id==='B0512'?{name:visual.name,flavor:visual.flavor,origin:visual.origin,element:visual.origin,artSourceId:'B1024'}:{})});
 });
 const byKind={beast:512,miracle:256,gimmick:256,fusion:128};
 const prefixes={beast:'B',miracle:'M',gimmick:'G',fusion:'F'};

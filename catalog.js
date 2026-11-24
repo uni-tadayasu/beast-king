@@ -429,45 +429,42 @@ const restoredAether = Object.freeze({
   name: '霊極機精 エトリア', flavor: REALMS[7].lore, element: 'grass', origin: 'grass', series: 'aether',
   artBrief: Object.freeze({ species: 'ancient mechanical spirit', anatomy: 'a small empty copper torso surrounded by independently floating gear limbs, translucent luminous membrane wings, a single delicate eye suspended inside an open ring-shaped head; no humanoid face', material: 'verdigris copper, clear glass, pale grass-green energy', palette: 'dark olive, amber brass and luminous lime', environment: 'abandoned clockwork garden under warm early-morning sun', composition: 'full-body suspended pose with limbs widely separated' }),
 });
-// Keep the four starter decks and all historical first-pack identities intact.
-// Redistribute only BK02 origin labels; stats, names, ID, rarity, pack and art
-// do not change. Six regular origins differ by at most one card within each
-// type, and five have 384 cards overall (flower has 383).
+// Both expansions are individually balanced, without changing IDs, combat
+// rules, rarity or illustration. Protect the authored starter themes.
 const REGULAR_ORIGINS=['mountain','river','seed','grass','flower','tree'];
-const BK02_ORIGIN_QUOTAS=Object.freeze({
-  beast:[107,107,42,42,107,106],
-  miracle:[53,53,22,21,53,54],
-  gimmick:[53,53,21,22,53,54],
-  fusion:[27,27,11,11,26,26],
+const ORIGIN_QUOTAS=Object.freeze({
+ BK01:{beast:[86,86,85,85,85,85],miracle:[42,42,43,43,43,43],gimmick:[43,43,42,42,43,43],fusion:[21,21,22,22,21,21]},
+ BK02:{beast:[85,85,85,85,85,86],miracle:[43,43,43,43,42,42],gimmick:[42,42,43,43,43,43],fusion:[22,22,21,21,21,21]},
 });
-function balanceSecondOrigins(cards){
-  const overrides=new Map();
-  for(const [type,quotas] of Object.entries(BK02_ORIGIN_QUOTAS)){
-    const group=cards.filter(c=>c.setId==='BK02'&&c.type===type&&c.id!=='B0512');
-    const remaining=new Map(REGULAR_ORIGINS.map((o,i)=>[o,quotas[i]]));
-    const pool=[];
-    // Interleave tier/effect/variant patterns rather than moving only the
-    // most expensive cards or a single effect family to one origin.
-    const width=type==='beast'?64:type==='fusion'?16:32;
-    const order=c=>{const n=Number(c.id.slice(1))-1,local=n%width;return ((local*13)%width)*16+Math.floor(n/width)%16;};
-    for(const card of [...group].sort((a,b)=>order(a)-order(b)||a.index-b.index)){
-      const slots=remaining.get(card.origin)||0;
-      if(slots>0)remaining.set(card.origin,slots-1);
-      else pool.push(card);
-    }
-    for(const card of pool){
-      const available=REGULAR_ORIGINS.filter(o=>remaining.get(o)>0);
-      if(!available.length)throw new Error('Origin quotas are too small for '+type);
-      // Spread spare cards by the ratio of unfilled slots, keeping the
-      // distribution deterministic across browser and Worker.
-      const next=available.sort((a,b)=>remaining.get(b)/quotas[REGULAR_ORIGINS.indexOf(b)]-remaining.get(a)/quotas[REGULAR_ORIGINS.indexOf(a)])[0];
-      overrides.set(card.id,next);remaining.set(next,remaining.get(next)-1);
-    }
-    if([...remaining.values()].some(n=>n!==0))throw new Error('Origin quota mismatch for '+type);
+function balanceOrigins(cards){
+ const preserve=new Set(['B1024','M0256']);
+ const themeSpell=[5,1,0,4,7,5,6,3];
+ for(let e=0;e<8;e++){
+  for(const n of [0,1,2,8,11,16,19,24,47])preserve.add(idFor('B',e*64+n));
+  for(const n of [0,3,8+themeSpell[e]])preserve.add(idFor('M',e*32+n));
+  for(const n of [0,1,2,3])preserve.add(idFor('G',e*32+n));
+  for(const n of [0,4,8,12])preserve.add(idFor('F',e*16+n));
+ }
+ const overrides=new Map();
+ for(const [set,types] of Object.entries(ORIGIN_QUOTAS))for(const [type,quotas] of Object.entries(types)){
+  const group=cards.filter(c=>c.setId===set&&c.type===type&&c.id!=='B0512');
+  const remaining=new Map(REGULAR_ORIGINS.map((o,i)=>[o,quotas[i]]));
+  const width=type==='beast'?64:type==='fusion'?16:32;
+  const order=c=>{const n=Number(c.id.slice(1))-1,local=n%width;return ((local*13)%width)*16+Math.floor(n/width)%16;};
+  const ordered=[...group].sort((a,b)=>Number(preserve.has(b.id))-Number(preserve.has(a.id))||order(a)-order(b)||a.index-b.index);
+  const pool=[];
+  for(const card of ordered){const slots=remaining.get(card.origin)||0;if(slots>0)remaining.set(card.origin,slots-1);else{if(preserve.has(card.id))throw Error('Protected origin quota: '+card.id);pool.push(card);}}
+  for(const card of pool){
+   const available=REGULAR_ORIGINS.filter(o=>remaining.get(o)>0);
+   if(!available.length)throw Error('Origin quotas too small for '+set+'/'+type);
+   const next=available.sort((a,b)=>remaining.get(b)/quotas[REGULAR_ORIGINS.indexOf(b)]-remaining.get(a)/quotas[REGULAR_ORIGINS.indexOf(a)])[0];
+   overrides.set(card.id,next);remaining.set(next,remaining.get(next)-1);
   }
-  return cards.map(card=>overrides.has(card.id)?Object.freeze({...card,origin:overrides.get(card.id),element:overrides.get(card.id)}):card);
+  if([...remaining.values()].some(n=>n!==0))throw Error('Origin quota mismatch for '+set+'/'+type);
+ }
+ return cards.map(card=>overrides.has(card.id)?Object.freeze({...card,origin:overrides.get(card.id),element:overrides.get(card.id)}):card);
 }
-export const CARDS = Object.freeze(balanceSecondOrigins([
+export const CARDS = Object.freeze(balanceOrigins([
   ...legacyCards, ...makeSecondBeasts(), restoredAether,
   ...makeSecondMiracles(legacyCards.find(card => card.id === FUSION_CARD_ID).text),
   ...makeSecondGimmicks(), ...makeSecondFusions(),

@@ -65,7 +65,7 @@ function initializeDeckBank(target,source=target){
  const records=new Map(defaults.map(d=>[d.id,d]));
  for(const d of (Array.isArray(source?.deckLibrary)?source.deckLibrary:[]).slice(0,DECK_BANK_LIMIT)){
   if(!validBankDeck(d,target.collection)||(!records.has(d.id)&&records.size>=DECK_BANK_LIMIT))continue;
-  const record=deckRecord(d.id,d.name,d.ids,d.specialIds),draft=cleanBankDraft(d.draft,target.collection);if(draft)record.draft=draft;records.set(record.id,record);
+  const record=deckRecord(d.id,d.name,d.ids,d.specialIds);if(Number.isInteger(d.recipeRevision))record.recipeRevision=d.recipeRevision;const draft=cleanBankDraft(d.draft,target.collection);if(draft)record.draft=draft;records.set(record.id,record);
  }
  const active={name:target.deckName,ids:target.deckIds,specialIds:target.specialIds};
  let slot=records.get(source?.activeDeckId);
@@ -314,7 +314,13 @@ function equipOperatorDeck(deck){
  const normal=validateDeck(deck?.ids),special=validateSpecialDeck(deck?.specialIds);
  if(!normal.valid||!special.valid)throw new Error('専用デッキの内容を確認できませんでした。');
  if(missingOwnedCards([...deck.ids,...deck.specialIds]).length)throw new Error('受け取ったカードを同期してから、もう一度お試しください。');
- ensureDeckBank();let entry=bankEntry('operator-kirahara-v1');if(!entry){if(data.deckLibrary.length>=DECK_BANK_LIMIT)throw Error('デッキ保存枠がいっぱいです。');entry=deckRecord('operator-kirahara-v1',deck.name,deck.ids,deck.specialIds);data.deckLibrary.push(entry);}setActiveBankDeck(entry);loadBankEntry(entry.id,{persistNow:false});
+ ensureDeckBank();let entry=bankEntry('operator-kirahara-v1');const revision=Number(deck.revision)||1;
+ if(!entry){if(data.deckLibrary.length>=DECK_BANK_LIMIT)throw Error('デッキ保存枠がいっぱいです。');entry=deckRecord('operator-kirahara-v1',deck.name,deck.ids,deck.specialIds);entry.recipeRevision=revision;data.deckLibrary.push(entry);}
+ else if((entry.recipeRevision||1)<revision){
+  if(data.deckLibrary.length<DECK_BANK_LIMIT){const backup=deckRecord('custom-'+crypto.randomUUID().toLowerCase(),(entry.name+'（旧）').slice(0,28),entry.ids,entry.specialIds);if(entry.draft)backup.draft=entry.draft;data.deckLibrary.push(backup);}
+  const next=deckRecord(entry.id,deck.name,deck.ids,deck.specialIds);next.recipeRevision=revision;data.deckLibrary=data.deckLibrary.map(d=>d.id===entry.id?next:d);entry=next;
+ }
+ setActiveBankDeck(entry);loadBankEntry(entry.id,{persistNow:false});
  deckSection='main';deckListPage=1;deckRowCount=0;persist(true);navigate('deck');
 }
 function operatorDeckPanel(){
@@ -407,7 +413,7 @@ function saveDeck(use=true){
  const valid=validateDeck(workingDeck),special=validateSpecialDeck(workingSpecial),missing=missingOwnedCards([...workingDeck,...workingSpecial]);if(!valid.valid||!special.valid||missing.length){toast([...valid.errors,...special.errors,...missing][0],true);return false;}
  const entry=currentBankEntry();if(!entry)return false;
  if(entry.id==='operator-kirahara-v1'&&!accountUi?.getOperatorDeck?.()){toast('運営デッキの利用権を確認してください。',true);return false;}
- const next=deckRecord(entry.id,workingName.trim()||'マイデッキ',workingDeck,workingSpecial);
+ const next=deckRecord(entry.id,workingName.trim()||'マイデッキ',workingDeck,workingSpecial);if(entry.recipeRevision)next.recipeRevision=entry.recipeRevision;
  data.deckLibrary=data.deckLibrary.map(d=>d.id===next.id?next:d);data.draft=null;workingName=next.name;
  if(use||data.activeDeckId===next.id)setActiveBankDeck(next);
  persist(true);render();toast('「'+next.name+'」を保存しました。'+(use?'次の対戦で使用します。':''));sound('play');return true;

@@ -72,31 +72,21 @@ test('seven origins preserve the card counts with one maximum-cost King beast', 
   assert.equal(ELEMENTS,ORIGINS);
   assert.deepEqual(ORIGINS.map(o=>o.id),['mountain','river','seed','grass','flower','tree','king']);
   assert.deepEqual(ORIGINS.map(o=>o.name),['山','川','種','草','花','木','王']);
-  const mapping={dawn:'flower',tide:'river',ember:'seed',gale:'grass',grove:'tree',stone:'mountain',dusk:'seed',aether:'grass'};
   assert.equal(new Set(CARDS.map(c=>c.series)).size,16);
-  const legacy=CARDS.filter(c=>c.index<=1152);
-  for (const [series,origin] of Object.entries(mapping)) {
-    for (const [type,n] of [['beast',64],['miracle',32],['gimmick',32],['fusion',16]]) {
-      const cards=legacy.filter(c=>c.series===series&&c.type===type);
-      assert.equal(cards.length,n,`${series}/${type}`);
-      assert.ok(cards.every(c=>c.origin===(c.id==='B0512'?'king':origin)&&c.element===c.origin));
-    }
-  }
-  for (const origin of ORIGINS.filter(o=>o.id!=='king')) {
-    const multiplier=['seed','grass'].includes(origin.id)?2:1;
-    for (const [type,n] of [['beast',64],['miracle',32],['gimmick',32],['fusion',16]]) assert.equal(legacy.filter(c=>c.origin===origin.id&&c.type===type).length,n*multiplier-(origin.id==='grass'&&type==='beast'?1:0));
-  }
+  assert.ok(CARDS.every(c=>c.origin===c.element));
+  assert.equal(CARDS.filter(c=>c.origin==='king').length,1);
 });
 
 test('six regular origins are balanced across both packs and each card type', () => {
   const ids=['mountain','river','seed','grass','flower','tree'];
   const expected=[384,384,384,384,383,384];
   assert.deepEqual(ids.map(o=>CARDS.filter(c=>c.origin===o).length),expected);
-  assert.deepEqual(ids.map(o=>getCardsForSet('BK01').filter(c=>c.origin===o).length),[144,144,288,288,144,144]);
-  assert.deepEqual(ids.map(o=>getCardsForSet('BK02').filter(c=>c.origin===o).length),[240,240,96,96,239,240]);
+  assert.deepEqual(ids.map(o=>getCardsForSet('BK01').filter(c=>c.origin===o).length),[192,192,192,192,192,192]);
+  assert.deepEqual(ids.map(o=>getCardsForSet('BK02').filter(c=>c.origin===o).length),[192,192,192,192,191,192]);
   for(const type of ['beast','miracle','gimmick','fusion']){
     const totals=ids.map(o=>CARDS.filter(c=>c.origin===o&&c.type===type).length);
     assert.ok(Math.max(...totals)-Math.min(...totals)<=1,type);
+    for(const set of ['BK01','BK02']){const n=ids.map(o=>getCardsForSet(set).filter(c=>c.type===type&&c.origin===o).length);assert.ok(Math.max(...n)-Math.min(...n)<=1,set+'/'+type);}
   }
 });
 test('King representative remains a normal beast at the maximum cost', () => {
