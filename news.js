@@ -1,6 +1,7 @@
 import {ONLINE_API_BASE} from './online.js';
 /** Built-in release notices. Update these entries when a new game version is published. */
 export const NEWS_ITEMS = Object.freeze([
+ {date:'2026.11.24',title:'4種類のスターターデッキを販売',text:'秘宝ショップで通常32枚・特殊4枚の固定セットを各300秘宝で追加購入できます。初期配布分や編集中のデッキはそのまま維持します。'},
  {date:'2026.11.24',title:'第二弾「王源の継承」1,152枚を追加',text:'第一弾と合わせて2,304枚に。レガリアも第二弾から入手できます。どちらの弾のカードも組み合わせ、ソロ・マルチ・ランクで使えます。'},
  {date:'2026.11.24',title:'4種類のスターターと画面に収まる新UI',text:'星冠の契約・蒼海の記憶・紅炎の鼓動・風嵐の約束から選択。PCでは画面の高さに合わせて表示し、カード一覧やルールはページを切り替えて読めます。'},
  {date:'2026.11.24',title:'新オリジン「王」が登場',text:'山・川・種・草・花・木に「王」を追加。通常魔獣「王冠竜 レガリア」は最大コスト8・ギラギラレア。図鑑とプロフィールで「王」を選べます。'},
@@ -25,6 +26,72 @@ export function setPublicNotice(status={}){
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pauseIcon='<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4v12M13 4v12"/></svg>';
 const playIcon='<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 3 10 7-10 7Z"/></svg>';
+// A native top-layer dialog owns its layout. It never passes through the
+// game's global scaling controller. Measure each actual article and paginate
+// whole rows, preserving the first visible article across viewport changes.
+let newsFirst=0,newsPages=[],newsLayoutPending=false;
+function renderNewsItems(dialog){
+ const items=dialog.querySelector('.news-items');
+ items.innerHTML=noticeItems().map((item,i)=>`<article data-news-index="${i}"><time>${escape(item.date)}</time><h3>${escape(item.title===item.text?'運営からのお知らせ':item.title)}</h3><p>${escape(item.text)}</p></article>`).join('');
+ if(dialog.open)layoutNews(dialog);
+}
+function showNewsPage(dialog,index){
+ const grid=dialog.querySelector('.news-items'),page=newsPages[index];
+ if(!page)return;
+ const cards=[...grid.children];newsFirst=page.start;dialog.dataset.newsPage=String(index);
+ cards.forEach((card,i)=>card.hidden=i<page.start||i>=page.end);
+ grid.style.gridTemplateRows=page.heights.map(height=>'minmax('+height+'px,1fr)').join(' ');
+ const prev=dialog.querySelector('.news-prev'),next=dialog.querySelector('.news-next');
+ prev.disabled=index<=0;next.disabled=index>=newsPages.length-1;
+ dialog.querySelector('.news-page-count').textContent=(index+1)+' / '+newsPages.length+' ページ';
+ dialog.querySelector('.news-range').textContent=(page.start+1)+'–'+page.end+' / '+cards.length+'件';
+}
+function layoutNews(dialog){
+ if(!dialog.open)return;
+ const grid=dialog.querySelector('.news-items'),cards=[...grid.children];
+ if(!cards.length)return;
+ const available=grid.clientHeight,width=grid.clientWidth;
+ if(available<1||width<1)return;
+ let cols=width>=1450?4:width>=1040?3:width>=610?2:1;
+ grid.style.setProperty('--news-columns',String(cols));
+ grid.classList.add('news-measuring');grid.style.gridTemplateRows='none';
+ cards.forEach(card=>card.hidden=false);
+ let heights=cards.map(card=>Math.ceil(card.getBoundingClientRect().height));
+ // A long official notice on a shallow display can use the entire width.
+ if(Math.max(...heights)>available&&cols>1){
+  cols=1;grid.style.setProperty('--news-columns','1');
+  heights=cards.map(card=>Math.ceil(card.getBoundingClientRect().height));
+ }
+ const gap=Number.parseFloat(getComputedStyle(grid).rowGap)||0;
+ let start=0,rows=[],used=0,pages=[];
+ for(let i=0;i<cards.length;i+=cols){
+  const end=Math.min(cards.length,i+cols),height=Math.max(...heights.slice(i,end))+1;
+  if(rows.length&&used+gap+height>available-1){pages.push({start,end:i,heights:rows});start=i;rows=[];used=0;}
+  rows.push(height);used+=height+(rows.length>1?gap:0);
+ }
+ if(rows.length)pages.push({start,end:cards.length,heights:rows});
+ newsPages=pages;
+ const index=Math.max(0,pages.findIndex(p=>newsFirst>=p.start&&newsFirst<p.end));
+ grid.classList.remove('news-measuring');showNewsPage(dialog,index);
+}
+function scheduleNewsLayout(){
+ if(newsLayoutPending)return;newsLayoutPending=true;
+ requestAnimationFrame(()=>{newsLayoutPending=false;const dialog=document.getElementById('news-dialog');if(dialog?.open)layoutNews(dialog);});
+}
+function openNewsDialog(){
+ let dialog=document.getElementById('news-dialog');
+ if(!dialog){
+  dialog=document.createElement('dialog');dialog.id='news-dialog';dialog.className='news-dialog';
+  dialog.setAttribute('aria-labelledby','news-dialog-heading');
+  dialog.innerHTML=`<header class="news-dialog-header"><div><p class="news-eyebrow">BEAST KING NEWS</p><h2 id="news-dialog-heading">最新情報</h2><p class="news-dialog-intro">アップデート・運営からのお知らせ</p></div><form method="dialog"><button class="news-close" aria-label="お知らせを閉じる">×</button></form></header><div class="news-items"></div><footer class="news-dialog-footer"><div class="news-page-nav" aria-label="お知らせのページ切り替え"><button type="button" class="news-prev" aria-label="前のページ">前へ</button><div class="news-page-info"><strong class="news-page-count" aria-live="polite"></strong><small class="news-range"></small></div><button type="button" class="news-next" aria-label="次のページ">次へ</button></div><form method="dialog"><button class="news-return">ゲームに戻る</button></form></footer>`;
+  document.body.append(dialog);
+  dialog.querySelector('.news-prev').addEventListener('click',()=>showNewsPage(dialog,Math.max(0,Number(dialog.dataset.newsPage||0)-1)));
+  dialog.querySelector('.news-next').addEventListener('click',()=>showNewsPage(dialog,Math.min(newsPages.length-1,Number(dialog.dataset.newsPage||0)+1)));
+ }
+ if(dialog.open)return;
+ newsFirst=0;renderNewsItems(dialog);dialog.showModal();layoutNews(dialog);scheduleNewsLayout();
+}
+
 function mountNews(){
  const root=document.getElementById('news-root');if(!root)return;
  let paused=false;try{paused=localStorage.getItem('beast-king-news-paused')==='true';}catch{}
@@ -33,16 +100,13 @@ function mountNews(){
  const toggle=root.querySelector('.news-toggle'),ticker=root.querySelector('.news-ticker');
  const update=()=>{ticker.classList.toggle('news-paused',paused);toggle.setAttribute('aria-pressed',String(paused));toggle.setAttribute('aria-label',paused?'お知らせの流れを再開':'お知らせの流れを一時停止');toggle.title=paused?'スクロール再開':'一時停止';toggle.innerHTML=paused?playIcon:pauseIcon;};
  toggle.addEventListener('click',()=>{paused=!paused;update();try{localStorage.setItem('beast-king-news-paused',String(paused));}catch{}});
- root.querySelector('.news-open').addEventListener('click',()=>{
-  let dialog=document.getElementById('news-dialog');
-  if(!dialog){dialog=document.createElement('dialog');dialog.id='news-dialog';dialog.className='news-dialog';dialog.setAttribute('aria-labelledby','news-dialog-heading');dialog.innerHTML=`<form method="dialog"><button class="news-close" aria-label="お知らせを閉じる">×</button></form><p class="news-eyebrow">BEAST KING NEWS</p><h2 id="news-dialog-heading">最新情報</h2><div class="news-items">${noticeItems().map(item=>`<article><time>${escape(item.date)}</time><h3>${escape(item.title)}</h3><p>${escape(item.text)}</p></article>`).join('')}</div><form method="dialog"><button class="news-return">ゲームに戻る</button></form>`;document.body.append(dialog);dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}});}
-  const items=dialog.querySelector('.news-items');if(items)items.innerHTML=noticeItems().map(item=>`<article><time>${escape(item.date)}</time><h3>${escape(item.title)}</h3><p>${escape(item.text)}</p></article>`).join('');
-  dialog.showModal();
- });
+ root.querySelector('.news-open').addEventListener('click',openNewsDialog);
+ const opened=document.getElementById('news-dialog');if(opened?.open)renderNewsItems(opened);
  update();
 }
 if(typeof document!=='undefined'){
  mountNews();
+ window.addEventListener('resize',scheduleNewsLayout,{passive:true});window.visualViewport?.addEventListener('resize',scheduleNewsLayout,{passive:true});document.fonts?.ready.then(scheduleNewsLayout);
  const refresh=async()=>{if(document.hidden)return;try{const response=await fetch(ONLINE_API_BASE+'/public-status',{credentials:'omit',cache:'no-store'});if(!response.ok)return;const status=await response.json();if(status.ok===true)setPublicNotice(status);}catch{}};
  void refresh();setInterval(refresh,60000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refresh();});
 }

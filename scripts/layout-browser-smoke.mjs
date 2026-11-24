@@ -86,6 +86,21 @@ try{
    // Card ownership/action pairs are tested per card, not between distinct tiles.
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
+  // Real native news dialog, not a synthetic layout. Every notice must
+  // appear exactly once, fully within the viewport and outside the controls.
+  await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);
+  const newsSeen=[];let newsPageCount=0;
+  while(true){
+   const news=await evaluate(`(()=>{const d=document.querySelector('#news-dialog'),g=d.querySelector('.news-items'),f=d.querySelector('.news-dialog-footer'),h=d.querySelector('.news-dialog-header'),box=d.getBoundingClientRect(),grid=g.getBoundingClientRect(),footer=f.getBoundingClientRect(),header=h.getBoundingClientRect();return {w:innerWidth,h:innerHeight,box:box.toJSON(),grid:grid.toJSON(),header:header.toJSON(),footer:footer.toJSON(),transform:getComputedStyle(d).transform,total:g.children.length,indices:[...g.querySelectorAll('article:not([hidden])')].map(e=>Number(e.dataset.newsIndex)),bad:[...g.querySelectorAll('article:not([hidden])')].filter(e=>{const r=e.getBoundingClientRect();return r.top<grid.top-2||r.bottom>grid.bottom+2||r.left<grid.left-2||r.right>grid.right+2||e.scrollHeight>e.clientHeight+2}).map(e=>e.dataset.newsIndex),next:d.querySelector('.news-next').disabled}})()`);
+   assert.ok(news.transform==='none'&&news.box.width>=news.w-20&&news.box.height>=news.h-20&&news.box.left<=10,width+'x'+height+' full-screen news '+JSON.stringify(news));
+   assert.ok(news.header.bottom<=news.grid.top+2&&news.grid.bottom<=news.footer.top+2,width+'x'+height+' separate news rows');
+   assert.deepEqual(news.bad,[],width+'x'+height+' complete news articles');
+   newsSeen.push(...news.indices);newsPageCount++;
+   if(news.next){assert.equal(new Set(newsSeen).size,news.total);assert.equal(newsSeen.length,news.total);break;}
+   assert.ok(newsPageCount<=news.total,'News pagination terminates');
+   await click('#news-dialog .news-next');
+  }
+  await click('#news-dialog .news-return');assert.equal(await evaluate('document.querySelector("#news-dialog").open'),false);
   const fixture=await evaluate(`(async()=>{const {operatorDashboardView}=await import('./account-views.js');const snapshot={stats:{totalPlayers:4,activeBattles:0,onlinePlayers:1,recentLogins24h:4},settings:{notice:'検証用',maintenance:false},onlinePlayers:[{id:'fixture-test',nickname:'検証ユーザー',origin:'river',rating:1000,lastLoginAt:Date.now(),lastSeenAt:Date.now()}],recentLogins:[],recentPlayers:[],events:[],audit:[{action:'fixture',createdAt:Date.now()}],messages:[],gifts:[],deck:{unlockedAt:Date.now()}};const root=document.querySelector('#modal-root');root.innerHTML='<div class="modal-backdrop"><section class="modal wide" role="dialog"><button class="icon-btn modal-close" data-action="close-modal">×</button>'+operatorDashboardView({snapshot})+'</section></div>';return true})()`);
   assert.equal(fixture,true);await waitElement('.operator-fullscreen .operator-console-nav');await delay(120);
   const operatorBox=await evaluate(`(()=>{const r=document.querySelector('.operator-fullscreen').getBoundingClientRect(),s=document.querySelector('.operator-workspace').getBoundingClientRect(),nav=document.querySelector('.operator-console-nav').getBoundingClientRect(),pane=document.querySelector('.operator-console-content').getBoundingClientRect();return {w:innerWidth,h:innerHeight,r:r.toJSON(),s:s.toJSON(),nav:nav.toJSON(),pane:pane.toJSON(),transform:getComputedStyle(document.querySelector('.operator-fullscreen')).transform}})()`);

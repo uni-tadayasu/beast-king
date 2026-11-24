@@ -263,7 +263,7 @@ function fitOperatorConsole(modal){
  return true;
 }
 function fitModal(){
- const modal=doc.querySelector('#modal-root .modal,dialog[open],.news-dialog');
+ const modal=doc.querySelector('#modal-root .modal,dialog[open]:not(.news-dialog)');
  if(!modal)return;
  const w=Math.max(1,innerWidth-20),h=Math.max(1,(window.visualViewport?.height||innerHeight)-20);
  if(modal!==lastModal){lastModal=modal;modal.classList.add('bk-fit-modal');}
