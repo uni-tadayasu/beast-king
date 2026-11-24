@@ -371,7 +371,12 @@ async function claimReward(c,player,kind,id){
   if(!available)fail(409,'reward_unavailable','この報酬は現在受け取れません。');
   const save=await currentSave(db,player.id);
   if(!save)fail(409,'cloud_save_required','先にこの端末のデータをクラウドに保存してください。',{save:null});
-  if(save.revision!==body.revision)fail(409,'save_conflict','別の端末で保存データが更新されています。最新データを確認してください。',{save});
+  if(save.revision!==body.revision){
+    // A linked device can commit this same reward after the receipt read but
+    // before the save read. Return its receipt instead of a false conflict.
+    const raced=await replay();if(raced)return raced;
+    fail(409,'save_conflict','別の端末で保存データが更新されています。最新データを確認してください。',{save});
+  }
   const data=save.data,granted=[],cards=JSON.parse(item.cards_json);let convertedTreasure=0;
   for(const {cardId,count} of cards){const before=data.collection[cardId]||0,received=Math.max(0,Math.min(count,MAX_CARD_COPIES-before));data.collection[cardId]=before+received;if(received)granted.push({cardId,count:received});convertedTreasure+=(count-received)*EXTRA_COPY_TREASURE;}
   const treasure=item.treasure;check(integer(data.treasure+treasure+convertedTreasure),fail,'treasure_limit','秘宝の所持上限に達しています。');data.treasure+=treasure+convertedTreasure;

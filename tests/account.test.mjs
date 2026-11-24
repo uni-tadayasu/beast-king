@@ -667,3 +667,29 @@ test('a scheduled message recipient cannot change after another request has open
  assert.equal((await f.send(op,'messages',{...body,id,revision:1,target:b.id})).status,409);
  assert.equal((await f.api('GET','/api/inbox',a.token)).data.messages[0].id,id);assert.equal((await f.api('GET','/api/inbox',b.token)).data.messages.length,0);
 });
+
+test('a claim completed between the receipt and save reads replays across linked devices for gifts and events',async t=>{
+ for(const kind of ['gift','event']){
+  const f=fixture(t),op=await f.operator(),player=await f.profile('連携受取');await f.save(player);const linked=await f.link(player);
+  const body={title:'同時受取',body:'',target:player.id,status:'published',treasure:30,cards:[],...(kind==='gift'?{}:{startAt:f.now(),endAt:f.now()+1000})};
+  const id=(await f.send(op,kind==='gift'?'gifts':'events',body)).data.createdId;
+  const route=kind==='gift'?`/api/inbox/${id}/claim`:`/api/events/${id}/claim`;
+  const prepare=f.env.DB.prepare.bind(f.env.DB);let intercepted=false;
+  f.env.DB.prepare=sql=>{
+   const statement=prepare(sql),bind=statement.bind.bind(statement);
+   statement.bind=(...args)=>{
+    const bound=bind(...args),first=bound.first.bind(bound);
+    if(sql==='SELECT revision,data_json,updated_at FROM bk_cloud_saves WHERE player_id=?')bound.first=async(...columns)=>{
+     if(!intercepted){intercepted=true;const firstClaim=await f.api('POST',route,player.token,{revision:1});assert.equal(firstClaim.status,200);}
+     return first(...columns);
+    };
+    return bound;
+   };
+   return statement;
+  };
+  const retried=await f.api('POST',route,linked.token,{revision:1});
+  assert.equal(retried.status,200,JSON.stringify(retried.data));assert.equal(retried.data.replayed,true);
+  assert.equal(retried.data.save.revision,2);assert.equal(retried.data.save.data.treasure,130);assert.equal(retried.data.claim.treasure,30);
+  assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_reward_claims WHERE item_id=?').get(id).n,1);
+ }
+});

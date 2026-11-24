@@ -124,23 +124,33 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   }
   async function claimReward(id,event=false){
     if(inbox.busy||disallowDuringBattle())return;
+    const owner=inbox;let identity=client.profile?.id;
+    const owned=()=>inbox===owner&&(!identity||identity===client.profile?.id);
     inbox.busy=true;inbox.error='';inboxModal();
     try{
-      await ensureReady();await cloud.flush();
+      await ensureReady();if(!owned())return;identity=client.profile?.id;
+      await cloud.flush();if(!owned())return;
       const revision=cloud.getState().revision;
       const result=event?await client.claimEvent(id,revision):await client.claimGift(id,revision);
-      const sync=await cloud.acceptServerSave(result.save);
-      await loadInbox();render();toast(sync.phase==='conflict'?'受取はクラウドで確定しました。設定の「端末連携と同期」で保存内容を確認してください。':result.replayed?'このプレゼントは受取済みです。':'プレゼントを受け取りました。');
-    }catch(error){inbox.error=safeError(error);}
-    finally{inbox.busy=false;if(kind()==='inbox')inboxModal();}
+      if(!owned())return;
+      const sync=await cloud.acceptServerSave(result.save);if(!owned())return;
+      await loadInbox();if(!owned())return;
+      render();toast(sync.phase==='conflict'?'受取はクラウドで確定しました。設定の「端末連携と同期」で保存内容を確認してください。':result.replayed?'このプレゼントは受取済みです。':'プレゼントを受け取りました。');
+    }catch(error){if(owned())inbox.error=safeError(error);}
+    finally{if(owned()){inbox.busy=false;if(kind()==='inbox')inboxModal();}}
   }
   function stopOperatorRefresh(){if(operatorTimer!==null)clearTimeout(operatorTimer);operatorTimer=null;}
   function scheduleOperatorRefresh(){
     stopOperatorRefresh();if(kind()!=='operator')return;
     operatorTimer=setTimeout(async()=>{
       operatorTimer=null;if(kind()!=='operator')return;
-      if(!operator.busy&&!documentImpl.hidden)try{operator.snapshot=(await client.getOperator()).operator;acceptOperatorDeck(operator.snapshot?.deck);if(kind()==='operator')operatorModal();}catch(error){if(error.status===401||error.status===404){acceptOperatorDeck(null);closeModal();toast('認証を確認してください。',true);return;}}
-      scheduleOperatorRefresh();
+      const owner=operator,identity=client.profile?.id;
+      const owned=()=>operator===owner&&client.profile?.id===identity;
+      if(!operator.busy&&!documentImpl.hidden)try{
+        const result=await client.getOperator();if(!owned())return;
+        operator.snapshot=result.operator;acceptOperatorDeck(operator.snapshot?.deck);if(kind()==='operator')operatorModal();
+      }catch(error){if(!owned())return;if(error.status===401||error.status===404){acceptOperatorDeck(null);closeModal();toast('認証を確認してください。',true);return;}}
+      if(owned())scheduleOperatorRefresh();
     },30000);
   }
   async function openOperator(){
@@ -163,15 +173,16 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     // Enter on the original password field follows the existing app handler.
     if(kind()==='operator-regalia'){await claimRegalia();return;}
     if(operator.busy||kind()!=='operator-gate')return;
+    const owner=operator,identity=client.profile?.id;
     const field=byId('operator-code'),code=field?.value||'';
     if(!code)return;
     if(field)field.value='';
     operator.busy=true;gateModal();
     try{
-      const result=await client.activateOperator(code);
+      const result=await client.activateOperator(code);if(operator!==owner||client.profile?.id!==identity)return;
       operator.snapshot=result.operator;operator.busy=false;operatorModal({preserve:false});scheduleOperatorRefresh();
       toast('初回設定が完了しました。');
-    }catch(error){operator.busy=false;try{operator.snapshot=(await client.getOperator()).operator;operatorModal({preserve:false});scheduleOperatorRefresh();}catch{gateModal(safeError(error));}}
+    }catch(error){if(operator!==owner||client.profile?.id!==identity)return;operator.busy=false;try{const result=await client.getOperator();if(operator!==owner||client.profile?.id!==identity)return;operator.snapshot=result.operator;operatorModal({preserve:false});scheduleOperatorRefresh();}catch{if(operator===owner&&client.profile?.id===identity)gateModal(safeError(error));}}
   }
   function openRegalia(){
     if(operator.busy||!operator.snapshot||kind()!=='operator')return;

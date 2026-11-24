@@ -173,7 +173,9 @@ function expansionEffect(state,who,card,target,events){
   // already paid, so its printed damage must not re-check the reduced HP.
   let amount=kind==='vow_bolt'?value+100:expansionDamage(player,card);
   if(kind==='forge_bolt')forge();
-  const chosen=target||{player:enemy,core:true};
+  // Only an explicitly targeted miracle may consume client-supplied targets.
+  // Legacy bond and summon/start-turn damage always strike the opposing heart.
+  const chosen=card.type==='miracle'&&card.targetType==='enemy'?target:{player:enemy,core:true};
   if(chosen.core)damageCore(state,enemy,amount,events,card.name);
   else damageUnit(state,state.players[enemy].field.find(u=>u.uid===chosen.uid),amount,events,card.name);
  }else if(kind==='legacy_rally')boost(units,value);

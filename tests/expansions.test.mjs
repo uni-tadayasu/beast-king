@@ -82,6 +82,18 @@ test('legacy recall returns one eligible grave card, respects the hand cap and n
  playCard(game,0);assert.equal(p.hand.length,4);assert.ok(p.grave.includes('B0513'));
 });
 
+test('legacy bond keeps its printed heart-only target even when a client supplies a unit target',()=>{
+ const spell=find('legacy_bond');
+ for(const target of [undefined,{player:1,uid:'fixture-1-0'},{player:0,uid:'fixture-0-0'},{player:1,uid:'missing'}]){
+  const game=fixture(),p=game.players[0],before=structuredClone(game.players[1].field);
+  p.hand=[spell.id];assert.deepEqual(getLegalTargets(game,0),[]);
+  assert.equal(playCard(game,0,target).ok,true);
+  assert.equal(game.players[1].core,5000-spell.effect.value-100);
+  assert.deepEqual(game.players[1].field,before);
+  assert.equal(p.energy,10-spell.cost);assert.deepEqual(p.grave,[spell.id]);
+ }
+});
+
 test('orbit counts unique origins within its own fourth-set family and caps at three',()=>{
  const game=fixture('orbit'),p=game.players[0],spell=find('orbit_aegis');
  const creatures=CARDS.filter(c=>c.type==='beast'&&c.family==='orbit');

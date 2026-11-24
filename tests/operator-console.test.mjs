@@ -23,12 +23,12 @@ function fixture(t,hooks={}){
  };
  const documentImpl={hidden:false,activeElement:null,getElementById:id=>fields.get(id)||null,querySelectorAll:selector=>selector.includes('details')?[]:[...fields.values()],querySelector:()=>({scrollTop:0})};
  async function write(kind,body){writes.push({kind,body:structuredClone(body)});if(hooks.write)return hooks.write(kind,body,{snapshot,writes});const id=body.id||'saved-fixture-'+writes.length,row={...body,id,kind,revision:(body.revision||0)+1,phase:body.status==='draft'?'draft':'active'};snapshot[key(kind)]=[row];return {operator:structuredClone(snapshot),createdId:id};}
- const client={profile:{id:'operator-fixture'},getStatus:()=>({}),getOperator:async()=>hooks.getOperator?hooks.getOperator():({operator:structuredClone(snapshot)}),getOperatorRecords:async values=>{recordCalls.push(values);return {kind:values.kind,items:snapshot[key(values.kind)]||[],page:values.page||0,pageSize:4,total:(snapshot[key(values.kind)]||[]).length};},getPublicStatus:async()=>({ok:true,notice:'',notices:[],maintenance:false}),sendOperatorMessage:body=>write('message',body),sendOperatorGift:body=>write('gift',body),saveOperatorEvent:body=>write('event',body),saveOperatorNotice:body=>write('notice',body),updateOperatorSettings:async body=>{writes.push({kind:'settings',body});if(hooks.settings)throw Error('通信エラー');snapshot.settings={...body,revision:body.revision+1};return {operator:structuredClone(snapshot)};},getInbox:async values=>({messages:values.kind==='message'?[{id:'mail-fixture-1',title:'メール',body:'<script>は文字です',status:'published',phase:'active',readAt:reads.length?now:null}]:[],gifts:values.kind==='gift'?[structuredClone(gift)]:[],counts:{messages:1,gifts:1,unread:reads.length?0:1},pagination:{page:values.page,pageSize:4,total:1}}),getEvents:async()=>({events:[],pagination:{page:0,pageSize:4,total:0}}),markInboxRead:async id=>{reads.push(id);return {ok:true};},claimGift:async(id,revision)=>{assert.equal(revision,savedRevision);gift={...gift,claimedAt:now,claimable:false,claim:{id,treasure:10,cards:[],convertedTreasure:5,claimedAt:now}};return {save:{revision:++savedRevision,data:{}},claim:gift.claim};}};
+ const client={profile:{id:'operator-fixture'},getStatus:()=>({}),getOperator:async()=>hooks.getOperator?hooks.getOperator():({operator:structuredClone(snapshot)}),getOperatorRecords:async values=>{recordCalls.push(values);return {kind:values.kind,items:snapshot[key(values.kind)]||[],page:values.page||0,pageSize:4,total:(snapshot[key(values.kind)]||[]).length};},getPublicStatus:async()=>({ok:true,notice:'',notices:[],maintenance:false}),sendOperatorMessage:body=>write('message',body),sendOperatorGift:body=>write('gift',body),saveOperatorEvent:body=>write('event',body),saveOperatorNotice:body=>write('notice',body),updateOperatorSettings:async body=>{writes.push({kind:'settings',body});if(hooks.settings)throw Error('通信エラー');snapshot.settings={...body,revision:body.revision+1};return {operator:structuredClone(snapshot)};},getInbox:async values=>({messages:values.kind==='message'?[{id:'mail-fixture-1',title:'メール',body:'<script>は文字です',status:'published',phase:'active',readAt:reads.length?now:null}]:[],gifts:values.kind==='gift'?[structuredClone(gift)]:[],counts:{messages:1,gifts:1,unread:reads.length?0:1},pagination:{page:values.page,pageSize:4,total:1}}),getEvents:async()=>({events:[],pagination:{page:0,pageSize:4,total:0}}),markInboxRead:async id=>{reads.push(id);return {ok:true};},claimGift:async(id,revision)=>{if(hooks.claimGift)return hooks.claimGift(id,revision);assert.equal(revision,savedRevision);gift={...gift,claimedAt:now,claimable:false,claim:{id,treasure:10,cards:[],convertedTreasure:5,claimedAt:now}};return {save:{revision:++savedRevision,data:{}},claim:gift.claim};}};
  const cloud={getState:()=>({revision:savedRevision}),flush:async()=>{reads.push('flush');},acceptServerSave:async save=>{reads.push('accepted-'+save.revision);return {phase:'synced'};}};
  const ui=createAccountUi({client,cloud,ensureReady:async()=>{},isBattleActive:()=>false,showModal:renderHtml,setModal:value=>{modal=value;},getModal:()=>modal,closeModal:()=>{modal=null;html='';},render:()=>{},toast:message=>toastMessages.push(message),getCard,documentImpl});
  t.after(()=>ui.onModalClosed());
  const act=async(action,dataset={})=>{assert.equal(ui.handleAction(action,{dataset}),true);await flush();};
- return {ui,client,snapshot,fields:()=>fields,html:()=>html,writes,reads,recordCalls,toastMessages,act};
+ return {ui,client,snapshot,fields:()=>fields,html:()=>html,close:()=>{modal=null;html='';},writes,reads,recordCalls,toastMessages,act};
 }
 
 test('native console has bounded tabs and escapes author content while keeping automatic operator art',()=>{
@@ -82,4 +82,23 @@ test('opening a system mail marks only that item read, and claiming reconciles t
 test('operator pagination requests older records and a late identity response cannot reopen the console',async t=>{
  const f=fixture(t);await f.act('operator-open');await f.act('operator-tab',{tab:'message'});await f.act('operator-page-next');assert.equal(f.recordCalls.at(-1).page,1);assert.equal(f.recordCalls.at(-1).pageSize,4);
  let resolve;const pending=new Promise(yes=>{resolve=yes;});const late=fixture(t,{getOperator:()=>pending});late.ui.handleAction('operator-open',{dataset:{}});await flush();late.ui.clearIdentity();resolve({operator:{stats:{totalPlayers:999},settings:{}}});await flush();assert.equal(late.html(),'');
+});
+
+test('a late reward response after account reset cannot enter the new account cloud save or dialog',async t=>{
+ let resolve;const pending=new Promise(yes=>{resolve=yes;});const f=fixture(t,{claimGift:()=>pending});
+ await f.act('inbox-open');f.ui.handleAction('inbox-claim',{dataset:{id:'gift-fixture-1'}});await flush();
+ f.ui.clearIdentity();f.client.profile={id:'new-player-fixture'};f.close();
+ resolve({save:{revision:99,data:{treasure:99999}},claim:{treasure:99999}});await flush();
+ assert.equal(f.reads.some(row=>row.startsWith('accepted-')),false);assert.equal(f.html(),'');assert.equal(f.toastMessages.length,0);
+});
+
+test('a periodic operator refresh cannot revive the prior account console after identity reset',async t=>{
+ const original=globalThis.setTimeout;let timer;
+ globalThis.setTimeout=(fn,delay,...args)=>delay===30000?(timer=fn,123456789):original(fn,delay,...args);
+ t.after(()=>{globalThis.setTimeout=original;});
+ const f=fixture(t);await f.act('operator-open');assert.equal(typeof timer,'function');
+ let resolve;const pending=new Promise(yes=>{resolve=yes;});f.client.getOperator=()=>pending;
+ const refresh=timer();await flush();f.ui.clearIdentity();f.client.profile={id:'new-player-fixture'};f.close();timer=null;
+ resolve({operator:{stats:{totalPlayers:99999},settings:{}}});await refresh;await flush();
+ assert.equal(f.html(),'');assert.equal(timer,null,'old account refresh is not rescheduled');
 });
