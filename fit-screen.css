@@ -171,3 +171,246 @@ html.bk-fit .bk-fit-modal [data-fit-paged]{max-height:none!important;overflow:vi
  .transfer-actions>.btn{min-height:25px}
  .deck-image-slot>.game-card{max-width:72px}
 }
+
+/* FULL-VIEWPORT NATIVE WORKSPACE — the surrounding UI never scales. */
+html.bk-fit #app>.bk-native-screen{position:relative!important;inset:auto!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0;transform:none!important;overflow:hidden!important;display:flex!important;flex-direction:column}
+html.bk-fit #app>.bk-native-screen.royal-shell>.app-body{flex:1 1 0!important;min-height:0!important;height:auto!important;max-height:none!important;min-width:0;display:flex;flex-direction:column;overflow:hidden!important}
+html.bk-fit .bk-native-pane{position:relative;flex:1 1 0!important;min-width:0;min-height:0;width:100%;height:auto;overflow:hidden;isolation:isolate}
+html.bk-fit .bk-native-pane>.bk-fit-pane{position:absolute!important;inset:0 auto auto 0;max-width:none!important;max-height:none!important;margin:0!important;box-sizing:border-box;transform-origin:top left;overflow:visible!important;min-width:0}
+html.bk-fit .bk-native-screen.royal-shell .site-header{flex:0 0 auto;width:100%;max-width:none;min-height:52px;padding:6px clamp(9px,1.5vw,26px);gap:8px 14px}
+html.bk-fit .bk-native-screen .site-brand strong{font-size:clamp(15px,1.45vw,22px)}
+html.bk-fit .bk-native-screen .site-controls{flex-wrap:nowrap}
+html.bk-fit .bk-native-screen.royal-shell .navigation-dock{width:calc(100% - clamp(12px,2.4vw,36px));max-width:none!important;flex:0 0 auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin:3px auto max(4px,env(safe-area-inset-bottom));padding:3px;gap:5px;min-height:0}
+html.bk-fit .bk-native-screen.royal-shell .dock-link{font-size:clamp(11px,1vw,15px);min-height:38px;gap:7px;padding:5px 6px;flex-direction:row}
+html.bk-fit .bk-native-screen .dock-link .icon{width:20px;height:20px;flex:none}
+html.bk-fit .bk-native-screen .site-copyright{height:auto;min-height:0;flex:0 0 auto;font-size:10px;padding:2px 8px}
+html.bk-fit .bk-native-screen .page{display:flex;flex-direction:column;max-width:none!important;padding:var(--bk-pad,10px) clamp(10px,1.5vw,24px)!important;gap:7px;--bk-pad:10px}
+html.bk-fit .bk-native-screen .page>.page-title{margin:0 0 3px}
+html.bk-fit .bk-native-screen .page-title h1{font-size:clamp(20px,1.8vw,29px);line-height:1.25;margin:2px 0}
+html.bk-fit .bk-native-screen .page-title p{font-size:12px;line-height:1.4}
+html.bk-fit .bk-native-screen .page-title .page-label{font-size:9px}
+html.bk-fit .bk-native-screen .page>.product-home,
+html.bk-fit .bk-native-screen .page>.deck-workshop,
+html.bk-fit .bk-native-screen .page>.product-shop,
+html.bk-fit .bk-native-screen .page>.solo-mode,
+html.bk-fit .bk-native-screen .page>.mode-lobby,
+html.bk-fit .bk-native-screen .page>.rulebook{flex:1 0 auto;min-height:calc(var(--bk-canvas-h,500px) - 2 * var(--bk-pad))!important;width:100%;max-width:none}
+html.bk-fit .bk-native-screen .page [hidden]{display:none!important}
+/* Home fills all remaining horizontal and vertical tracks. */
+html.bk-fit .bk-native-screen .product-home{grid-template-columns:minmax(0,1fr) minmax(240px,25%);grid-template-rows:auto minmax(min-content,1fr) auto;align-content:stretch;gap:10px}
+html.bk-fit .bk-native-screen .product-home>.home-showcase{align-items:center;min-height:0;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);padding:clamp(12px,1.6vw,28px);overflow:visible}
+html.bk-fit .bk-native-screen .product-home .home-card-fan .game-card{max-width:min(245px,calc(var(--bk-canvas-h,500px)*.34));width:100%}
+html.bk-fit .bk-native-screen .product-home .home-intro h1{font-size:clamp(26px,3.1vw,52px);line-height:1.35}
+html.bk-fit .bk-native-screen .product-home .home-intro>p:last-of-type{font-size:clamp(12px,1.2vw,17px)}
+html.bk-fit .bk-native-screen .product-home>.home-mode-rail>.home-mode{min-height:clamp(58px,10vh,98px);padding:10px 16px}
+html.bk-fit .bk-native-screen .product-home>.home-mode-rail>.home-mode strong{font-size:clamp(15px,1.35vw,21px)}
+html.bk-fit .bk-native-screen .product-home>.home-mode-rail>.home-mode em{font-size:clamp(10px,.85vw,13px)}
+html.bk-fit .bk-native-screen .product-home>.home-mode-rail>.home-mode small{font-size:10px}
+html.bk-fit .bk-native-screen .home-command .home-deckbox{padding:clamp(10px,1.4vw,20px)}
+html.bk-fit .bk-native-screen .home-command .home-deckbox h2{font-size:clamp(18px,1.6vw,26px)}
+html.bk-fit .bk-native-screen .home-command .home-shortcuts{grid-template-columns:1fr;gap:7px;flex:1}
+html.bk-fit .bk-native-screen .home-command .home-shortcuts>button{justify-content:flex-start;min-height:44px;padding:8px 12px}
+html.bk-fit .bk-native-screen .home-command .home-shortcuts>button small{display:block}
+html.bk-fit .bk-native-screen .product-home>.home-originbar{min-height:45px}
+html.bk-fit .bk-native-screen .home-originbar nav button{min-height:40px}
+ /* Catalogue and deck: measure the free space rather than the full viewport. */
+html.bk-fit .bk-native-screen .page[data-page=collection]{gap:5px}
+html.bk-fit .bk-native-screen .page[data-page=collection]>.rarity-guide{margin:0;min-height:0}
+html.bk-fit .bk-native-screen .catalog-guide{margin:0;font-size:11px}
+html.bk-fit .bk-native-screen .filter-bar{grid-template-columns:minmax(130px,.85fr) minmax(0,1.15fr);gap:6px;padding:6px}
+html.bk-fit .bk-native-screen .filter-bar .search-field{grid-column:1;min-width:0}
+html.bk-fit .bk-native-screen .filter-bar>.tabs{grid-column:2;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px}
+html.bk-fit .bk-native-screen .filter-bar>.filters-secondary{grid-column:1/-1;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+html.bk-fit .bk-native-screen .filter-bar .tab{min-height:32px;line-height:1.2;font-size:12px}
+html.bk-fit .bk-native-screen .filters-secondary select{font-size:12px;min-height:32px!important}
+html.bk-fit .bk-native-screen #card-results{flex:1 0 auto!important;min-height:0!important;display:flex;flex-direction:column;gap:7px}
+html.bk-fit .bk-native-screen #card-results .cards-grid{flex:1 0 auto!important;min-height:0!important;display:grid;grid-template-columns:repeat(var(--card-columns),minmax(0,var(--card-tile-width)))!important;grid-auto-rows:auto;justify-content:center;align-content:start;align-items:start;gap:14px;padding:4px}
+html.bk-fit .bk-native-screen #card-results .card-wrap{max-width:none}
+html.bk-fit .bk-native-screen #card-results .pagination{flex:none;margin-top:auto}
+html.bk-fit .bk-native-screen #card-results .results-meta{font-size:12px;line-height:1.4}
+html.bk-fit .bk-native-screen #card-results .card-owned{font-size:12px;min-height:24px}
+html.bk-fit .bk-native-screen .deck-workshop>.page-title{margin:0 0 5px}
+html.bk-fit .bk-native-screen .deck-top-tools{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px;align-items:start;flex:none;min-width:0}
+html.bk-fit .bk-native-screen .deck-bank-toolbar{margin:0 0 6px;min-height:36px;padding:5px 8px}
+html.bk-fit .bk-native-screen .deck-inspector-launch{margin:0 0 6px;padding:3px 0;gap:4px}
+html.bk-fit .bk-native-screen .deck-inspector-launch>.btn,.bk-native-screen .deck-scope-tabs>.btn{font-size:12px}
+html.bk-fit .bk-native-screen .deck-workshop .transfer-workspace{grid-template-columns:minmax(0,1fr) minmax(270px,28%);flex:1 0 auto;align-items:stretch;gap:10px}
+html.bk-fit .bk-native-screen .transfer-source{display:flex;flex-direction:column;min-height:0}
+html.bk-fit .bk-native-screen .transfer-heading{margin:0 0 4px;font-size:14px;padding:7px 9px}
+html.bk-fit .bk-native-screen .transfer-counts{font-size:11px;line-height:1.25}
+html.bk-fit .bk-native-screen .transfer-counts b{font-size:14px}
+html.bk-fit .bk-native-screen .transfer-actions>.btn{min-height:32px;font-size:12px}
+html.bk-fit .bk-native-screen .deck-workshop .deck-panel{display:flex;flex-direction:column;height:auto!important;min-height:0!important}
+html.bk-fit .bk-native-screen .deck-panel-head>select[data-change=starter]{display:none} /* same four entries are in the deck-bank selector */
+html.bk-fit .bk-native-screen .deck-workshop .deck-panel-head{padding:7px 9px}
+html.bk-fit .bk-native-screen .deck-panel-head .deck-total{margin:5px 0;padding:3px 0}
+html.bk-fit .bk-native-screen .deck-panel-head .deck-composition{margin:3px 0;font-size:11px}
+html.bk-fit .bk-native-screen .deck-workshop .deck-list{flex:1 0 auto!important;display:flex;flex-direction:column}
+html.bk-fit .bk-native-screen .deck-workshop .deck-visible-rows{flex:1 0 auto}
+html.bk-fit .bk-native-screen .deck-workshop .deck-row{min-height:38px;grid-template-columns:23px minmax(0,1fr) 30px minmax(12px,auto) 30px}
+html.bk-fit .bk-native-screen .deck-workshop .deck-row .row-name{font-size:12px}
+html.bk-fit .bk-native-screen .deck-workshop .deck-panel-foot{margin-top:auto;padding:7px 9px}
+html.bk-fit .bk-native-screen .deck-workshop .deck-panel-foot>div{margin:0}
+html.bk-fit .bk-native-screen .deck-panel-foot .btn{font-size:12px;min-height:34px}
+html.bk-fit .bk-native-screen .deck-image-slot>.game-card{max-width:135px}
+ /* Shop, story and the rulebook use the whole available content rectangle. */
+html.bk-fit .bk-native-screen .product-shop,.bk-native-screen .solo-mode{display:flex;flex-direction:column;gap:7px}
+html.bk-fit .bk-native-screen .product-shop .starter-shelf{flex:1 0 auto;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch}
+html.bk-fit .bk-native-screen .starter-box{width:min(100%,calc(var(--bk-canvas-h,480px)*.35));max-height:none}
+html.bk-fit .bk-native-screen .starter-offer{min-height:0;display:flex;flex-direction:column;align-items:center}
+html.bk-fit .bk-native-screen .starter-offer-copy{flex:1;display:flex;flex-direction:column;width:100%}
+html.bk-fit .bk-native-screen .starter-offer-copy>.btn{margin-top:auto}
+html.bk-fit .bk-native-screen .product-shop .booster-layout{flex:1 0 auto;grid-template-columns:minmax(0,1fr) minmax(190px,24%);align-items:stretch;gap:10px}
+html.bk-fit .bk-native-screen .product-shop .shop-stage{grid-template-columns:minmax(0,.8fr) minmax(0,1fr);height:auto!important;max-height:none;align-items:center}
+html.bk-fit .bk-native-screen .product-shop .pack-foil{width:min(100%,calc(var(--bk-canvas-h,480px)*.50));max-height:none;height:auto}
+html.bk-fit .bk-native-screen .solo-campaign-sheet{flex:1 0 auto!important;display:flex;flex-direction:column}
+html.bk-fit .bk-native-screen .solo-mode .campaign-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(245px,35%);height:auto!important;flex:1 0 auto;align-items:stretch}
+html.bk-fit .bk-native-screen .solo-mode .campaign-chapters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;grid-auto-rows:minmax(min-content,1fr);flex:1 0 auto;gap:8px}
+html.bk-fit .bk-native-screen .solo-mode .campaign-focus{height:auto;display:flex;flex-direction:column}
+html.bk-fit .bk-native-screen .solo-mode .campaign-focus-content{flex:1 0 auto;display:flex;flex-direction:column}
+html.bk-fit .bk-native-screen .solo-mode .campaign-start{margin-top:auto}
+html.bk-fit .bk-native-screen .solo-mode .solo-practice{flex:1 0 auto;display:flex;flex-direction:column;justify-content:center}
+html.bk-fit .bk-native-screen .solo-mode .solo-practice .solo-preparation{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,.9fr);align-items:center;gap:12px}
+html.bk-fit .bk-native-screen .mode-lobby{display:flex;flex-direction:column;justify-content:stretch;gap:10px}
+html.bk-fit .bk-native-screen .mode-lobby>.online-grid,.bk-native-screen .mode-lobby>.online-waiting{flex:1 0 auto}
+html.bk-fit .bk-native-screen .mode-lobby .online-grid.single-mode>.online-panel{height:100%;min-height:0}
+html.bk-fit .bk-native-screen .mode-lobby .online-rules{margin-top:auto}
+html.bk-fit .bk-native-screen .rulebook{grid-template-rows:auto auto minmax(min-content,1fr) auto;gap:9px}
+html.bk-fit .bk-native-screen .rulebook-spread{align-items:stretch;flex:1 0 auto}
+html.bk-fit .bk-native-screen .rulebook-panel{font-size:14px}
+ /* The battle viewport is a real full-width grid, not a scaled-down card table. */
+html.bk-fit .bk-native-screen .duel-top{flex:0 0 auto;min-height:42px;padding:5px 12px}
+html.bk-fit .bk-native-screen .duel-layout{height:auto!important;min-width:0;min-height:0;align-items:stretch;display:grid}
+html.bk-fit .bk-native-screen .duel-layout>.arena{min-height:var(--bk-canvas-h,420px)!important;height:auto!important;align-content:stretch;grid-template-rows:auto minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:5px 9px}
+html.bk-fit .bk-native-screen .duel-layout>.duel-sidebar{min-height:var(--bk-canvas-h,420px)!important}
+html.bk-fit .bk-native-screen .arena>.field-row{min-height:0;height:auto}
+html.bk-fit .bk-native-screen .field-row>.field-slot{width:min(100%,clamp(42px,calc((var(--bk-canvas-h,420px) - 120px)*.218),170px))!important;height:auto;max-height:none}
+html.bk-fit .bk-native-screen .arena>.hand-section{min-height:0;height:auto!important}
+html.bk-fit .bk-native-screen .hand-cards>.hand-card{width:min(100%,clamp(42px,calc((var(--bk-canvas-h,420px) - 120px)*.207),168px))!important}
+html.bk-fit .bk-native-screen .hand-cards{justify-content:center;align-content:center}
+html.bk-fit .bk-native-screen .duel-layout>.hand-inspector[data-open=true]{max-height:calc(var(--bk-canvas-h,420px) - 14px)}
+html.bk-fit .bk-native-screen .duel-layout>.hand-inspector[data-open=true] .hand-inspector-scroll{overflow:hidden}
+html.bk-fit .bk-native-screen .battle-log-drawer:not([hidden]){max-height:calc(100dvh - 16px)}
+html.bk-fit .bk-native-screen .battle-log-drawer .battle-log-scroll{overflow:hidden}
+html.bk-fit .bk-native-screen>.mobile-action{flex:0 0 auto;min-height:36px;padding:4px 8px;gap:5px}
+html.bk-fit .bk-native-screen>.mobile-action .selection-text{flex:1 1 100px;min-width:0}
+html.bk-fit .bk-native-screen>.mobile-action .selection-text p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+/* On compact screens give width back to the content and retain all actions. */
+@media(max-width:1050px){
+ html.bk-fit .bk-native-screen .deck-top-tools{grid-template-columns:minmax(0,1fr)}
+ html.bk-fit .bk-native-screen .deck-workshop .transfer-workspace{grid-template-columns:minmax(0,1fr) minmax(205px,31%)}
+ html.bk-fit .bk-native-screen .product-home{grid-template-columns:minmax(0,1fr) minmax(200px,28%)}
+ html.bk-fit .bk-native-screen .product-home>.home-mode-rail>.home-mode{padding:6px 8px;gap:5px}
+ html.bk-fit .bk-native-screen .home-command .home-shortcuts>button small{display:none}
+}
+@media(max-width:800px){
+ html.bk-fit .bk-native-screen .page{--bk-pad:6px;padding:6px 8px!important;gap:5px}
+ html.bk-fit .bk-native-screen .site-header{min-height:38px;padding:4px 8px!important}
+ html.bk-fit .bk-native-screen .navigation-dock .dock-link{min-height:36px;font-size:11px;gap:4px}
+ html.bk-fit .bk-native-screen .navigation-dock .dock-link .icon{width:17px;height:17px}
+ html.bk-fit .bk-native-screen .filter-bar{grid-template-columns:minmax(0,1fr);padding:4px;gap:4px}
+ html.bk-fit .bk-native-screen .filter-bar .search-field,.bk-native-screen .filter-bar>.tabs{grid-column:1/-1}
+ html.bk-fit .bk-native-screen .filter-bar>.filters-secondary{grid-template-columns:repeat(5,minmax(0,1fr));gap:3px}
+ html.bk-fit .bk-native-screen .filters-secondary select{font-size:10px;min-height:28px!important;padding-left:4px;padding-right:16px}
+ html.bk-fit .bk-native-screen .filter-bar .tab{font-size:10px;min-height:27px}
+ html.bk-fit .bk-native-screen #card-results .cards-grid{gap:8px}
+ html.bk-fit .bk-native-screen .product-home{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(min-content,1fr) auto auto;gap:6px}
+ html.bk-fit .bk-native-screen .product-home>.home-showcase{grid-column:1;grid-row:2}
+ html.bk-fit .bk-native-screen .product-home>.home-command{grid-column:1;grid-row:3;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5px}
+ html.bk-fit .bk-native-screen .product-home>.home-originbar{grid-column:1;grid-row:4}
+ html.bk-fit .bk-native-screen .product-home .home-command .home-deckbox{grid-row:auto;padding:7px}
+ html.bk-fit .bk-native-screen .home-command .home-shortcuts{grid-template-columns:1fr;gap:4px}
+ html.bk-fit .bk-native-screen .home-command .home-shortcuts>button{min-height:30px;font-size:11px;padding:4px}
+ html.bk-fit .bk-native-screen .home-command .home-record{grid-column:1/-1}
+ html.bk-fit .bk-native-screen .product-home .home-card-fan .game-card{max-width:140px}
+ html.bk-fit .bk-native-screen .product-home .home-intro h1{font-size:25px}
+ html.bk-fit .bk-native-screen .product-home>.home-mode-rail>.home-mode{min-height:58px;flex-direction:column;justify-content:center;text-align:center;padding:5px 2px}
+ html.bk-fit .bk-native-screen .product-home>.home-mode-rail>.home-mode strong{font-size:13px}
+ html.bk-fit .bk-native-screen .product-home>.home-mode-rail>.home-mode em,.bk-native-screen .product-home>.home-mode-rail>.home-mode small{font-size:9px}
+ html.bk-fit .bk-native-screen .deck-workshop .transfer-workspace{grid-template-columns:minmax(0,1fr) minmax(180px,32%);gap:6px}
+ html.bk-fit .bk-native-screen .deck-workshop .deck-row{min-height:36px;grid-template-columns:18px minmax(0,1fr) 24px minmax(12px,auto) 24px;gap:3px}
+ html.bk-fit .bk-native-screen .deck-workshop .deck-row .row-name{font-size:11px}
+ html.bk-fit .bk-native-screen .deck-workshop .deck-row .qty-btn{width:24px;height:27px}
+ html.bk-fit .bk-native-screen .transfer-actions>.btn{font-size:11px}
+ html.bk-fit .bk-native-screen .product-shop .starter-shelf{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html.bk-fit .bk-native-screen .starter-box{width:min(100%,110px)}
+ html.bk-fit .bk-native-screen .product-shop .booster-layout{display:grid;grid-template-columns:minmax(0,1fr)}
+ html.bk-fit .bk-native-screen .shop-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+ html.bk-fit .bk-native-screen .solo-mode .campaign-layout{grid-template-columns:minmax(0,1fr) minmax(170px,38%);gap:6px}
+ html.bk-fit .bk-native-screen .solo-mode .campaign-chapters{grid-template-columns:1fr}
+ html.bk-fit .bk-native-screen .solo-mode .solo-practice .solo-preparation{grid-template-columns:minmax(0,1fr);gap:10px}
+}
+@media(max-width:560px){
+ html.bk-fit .bk-native-screen .site-header{display:flex;flex-wrap:wrap;justify-content:center;gap:4px}
+ html.bk-fit .bk-native-screen .site-controls{justify-content:center;width:auto;max-width:100%;flex-wrap:wrap}
+ html.bk-fit .bk-native-screen .navigation-dock .dock-link{flex-direction:column;font-size:10px;gap:2px}
+ html.bk-fit .bk-native-screen .deck-workshop .transfer-workspace{grid-template-columns:minmax(0,1fr) minmax(148px,40%)}
+ html.bk-fit .bk-native-screen .deck-top-tools .deck-bank-toolbar{padding:4px}
+ html.bk-fit .bk-native-screen .deck-top-tools .deck-bank-toolbar>label{flex:1 1 100%}
+ html.bk-fit .bk-native-screen .filter-bar>.filters-secondary{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html.bk-fit .bk-native-screen .filter-bar>.tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+ html.bk-fit .bk-native-screen .deck-workshop .deck-panel-head{padding:5px}
+ html.bk-fit .bk-native-screen .deck-workshop .deck-row .row-name .deck-row-art{display:none}
+ html.bk-fit .bk-native-screen .product-shop .shop-stage{grid-template-columns:minmax(0,.8fr) minmax(0,1fr);padding:8px;gap:8px}
+ html.bk-fit .bk-native-screen .rulebook-spread{grid-template-columns:1fr}
+ html.bk-fit .bk-native-screen .solo-mode .campaign-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+}
+@media(max-height:570px) and (orientation:landscape){
+ html.bk-fit .bk-native-screen .page{--bk-pad:5px;padding:5px 10px!important;gap:4px}
+ html.bk-fit .bk-native-screen .site-header{min-height:34px;padding:3px 10px!important}
+ html.bk-fit .bk-native-screen .site-brand img{width:28px;height:28px}
+ html.bk-fit .bk-native-screen .site-controls .icon-btn,.bk-native-screen .site-controls .profile-button{width:28px;height:28px}
+ html.bk-fit .bk-native-screen .navigation-dock .dock-link{min-height:28px;padding:3px}
+ html.bk-fit .bk-native-screen .site-copyright{display:none!important}
+ html.bk-fit .bk-native-screen .page-title p,.bk-native-screen .page-title .page-label{display:none}
+ html.bk-fit .bk-native-screen .page-title h1{font-size:20px;margin:0}
+ html.bk-fit .bk-native-screen .product-home{grid-template-columns:minmax(0,1fr) minmax(170px,28%);grid-template-rows:auto minmax(min-content,1fr) auto;gap:5px}
+ html.bk-fit .bk-native-screen .product-home>.home-command{grid-column:2;grid-row:2;display:flex;gap:4px}
+ html.bk-fit .bk-native-screen .product-home>.home-originbar{grid-column:1/-1;grid-row:3;min-height:30px;padding:3px 6px}
+ html.bk-fit .bk-native-screen .home-originbar nav button{min-height:28px;padding:3px}
+ html.bk-fit .bk-native-screen .product-home>.home-mode-rail>.home-mode{min-height:40px;flex-direction:row;padding:5px 7px;gap:6px}
+ html.bk-fit .bk-native-screen .product-home>.home-mode-rail>.home-mode small{display:none}
+ html.bk-fit .bk-native-screen .product-home>.home-mode-rail>.home-mode strong{font-size:14px}
+ html.bk-fit .bk-native-screen .product-home .home-intro h1{font-size:23px}
+ html.bk-fit .bk-native-screen .product-home .home-card-fan .game-card{max-width:100px}
+ html.bk-fit .bk-native-screen .home-command .home-shortcuts>button{min-height:26px;padding:4px}
+ html.bk-fit .bk-native-screen .home-command .home-deckbox{padding:5px}
+ html.bk-fit .bk-native-screen .deck-top-tools{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px}
+ html.bk-fit .bk-native-screen .deck-top-tools .deck-bank-toolbar{padding:3px 5px;gap:3px}
+ html.bk-fit .bk-native-screen .deck-bank-toolbar p{display:none}
+ html.bk-fit .bk-native-screen .deck-top-tools .btn{min-height:26px;font-size:10px;padding:3px 5px}
+ html.bk-fit .bk-native-screen .deck-top-tools select{min-height:28px}
+ html.bk-fit .bk-native-screen .deck-workshop .deck-panel-head{padding:3px 5px}
+ html.bk-fit .bk-native-screen .deck-workshop .deck-panel-head>label{display:none}
+ html.bk-fit .bk-native-screen .deck-workshop .deck-panel-foot{padding:4px}
+ html.bk-fit .bk-native-screen .deck-workshop .deck-panel-foot .deck-hint{font-size:10px;line-height:1.3;margin:0 0 4px}
+ html.bk-fit .bk-native-screen .transfer-heading{padding:3px 5px}
+ html.bk-fit .bk-native-screen .filter-bar{grid-template-columns:minmax(110px,.8fr) minmax(0,1.2fr);gap:3px;padding:3px}
+ html.bk-fit .bk-native-screen .filter-bar .search-field{grid-column:1}
+ html.bk-fit .bk-native-screen .filter-bar>.tabs{grid-column:2;grid-template-columns:repeat(5,minmax(0,1fr))}
+ html.bk-fit .bk-native-screen .filter-bar>.filters-secondary{grid-column:1/-1;grid-template-columns:repeat(5,minmax(0,1fr))}
+ html.bk-fit .bk-native-screen .filter-bar .tab{min-height:25px;font-size:10px}
+ html.bk-fit .bk-native-screen .transfer-actions>.btn{min-height:26px;font-size:10px}
+ html.bk-fit .bk-native-screen .solo-mode .campaign-focus-art{display:none}
+ html.bk-fit .bk-native-screen .solo-mode .campaign-chapters{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+ html.bk-fit .bk-native-screen .solo-mode .campaign-round{min-height:28px}
+ html.bk-fit .bk-native-screen .solo-mode .campaign-layout{grid-template-columns:minmax(0,1fr) minmax(215px,33%)}
+ html.bk-fit .bk-native-screen .solo-mode .solo-practice .solo-preparation{grid-template-columns:minmax(0,1.2fr) minmax(0,.9fr) minmax(0,.8fr)}
+ html.bk-fit .bk-native-screen .duel-layout>.arena{grid-template-columns:minmax(0,1fr) minmax(108px,21%) minmax(135px,25%);grid-template-rows:auto minmax(min-content,1fr) auto minmax(min-content,1fr) auto!important}
+ html.bk-fit .bk-native-screen .arena>.hand-section{grid-column:3;grid-row:1/6;display:flex;flex-direction:column;align-self:stretch;border:1px solid #9c87a53d}
+ html.bk-fit .bk-native-screen .hand-cards{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:4px}
+ html.bk-fit .bk-native-screen .field-row>.field-slot{width:min(100%,clamp(38px,calc((var(--bk-canvas-h,260px) - 90px)*.28),90px))!important}
+ html.bk-fit .bk-native-screen .hand-cards>.hand-card{width:min(100%,clamp(42px,calc((var(--bk-canvas-h,260px) - 34px)*.29),92px))!important}
+ html.bk-fit .bk-native-screen .duel-shell .zone-strip button,.bk-native-screen .arena .zone-strip button{font-size:9px;min-height:26px;padding:2px}
+ html.bk-fit .bk-native-screen .duel-shell .midline>.end-turn,.bk-native-screen .midline>.end-turn{min-height:28px}
+}
+@media(max-width:650px) and (orientation:portrait){
+ html.bk-fit .bk-native-screen .duel-layout>.arena{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,27%);grid-template-rows:auto minmax(min-content,1fr) auto minmax(min-content,1fr) auto minmax(min-content,1fr)}
+ html.bk-fit .bk-native-screen .arena>.midline,.bk-native-screen .arena>.own-zone-row{display:contents}
+ html.bk-fit .bk-native-screen .arena>.zone-strip,.bk-native-screen .own-zone-row>.zone-strip{grid-column:2}
+ html.bk-fit .bk-native-screen .midline>.arcana-zone-row,.bk-native-screen .own-zone-row>.arcana-zone-row{grid-column:2}
+ html.bk-fit .bk-native-screen .midline>.turn-label{grid-column:1;grid-row:3}
+ html.bk-fit .bk-native-screen .midline>.end-turn{grid-column:2;grid-row:3}
+ html.bk-fit .bk-native-screen .field-row>.field-slot{width:min(100%,90px)!important}
+ html.bk-fit .bk-native-screen .hand-cards>.hand-card{width:min(100%,100px)!important}
+}

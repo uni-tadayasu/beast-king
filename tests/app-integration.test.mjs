@@ -14,7 +14,7 @@ import {soloView} from '../mode-views.js';
 import * as campaign from '../campaign.js';
 import * as product from '../product-views.js';
 import {rulebookView} from '../rules-view.js';
-import {calculateCardLayout} from '../viewport.js';
+import {calculateCardLayout,calculateFittedCardLayout} from '../viewport.js';
 
 // Load the production script unchanged apart from ES-module imports. The suffix exposes
 // existing helpers only inside this isolated VM; no test hooks are added to the app.
@@ -94,7 +94,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     sendAction: async () => ({ ok: true }),
   };
   const context = vm.createContext({
-    ...catalog, ...engine, ...shop, ...campaign, ...product, rulebookView, calculateCardLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS,
+    ...catalog, ...engine, ...shop, ...campaign, ...product, rulebookView, calculateCardLayout, calculateFittedCardLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS,
     createOnlineClient: options => { callbacks = options; return client; },
     createCloudSync: () => ({ getState: () => ({phase:'synced',revision:1,dirty:false}), start: async () => ({phase:'synced',revision:1,dirty:false}), markDirty() {}, flush: async () => ({revision:1}), refresh: async () => ({revision:1}) }),
     createAccountUi: () => ({onCloudState() {},handleAction:()=>false,touchBrand:()=>false,clearIdentity(){},onModalClosed(){}}),
@@ -363,4 +363,19 @@ test('returning a card to the shared pool does not change inventory or a differe
  assert.deepEqual(plain(app.data.collection),before);
  app.editDeck(cardId,true);assert.equal(app.workingDeck.length,32);assert.equal(app.workingDeck.filter(id=>id===cardId).length,count);
  assert.deepEqual(plain(app.data.collection),before);assert.deepEqual(plain(app.data.deckLibrary.find(d=>d.id==='starter-'+second.id)),other);
+});
+
+test('physical card layout uses the measured free canvas, including transfer controls',()=>{
+ for(const edit of [false,true])for(const [width,height] of [[1800,650],[970,380],[540,260],[330,180]]){
+  const layout=calculateFittedCardLayout({width,height,edit,compact:width<800});
+  assert.ok(layout.pageSize===layout.columns*layout.rows&&layout.cardWidth>0);
+  const gap=width<800?8:14,caption=edit?76:28;
+  if(height>=260){
+   assert.ok(layout.columns*layout.cardWidth+(layout.columns-1)*gap<=width);
+   assert.ok(layout.rows*(layout.cardWidth*520/360+caption)+(layout.rows-1)*gap<=height);
+  }
+ }
+ const roomy=calculateFittedCardLayout({width:1600,height:660,edit:true});
+ const narrow=calculateFittedCardLayout({width:600,height:300,edit:true,compact:true});
+ assert.ok(roomy.cardWidth>=narrow.cardWidth);
 });

@@ -3,6 +3,7 @@
 const doc=document,root=doc.documentElement;
 root.classList.add('bk-fit');
 let pending=false,running=false,lastRoot=null,lastModal=null,about=null;
+let lastCardMetrics='';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const children=node=>[...node.children];
 function directFrame(host,target){
@@ -13,34 +14,72 @@ function naturalSize(node){
  const bounds=node.getBoundingClientRect();
  return {w:Math.max(node.offsetWidth,node.scrollWidth,1),h:Math.max(node.offsetHeight,node.scrollHeight,1),bounds};
 }
-function fit(node,width,height,{modal=false,logicalMin=0,center=false}={}){
+function setCanvas(node,width,height,fill){
+ node.style.setProperty('width',Math.max(1,width)+'px','important');
+ node.style.setProperty('height','auto','important');
+ node.style.setProperty('min-height',fill?Math.max(1,height)+'px':'0px','important');
+ node.style.setProperty('--bk-canvas-h',Math.max(1,height)+'px');
+ node.style.setProperty('--bk-canvas-w',Math.max(1,width)+'px');
+}
+function measureCardPane(node,height){
+ const result=node.querySelector('#card-results');if(!result)return;
+ const bounds=node.getBoundingClientRect(),r=result.getBoundingClientRect();
+ const meta=result.querySelector('.results-meta'),pager=result.querySelector('.pagination');
+ const footer=(meta?.offsetHeight||18)+(pager?.offsetHeight||36)+22;
+ const pad=Number.parseFloat(getComputedStyle(node).paddingBottom)||0;
+ const available=Math.max(1,height-(r.top-bounds.top)-pad-footer);
+ const list=node.querySelector('.deck-list'),foot=node.querySelector('.deck-panel-foot');
+ const deckHeight=list?Math.max(0,height-(list.getBoundingClientRect().top-bounds.top)-pad-(foot?.offsetHeight||48)-40):0;
+ const metrics={width:Math.max(1,Math.floor(result.clientWidth)),height:Math.floor(available),deckHeight:Math.floor(deckHeight)};
+ const key=[node.dataset.page,metrics.width,metrics.height,metrics.deckHeight].join(':');
+ // A replaced app render needs the current calculation even if geometry is identical.
+ if(key!==lastCardMetrics||!node.dataset.bkMetricsApplied){lastCardMetrics=key;node.dataset.bkMetricsApplied='true';window.dispatchEvent(new CustomEvent('bk-fit-card-metrics',{detail:metrics}));}
+}
+function fit(node,width,height,{modal=false,logicalMin=0,center=false,fill=false,measureCards=false}={}){
  if(!node||width<1||height<1)return;
- width=Math.max(1,width);height=Math.max(1,height);
- node.style.transform='none';node.style.left='0px';node.style.top='0px';node.style.height='auto';
- // On narrow portrait devices retain workable two-column controls instead of
- // compressing a tall stack. Responsive rules still apply to the viewport.
- const logicalWidth=Math.max(width,logicalMin);
- node.style.width=logicalWidth+'px';
- node.style.minHeight='0px';
- const natural=naturalSize(node);
- let factor=Math.min(1,width/natural.w,height/natural.h);
- // Reflow wider at the same physical width when this makes controls larger
- // and reduces line wraps, bounded to avoid huge canvases.
- if(!modal&&factor<.78){
-  const alternate=Math.min(logicalWidth*1.45,Math.max(logicalWidth,1440));
-  if(alternate>logicalWidth+30){
-   node.style.width=alternate+'px';const next=naturalSize(node),f=Math.min(1,width/next.w,height/next.h);
-   if(f>=factor){factor=f;}else{node.style.width=logicalWidth+'px';}
-  }
+ node.style.transform='none';node.style.setProperty('left','0px','important');node.style.setProperty('top','0px','important');
+ // Try physical pixel dimensions first. If content is exceptionally tall,
+ // reflow at a wider logical width AND a taller logical height. Unlike the
+ // old letterboxed fit, the selected canvas always covers both dimensions.
+ let scale=1;
+ const minimum=fill?0:logicalMin;
+ function trial(s,measure=false){
+  const w=fill?width/s:Math.max(width,minimum),h=height/s;
+  setCanvas(node,w,h,fill);
+  if(measure&&measureCards)measureCardPane(node,h);
+  const n=naturalSize(node);
+  return {fits:n.w*s<=width+2&&n.h*s<=height+2,ratio:Math.min(1,width/n.w,height/n.h),w,h,n};
  }
- const size=naturalSize(node);
- factor=clamp(Math.min(1,width/size.w,height/size.h),.01,1);
- // Leave a little breathing room for fractional pixel borders.
- const scaledW=size.w*factor,scaledH=size.h*factor;
- node.style.transform='scale('+factor+')';
- node.style.left=Math.max(0,(width-scaledW)/2)+'px';
- node.style.top=(center?Math.max(0,(height-scaledH)/2):0)+'px';
- node.dataset.fitScale=String(factor.toFixed(4));
+ let result=trial(1,true);
+ if(fill){
+  if(!result.fits){
+   let hi=1,lo=0;
+   // Find a usable candidate, then maximize readable scale.
+   scale=Math.max(.20,Math.min(.985,result.ratio));
+   for(let i=0;i<7;i++){
+    result=trial(scale);
+    if(result.fits){lo=scale;break;}
+    hi=scale;scale=Math.max(.08,Math.min(scale-.005,result.ratio));
+   }
+   if(lo>0){for(let i=0;i<5;i++){const middle=(lo+hi)/2;const r=trial(middle);if(r.fits)lo=middle;else hi=middle;}scale=lo;}
+   result=trial(scale);
+   // Ensure a previously overflowing descendant cannot extend outside the pane.
+   if(!result.fits){scale=Math.max(.025,Math.min(scale,result.ratio));result=trial(scale);}
+  }
+  node.style.transform=scale>=.999?'none':'scale('+scale+')';
+  node.dataset.fitScale=scale.toFixed(4);
+  node.dataset.fitWidth=String(Math.round(result.w*scale));
+  node.dataset.fitHeight=String(Math.round(result.h*scale));
+ }else{
+  // Dialogs keep their own reading layout; a wide dialog may occupy the entire
+  // available width without altering the native application frame behind it.
+  scale=clamp(result.ratio,.025,1);
+  const n=result.n;
+  node.style.transform=scale>=.999?'none':'scale('+scale+')';
+  node.style.setProperty('left',Math.max(0,(width-n.w*scale)/2)+'px','important');
+  node.style.setProperty('top',(center?Math.max(0,(height-n.h*scale)/2):0)+'px','important');
+  node.dataset.fitScale=scale.toFixed(4);
+ }
 }
 function paginateAbout(){
  if(about)return;
@@ -60,16 +99,32 @@ function paginateAbout(){
 }
 function fitApp(){
  const app=doc.getElementById('app');if(!app)return;
- let target=app.querySelector(':scope > .royal-shell,:scope > .duel-shell,:scope > .entry-screen,:scope > .shell,:scope > .onboard,:scope > .bk-fit-frame > .bk-fit-target');
+ const target=app.querySelector(':scope > .royal-shell,:scope > .duel-shell,:scope > .entry-screen,:scope > .shell,:scope > .onboard,:scope > .bk-fit-frame > .bk-fit-target');
  if(!target)return;
+ if(target.matches('.royal-shell,.duel-shell')){
+  // Keep the actual application header, footer and navigation at 100% size.
+  // Only the content between those fixed tracks may reflow or fit locally.
+  target.classList.add('bk-native-screen');
+  target.classList.remove('bk-fit-target');
+  if(target.parentElement!==app){const old=target.parentElement;app.insertBefore(target,old);old.remove();}
+  for(const key of ['transform','left','top','width','height','min-height'])target.style.removeProperty(key);
+  const pane=target.querySelector(target.matches('.royal-shell')?'main.page':'.duel-layout');
+  if(!pane)return;
+  let frame=pane.parentElement;
+  if(!frame.classList.contains('bk-native-pane')){
+   const host=frame;frame=doc.createElement('div');frame.className='bk-native-pane';host.insertBefore(frame,pane);frame.append(pane);
+   pane.classList.add('bk-fit-pane');lastCardMetrics='';
+  }
+  const w=frame.clientWidth,h=frame.clientHeight;
+  fit(pane,w,h,{fill:true,measureCards:pane.matches('.page')});
+  target.dataset.fitScale='1.0000';target.dataset.fitWidth=String(target.clientWidth);target.dataset.fitHeight=String(target.clientHeight);
+  lastRoot=target;return;
+ }
+ // Entry and the separately preserved rebuild client retain their own layouts.
+ // The entire logical canvas fills the viewport rather than a narrow centered strip.
  if(target!==lastRoot){target.classList.add('bk-fit-target');directFrame(app,target);lastRoot=target;}
- const frame=target.parentElement;
- // app is the fixed physical content area; its frame must fill even with
- // absolutely positioned logical content.
- frame.style.height=app.clientHeight+'px';frame.style.flex='none';
- const w=frame.clientWidth,h=frame.clientHeight;
- const portrait=w<650&&h>w;
- fit(target,w,h,{logicalMin:portrait&&target.matches('.royal-shell')?640:0});
+ const frame=target.parentElement;frame.style.height=app.clientHeight+'px';frame.style.flex='none';
+ fit(target,frame.clientWidth,frame.clientHeight,{fill:true});
 }
 const pagedLists=new WeakMap();
 function paginateLongLists(){
@@ -104,12 +159,13 @@ function fitModal(){
  // Native dialogs remain in the top layer and use its centered positioning.
  if(!inBackdrop){modal.style.maxHeight='none';modal.style.width=Math.min(w,680)+'px';modal.style.height='auto';modal.style.transform='none';const n=naturalSize(modal);const factor=Math.min(1,w/n.w,h/n.h);modal.style.transform='scale('+factor+')';modal.style.transformOrigin='center center';return;}
  const wide=modal.classList.contains('wide');
- fit(modal,w,h,{modal:true,logicalMin:Math.min(wide?850:560,Math.max(w,wide?560:400)),center:true});
- modal.style.left=(Number.parseFloat(modal.style.left||'0')+10)+'px';modal.style.top=(Number.parseFloat(modal.style.top||'0')+10)+'px';
+ fit(modal,wide?w:Math.min(w,760),h,{modal:true,logicalMin:0,center:true,fill:wide});
+ if(!wide)modal.style.setProperty('left',(Number.parseFloat(modal.style.left||'0')+(w-Math.min(w,760))/2)+'px','important');
+ modal.style.setProperty('left',(Number.parseFloat(modal.style.left||'0')+10)+'px','important');modal.style.setProperty('top',(Number.parseFloat(modal.style.top||'0')+10)+'px','important');
 }
 function run(){
  pending=false;if(running)return;running=true;
- try{paginateAbout();paginateLongLists();fitApp();if(about){const {frame,main}=about;fit(main,frame.clientWidth,frame.clientHeight,{logicalMin:Math.min(640,frame.clientWidth)});}fitModal();}finally{running=false;}
+ try{paginateAbout();paginateLongLists();fitApp();if(about){const {frame,main}=about;fit(main,frame.clientWidth,frame.clientHeight,{fill:true});}fitModal();}finally{running=false;}
 }
 function schedule(){if(pending)return;pending=true;requestAnimationFrame(run);}
 new MutationObserver(records=>{if(records.some(r=>r.type==='childList'&&(r.addedNodes.length||r.removedNodes.length)))schedule();}).observe(doc.body,{childList:true,subtree:true});

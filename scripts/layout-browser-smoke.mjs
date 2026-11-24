@@ -80,6 +80,8 @@ try{
  const inspect=`(selectors)=>{const out=[];for(const selector of selectors){const els=[...document.querySelectorAll(selector)].filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden'});for(let i=0;i<els.length;i++)for(let j=i+1;j<els.length;j++){const a=els[i].getBoundingClientRect(),b=els[j].getBoundingClientRect();const w=Math.min(a.right,b.right)-Math.max(a.left,b.left),h=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);if(w>2&&h>2)out.push({selector,i,j,w:Math.round(w),h:Math.round(h)});}}return out}`;
  async function check(label,selectors=[]){
   const v=await evaluate('({w:innerWidth,h:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight})');assert.ok(v.sw<=v.w+2&&v.sh<=v.h+2,label+' viewport overflow '+JSON.stringify(v));
+  const fit=await evaluate(`(()=>{const shell=document.querySelector('#app>.bk-native-screen'),frame=shell?.querySelector('.bk-native-pane'),pane=frame?.firstElementChild;if(!shell||!frame||!pane)return null;const s=shell.getBoundingClientRect(),f=frame.getBoundingClientRect(),p=pane.getBoundingClientRect(),a=document.querySelector('#app').getBoundingClientRect();return {native:getComputedStyle(shell).transform==='none',shellWidth:s.width,appWidth:a.width,shellHeight:s.height,appHeight:a.height,frameWidth:f.width,paneWidth:p.width,frameHeight:f.height,paneHeight:p.height,scale:Number(pane.dataset.fitScale)}})()`);
+  if(fit){assert.ok(fit.native&&Math.abs(fit.shellWidth-fit.appWidth)<3&&Math.abs(fit.shellHeight-fit.appHeight)<3,label+' native screen '+JSON.stringify(fit));assert.ok(fit.paneWidth>=fit.frameWidth*.97&&fit.paneHeight>=fit.frameHeight*.97,label+' full content pane '+JSON.stringify(fit));}
   const errors=await evaluate('('+inspect+')('+JSON.stringify(selectors)+')');
   assert.deepEqual(errors,[],label+' overlapping controls '+JSON.stringify(errors));
  }
@@ -87,7 +89,7 @@ try{
  for(const [width,height] of [[1920,1080],[1366,768],[1024,600],[768,1024],[390,844],[320,568],[844,390]]){
   await viewport(width,height);
   for(const [page,selectors] of [['home',['.home-mode-rail>.home-mode','.home-card-fan>.game-card']],['deck',['.deck-panel-head,.deck-zone-tabs,.deck-list,.deck-panel-foot','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination','.transfer-card>.transfer-counts,.transfer-card>.transfer-actions']],['collection',['.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination']],['shop',['.product-section-tabs>button']],['rules',['.rulebook-tabs>button']]]){
-   await click('.navigation-dock [data-nav='+page+']');await waitElement('main[data-page='+page+']');await delay(180);
+   await click('.navigation-dock [data-nav='+page+']');await waitElement('main[data-page='+page+']');await waitElement('.bk-native-pane>.bk-fit-pane[data-fit-scale]');await delay(200);
    if(page==='home'){const modeVisibility=await evaluate('(()=>{const p=document.querySelector(".home-page").getBoundingClientRect();return [...document.querySelectorAll(".home-mode-rail>.home-mode")].map(e=>{const r=e.getBoundingClientRect();return r.top>=p.top-2&&r.bottom<=p.bottom+2&&r.left>=p.left-2&&r.right<=p.right+2})})()');assert.deepEqual(modeVisibility,[true,true,true],width+'x'+height+' all three mode controls fully visible');}
    // Card ownership/action pairs are tested per card, not between distinct tiles.
    await check(width+'x'+height+' '+page,[...general,...selectors]);
@@ -115,7 +117,7 @@ try{
  await click('.navigation-dock [data-nav=home]');await click('[data-action=solo-mode]');await click('[data-action=solo-section][data-section=practice]');await click('[data-action=start-game]');await waitElement('.duel-shell');
  for(const [width,height] of [[1920,1080],[1366,768],[1024,600],[768,1024],[390,844],[320,568],[844,390]]){
   await viewport(width,height);
-  await check(width+'x'+height+' duel',['.duel-top-actions>button','.arena>.duelist,.arena>.field-row,.arena>.hand-section,.arena>.zone-strip,.midline>.turn-label,.midline>.end-turn,.midline>.arcana-zone-row,.own-zone-row>.arcana-zone-row,.own-zone-row>.zone-strip','.hand-cards>.hand-card']);
+  await waitElement('.bk-native-pane>.bk-fit-pane[data-fit-scale]');await delay(120);await check(width+'x'+height+' duel',['.duel-top-actions>button','.arena>.duelist,.arena>.field-row,.arena>.hand-section,.arena>.zone-strip,.midline>.turn-label,.midline>.end-turn,.midline>.arcana-zone-row,.own-zone-row>.arcana-zone-row,.own-zone-row>.zone-strip','.hand-cards>.hand-card']);
  }
  await send('Page.navigate',{url:url+'about.html'});await waitElement('body.about-page');await waitElement('.bk-fit-article .bk-fit-target[data-fit-scale]');await delay(150);await check('about page');
  assert.deepEqual(exceptions,[],'No uncaught browser errors');
