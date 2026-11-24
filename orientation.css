@@ -134,7 +134,7 @@ html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native
 html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=showcase]>.home-showcase{padding:8px 18px}
 html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-intro h1{font-size:26px;margin:5px 0}
 html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-intro>p:last-of-type{font-size:12px;line-height:1.5}
-html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-card-fan .game-card{max-width:clamp(65px,calc((var(--app-viewport-height) - 166px)*.52),150px)!important}
+html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-card-fan .game-card{max-width:var(--court-card-width,clamp(65px,calc((var(--app-viewport-height) - 166px)*.52),150px))!important}
 html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-stage-foot{display:none}
 html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .product-home[data-bk-home-mode=command]>.home-command{gap:7px}
 html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native-screen .home-command .home-deckbox{padding:8px 12px}
@@ -147,6 +147,17 @@ html.bk-fit body[data-virtual-landscape=true][data-layout-short=true] .bk-native
 body[data-virtual-landscape=true][data-layout-short=true] .settings-tabs{padding-bottom:6px;margin-bottom:4px}
 body[data-virtual-landscape=true][data-layout-short=true] .settings-tabs button{min-height:31px}
 body[data-virtual-landscape=true][data-layout-short=true] .settings-section :is(.setting-row,.setting-volume){padding:8px 0}
+
+/* A tilted card's complete envelope is taller than its aspect-ratio box.
+   Reserve it in layout before the viewport fitter measures the showcase.
+   For 11deg at a 95% origin the lower corner extends 15.2% of the card width;
+   the raised center card needs another 5.8% above its normal position. */
+@container beast-viewport (max-height:540px){
+ html.bk-fit body .bk-native-screen .product-home[data-bk-home-mode=showcase]{--court-card-width:clamp(56px,calc((var(--app-viewport-height) - 202px)*.52),150px)}
+ html.bk-fit body .bk-native-screen .product-home[data-bk-home-mode=showcase]>.home-showcase{min-height:calc(var(--court-card-width)*1.68 + 18px)!important}
+ html.bk-fit body .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-card-fan{padding-top:calc(var(--court-card-width)*.06);padding-bottom:calc(var(--court-card-width)*.16)}
+ html.bk-fit body .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-card-fan .game-card{width:30%!important;flex-basis:30%;min-height:0!important}
+}
 
 @container beast-viewport (max-height:570px){
  html.bk-fit body[data-virtual-landscape=true] .bk-native-screen .duel-layout>.arena{grid-template-columns:minmax(0,1fr) minmax(108px,21%) minmax(135px,25%);grid-template-rows:auto minmax(min-content,1fr) auto minmax(min-content,1fr) auto!important}

@@ -1,7 +1,7 @@
 // Read-only public deployment probe. No account tokens or private data are used.
 const checks=[
  ['legacy','https://www.beast-king.com/',r=>r.text().then(s=>s.includes('BEAST KING')||s.includes('ビーストキング'))],
- ['rebuild','https://www.beast-king.com/rebuild/',r=>r.text().then(s=>s.includes('2,304')&&s.includes('先行公開'))],
+ ['rebuild','https://www.beast-king.com/rebuild/',r=>r.text().then(s=>s.includes('2,304')&&s.includes('旧セーブ互換版'))],
  ['rebuild-js','https://www.beast-king.com/rebuild/app.js',r=>r.text().then(s=>s.includes('function render')&&s.includes('SECOND_REGALIA_ID'))],
  ['rebuild-about','https://www.beast-king.com/rebuild/about.html',r=>r.text().then(s=>s.includes('2,304'))],
  ['worker-health','https://beast-king.hisa-0128-1996.chatgpt.site/api/health',r=>r.json().then(x=>x.ok===true)],

@@ -326,7 +326,7 @@ body .game-guide-link{display:inline-flex;align-items:center;gap:6px;padding:8px
  html.bk-fit body .bk-native-screen .product-home[data-bk-home-mode=showcase]>.home-showcase{padding:8px 18px;grid-template-rows:1fr}
  html.bk-fit body .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-intro h1{font-size:clamp(20px,3.4vw,29px);margin:5px 0}
  html.bk-fit body .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-intro>p:last-of-type{font-size:12px;line-height:1.5}
- html.bk-fit body .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-card-fan .game-card{max-width:clamp(65px,calc((var(--app-viewport-height,100dvh) - 166px)*.52),150px)!important}
+ html.bk-fit body .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-card-fan .game-card{max-width:var(--court-card-width,clamp(65px,calc((var(--app-viewport-height,100dvh) - 166px)*.52),150px))!important}
  html.bk-fit body .bk-native-screen .product-home[data-bk-home-mode=showcase] .home-stage-foot{display:none}
  html.bk-fit body .bk-native-screen .product-home[data-bk-home-mode=command]>.home-command{gap:7px}
  html.bk-fit body .bk-native-screen .home-command .home-deckbox{padding:8px 12px}
