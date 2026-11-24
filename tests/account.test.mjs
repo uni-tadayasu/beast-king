@@ -420,3 +420,25 @@ test('an already entitled operator can upgrade the recipe once without losing ex
  assert.equal(next.data.save.data.collection.B0512,2);
  const replay=await f.api('POST',path,operator.token,{upgrade:true,revision:first.data.save.revision});assert.equal(replay.status,200);assert.equal(replay.data.replayed,true);assert.deepEqual(replay.data.save,next.data.save);
 });
+
+test('legacy entitled operators recover private artwork; match slot metadata is viewer-only',async t=>{
+ const f=fixture(t),p=await f.operator(),other=await f.profile('一般の王');
+ f.env.BK_OPERATOR_REGALIA_CODE='fixture-art-repair';
+ assert.equal((await f.save(p)).status,200);
+ const claimed=await f.api('POST','/api/operator/regalia/claim',p.token,{code:f.env.BK_OPERATOR_REGALIA_CODE,revision:1});assert.equal(claimed.status,200);
+ f.sqlite.prepare("DELETE FROM bk_operator_audit WHERE action='operator.activated'").run();
+ const results=await Promise.all([f.api('GET','/api/operator/deck',p.token),f.api('GET','/api/operator/deck',p.token)]);
+ assert.ok(results.every(r=>r.status===200&&r.data.deck.artwork.startsWith('data:image/svg+xml;base64,')));
+ assert.equal(results[0].data.deck.artwork,results[1].data.deck.artwork);
+ assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_operator_audit WHERE action='operator.art_seed'").get().n,1);
+ assert.equal((await f.api('GET','/api/operator/deck',other.token)).status,404);
+ const preset=claimed.data.deck,slot='operator-kirahara-v1';
+ const room=await f.api('POST','/api/rooms',p.token,{deck:preset.ids,special:preset.specialIds,deckSlotId:slot});assert.equal(room.status,200,JSON.stringify(room.data));
+ const joined=await f.api('POST','/api/rooms/'+room.data.room.code+'/join',other.token,{...deck(),deckSlotId:slot});assert.equal(joined.status,200,JSON.stringify(joined.data));
+ assert.equal(joined.data.match.ownDeckSlot,null);assert.equal(joined.data.match.state.deckSlots,undefined);
+ const own=await f.api('GET','/api/matches/'+joined.data.match.id,p.token);assert.equal(own.status,200);assert.equal(own.data.match.ownDeckSlot,slot);
+ assert.equal(own.data.match.state.deckSlots,undefined);
+ assert.ok(!JSON.stringify(own.data.match).includes('data:image'));
+ const linked=await f.link(p),linkedView=await f.api('GET','/api/matches/'+joined.data.match.id,linked.token);
+ assert.equal(linkedView.data.match.ownDeckSlot,slot);
+});

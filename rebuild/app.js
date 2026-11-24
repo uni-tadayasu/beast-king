@@ -37,6 +37,7 @@ function setPage(p){
  page=p;message='';render();
 }
 function art(c,operatorArt=false){
+ if(operatorArt&&c.id===SECOND_REGALIA_ID&&operatorGrant?.entitled&&!operatorGrant.artwork)return 'background:radial-gradient(ellipse,#283b5a,#100f24 70%);background-size:cover';
  if(operatorArt&&c.id===SECOND_REGALIA_ID&&operatorGrant?.entitled&&operatorGrant.artwork)return "background-image:url('"+operatorGrant.artwork+"');background-position:center;background-size:cover";
  const custom=artOverride(c);if(custom)return "background-image:url('../"+custom+"');background-position:center;background-size:cover";
  if(isPendingArt(c))return 'background:radial-gradient(ellipse at 50% 30%,'+(origin(c.origin)?.color||'#afc2b9')+'33,#0a201e 80%)';
@@ -81,6 +82,7 @@ function catalog(edit){
  return '<section class="panel catalog-layout"><div><div class="panel-head"><h2>'+(edit?'所持カード':'全カード図鑑')+'</h2><span class="sub">'+fmt(list.length)+'種類</span></div><form class="filters" id="filters"><input name="q" aria-label="カード検索" placeholder="カード名・効果・ID" value="'+esc(filter.q)+'"><select name="type" aria-label="種類">'+opts([['','全種類'],...byType],filter.type)+'</select><select name="origin" aria-label="オリジン">'+opts([['','全オリジン'],...ORIGINS.map(o=>[o.id,o.name])],filter.origin)+'</select><select name="rarity" aria-label="レアリティ">'+opts([['','全レア'],...Object.entries(RARITY_LABELS)],filter.rarity)+'</select><select name="pack" aria-label="収録弾">'+opts([['','全収録弾'],...PACKS.map(p=>[p.id,p.name])],filter.pack)+'</select><button>検索</button></form></div><div class="card-grid">'+shown.map(c=>card(c,{action:edit?'add-detail':'detail',owned:profile.collection[c.id]||0})).join('')+(shown.length?'':'<p class="muted">カードが見つかりません。</p>')+'</div><div class="pagination">'+act('prev','前へ',filter.page===0?'disabled':'')+'<span>'+(filter.page+1)+' / '+total+'</span>'+act('next','次へ',filter.page+1===total?'disabled':'')+'</div></section>';
 }
 function deck(){
+ if(operatorSelected&&operatorGrant?.entitled){const royal=getCard(SECOND_REGALIA_ID);return '<div class="deck-layout">'+catalog(true)+'<section class="panel deck-list"><h2>𠮷良原デッキ</h2><p>通常32枚・特殊4枚 · レガリア2枚</p><div class="operator-preview">'+card(royal,{action:'operator-card-detail',owned:2,operatorArt:true})+'</div><p>'+(!operatorGrant.artwork?'専用イラスト未受信。運営認証を再確認してください。':'運営限定の専用イラスト')+'</p><div class="actions">'+act('operator-select','認証・画像を再取得')+act('operator-off','通常デッキの編集に戻る')+'</div></section></div>';}
  const valid=checkDeck(profile,draft.main,draft.special);
  const sections=[['main','メイン',draft.main,32],['special','特殊',draft.special,4]];
  return '<div class="deck-layout">'+catalog(true)+'<section class="panel deck-list"><div><h2>編成中のデッキ</h2><p>メイン '+draft.main.length+'/32 · 特殊 '+draft.special.length+'/4</p><small>同名2枚まで · 所持枚数以内</small>'+(operatorGrant?.entitled?'<div>'+act('operator-select',operatorSelected?'𠮷良原デッキ使用中':'𠮷良原デッキを使用','','primary')+(operatorSelected?act('operator-off','通常デッキに戻す'):'')+'</div>':'')+'</div><div class="deck-rows">'+sections.map(([zone,t,ids,n])=>'<h3>'+t+' '+ids.length+'/'+n+'</h3>'+Object.entries(counts(ids)).map(([id,k])=>'<button data-act="remove" data-zone="'+zone+'" data-id="'+id+'"><span>'+esc(label(id))+' ×'+k+'</span><span>−</span></button>').join('')).join('')+'</div><div class="actions"><select id="starter-select" aria-label="スターター">'+opts(STARTERS.map(s=>[s.id,s.name]),profile.starterId)+'</select>'+act('preset','適用')+act('discard','元に戻す')+act('save-deck','保存',valid.valid?'':'disabled','primary')+'</div></section></div>';
@@ -293,6 +295,7 @@ document.addEventListener('click',async e=>{
   case 'next':filter.page++;render();break;
   case 'shop-prev':shopPage=Math.max(0,shopPage-1);render();break;
   case 'shop-next':shopPage++;render();break;
+  case 'operator-card-detail':if(operatorSelected&&operatorGrant?.entitled&&id===SECOND_REGALIA_ID)detail(getCard(id),'','',true);break;
   case 'detail':detail(getCard(id));break;
   case 'add-detail':detail(getCard(id),'add','data-id="'+id+'"');break;
   case 'add':{

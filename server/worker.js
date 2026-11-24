@@ -30,11 +30,16 @@ function profileOrigin(value){
   if(!PROFILE_ORIGINS.has(value))problem(400,'invalid_origin','アイコンは山・川・種・草・花・木・王から選んでください。');
   return value;
 }
-function decks(body){
+const KIRAHARA_SLOT='operator-kirahara-v1';
+async function decks(body,db,playerId){
   const main=validateDeck(body.deck),special=validateSpecialDeck(body.special);
   if(!main.valid||!special.valid)problem(400,'invalid_deck',[...main.errors,...special.errors].join('／'));
-  return {deck:[...body.deck],special:[...body.special]};
+  let deckSlotId=null;
+  if(body.deckSlotId===KIRAHARA_SLOT){const entitled=await first(db,"SELECT 1 AS allowed FROM bk_operator o JOIN bk_reward_claims c ON c.player_id=o.player_id WHERE o.singleton=1 AND o.player_id=? AND c.item_type='gift' AND c.item_id IN ('operator-kirahara-deck-v1','operator-kirahara-deck-v2') LIMIT 1",playerId);if(entitled)deckSlotId=KIRAHARA_SLOT;}
+  return {deck:[...body.deck],special:[...body.special],deckSlotId};
 }
+const storedDeck=selected=>JSON.stringify(selected.deckSlotId?{ids:selected.deck,deckSlotId:selected.deckSlotId}:selected.deck);
+function readStoredDeck(raw){const value=JSON.parse(raw);return Array.isArray(value)?{deck:value,deckSlotId:null}:{deck:value.ids,deckSlotId:value.deckSlotId===KIRAHARA_SLOT?KIRAHARA_SLOT:null};}
 async function bodyJSON(request,limit=16_384){
   if(Number(request.headers.get('content-length')||0)>limit)problem(413,'body_too_large','送信データが大きすぎます。');
   const reader=request.body?.getReader(),chunks=[];let size=0;
@@ -79,11 +84,11 @@ function publicState(row,viewer){
   return {rulesVersion:state.rulesVersion,turn:state.turn,active:toViewer(state.active),winner:typeof state.winner==='number'?toViewer(state.winner):state.winner,players,log:clone(state.log.slice(-MAX_LOG_ENTRIES)),nextUid:state.nextUid,difficulty:state.difficulty};
 }
 async function snapshot(db,row,playerId,now){
-  const seat=seatOf(row,playerId),state=publicState(row,seat),opponent=1-seat;
+  const seat=seatOf(row,playerId),state=publicState(row,seat),opponent=1-seat,privateState=JSON.parse(row.state_json);
   const own=await first(db,'SELECT rating FROM bk_profiles WHERE id=?',playerId);
   const other=row.bot?null:await first(db,'SELECT COALESCE(origin_v2,origin) AS origin FROM bk_profiles WHERE id=?',row[`player${opponent}`]);
   const avatar=row.bot?JSON.parse(row.state_json).botOrigin:other?.origin;
-  return {id:row.id,mode:row.mode,roomCode:row.room_code||null,revision:row.revision,state,
+  return {id:row.id,mode:row.mode,roomCode:row.room_code||null,revision:row.revision,state,...(Array.isArray(privateState.deckSlots)?{ownDeckSlot:privateState.deckSlots[seat]===KIRAHARA_SLOT?KIRAHARA_SLOT:null}:{}),
     opponent:{name:row[`name${opponent}`],kind:row.bot?'bot':'human',origin:PROFILE_ORIGINS.has(avatar)?avatar:'mountain',rating:row[`rating${opponent}`]+row[`rating_delta${opponent}`]},
     status:row.status,result:state.winner===null?null:state.winner==='draw'?'draw':state.winner===0?'win':'loss',
     ratingDelta:row[`rating_delta${seat}`],selfRating:own?.rating??row[`rating${seat}`],reason:row.reason||null,
@@ -92,6 +97,7 @@ async function snapshot(db,row,playerId,now){
 function createMatchRecord({mode,roomCode=null,a,b,now,bot=false}){
   const state=newGame({playerDeck:a.deck,cpuDeck:b.deck,playerSpecialDeck:a.special,cpuSpecialDeck:b.special,seed:uuid(),difficulty:'normal'});
   state.players[0].name=a.nickname;state.players[1].name=b.nickname;
+  state.deckSlots=[a.deckSlotId===KIRAHARA_SLOT?KIRAHARA_SLOT:null,b.deckSlotId===KIRAHARA_SLOT?KIRAHARA_SLOT:null];
   if(bot)state.botOrigin=PROFILE_ORIGINS.has(b.origin)?b.origin:'mountain';
   state.log=state.log.map(event=>event.text.startsWith('あなたの')?{...event,text:a.nickname+event.text.slice(3)}:event);
   return {id:uuid(),mode,room_code:roomCode,player0:a.id,player1:bot?null:b.id,name0:a.nickname,name1:b.nickname,
@@ -184,7 +190,7 @@ async function profileRoute(db,request,method,now){
 
 async function queueParticipant(db,q){
   const p=await first(db,'SELECT * FROM bk_profiles WHERE id=?',q.player_id);
-  return {id:p.id,nickname:p.nickname,rating:p.rating,deck:JSON.parse(q.deck_json),special:JSON.parse(q.special_json)};
+  return {id:p.id,nickname:p.nickname,rating:p.rating,...readStoredDeck(q.deck_json),special:JSON.parse(q.special_json)};
 }
 async function matchQueue(db,playerId,now){
   for(let retry=0;retry<4;retry++){
@@ -233,14 +239,14 @@ async function queueRoute(db,request,player,method,now){
     return queueResponse(db,player.id,now);
   }
   if(method==='POST'){
-    const selected=decks(await bodyJSON(request));
+    const selected=await decks(await bodyJSON(request),db,player.id);
     await cleanWaiting(db,now,player.id);
     const current=await occupancy(db,player.id,now);
     if(current&&current.kind!=='queue')await busy(db,current,player.id,now);
     if(!current){
       const id=uuid();
       await db.batch([
-        statement(db,'INSERT INTO bk_queue (player_id,id,deck_json,special_json,joined_at,last_seen) SELECT ?,?,?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM bk_occupancy WHERE player_id=?)',player.id,id,JSON.stringify(selected.deck),JSON.stringify(selected.special),now,now,player.id),
+        statement(db,'INSERT INTO bk_queue (player_id,id,deck_json,special_json,joined_at,last_seen) SELECT ?,?,?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM bk_occupancy WHERE player_id=?)',player.id,id,storedDeck(selected),JSON.stringify(selected.special),now,now,player.id),
         statement(db,"INSERT INTO bk_occupancy (player_id,kind,ref,updated_at) SELECT ?,'queue',?,? WHERE EXISTS (SELECT 1 FROM bk_queue WHERE player_id=? AND id=?) AND NOT EXISTS (SELECT 1 FROM bk_occupancy WHERE player_id=?)",player.id,id,now,player.id,id,player.id)
       ]);
       const claimed=await first(db,'SELECT * FROM bk_occupancy WHERE player_id=?',player.id);
@@ -267,7 +273,7 @@ async function renameFromBody(db,player,body,now){
   return {...player,nickname:name};
 }
 async function createRoom(db,request,player,now){
-  const body=await bodyJSON(request),selected=decks(body);
+  const body=await bodyJSON(request),selected=await decks(body,db,player.id);
   player=await renameFromBody(db,player,body,now);
   await cleanWaiting(db,now,player.id);
   const current=await occupancy(db,player.id,now);if(current)await busy(db,current,player.id,now);
@@ -275,7 +281,7 @@ async function createRoom(db,request,player,now){
     const code=roomCode();
     try{
       const results=await db.batch([
-        statement(db,"INSERT INTO bk_rooms (code,host_id,status,host_deck_json,host_special_json,created_at,updated_at,expires_at) SELECT ?,?,'waiting',?,?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM bk_occupancy WHERE player_id=?)",code,player.id,JSON.stringify(selected.deck),JSON.stringify(selected.special),now,now,now+ROOM_LIFE,player.id),
+        statement(db,"INSERT INTO bk_rooms (code,host_id,status,host_deck_json,host_special_json,created_at,updated_at,expires_at) SELECT ?,?,'waiting',?,?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM bk_occupancy WHERE player_id=?)",code,player.id,storedDeck(selected),JSON.stringify(selected.special),now,now,now+ROOM_LIFE,player.id),
         statement(db,"INSERT INTO bk_occupancy (player_id,kind,ref,updated_at) SELECT ?,'room',?,? WHERE EXISTS (SELECT 1 FROM bk_rooms WHERE code=? AND host_id=? AND status='waiting') AND NOT EXISTS (SELECT 1 FROM bk_occupancy WHERE player_id=?)",player.id,code,now,code,player.id,player.id)
       ]);
       if(changed(results[0]))return roomResponse(db,await loadRoom(db,code),player.id,now);
@@ -285,7 +291,7 @@ async function createRoom(db,request,player,now){
   problem(409,'room_conflict','ルーム作成が重なりました。もう一度お試しください。');
 }
 async function joinRoom(db,request,player,code,now){
-  const body=await bodyJSON(request),selected=decks(body);player=await renameFromBody(db,player,body,now);
+  const body=await bodyJSON(request),selected=await decks(body,db,player.id);player=await renameFromBody(db,player,body,now);
   await cleanWaiting(db,now,player.id);
   let room=await loadRoom(db,code);
   if(room.status==='matched'&&(room.host_id===player.id||room.guest_id===player.id))return roomResponse(db,room,player.id,now);
@@ -293,7 +299,7 @@ async function joinRoom(db,request,player,code,now){
   if(room.host_id===player.id)problem(400,'own_room','自分のルームには相手が入室するまでお待ちください。');
   const current=await occupancy(db,player.id,now);if(current)await busy(db,current,player.id,now);
   const host=await first(db,'SELECT * FROM bk_profiles WHERE id=?',room.host_id),guest=await first(db,'SELECT * FROM bk_profiles WHERE id=?',player.id);
-  const row=createMatchRecord({mode:'room',roomCode:code,a:{...host,deck:JSON.parse(room.host_deck_json),special:JSON.parse(room.host_special_json)},b:{...guest,...selected},now});
+  const row=createMatchRecord({mode:'room',roomCode:code,a:{...host,...readStoredDeck(room.host_deck_json),special:JSON.parse(room.host_special_json)},b:{...guest,...selected},now});
   const condition="EXISTS (SELECT 1 FROM bk_rooms r JOIN bk_occupancy o ON o.player_id=r.host_id AND o.kind='room' AND o.ref=r.code WHERE r.code=? AND r.host_id=? AND r.status='waiting' AND r.expires_at>?) AND NOT EXISTS (SELECT 1 FROM bk_occupancy WHERE player_id=?)";
   const result=await db.batch([
     insertMatch(db,row,condition,[code,host.id,now,player.id]),

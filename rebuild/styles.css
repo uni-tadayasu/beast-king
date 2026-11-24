@@ -90,3 +90,5 @@ footer #status{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:no
 
 /* Separate solo cloud backup dialog. No persistent layout expansion. */
 .cloud-entry{align-self:flex-start;font-size:.82rem;padding:5px 9px}.cloud-panel{display:grid;gap:12px;max-width:min(560px,82vw);font-size:.9rem}.cloud-compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.cloud-compare article{display:grid;gap:6px;padding:10px;border:1px solid #a3915d66;background:#182134;border-radius:6px;overflow-wrap:anywhere}.cloud-compare h3{font-size:.85rem;color:#d4bd86}.cloud-compare small{font-size:.75rem}.cloud-actions{display:flex;gap:6px;flex-wrap:wrap}.cloud-status{min-height:1.5em}.cloud-panel a{color:#f0ce87}@media(max-width:420px){.cloud-compare{grid-template-columns:1fr}.cloud-panel{gap:8px}.cloud-entry{font-size:.75rem;padding:4px 6px}}
+
+.operator-preview{display:grid;place-items:center;min-width:0}.operator-preview>.card{width:min(100%,150px);height:auto;aspect-ratio:360/520}

@@ -286,14 +286,14 @@ export function createOnlineClient({
     } catch (error) { report(error, phase, version); throw error; }
   }
   const encode = value => encodeURIComponent(String(value ?? ''));
-  function createRoom(deck, special) {
-    return membership(version => changeMembership('/rooms', { deck, special }, 'room', version));
+  function createRoom(deck, special, deckSlotId=null) {
+    return membership(version => changeMembership('/rooms', { deck, special, ...(deckSlotId?{deckSlotId}:{}) }, 'room', version));
   }
-  function joinRoom(code, deck, special) {
-    return membership(version => changeMembership(`/rooms/${encode(String(code).trim())}/join`, { deck, special }, 'room', version));
+  function joinRoom(code, deck, special, deckSlotId=null) {
+    return membership(version => changeMembership(`/rooms/${encode(String(code).trim())}/join`, { deck, special, ...(deckSlotId?{deckSlotId}:{}) }, 'room', version));
   }
-  function startRanked(deck, special) {
-    return membership(version => changeMembership('/queue', { deck, special }, 'queue', version));
+  function startRanked(deck, special, deckSlotId=null) {
+    return membership(version => changeMembership('/queue', { deck, special, ...(deckSlotId?{deckSlotId}:{}) }, 'queue', version));
   }
   function leaveRoom(code) {
     return membership(async version => {

@@ -276,3 +276,5 @@ node scripts/configure-seo.mjs https://www.beast-king.com/
 | `scripts/configure-seo.mjs` | 公開URLに合わせたSEOファイル更新 |
 
 © 2026 Beast King
+
+専用イラストの表示は認証済みの𠮷良原デッキ枠に限定します。図鑑・左側カード一覧・通常デッキ・相手のカードでは通常絵を使用し、対戦開始時の枠を保持します。専用絵のAPI配信がない場合は未受信表示となります。特別な画像データは保存や公開カード素材に含めません。
