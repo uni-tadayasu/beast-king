@@ -68,7 +68,10 @@ try{
  await send('Network.enable');await send('Network.setBlockedURLs',{urls:['*chatgpt.site/*']});
  await send('Page.navigate',{url});await waitElement('#entry-start-form');
  await evaluate('document.querySelector("#entry-player-name").value="画面表示テスト十二文字";true');
+ assert.equal(await evaluate('document.querySelectorAll("#entry-starter option").length'),4);
  await click('[data-action=name-start]');await waitElement('.product-home');
+ assert.equal(await evaluate('Object.values(JSON.parse(localStorage.getItem("beast-king-v6")).collection).reduce((a,b)=>a+b,0)'),36);
+ await click('[data-action=starter-packs]');assert.equal(await evaluate('document.querySelectorAll("[data-action=starter-buy]").length'),4);assert.equal(await evaluate('document.querySelectorAll("[data-action=starter-load]:disabled").length'),3);await click('.navigation-dock [data-nav=home]');
  const inspect=`(selectors)=>{const out=[];for(const selector of selectors){const els=[...document.querySelectorAll(selector)].filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden'});for(let i=0;i<els.length;i++)for(let j=i+1;j<els.length;j++){const a=els[i].getBoundingClientRect(),b=els[j].getBoundingClientRect();const w=Math.min(a.right,b.right)-Math.max(a.left,b.left),h=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);if(w>2&&h>2)out.push({selector,i,j,a:els[i].getAttribute('aria-label')||els[i].className,b:els[j].getAttribute('aria-label')||els[j].className,w:Math.round(w),h:Math.round(h)});}}return out}`;
  async function check(label,selectors=[]){
   const v=await evaluate('({w:innerWidth,h:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight})');assert.ok(v.sw<=v.w+2&&v.sh<=v.h+2,label+' viewport overflow '+JSON.stringify(v));
@@ -111,7 +114,7 @@ try{
   await click('.operator-console-tab:nth-child(1)');await delay(120);
   assert.ok(await evaluate('!document.querySelector("[data-action=operator-artwork-open]").closest("details").hidden'));
   await evaluate('document.querySelector("#modal-root").innerHTML="";true');
-  await click('.navigation-dock [data-nav=deck]');assert.equal(await evaluate('document.querySelectorAll("#deck-bank-select option").length'),4);
+  await click('.navigation-dock [data-nav=deck]');assert.equal(await evaluate('document.querySelectorAll("#deck-bank-select option").length'),1);
   assert.ok(await evaluate('Boolean(document.querySelector(".transfer-source .transfer-card")&&document.querySelector(".deck-panel .deck-image-slot"))'));
   await waitElement('.bk-native-pane>.bk-fit-pane[data-fit-scale]');await delay(180);
   const panes=await evaluate(`(()=>{const frame=document.querySelector('.bk-native-pane').getBoundingClientRect(),left=document.querySelector('.transfer-source').getBoundingClientRect(),right=document.querySelector('.deck-panel').getBoundingClientRect();return {left:left.toJSON(),right:right.toJSON(),frame:frame.toJSON()}})()`);

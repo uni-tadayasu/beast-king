@@ -1,5 +1,5 @@
 /** Title and player-name entry screen. All state and interactions are owned by app.js. */
-export function entryView({ playerName = '', profileOrigin = 'mountain', ELEMENTS = [], esc, icon, musicButton } = {}) {
+export function entryView({ playerName = '', profileOrigin = 'mountain', starterId = '', starters = [], ELEMENTS = [], esc, icon, musicButton } = {}) {
   const escape = typeof esc === 'function' ? esc : value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const glyph = name => typeof icon === 'function' ? icon(name) : '';
   const audioControl = typeof musicButton === 'function' ? musicButton() : '';
@@ -25,6 +25,7 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', ELEMENT
           <div class="entry-input-wrap"><span class="entry-input-mark" aria-hidden="true">${glyph('crown')}</span><input id="entry-player-name" name="playerName" type="text" value="${escape(String(playerName ?? ''))}" maxlength="16" minlength="1" required autocomplete="nickname" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="あなたの名前" aria-describedby="entry-name-help entry-name-note" enterkeyhint="go"></div>
           <p id="entry-name-error" class="entry-name-error" role="alert" hidden></p>
           <div class="entry-profile-picker"><p id="entry-profile-label">プロフィールアイコン</p><div class="entry-profile-options" role="group" aria-labelledby="entry-profile-label">${profileChoices}</div></div>
+          <div class="entry-starter-choice"><label for="entry-starter">最初のスターターデッキ（1種類無料）</label><select id="entry-starter" data-change="entry-starter" name="starter" aria-label="最初のスターターデッキ">${starters.map((d,i)=>`<option value="${escape(d.id)}"${d.id===starterId||(!starterId&&i===0)?' selected':''}>${escape(d.name)}</option>`).join('')}</select><small>通常32枚＋特殊4枚。残りはショップで購入できます。</small></div>
           <button class="entry-start-button" type="button" data-action="name-start"><span aria-hidden="true">${glyph('sword')}</span><span>開始</span></button>
           <p id="entry-name-note" class="entry-name-note">登録は初回だけ。名前とアイコンは設定で変更できます。</p>
         </form>

@@ -63,13 +63,16 @@ export function grantDeckCollection(raw, ids) {
   return collection;
 }
 
-/** Grant the four current starters without removing cards from an existing collection. */
-export function createStarterCollection(raw = {}) {
-  let collection = normalizeCollection(raw);
-  for (const starter of STARTER_DECKS) {
-    collection = grantDeckCollection(collection, [...starter.ids, ...(starter.specialIds || [])]);
-  }
-  return collection;
+/** Initial ownership is limited to the chosen 36-card deck. */
+export function createStarterCollection(raw={},starterId=STARTER_DECKS[0].id){
+ const starter=STARTER_DECKS.find(d=>d.id===starterId);
+ if(!starter)throw Error('Unknown starter');
+ return grantDeckCollection(raw,[...starter.ids,...starter.specialIds]);
+}
+export function hasStarterCards(collection,starterId){
+ const d=STARTER_DECKS.find(s=>s.id===starterId);if(!d)return false;
+ const required={};for(const id of [...d.ids,...d.specialIds])required[id]=(required[id]||0)+1;
+ return Object.entries(required).every(([id,n])=>Number.isInteger(collection?.[id])&&collection[id]>=n);
 }
 
 function randomUnit(randomFn) {

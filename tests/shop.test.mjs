@@ -5,7 +5,7 @@ import {
   PACK_ID, PACK_NAME, PACK_DESCRIPTION, PACK_CARD_IDS, PACK_CARD_COUNT,
   PACK_COST, PACK_SIZE, STARTING_TREASURE, EXTRA_COPY_TREASURE,
   RARITY_ODDS, GUARANTEED_RARITY_ODDS,
-  normalizeCollection, grantDeckCollection, createStarterCollection, openPack, getBattleReward, STARTER_PRICE,quoteStarterPurchase,purchaseStarter,
+  normalizeCollection, grantDeckCollection, createStarterCollection, hasStarterCards, openPack, getBattleReward, STARTER_PRICE,quoteStarterPurchase,purchaseStarter,
 } from '../shop.js';
 
 function seededRandom(seed) {
@@ -39,18 +39,17 @@ test('normalization rejects unknown IDs and invalid counts without mutating inpu
   assert.equal(raw.B0001, 7);
 });
 
-test('starter ownership supports all four main and special decks using maxima', () => {
-  const collection = createStarterCollection();
-  assert.equal(STARTER_DECKS.length, 4);
-  for (const deck of STARTER_DECKS) {
-    const required = new Map();
-    for (const id of [...deck.ids, ...deck.specialIds]) required.set(id, (required.get(id) || 0) + 1);
-    for (const [id, count] of required) assert.ok(collection[id] >= count, `${deck.id}: ${id}`);
-  }
-  assert.equal(collection[FUSION_CARD_ID], 2, 'shared fusion spell is not summed across eight starters');
-  assert.ok(Object.keys(collection).some(id => id.startsWith('F')));
-  assert.ok(Object.values(collection).every(count => Number.isInteger(count) && count > 0 && count <= 3));
-  assert.deepEqual(createStarterCollection(), collection);
+test('each initial choice grants only its own 36 cards',()=>{
+ assert.equal(STARTER_DECKS.length,4);
+ for(const deck of STARTER_DECKS){
+  const collection=createStarterCollection({},deck.id);
+  assert.equal(Object.values(collection).reduce((sum,n)=>sum+n,0),36);
+  assert.deepEqual(collection,grantDeckCollection({},[...deck.ids,...deck.specialIds]));
+  assert.equal(hasStarterCards(collection,deck.id),true);
+  for(const other of STARTER_DECKS.filter(d=>d.id!==deck.id))assert.equal(hasStarterCards(collection,other.id),false);
+  assert.equal(collection[FUSION_CARD_ID],2);
+  assert.deepEqual(createStarterCollection(collection,deck.id),collection);
+ }
 });
 
 test('grantDeckCollection preserves custom deck copies and never adds repeated grants', () => {

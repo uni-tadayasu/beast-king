@@ -401,6 +401,7 @@ test('operator deck claim rejects an outdated save revision without losing newer
 
 test('multiple named decks survive cloud validation and device restoration independently',async t=>{
  const f=fixture(t),p=await f.profile(),data=saveData(p);
+ for(const d of STARTER_DECKS)data.collection=createStarterCollection(data.collection,d.id);
  data.deckLibrary=STARTER_DECKS.map(d=>({id:'starter-'+d.id,name:d.name,ids:[...d.ids],specialIds:[...d.specialIds]}));
  data.activeDeckId=data.deckLibrary[0].id;data.editingDeckId=data.deckLibrary[1].id;
  data.deckLibrary[1].draft={name:'編集途中',ids:data.deckLibrary[1].ids.slice(1),specialIds:data.deckLibrary[1].specialIds};

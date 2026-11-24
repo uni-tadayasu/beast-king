@@ -22,7 +22,7 @@ import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayou
 const appSource = readFileSync(new URL('../app.js', import.meta.url), 'utf8').replace(/^import\s+[^;]+;\s*$/gm, '');
 const expose = `
 globalThis.__appIntegration = {
-  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase,
+  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase, loadStarterFromShop, registerOwnedStarter,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
   get workingDeck(){return workingDeck}, get data(){return data}, get game(){return game}, get cpuGame(){return cpuGame},
@@ -342,6 +342,7 @@ test('optional physical-card editor preserves the grouped editor and validates a
 
 test('deck library keeps starter edits, active deck and drafts independent',()=>{
  const {app}=boot();const first=catalog.STARTER_DECKS[0],second=catalog.STARTER_DECKS[1];
+ for(const d of catalog.STARTER_DECKS)app.data.collection=shop.createStarterCollection(app.data.collection,d.id);app.initializeDeckBank(app.data);
  assert.equal(app.data.deckLibrary.length,4);
  assert.equal(app.loadBankEntry('starter-'+second.id),true);
  assert.deepEqual([...app.workingDeck],[...second.ids]);assert.deepEqual([...app.data.deckIds],[...first.ids]);
@@ -357,6 +358,7 @@ test('deck library keeps starter edits, active deck and drafts independent',()=>
 
 test('returning a card to the shared pool does not change inventory or a different saved deck',()=>{
  const {app}=boot();const first=catalog.STARTER_DECKS[0],second=catalog.STARTER_DECKS[1];
+ app.data.collection=shop.createStarterCollection(app.data.collection,second.id);app.initializeDeckBank(app.data);
  assert.equal(app.loadBankEntry('starter-'+first.id),true);
  const cardId=app.workingDeck[0],before=plain(app.data.collection),other=plain(app.data.deckLibrary.find(d=>d.id==='starter-'+second.id));
  const count=app.workingDeck.filter(id=>id===cardId).length;
@@ -455,7 +457,16 @@ test('starter purchase confirmation preserves every deck and prevents duplicate 
  const id=catalog.STARTER_DECKS[1].id,before=plain(app.data.deckLibrary),active=plain(app.data.deckIds),quote=shop.quoteStarterPurchase(app.data,id);
  assert.equal(app.starterPurchaseModal(id),true);assert.equal(app.confirmStarterPurchase(id),true);
  assert.equal(app.data.treasure,quote.treasure);assert.deepEqual(plain(app.data.collection),quote.collection);
- assert.deepEqual(plain(app.data.deckLibrary),before);assert.deepEqual(plain(app.data.deckIds),active);
+ assert.deepEqual(plain(app.data.deckLibrary.slice(0,before.length)),before);assert.equal(app.data.deckLibrary.length,before.length+1);assert.deepEqual(plain(app.data.deckIds),active);
  assert.equal(app.confirmStarterPurchase(id),false);assert.equal(app.data.treasure,quote.treasure);
  const restored=app.restoreData(plain(app.data));assert.deepEqual(plain(restored.collection),quote.collection);assert.equal(restored.treasure,quote.treasure);
+});
+
+test('only one starter is granted; unowned presets cannot load and restores preserve inventory',()=>{
+ const {app}=boot();const other=catalog.STARTER_DECKS[1],before=plain(app.data.collection);
+ assert.equal(Object.values(before).reduce((sum,n)=>sum+n,0),36);assert.equal(app.data.deckLibrary.length,1);
+ assert.equal(app.loadStarterFromShop(other.id),false);assert.equal(app.loadBankEntry('starter-'+other.id),false);assert.deepEqual(plain(app.data.collection),before);
+ for(const d of catalog.STARTER_DECKS){const fresh=app.baseData(d.id);app.initializeDeckBank(fresh);const restored=app.restoreData(plain(fresh));assert.equal(restored.deckLibrary.length,1);assert.deepEqual(plain(restored.collection),plain(fresh.collection));assert.equal(restored.activeDeckId,'starter-'+d.id);}
+ const legacy=plain(app.data);for(const d of catalog.STARTER_DECKS)legacy.collection=shop.createStarterCollection(legacy.collection,d.id);
+ const restored=app.restoreData(legacy);assert.deepEqual(plain(restored.collection),legacy.collection);assert.equal(restored.deckLibrary.length,4);
 });
