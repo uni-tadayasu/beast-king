@@ -153,11 +153,50 @@ function updatePagedList(list,state){
  const label=(state.index+1)+' / '+pages+' · '+items.length+'件';if(state.label.textContent!==label)state.label.textContent=label;
  state.prev.disabled=state.index===0;state.next.disabled=state.index===pages-1;state.bar.hidden=pages===1;
 }
+function fitOperatorConsole(modal){
+ const view=modal.querySelector('.operator-view');if(!view)return false;
+ modal.classList.add('operator-fullscreen');
+ for(const key of ['width','height','min-height','max-width','max-height','left','top','right','bottom','transform'])modal.style.removeProperty(key);
+ modal.dataset.fitScale='1.0000';
+ if(!view.querySelector('.operator-workspace')){
+  const sections=children(view).filter(e=>e.matches('details.operator-section'));
+  if(!sections.length)return false;
+  const header=doc.createElement('div');header.className='operator-console-header';
+  for(const e of children(view).filter(e=>!e.matches('details.operator-section')))header.append(e);
+  const workspace=doc.createElement('div');workspace.className='operator-workspace';
+  const nav=doc.createElement('nav');nav.className='operator-console-nav';nav.setAttribute('aria-label','運営管理メニュー');
+  const content=doc.createElement('div');content.className='operator-console-content';
+  const preferred=sections.findIndex(e=>e.open&&e.dataset.operatorSection==='events');
+  const initial=preferred>=0?preferred:Math.max(0,sections.findIndex(e=>e.open));
+  const tabs=[];
+  function select(index){
+   sections.forEach((section,i)=>{section.hidden=i!==index;section.open=i===index;tabs[i].setAttribute('aria-pressed',String(i===index));});
+   view.dataset.operatorActive=String(index);schedule();
+  }
+  sections.forEach((section,index)=>{
+   const summary=section.querySelector('summary'),body=section.querySelector('.operator-section-body');
+   const button=doc.createElement('button');button.type='button';button.className='operator-console-tab';
+   button.textContent=summary?.querySelector('span')?.textContent||summary?.textContent||'項目 '+(index+1);
+   button.addEventListener('click',()=>select(index));tabs.push(button);nav.append(button);
+   if(summary)summary.addEventListener('click',e=>e.preventDefault());
+   if(body){const frame=doc.createElement('div');frame.className='operator-content-frame';section.insertBefore(frame,body);frame.append(body);}
+   content.append(section);
+  });
+  workspace.append(nav,content);view.append(header,workspace);select(initial);
+ }
+ const active=view.querySelector('.operator-section:not([hidden]) .operator-content-frame');
+ if(active?.firstElementChild){
+  const body=active.firstElementChild;
+  fit(body,active.clientWidth,active.clientHeight,{fill:true});
+ }
+ return true;
+}
 function fitModal(){
  const modal=doc.querySelector('#modal-root .modal,dialog[open],.news-dialog');
  if(!modal)return;
  const w=Math.max(1,innerWidth-20),h=Math.max(1,(window.visualViewport?.height||innerHeight)-20);
  if(modal!==lastModal){lastModal=modal;modal.classList.add('bk-fit-modal');}
+ if(fitOperatorConsole(modal))return;
  const wrap=modal.parentElement;
  const inBackdrop=wrap?.classList.contains('modal-backdrop');
  // Native dialogs remain in the top layer and use its centered positioning.

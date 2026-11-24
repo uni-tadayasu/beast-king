@@ -427,6 +427,7 @@ test('dual workshop displays a complete left catalogue and an independent right 
  assert.ok(view.includes('id="deck-bank-select"')&&view.includes('data-action="deck-save"'));
  assert.ok(view.includes('class="deck-image-grid"')&&view.includes('data-action="deck-return-slot"'));
  assert.ok(!view.includes('deck-visible-rows')&&!view.includes('data-action="deck-list-mode"'));
+ assert.ok(view.indexOf('class="deck-panel-foot"')<view.indexOf('class="deck-list"'));
  const id=app.workingDeck[0],collection=plain(app.data.collection);
  assert.equal(app.editDeck(id,false),true);assert.equal(app.filteredCards().length,2304);
  assert.deepEqual(plain(app.data.collection),collection);
