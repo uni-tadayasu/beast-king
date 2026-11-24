@@ -90,7 +90,7 @@ try{
  assert.equal(await evaluate(saved+'.lastPack.length'),12);assert.equal(await evaluate(saved+'.lastPackId'),'BK02');
  await click('nav [data-page=deck]');assert.ok((await evaluate('document.querySelector(".deck-list").innerText')).includes('32/32'));
  await click('nav [data-page=solo]');await click('[data-act=practice][data-level=normal]');await waitElement('.arena');
- assert.ok((await evaluate('getComputedStyle(document.querySelector(".table")).backgroundImage')).includes('solo.webp'));
+ assert.ok((await evaluate('getComputedStyle(document.querySelector(".table")).backgroundImage')).includes('solo-illustrated.webp'));
  await click('[data-act=zone-list][data-player="1"]');await waitElement('dialog[open]');assert.ok((await evaluate('document.querySelector("dialog").innerText')).includes('カードの内容は非公開'));await click('dialog [data-act=close]');
  const initial=await evaluate(saved+'.suspendedMatch');assert.equal(initial.game.players[0].core,5000);assert.equal(initial.game.players[0].hand.length,4);
  await click('[data-act=end-turn]');

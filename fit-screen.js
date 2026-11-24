@@ -113,7 +113,7 @@ function fitDeckWorkshop(node,width,height){
  node.dataset.fitScale=scale.toFixed(4);node.dataset.fitWidth=String(Math.round(result.w*scale));node.dataset.fitHeight=String(Math.round(result.h*scale));
 }
 
-function fit(node,width,height,{modal=false,logicalMin=0,center=false,fill=false,measureCards=false}={}){
+function fit(node,width,height,{modal=false,logicalMin=0,center=false,fill=false,measureCards=false,tolerance=2}={}){
  if(!node||width<1||height<1)return;
  node.style.transform='none';node.style.setProperty('left','0px','important');node.style.setProperty('top','0px','important');
  // Try physical pixel dimensions first. If content is exceptionally tall,
@@ -126,7 +126,7 @@ function fit(node,width,height,{modal=false,logicalMin=0,center=false,fill=false
   setCanvas(node,w,h,fill);
   if(measureCards&&(measure||node.dataset.page==='deck'))measureCardPane(node,h);
   const n=naturalSize(node);
-  return {fits:n.w*s<=width+2&&n.h*s<=height+2,ratio:Math.min(1,width/n.w,height/n.h),w,h,n};
+  return {fits:n.w*s<=width+tolerance&&n.h*s<=height+tolerance,ratio:Math.min(1,width/n.w,height/n.h),w,h,n};
  }
  let result=trial(1,true);
  if(fill){
@@ -371,7 +371,9 @@ function lockOverflow(){
 }
 function run(){
  pending=false;if(running)return;running=true;
- try{paginateAbout();paginateLongLists();fitApp();if(about){const {frame,main}=about;fit(main,frame.clientWidth,frame.clientHeight,{fill:true});}fitModal();fitAuxiliary();lockOverflow();}finally{running=false;}
+ // Guide section boxes must also fit, including fractional CSS pixels rounded
+ // by offsetHeight/scrollHeight. Keep their allowance below the visible edge.
+ try{paginateAbout();paginateLongLists();fitApp();if(about){const {frame,main}=about;fit(main,frame.clientWidth,frame.clientHeight,{fill:true,tolerance:.5});}fitModal();fitAuxiliary();lockOverflow();}finally{running=false;}
 }
 function schedule(){if(pending)return;pending=true;requestAnimationFrame(run);}
 new MutationObserver(records=>{if(records.some(r=>r.type==='childList'&&(r.addedNodes.length||r.removedNodes.length)))schedule();}).observe(doc.body,{childList:true,subtree:true});

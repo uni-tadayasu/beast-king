@@ -209,6 +209,10 @@ try{
    for(let chapter=0;chapter<chapterCount;chapter++){
     await evaluate('(()=>{const s=document.querySelector("[data-guide-select]");s.value='+chapter+';s.dispatchEvent(new Event("change",{bubbles:true}));return true})()');await delay(100);
     const guide=await evaluate('(()=>{const f=layoutRect(document.querySelector(".bk-fit-article")),sections=[...document.querySelectorAll("#about-main > section:not([hidden])")];return {visible:sections.length,bad:sections.flatMap(s=>[s,...s.querySelectorAll("h1,h2,h3,p,a,dl,article")]).filter(e=>{const r=layoutRect(e);return r.width>0&&r.height>0&&(r.left<f.left-2||r.right>f.right+2||r.top<f.top-2||r.bottom>f.bottom+2)}).map(e=>e.id||e.className||e.tagName)}})()');
+    if(guide.bad.length){
+     const geometry=await evaluate('(()=>{const main=document.querySelector("#about-main"),frame=document.querySelector(".bk-fit-article");return {frame:layoutRect(frame).toJSON(),main:layoutRect(main).toJSON(),scale:main.dataset.fitScale,sections:[...main.querySelectorAll(":scope > section:not([hidden])")].map(e=>({id:e.id,box:layoutRect(e).toJSON(),offsetHeight:e.offsetHeight,scrollHeight:e.scrollHeight,minHeight:getComputedStyle(e).minHeight}))}})()');
+     console.error('Guide chapter geometry',JSON.stringify({path,width,height,chapter:chapter+1,...geometry}));
+    }
     assert.deepEqual(guide,{visible:1,bad:[]},path+' '+width+'x'+height+' complete chapter '+(chapter+1));
    }
    await check(path+' '+width+'x'+height,['.guide-header>*','.bk-fit-pager>*']);
