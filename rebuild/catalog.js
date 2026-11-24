@@ -1,6 +1,7 @@
+import {getCard as getPublishedCard} from '../catalog.js';
 // Independent catalog boundary for the rebuilt game. Legacy main IDs stay intact.
-import {CARDS as LEGACY} from '../catalog.js';
-import {ORIGINS as legacy_ORIGINS,ELEMENTS as legacy_ELEMENTS,TYPE_LABELS as legacy_TYPE_LABELS,RARITY_LABELS as legacy_RARITY_LABELS,KEYWORD_LABELS as legacy_KEYWORD_LABELS,MODEL_LABELS as legacy_MODEL_LABELS,SUBTYPE_LABELS as legacy_SUBTYPE_LABELS,MODEL_DESCRIPTIONS as legacy_MODEL_DESCRIPTIONS,POINT_SCALE as legacy_POINT_SCALE,FUSION_MATERIAL_BONUS as legacy_FUSION_MATERIAL_BONUS,DECK_SIZE as legacy_DECK_SIZE,DECK_MIN as legacy_DECK_MIN,DECK_MAX as legacy_DECK_MAX,SPECIAL_DECK_SIZE as legacy_SPECIAL_DECK_SIZE,DECK_COPY_LIMIT as legacy_DECK_COPY_LIMIT,STARTER_DECKS as legacy_STARTER_DECKS,RARITY_ORDER as legacy_RARITY_ORDER,FUSION_CARD_ID as legacy_FUSION_CARD_ID} from '../catalog.js';
+import {CARDS as LEGACY} from './legacy-catalog.js';
+import {ORIGINS as legacy_ORIGINS,ELEMENTS as legacy_ELEMENTS,TYPE_LABELS as legacy_TYPE_LABELS,RARITY_LABELS as legacy_RARITY_LABELS,KEYWORD_LABELS as legacy_KEYWORD_LABELS,MODEL_LABELS as legacy_MODEL_LABELS,SUBTYPE_LABELS as legacy_SUBTYPE_LABELS,MODEL_DESCRIPTIONS as legacy_MODEL_DESCRIPTIONS,POINT_SCALE as legacy_POINT_SCALE,FUSION_MATERIAL_BONUS as legacy_FUSION_MATERIAL_BONUS,DECK_SIZE as legacy_DECK_SIZE,DECK_MIN as legacy_DECK_MIN,DECK_MAX as legacy_DECK_MAX,SPECIAL_DECK_SIZE as legacy_SPECIAL_DECK_SIZE,DECK_COPY_LIMIT as legacy_DECK_COPY_LIMIT,STARTER_DECKS as legacy_STARTER_DECKS,RARITY_ORDER as legacy_RARITY_ORDER,FUSION_CARD_ID as legacy_FUSION_CARD_ID} from './legacy-catalog.js';
 export const ORIGINS=legacy_ORIGINS;
 export const ELEMENTS=legacy_ELEMENTS;
 export const TYPE_LABELS=legacy_TYPE_LABELS;
@@ -21,7 +22,7 @@ export const RARITY_ORDER=legacy_RARITY_ORDER;
 export const FUSION_CARD_ID=legacy_FUSION_CARD_ID;
 export const PACKS=Object.freeze([
  Object.freeze({id:'BK01',name:'六源の覚醒',number:1}),
- Object.freeze({id:'BK02',name:'第二弾・王域の黎明（仮）',number:2})
+ Object.freeze({id:'BK02',name:'王源の継承',number:2})
 ]);
 const domains=[
  ['極光','雪嶺','氷海','霜原','白暁','氷晶','凍月','銀界'],
@@ -57,6 +58,8 @@ const miracleNouns=['断光','息吹','導標','結束','流星','聖壁','魂�
 const gimmickNouns=['逆刃陣','鏡壁陣','軍旗陣','湧命陣'];
 const fusionNouns=['双冠獣','極翼獣','天環獣','万象獣'];
 export const REGALIA_ART_ASSET='assets/design-v2/cards/individual/king.webp';
+// Freeze the original mechanics for existing rebuild saves; published names/art
+// are shared with the new catalogue while card IDs, costs and effects stay stable.
 const first=LEGACY.map(c=>Object.freeze({...c,pack:'BK01',artStatus:'existing',...(c.id==='B0512'?{artAsset:REGALIA_ART_ASSET}:{})}));
 const byKind={beast:512,miracle:256,gimmick:256,fusion:128};
 const prefixes={beast:'B',miracle:'M',gimmick:'G',fusion:'F'};
@@ -77,12 +80,14 @@ for(const [type,count] of Object.entries(byKind)){
   let name=type==='beast'?domains[realm][rank]+creatures[realm][variant]+' '+names[realm][variant]:
    type==='fusion'?domains[realm][rank]+fusionNouns[variant]+' '+names[realm][variant]+'ル':
    domains[realm][rank]+'の'+(type==='miracle'?miracleNouns[variant]:gimmickNouns[variant]);
+  const visual=getPublishedCard(id);
+  if(visual)name=visual.name;
   if(type==='beast'&&n===511)name='王冠竜 レガリア';
   if(type==='miracle'&&n===255)name='合成';
   const origin=newOrigins[realm];
   second.push(Object.freeze({...template,id,index:1153+second.length,name,origin,element:origin,pack:'BK02',
-   flavor:'王域の黎明 — '+domains[realm][rank]+'に伝わる新たな契約。',
-   artStatus:id==='B1024'?'existing':'pending',art:null,...(id==='B1024'?{artAsset:REGALIA_ART_ASSET}:{})}));
+   flavor:visual?.flavor||'王源の継承 — '+domains[realm][rank]+'に伝わる新たな契約。',
+   artStatus:'existing',art:null,...(id==='B1024'?{artAsset:REGALIA_ART_ASSET}:{})}));
  }
 }
 export const FIRST_CARDS=Object.freeze(first);

@@ -5,8 +5,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 const argument = process.argv[2];
-if (!argument || process.argv.length !== 3) {
-  console.error('Usage: node scripts/configure-seo.mjs https://example.com/base-path/');
+if (!argument || process.argv.length < 3 || process.argv.length > 4) {
+  console.error('Usage: node scripts/configure-seo.mjs https://example.com/base-path/ [output-directory]');
   process.exit(1);
 }
 let base;
@@ -20,7 +20,7 @@ if (!['https:', 'http:'].includes(base.protocol) || base.username || base.passwo
 }
 if (!base.pathname.endsWith('/')) base.pathname += '/';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const dist = root;
+const dist = process.argv[3] ? resolve(process.argv[3]) : root;
 const imageUrl = new URL('assets/social-ogp.jpg', base).href;
 const escapeAttribute = value => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
 const escapeXml = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');

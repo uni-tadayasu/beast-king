@@ -2,6 +2,9 @@
  * Every entry is SVG inner markup for viewBox="0 0 24 24" and uses currentColor.
  */
 export const BRAND_ICONS = Object.freeze({
+  "chevron-left": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m15 5-7 7 7 7\"/></g>",
+  "chevron-right": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m9 5 7 7-7 7\"/></g>",
+  "users": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"9\" cy=\"7\" r=\"3\"/><path d=\"M3 20v-2a6 6 0 0 1 12 0v2M16 4a3 3 0 0 1 0 6m2 3a5 5 0 0 1 3 5v2\"/></g>",
   "music": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 17V5l10-2v12M9 8l10-2\"/><path d=\"M9 17c0 2-1.7 3.5-3.5 3.5S3 19.6 3 18.5 4.5 16 6.5 16H9Zm10-2c0 2-1.7 3.5-3.5 3.5S13 17.6 13 16.5s1.5-2.5 3.5-2.5H19Z\"/></g>",
   "musicMute": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 17V10m0-5 10-2v8M12 7.4 19 6M9 17c0 2-1.7 3.5-3.5 3.5S3 19.6 3 18.5 4.5 16 6.5 16H9Zm10-2c0 2-1.7 3.5-3.5 3.5S13 17.6 13 16.5s1.5-2.5 3.5-2.5H19ZM3 3l18 18\"/></g>",
   "treasure": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7.5 3.5 9 0 5 6-9.5 12-9.5-12Z\"/><path d=\"M2.5 9.5h19M7.5 3.5l1 6L12 21.5l3.5-12 1-6M8.5 9.5l3.5-6 3.5 6\"/></g>",

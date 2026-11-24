@@ -1,0 +1,260 @@
+/* BEAST KING — recessed tabletop, legible game state, and physical deck backs.
+   This skin deliberately leaves viewport sizing, row heights, and responsive
+   placement to the layout styles. Solo / multi / rank keep their own artwork. */
+.duel-shell {
+  --table-ink: #eee8f0;
+  --table-muted: #b8b5c6;
+  --table-paper: #f3e6c9;
+  --table-ready: #abd9c5;
+  --table-selected: #f5db9a;
+  color: var(--table-ink);
+}
+.duel-shell[data-field='solo'] {
+  --table-metal: #b7c5af;
+  --table-recess: #172b2894;
+}
+.duel-shell[data-field='multi'] {
+  --table-metal: #accfdf;
+  --table-recess: #172b3b94;
+}
+.duel-shell[data-field='rank'] {
+  --table-metal: #d5c090;
+  --table-recess: #30293994;
+}
+.duel-shell[data-field] .duel-top {
+  background: linear-gradient(180deg, #242135eb, var(--field-top));
+  box-shadow: 0 1px 0 #e5d6b414, 0 5px 16px #05071038;
+  border-bottom-color: var(--field-line);
+}
+.duel-shell .duel-brand { color: var(--table-paper); }
+.duel-shell .duel-brand .field-caption { color: var(--table-metal); letter-spacing: .08em; }
+.duel-shell .duel-hint-line { color: #c5bfce; }
+.duel-shell .duel-top-actions .icon-btn {
+  border-color: #b5a2c82e;
+  background: #1518279c;
+  box-shadow: inset 0 1px 0 #ffffff05;
+}
+.duel-shell[data-field] .arena {
+  background-image: linear-gradient(180deg, #090c1a40, transparent 26%, transparent 60%, #080d1b80), var(--field-art);
+  background-size: 100% 100%, cover;
+  background-position: center, center;
+  box-shadow: inset 0 0 65px #03050c40;
+}
+.duel-shell[data-field] .arena::before {
+  content: '';
+  position: absolute;
+  inset: 12px 14px 0;
+  width: auto;
+  height: auto;
+  aspect-ratio: auto;
+  transform: none;
+  border: 1px solid var(--field-line);
+  border-radius: 16px 16px 0 0;
+  background: linear-gradient(135deg, #0c132335, #15172712 45%, #0b0e1b40);
+  box-shadow: inset 0 1px 0 #e4dbba14, inset 0 0 0 4px #07121a30, 0 0 0 1px #0608123b;
+  z-index: -1;
+  pointer-events: none;
+}
+.duel-shell .duelist {
+  --hp-fill: linear-gradient(90deg, #548f85, #b4dfc5);
+  background: linear-gradient(90deg, #11172594, #161b284a 65%, transparent);
+  border-radius: 8px;
+  box-shadow: inset 0 -1px 0 #c5bcce13;
+}
+.duel-shell .duelist.enemy { --hp-fill: linear-gradient(90deg, #a1636a, #deb5a9); }
+.duel-shell .duelist-avatar {
+  background: linear-gradient(145deg, #515066, #1b2132 60%);
+  border-color: var(--table-metal);
+  color: var(--table-metal);
+}
+.duel-shell .duelist-name { color: #eee7ee; text-shadow: 0 1px 2px #080b14; }
+.duel-shell .core-bar { background: #080e1e; box-shadow: 0 1px 0 #fff1, inset 0 1px 2px #0008; }
+.duel-shell .core-bar > i { background: var(--hp-fill); box-shadow: inset 0 1px 0 #fff4; }
+.duel-shell .core-button {
+  border-color: #c6b99740;
+  background: linear-gradient(150deg, #313040e6, #131a2aed);
+  box-shadow: inset 0 1px 0 #ede7d917, 0 2px 5px #0003;
+}
+.duel-shell .core-button strong { color: #f6eddd; font-variant-numeric: lining-nums tabular-nums; }
+.duel-shell .core-button small { color: #bcb4c5; }
+.duel-shell .shield-value { color: #c7dce9; }
+.duel-shell .energy { color: #c0dfd6; font-variant-numeric: tabular-nums; }
+.duel-shell .duelist-extras { color: #c2bbcc; }
+
+/* A vacant seat is a cut-in well; an occupied card sits above its edge. */
+.duel-shell[data-field] .field-slot.empty {
+  background: linear-gradient(145deg, #060b1a7a, var(--table-recess));
+  border: 1px solid var(--field-empty);
+  box-shadow: inset 0 2px 8px #03050c80, inset 0 0 0 3px #c7b3e009, 0 1px 0 #ffffff0d;
+}
+.duel-shell[data-field] .field-slot.empty::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid #d9cfee12;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.duel-shell[data-field] .field-slot.empty::before { opacity: .78; }
+.duel-shell .field-slot:not(.empty) {
+  background: #080c1c45;
+  border-color: #b2a5c13d;
+  box-shadow: inset 0 1px 6px #03050c60;
+}
+.duel-shell .field-unit {
+  border-color: #a2a5bbab;
+  background: linear-gradient(#25243a, #121828);
+  box-shadow: 0 1px 0 #d2c6df42, 0 3px 0 #070b16, 0 7px 13px #0006;
+}
+.duel-shell .field-slot.fusion-slot { border-color: #c2a2d957; }
+.duel-shell .field-slot.fusion-slot .field-unit { border-color: #d3b1e7; }
+.duel-shell .field-unit .card-art.individual-art { opacity: 1; }
+.duel-shell .field-unit .card-finish { inset: 0 0 auto; height: auto; aspect-ratio: 1; }
+.duel-shell .field-unit .unit-name {
+  z-index: 3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+  line-height: 1.25;
+  padding: 3px 4px;
+  border-radius: 3px;
+  background: #121522ed;
+  color: #f0e6dc;
+  text-align: left;
+  text-shadow: 0 1px 1px #0009;
+}
+.duel-shell .field-unit .unit-stats {
+  position: relative;
+  z-index: 3;
+  color: #efdbb6;
+  border-top: 1px solid #bdadbd3d;
+  background: linear-gradient(180deg, #242238, #121726);
+  font-variant-numeric: lining-nums tabular-nums;
+  box-shadow: inset 0 1px 0 #ffffff06;
+}
+.duel-shell .field-unit .unit-stats > span:last-child { color: #c5dce9; }
+.duel-shell .field-unit .unit-badge {
+  z-index: 3;
+  background: #111827ed;
+  box-shadow: 0 1px 3px #0005;
+  font-weight: 500;
+}
+.duel-shell .field-unit .unit-guard { z-index: 4; color: #daecf4; }
+.duel-shell .field-unit.ready {
+  border-color: var(--table-ready);
+  box-shadow: 0 0 0 1px #b4dfc42e, 0 3px 0 #0a1821, 0 7px 14px #0006;
+}
+.duel-shell .field-unit.selected,
+.duel-shell .field-unit.targetable,
+.duel-shell .core-button.targetable {
+  border-color: var(--table-selected);
+  box-shadow: 0 0 0 2px #302a26, 0 0 0 3px #f5db9a85, 0 6px 15px #0006;
+}
+.duel-shell .field-unit.targetable { outline: 1px dashed #ffedbd; outline-offset: 3px; }
+.duel-shell .field-unit:focus-visible,
+.duel-shell .arcana-card:focus-visible,
+.duel-shell .zone-strip button:focus-visible,
+.duel-shell .core-button:focus-visible { outline: 2px solid #ffe4ab; outline-offset: 4px; }
+
+/* Arcana and deck wells share the real card-back material. */
+.duel-shell .arcana-frame {
+  background: linear-gradient(145deg, #080e1dcc, #2025379c);
+  border-color: #9e9bae61;
+  box-shadow: inset 0 2px 5px #0007, 0 1px 0 #ffffff12;
+}
+.duel-shell .miracle-frame .arcana-frame { border-color: #a6c9dd73; }
+.duel-shell .gimmick-frame .arcana-frame { border-color: #ccb48173; }
+.duel-shell .arcana-placeholder { color: var(--table-metal); }
+.duel-shell .arcana-placeholder .icon { opacity: .64; }
+.duel-shell .arcana-slot > small { color: #c1b9ce; text-shadow: 0 1px 2px #060914; }
+.duel-shell .arcana-card { box-shadow: 0 1px 0 #e2d5e12b, 0 2px 0 #080b16, 0 5px 8px #0006; }
+.duel-shell .arcana-card.miracle-card { border-color: #bddbe8; }
+.duel-shell .arcana-card.gimmick-card { border-color: #ddc38d; }
+.duel-shell .arcana-card > span:not(.card-finish) { color: #f1e7df; background: #121827f5; }
+.duel-shell .arcana-card:hover { filter: none; }
+.duel-shell .card-back-mini,
+.duel-shell .zone-stack i.filled,
+.hidden-gimmick,
+.hidden-special {
+  background-color: #191b2a;
+  background-image: url('assets/design-v2/cards/back.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  border-color: #c4ac786b;
+  box-shadow: 0 1px 0 #dccbad38, 0 2px 0 #060914, 0 3px 6px #0006;
+}
+.duel-shell .card-back-mini::after { content: none; }
+.duel-shell .zone-stack i { color: transparent; border-color: #8d829c59; background-color: #151a29; }
+.duel-shell .zone-stack i.filled { color: transparent; }
+.duel-shell .hidden-gimmick > .icon { opacity: 0; }
+.duel-shell .zone-strip button {
+  color: #d0c8d7;
+  border-color: #b3a4c43d;
+  background: linear-gradient(180deg, #242538e0, #141b2be8);
+  box-shadow: inset 0 1px 0 #f5e4fa09, 0 2px 3px #0002;
+}
+.duel-shell .zone-strip .special-zone { color: #e4cdef; border-color: #b392c96b; }
+.duel-shell .zone-strip b { color: #f0e6d5; font-variant-numeric: tabular-nums; }
+.duel-shell[data-field] .midline { border-color: var(--field-line); box-shadow: 0 1px 0 #090c182b; }
+.duel-shell .turn-label { color: var(--table-metal); letter-spacing: .12em; font-variant-numeric: tabular-nums; }
+.duel-shell .turn-label strong { color: #f3e5c7; letter-spacing: .08em; }
+.duel-shell .end-turn.btn {
+  color: #f7e9c7;
+  border: 1px solid #d4b97b8c;
+  background: linear-gradient(135deg, #51413c, #342c40 70%);
+  box-shadow: inset 0 1px 0 #f2dbad2b, 0 2px 0 #181321, 0 3px 8px #0004;
+}
+.duel-shell .end-turn.btn:disabled { opacity: .42; }
+.duel-shell[data-field] .hand-section {
+  background: linear-gradient(180deg, #1117291a, #15172be6 35%, #0c1223f5);
+  border-top: 1px solid #c5b2c822;
+  box-shadow: inset 0 1px 0 #eed8ef06;
+}
+.duel-shell .hand-heading { color: #c2b7cd; }
+.duel-shell[data-field] .duel-sidebar {
+  background: linear-gradient(160deg, #262135f2, var(--field-side) 55%);
+  border-left-color: #a38bb64d;
+  box-shadow: inset 1px 0 0 #ead8c80b;
+}
+.duel-shell .duel-sidebar > h3 { color: #c3adcf; letter-spacing: .16em; }
+.duel-shell .duel-help {
+  background: linear-gradient(145deg, #2b283f9c, #131c2be6);
+  border-color: #b0a0c040;
+  box-shadow: inset 0 1px 0 #fff1, 0 6px 15px #05091129;
+}
+.duel-shell .duel-help h4 { color: #eeddb9; }
+.duel-shell .duel-help p { color: #c6bfd0; }
+.duel-shell .duel-log { border-top-color: #c4b3d226; scrollbar-color: #81708f transparent; }
+.duel-shell .duel-log p { color: #beb9c9; }
+.duel-shell .duel-selected-art {
+  width: min(100%,148px);
+  height: auto;
+  aspect-ratio: 1;
+  margin-inline: auto;
+  border: 1px solid #b8a4cc4d;
+  box-shadow: inset 0 0 0 2px #0b102240;
+}
+@media (hover: hover) {
+  .duel-shell .zone-strip button:hover { background: #353148; border-color: #cfbad16b; }
+  .duel-shell .end-turn.btn:not(:disabled):hover { background: linear-gradient(135deg, #655043, #443249 70%); border-color: #eed29a; }
+  .duel-shell .field-unit:not(.selected):not(.targetable):hover { border-color: #efe0c5; }
+}
+@media (max-width: 720px) {
+  .duel-shell[data-field] .arena::before { inset: 5px 4px 0; border-radius: 9px 9px 0 0; }
+  .duel-shell[data-field] .arena { background-position: center, center 42%; }
+  .duel-shell .field-unit .unit-name { padding: 2px 3px; }
+  .duel-shell .field-unit.targetable { outline-offset: 2px; }
+}
+@media (max-height: 700px) and (orientation: landscape) {
+  .duel-shell[data-field] .arena::before { inset: 3px 5px; border-radius: 7px; }
+  .duel-shell .field-unit .unit-name { padding: 1px 2px; }
+  .duel-shell .field-unit.targetable { outline-offset: 1px; }
+}
+.reduce-motion .duel-shell .field-unit { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .duel-shell .field-unit { transition: none; }
+}

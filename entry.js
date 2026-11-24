@@ -17,7 +17,7 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', ELEMENT
     </header>
     <div class="entry-layout">
       <section class="entry-content">
-        <div class="entry-edition"><span class="entry-edition-star" aria-hidden="true">${glyph('spark')}</span><span>第一弾 六源の覚醒 <span class="entry-edition-dot" aria-hidden="true">·</span> <span class="entry-card-total">1,152 CARDS</span></span></div>
+        <div class="entry-edition"><span class="entry-edition-star" aria-hidden="true">${glyph('spark')}</span><span>第二弾 王源の継承 <span class="entry-edition-dot" aria-hidden="true">·</span> <span class="entry-card-total">1,152 CARDS</span></span></div>
         <h1 id="entry-title" class="entry-title"><span class="entry-title-en" lang="en">BEAST KING</span><span class="entry-title-ja">ビーストキング</span></h1>
         <p class="entry-invitation">君の名で、戦いを始めよう。</p>
         <form id="entry-start-form" class="entry-start-panel" novalidate>
@@ -26,12 +26,12 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', ELEMENT
           <p id="entry-name-error" class="entry-name-error" role="alert" hidden></p>
           <div class="entry-profile-picker"><p id="entry-profile-label">プロフィールアイコン</p><div class="entry-profile-options" role="group" aria-labelledby="entry-profile-label">${profileChoices}</div></div>
           <button class="entry-start-button" type="button" data-action="name-start"><span aria-hidden="true">${glyph('sword')}</span><span>開始</span></button>
-          <p id="entry-name-note" class="entry-name-note">名前とアイコンは、あとから設定で変更できます。</p>
+          <p id="entry-name-note" class="entry-name-note">登録は初回だけ。名前とアイコンは設定で変更できます。</p>
         </form>
         <div class="entry-deck-rule" aria-label="通常デッキ32枚、特殊デッキ4枚"><span>${glyph('cards')}通常デッキ <b>32</b> 枚</span><span class="entry-rule-divider" aria-hidden="true"></span><span>${glyph('fusion')}特殊デッキ <b>4</b> 枚</span></div>
       </section>
       <div class="entry-art-caption" aria-hidden="true"><span class="entry-art-line"></span><span>王が目覚める庭<small>THE CROWN AWAITS</small></span></div>
     </div>
-    <footer class="entry-footer"><span>PC · スマホ · タブレット</span><a href="rebuild/" title="ソロ対戦・独立保存の先行公開版">新生版・先行公開</a><span>© 2026 Beast King</span></footer>
+    <footer class="entry-footer"><span>PC · スマホ · タブレット</span><span>© 2026 Beast King</span></footer>
   </main>`;
 }

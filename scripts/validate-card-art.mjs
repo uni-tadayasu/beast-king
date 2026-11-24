@@ -2,8 +2,8 @@
 import assert from 'node:assert/strict';
 
 export function validateCardArtManifest(manifest,cards){
- assert(cards.length===1152,'The source catalog must contain exactly 1,152 cards.');
- assert(manifest.total===cards.length&&Array.isArray(manifest.cards)&&manifest.cards.length===cards.length,'The artwork manifest must contain all 1,152 cards.');
+ assert(cards.length===2304,'The source catalog must contain exactly 2,304 cards.');
+ assert(manifest.total===cards.length&&Array.isArray(manifest.cards)&&manifest.cards.length===cards.length,'The artwork manifest must contain all 2,304 cards.');
  assert(Number.isFinite(manifest.atlasSafetyInset)&&manifest.atlasSafetyInset>=0&&manifest.atlasSafetyInset<.5,'Invalid artwork safety inset.');
  const catalog=new Map(cards.map(c=>[c.id,c])),seen=new Set();
  assert(catalog.size===cards.length,'Duplicate card ID in the source catalog.');

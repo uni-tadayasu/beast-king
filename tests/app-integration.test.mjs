@@ -12,6 +12,9 @@ import {battleLogView} from '../battle-log.js';
 import {handInspectorView} from '../hand-inspector.js';
 import {soloView} from '../mode-views.js';
 import * as campaign from '../campaign.js';
+import * as product from '../product-views.js';
+import {rulebookView} from '../rules-view.js';
+import {calculateCardLayout} from '../viewport.js';
 
 // Load the production script unchanged apart from ES-module imports. The suffix exposes
 // existing helpers only inside this isolated VM; no test hooks are added to the app.
@@ -91,7 +94,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     sendAction: async () => ({ ok: true }),
   };
   const context = vm.createContext({
-    ...catalog, ...engine, ...shop, ...campaign, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS,
+    ...catalog, ...engine, ...shop, ...campaign, ...product, rulebookView, calculateCardLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS,
     createOnlineClient: options => { callbacks = options; return client; },
     createCloudSync: () => ({ getState: () => ({phase:'synced',revision:1,dirty:false}), start: async () => ({phase:'synced',revision:1,dirty:false}), markDirty() {}, flush: async () => ({revision:1}), refresh: async () => ({revision:1}) }),
     createAccountUi: () => ({onCloudState() {},handleAction:()=>false,touchBrand:()=>false,clearIdentity(){},onModalClosed(){}}),
@@ -103,7 +106,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     location: { hash: '' }, history: { replaceState() {} }, navigator: {},
     setTimeout(callback, delay) { const id = ++timerId; scheduled.set(id, { callback, delay }); return id; },
     clearTimeout(id) { scheduled.delete(id); }, setInterval: () => ++timerId, clearInterval() {},
-    URL, Blob, structuredClone, console,
+    requestAnimationFrame:()=>0, cancelAnimationFrame(){}, URL, Blob, structuredClone, console,
   });
   vm.runInContext(appSource + expose, context, { filename: 'app.js', timeout: 2000 });
   return { app: context.__appIntegration, storage, calls, nodes, client };

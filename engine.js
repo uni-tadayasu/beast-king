@@ -1,11 +1,11 @@
-import { getCard, STARTER_DECKS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js';
+import { getCard, STARTER_DECKS, DECK_PRESETS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, DECK_COPY_LIMIT, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js';
 
 export const MAX_HEART_POINTS = 5000;
 // Internal .core and MAX_CORE remain compatible with saved games and callers.
 export const MAX_CORE = MAX_HEART_POINTS;
 export const MAX_LOG_ENTRIES = 1000;
 const battleUnits = value => value / POINT_SCALE;
-export const RULES = Object.freeze({deck:DECK_SIZE, deckMin:DECK_MIN, specialDeck:SPECIAL_DECK_SIZE, copies:3, hand:4, field:4, traps:2, maxEnergy:10, startingHand:4, heartPoints:MAX_HEART_POINTS, core:MAX_CORE});
+export const RULES = Object.freeze({deck:DECK_SIZE, deckMin:DECK_MIN, specialDeck:SPECIAL_DECK_SIZE, copies:DECK_COPY_LIMIT, hand:4, field:4, traps:2, maxEnergy:10, startingHand:4, heartPoints:MAX_HEART_POINTS, core:MAX_CORE});
 const TARGETED = new Set(['damage_enemy', 'buff']);
 const LEVELS = new Set(['easy','normal','hard']);
 const label = p => p.name || 'プレイヤー';
@@ -152,7 +152,7 @@ function beginTurn(state, events) {
 
 function defaultSpecialDeck(ids) {
   const signature=[...ids].sort().join('|');
-  const preset=STARTER_DECKS.find(d=>[...d.ids].sort().join('|')===signature) || STARTER_DECKS[0];
+  const preset=DECK_PRESETS.find(d=>[...d.ids].sort().join('|')===signature) || STARTER_DECKS[0];
   return preset.specialIds;
 }
 

@@ -23,11 +23,15 @@ jobs:
         run: npm test
       - name: Verify Worker bundle and database migrations
         run: npm run build
+      - name: Verify every published card illustration
+        run: npm run verify:release
+      - name: Package public browser files
+        run: npm run build:client
       - name: Check application syntax
         run: node --check app.js
 
-      - name: Test rebuilt game in Chrome
-        run: node scripts/rebuild-browser-smoke.mjs
+      - name: Test preserved saves in the packaged game with Chrome
+        run: node scripts/rebuild-browser-smoke.mjs dist/client
 
       - name: Verify public delivery (read only, independent of build)
         if: always()

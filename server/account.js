@@ -1,17 +1,19 @@
 import {KIRAHARA_RECIPE,requiredCards} from '../rebuild/operator-deck.js';
 import {validateRebuildBackup,MAX_REBUILD_BACKUP_BYTES} from '../rebuild/backup.js';
 import {verifyOperatorSnapshot} from '../rebuild/solo-save.js';
-import {CARDS,ORIGINS,STARTER_DECKS,DECK_COPY_LIMIT,getCard,validateDeck,validateSpecialDeck} from '../catalog.js';
+import {CARDS,ORIGINS,getDeckPreset,DECK_COPY_LIMIT,getCard,validateDeck,validateSpecialDeck} from '../catalog.js';
 import {MAX_HEART_POINTS,MAX_LOG_ENTRIES} from '../engine.js';
 import {normalizeCampaignProgress,getCampaignBattle} from '../campaign.js';
-import {EXTRA_COPY_TREASURE} from '../shop.js';
+import {EXTRA_COPY_TREASURE,MAX_CARD_COPIES,PACK_ID,getPack} from '../shop.js';
+import {OPERATOR_DECK,OPERATOR_DECK_REQUIRED} from '../operator-deck.js';
 
 // Account secrets exist only in request memory. D1 stores SHA-256 digests, never
-// bearer tokens, link codes, or the operator's environment-only bootstrap code.
+// bearer tokens, link codes, or the operator's environment-only access codes.
 const ORIGIN_IDS=new Set(ORIGINS.map(x=>x.id)),TOKEN=/^[A-Za-z0-9_-]{43}$/;
 const IDENTIFIER=/^[A-Za-z0-9_-]{8,100}$/;
 const identifier=value=>typeof value==='string'&&IDENTIFIER.test(value);
 const LINK_LIFE=600_000,MAX_SAVE_BYTES=1_000_000;
+const REGALIA_REWARD_ID='operator-regalia-v1',REGALIA_CARD_ID='B0512',OPERATOR_DECK_REWARD_ID='operator-kirahara-deck-v1';
 const statement=(db,sql,...args)=>db.prepare(sql).bind(...args);
 const first=(db,sql,...args)=>statement(db,sql,...args).first();
 const all=async(db,sql,...args)=>(await statement(db,sql,...args).all()).results;
@@ -105,9 +107,21 @@ export function validateCloudData(raw,player,fail){
   check(['bgm','sound','motion'].every(k=>typeof raw[k]==='boolean')&&Number.isFinite(raw.bgmVolume)&&raw.bgmVolume>=0&&raw.bgmVolume<=1,fail,'invalid_save');
   check(Array.isArray(raw.rewardedMatches)&&raw.rewardedMatches.length<=200&&raw.rewardedMatches.every(id=>text(id,200,{empty:false})),fail,'invalid_save');
   check(plain(raw.campaignProgress)&&Array.isArray(raw.campaignProgress.results)&&raw.campaignProgress.results.length<=1000&&Array.isArray(raw.campaignProgress.clearedBattleIds)&&raw.campaignProgress.clearedBattleIds.length<=20,fail,'invalid_save');
-  const data={version:6,playerName:name,profileOrigin:raw.profileOrigin,campaignProgress:normalizeCampaignProgress(raw.campaignProgress),bgm:raw.bgm,bgmVolume:raw.bgmVolume,sound:raw.sound,motion:raw.motion,treasure:raw.treasure,collection,rewardedMatches:[...new Set(raw.rewardedMatches)],lastPack:null,deckName:raw.deckName,deckIds:[...raw.deckIds],specialIds:[...raw.specialIds],starter:STARTER_DECKS.some(d=>d.id===raw.starter)?raw.starter:'',draft:null,stats:{played:raw.stats.played,won:raw.stats.won,drawn:raw.stats.drawn},game:cpuSave(raw.game,fail)};
+  const data={version:6,playerName:name,profileOrigin:raw.profileOrigin,campaignProgress:normalizeCampaignProgress(raw.campaignProgress),bgm:raw.bgm,bgmVolume:raw.bgmVolume,sound:raw.sound,motion:raw.motion,treasure:raw.treasure,collection,rewardedMatches:[...new Set(raw.rewardedMatches)],lastPack:null,deckName:raw.deckName,deckIds:[...raw.deckIds],specialIds:[...raw.specialIds],starter:getDeckPreset(raw.starter)?raw.starter:'',draft:null,stats:{played:raw.stats.played,won:raw.stats.won,drawn:raw.stats.drawn},game:cpuSave(raw.game,fail)};
   if(raw.draft!=null){check(plain(raw.draft)&&text(raw.draft.name,28),fail,'invalid_save');const ids=cardIds(raw.draft.ids,['beast','miracle','gimmick'],32,fail),specialIds=cardIds(raw.draft.specialIds,['fusion'],4,fail);check([...ids,...specialIds].every(id=>[...ids,...specialIds].filter(x=>x===id).length<=DECK_COPY_LIMIT),fail,'invalid_save',`編集中のデッキも同じカードは${DECK_COPY_LIMIT}枚までです。`);data.draft={name:raw.draft.name,ids,specialIds};}
-  if(raw.lastPack!=null){check(plain(raw.lastPack)&&Array.isArray(raw.lastPack.pulls)&&raw.lastPack.pulls.length===12&&integer(raw.lastPack.bonusTreasure,0,100_000),fail,'invalid_save');data.lastPack={pulls:raw.lastPack.pulls.map(p=>{check(plain(p)&&!!getCard(p.cardId)&&['isNew','converted','guaranteed'].every(k=>typeof p[k]==='boolean'),fail,'invalid_save');return {cardId:p.cardId,isNew:p.isNew,converted:p.converted,guaranteed:p.guaranteed};}),bonusTreasure:raw.lastPack.bonusTreasure};if(raw.lastPack.openedAt!==undefined){check(integer(raw.lastPack.openedAt),fail,'invalid_save');data.lastPack.openedAt=raw.lastPack.openedAt;}}
+  if(raw.lastPack!=null){
+    check(plain(raw.lastPack)&&Array.isArray(raw.lastPack.pulls)&&raw.lastPack.pulls.length===12&&integer(raw.lastPack.bonusTreasure,0,100_000),fail,'invalid_save');
+    const packId=raw.lastPack.packId===undefined?PACK_ID:raw.lastPack.packId,pack=getPack(packId);
+    check(!!pack,fail,'invalid_save','開封履歴のパックを確認してください。');
+    // Regalia appeared in BK01 before the second expansion. A historical receipt
+    // remains readable after migration; this display record never grants cards.
+    const permitted=id=>pack.cardIds.includes(id)||(packId==='BK01'&&id===REGALIA_CARD_ID);
+    data.lastPack={packId,pulls:raw.lastPack.pulls.map(p=>{
+      check(plain(p)&&!!getCard(p.cardId)&&permitted(p.cardId)&&['isNew','converted','guaranteed'].every(k=>typeof p[k]==='boolean'),fail,'invalid_save');
+      return {cardId:p.cardId,isNew:p.isNew,converted:p.converted,guaranteed:p.guaranteed};
+    }),bonusTreasure:raw.lastPack.bonusTreasure};
+    if(raw.lastPack.openedAt!==undefined){check(integer(raw.lastPack.openedAt),fail,'invalid_save');data.lastPack.openedAt=raw.lastPack.openedAt;}
+  }
   check(new TextEncoder().encode(JSON.stringify(data)).length<=MAX_SAVE_BYTES,fail,'invalid_save','保存データが大きすぎます。');
   return data;
 }
@@ -186,21 +200,29 @@ const eventPublic=row=>({id:row.id,title:row.title,body:row.body,startAt:row.sta
 async function dashboard(db,now){
   const cutoff=now-86_400_000;
   const players=`SELECT p.id,p.nickname,COALESCE(p.origin_v2,p.origin) AS origin,p.rating,MAX(r.last_seen_at) AS lastSeenAt,MAX(r.last_login_at) AS lastLoginAt,MAX(CASE WHEN r.online_until>? AND s.revoked_at IS NULL THEN 1 ELSE 0 END) AS online FROM bk_profiles p JOIN bk_presence r ON r.player_id=p.id JOIN bk_sessions s ON s.id=r.session_id GROUP BY p.id`;
-  const [stats,recentPlayers,status,audit,items,events,onlineRows,recentRows]=await Promise.all([
+  const [stats,recentPlayers,status,audit,items,events,onlineRows,recentRows,regalia,privateDeck]=await Promise.all([
     first(db,"SELECT (SELECT count(*) FROM bk_profiles) AS totalPlayers,(SELECT count(*) FROM bk_matches WHERE status='active') AS activeBattles,(SELECT count(*) FROM bk_announcements WHERE kind='message') AS totalMessages,(SELECT count(*) FROM bk_announcements WHERE kind='gift') AS totalGifts,(SELECT count(*) FROM bk_events) AS totalEvents,(SELECT count(DISTINCT r.player_id) FROM bk_presence r JOIN bk_sessions s ON s.id=r.session_id WHERE r.online_until>? AND s.revoked_at IS NULL) AS onlinePlayers,(SELECT count(DISTINCT player_id) FROM bk_presence WHERE last_login_at>?) AS recentLogins24h",now,cutoff),
     all(db,'SELECT id,nickname,COALESCE(origin_v2,origin) AS origin,rating FROM bk_profiles ORDER BY created_at DESC,id LIMIT 30'),publicStatus(db),
     all(db,'SELECT id,action,created_at AS createdAt FROM bk_operator_audit ORDER BY created_at DESC,id DESC LIMIT 50'),
     all(db,'SELECT * FROM bk_announcements ORDER BY created_at DESC,id DESC LIMIT 100'),
     all(db,'SELECT * FROM bk_events ORDER BY updated_at DESC,id DESC LIMIT 100'),
     all(db,players+' HAVING online=1 ORDER BY lastSeenAt DESC,p.id LIMIT 100',now),
-    all(db,players+' HAVING lastLoginAt>? ORDER BY lastLoginAt DESC,p.id LIMIT 100',now,cutoff)
+    all(db,players+' HAVING lastLoginAt>? ORDER BY lastLoginAt DESC,p.id LIMIT 100',now,cutoff),
+    first(db,"SELECT c.claimed_at FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.item_type='gift' AND c.item_id=?",REGALIA_REWARD_ID),
+    first(db,"SELECT c.claimed_at FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.item_type='gift' AND c.item_id=?",OPERATOR_DECK_REWARD_ID)
   ]);
-  return {ok:true,operator:{stats,recentPlayers,onlinePlayers:onlineRows.map(({online,...row})=>row),recentLogins:recentRows.map(row=>({...row,online:row.online===1})),settings:{notice:status.notice,maintenance:status.maintenance},audit,messages:items.filter(x=>x.kind==='message').map(announcementPublic),gifts:items.filter(x=>x.kind==='gift').map(announcementPublic),events:events.map(eventPublic)}};
+  return {ok:true,operator:{stats,recentPlayers,onlinePlayers:onlineRows.map(({online,...row})=>row),recentLogins:recentRows.map(row=>({...row,online:row.online===1})),settings:{notice:status.notice,maintenance:status.maintenance},regalia:{claimedAt:regalia?.claimed_at??null},deck:unlockedOperatorDeck(privateDeck?.claimed_at),audit,messages:items.filter(x=>x.kind==='message').map(announcementPublic),gifts:items.filter(x=>x.kind==='gift').map(announcementPublic),events:events.map(eventPublic)}};
 }
 async function requireOperator(c,player,{setup=false}={}){
   const row=await first(c.db,'SELECT player_id FROM bk_operator WHERE singleton=1');
   if(row?.player_id===player.id)return;
   c.fail(404,'operator_unavailable','この操作は利用できません。',setup&&!row&&typeof c.env.BK_OPERATOR_BOOTSTRAP==='string'&&c.env.BK_OPERATOR_BOOTSTRAP.length?{setupAvailable:true}:{});
+}
+const unlockedOperatorDeck=claimedAt=>claimedAt==null?null:{...OPERATOR_DECK,unlockedAt:claimedAt};
+async function readOperatorDeck(c,player){
+  await requireOperator(c,player);
+  const row=await first(c.db,"SELECT c.claimed_at FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.player_id=? AND c.item_type='gift' AND c.item_id=?",player.id,OPERATOR_DECK_REWARD_ID);
+  return {ok:true,deck:unlockedOperatorDeck(row?.claimed_at)};
 }
 async function activate(c,player){
   const {db,request,env,now,fail,bodyJSON}=c;
@@ -216,6 +238,65 @@ async function activate(c,player){
   ]);
   if(!changed(result[0]))noAccess(fail);
   return dashboard(db,now);
+}
+
+/** Private, one-time rewards. Reserved ledger items have no public announcement.
+ * A valid code never grants an operator role, and only the stored role may claim.
+ * The separate deck ledger upgrades operators who received the original pair.
+ */
+async function claimRegalia(c,player){
+  const {db,request,env,now,fail,bodyJSON}=c;
+  await requireOperator(c,player);
+  if(!await rateLimit(db,request,player.id,'operator-regalia',now,{ip:10,player:5,window:900_000}))noAccess(fail);
+  const body=await bodyJSON(request);
+  const normalize=value=>typeof value==='string'&&value.length<=1024?value.normalize('NFKC').trim():'';
+  const candidate=normalize(body.code),configured=normalize(env.BK_OPERATOR_REGALIA_CODE);
+  const matches=await equalSecret(candidate,configured||'unconfigured-regalia-reward');
+  if(!configured||!candidate||!matches)noAccess(fail);
+  check(integer(body.revision),fail,'invalid_revision');
+  const receipt=async id=>{const row=await first(db,"SELECT result_json FROM bk_reward_claims WHERE player_id=? AND item_type='gift' AND item_id=?",player.id,id);return row?JSON.parse(row.result_json):null;};
+  const replay=async()=>{
+    const deckClaim=await receipt(OPERATOR_DECK_REWARD_ID);
+    return deckClaim?{ok:true,save:await currentSave(db,player.id),claim:await receipt(REGALIA_REWARD_ID),deckClaim,deck:unlockedOperatorDeck(deckClaim.claimedAt),replayed:true}:null;
+  };
+  const previous=await replay();if(previous)return previous;
+  const legacyClaim=await receipt(REGALIA_REWARD_ID);
+  const save=await currentSave(db,player.id);
+  if(!save)fail(409,'cloud_save_required','先にこの端末のデータをクラウドに保存してください。',{save:null});
+  if(save.revision!==body.revision){
+    // Another device may have committed after the first ledger read.
+    const raced=await replay();if(raced)return raced;
+    fail(409,'save_conflict','別の端末で保存データが更新されています。最新データを確認してください。',{save});
+  }
+  const data=save.data,before=data.collection[REGALIA_CARD_ID]||0;
+  const received=legacyClaim?0:Math.min(2,MAX_CARD_COPIES-before),convertedTreasure=legacyClaim?0:(2-received)*EXTRA_COPY_TREASURE;
+  check(integer(before,0,MAX_CARD_COPIES)&&integer(data.treasure+convertedTreasure),fail,'treasure_limit','秘宝の所持上限に達しています。');
+  data.collection[REGALIA_CARD_ID]=before+received;data.treasure+=convertedTreasure;
+  const claim=legacyClaim||{id:REGALIA_REWARD_ID,treasure:0,cards:received?[{cardId:REGALIA_CARD_ID,count:received}]:[],convertedTreasure,claimedAt:now};
+  const deckCards=[];
+  for(const [cardId,required] of Object.entries(OPERATOR_DECK_REQUIRED)){
+    const owned=data.collection[cardId]||0;
+    check(integer(owned,0,MAX_CARD_COPIES)&&required<=MAX_CARD_COPIES,fail,'invalid_save');
+    if(owned<required){deckCards.push({cardId,count:required-owned});data.collection[cardId]=required;}
+  }
+  const deckClaim={id:OPERATOR_DECK_REWARD_ID,deckId:OPERATOR_DECK.id,cards:deckCards,claimedAt:now};
+  const writeToken=uuid(),next=save.revision+1;check(integer(next,1),fail,'invalid_revision');
+  const guard='EXISTS (SELECT 1 FROM bk_cloud_saves WHERE player_id=? AND write_token=?)';
+  const result=await db.batch([
+    statement(db,`UPDATE bk_cloud_saves SET revision=?,data_json=?,write_token=?,updated_at=? WHERE player_id=? AND revision=? AND NOT EXISTS (SELECT 1 FROM bk_reward_claims WHERE player_id=? AND item_type='gift' AND item_id=?) AND (SELECT count(*) FROM bk_reward_claims WHERE player_id=? AND item_type='gift' AND item_id=?)=? AND EXISTS (SELECT 1 FROM bk_operator WHERE singleton=1 AND player_id=?)`,next,JSON.stringify(data),writeToken,now,player.id,save.revision,player.id,OPERATOR_DECK_REWARD_ID,player.id,REGALIA_REWARD_ID,legacyClaim?1:0,player.id),
+    ...(!legacyClaim?[
+      statement(db,`INSERT INTO bk_operator_audit (id,player_id,action,payload_json,created_at) SELECT ?,?,'regalia.claimed',?,? WHERE ${guard}`,uuid(),player.id,JSON.stringify({id:REGALIA_REWARD_ID,cardId:REGALIA_CARD_ID,count:2}),now,player.id,writeToken),
+      statement(db,`INSERT INTO bk_reward_claims (player_id,item_type,item_id,result_json,save_revision,claimed_at) SELECT ?,'gift',?,?,?,? WHERE ${guard}`,player.id,REGALIA_REWARD_ID,JSON.stringify(claim),next,now,player.id,writeToken),
+    ]:[]),
+    statement(db,`INSERT INTO bk_operator_audit (id,player_id,action,payload_json,created_at) SELECT ?,?,'operator.deck_unlocked',?,? WHERE ${guard}`,uuid(),player.id,JSON.stringify({id:OPERATOR_DECK_REWARD_ID,deckId:OPERATOR_DECK.id}),now,player.id,writeToken),
+    statement(db,`INSERT INTO bk_reward_claims (player_id,item_type,item_id,result_json,save_revision,claimed_at) SELECT ?,'gift',?,?,?,? WHERE ${guard}`,player.id,OPERATOR_DECK_REWARD_ID,JSON.stringify(deckClaim),next,now,player.id,writeToken)
+  ]);
+  if(!changed(result[0])){
+    await requireOperator(c,player);
+    const again=await replay();if(again)return again;
+    fail(409,'save_conflict','別の端末で保存データが更新されています。最新データを確認してください。',{save:await currentSave(db,player.id)});
+  }
+  return {ok:true,save:await currentSave(db,player.id),claim,deckClaim,deck:unlockedOperatorDeck(now),upgraded:!!legacyClaim};
 }
 function rewardInput(body,fail,allowEmpty=false){
   const treasure=body.treasure??0,cards=body.cards??[];
@@ -372,7 +453,7 @@ async function rebuildSaveRoute(c,player){
 
 export async function handleAccountRoute(options){
   const c={...options,fail:options.problem}, {path,method,db,now,fail}=c;
-  const paths=['/api/rebuild/status','/api/rebuild/cloud-save','/api/rebuild/operator-deck','/api/public-status','/api/cloud-save','/api/account/link-code','/api/account/link-claim','/api/account/sessions','/api/operator','/api/operator/activate','/api/operator/settings','/api/operator/messages','/api/operator/gifts','/api/operator/events','/api/inbox','/api/events','/api/presence'];
+  const paths=["/api/rebuild/status","/api/rebuild/cloud-save","/api/rebuild/operator-deck","/api/public-status","/api/cloud-save","/api/account/link-code","/api/account/link-claim","/api/account/sessions","/api/operator","/api/operator/activate","/api/operator/settings","/api/operator/messages","/api/operator/gifts","/api/operator/events","/api/inbox","/api/events","/api/presence","/api/operator/deck","/api/operator/regalia/claim"];
   const sessionPath=path.match(/^\/api\/account\/sessions\/([A-Za-z0-9_-]{8,100})$/),inboxPath=path.match(/^\/api\/inbox\/([A-Za-z0-9_-]{8,100})\/(read|claim)$/),eventPath=path.match(/^\/api\/events\/([A-Za-z0-9_-]{8,100})\/claim$/);
   if(!paths.includes(path)&&!sessionPath&&!inboxPath&&!eventPath)return null;
   const expect=verb=>{if(method!==verb)fail(405,'method_not_allowed','この操作は利用できません。');};
@@ -387,7 +468,9 @@ export async function handleAccountRoute(options){
   if(path==='/api/account/link-code'){expect('POST');return linkCreate(c,player);}
   if(path==='/api/account/sessions'||sessionPath)return sessions(c,player,sessionPath?.[1]);
   if(path==='/api/operator'){expect('GET');await requireOperator(c,player,{setup:true});return dashboard(db,now);}
+  if(path==='/api/operator/deck'){expect('GET');return readOperatorDeck(c,player);}
   if(path==='/api/operator/activate'){expect('POST');return activate(c,player);}
+  if(path==='/api/operator/regalia/claim'){expect('POST');return claimRegalia(c,player);}
   for(const [suffix,kind] of [['settings','settings'],['messages','message'],['gifts','gift'],['events','event']])if(path==='/api/operator/'+suffix){expect('POST');return operatorWrite(c,player,kind);}
   if(path==='/api/inbox'){expect('GET');return inbox(db,player,now);}
   if(path==='/api/events'){expect('GET');return eventList(db,player,now);}

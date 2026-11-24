@@ -5,18 +5,18 @@ Public origin: https://www.beast-king.com/ . Preserve the repository CNAME and e
 ## Counts, names and decks
 
 - First set name: 六源の覚醒（ろくげんのかくせい）, pack ID BK01. The first set and pack pool both include ALL1152 cards, including all128 fusion beasts. Do not describe the set as1024 or place fusion outside it.
-- Catalog total1152: ordinary beasts512 (B0001–B0512), miracles256 (M0001–M0256), gimmicks256 (G0001–G0256), fusion beasts128 (F0001–F0128, indices1025–1152).
-- Ordinary and fusion beasts both have category:'beast', so user-facing beast category640. Preserve internal type:'beast' vs type:'fusion'. User-facing fusion name is 合成魔獣.
+- Catalog total2304 across BK01 六源の覚醒 and BK02 王源の継承, each1152: ordinary beasts512, miracles256, gimmicks256, fusion beasts128 per set. Full IDs: B0001–B1024, M0001–M0512, G0001–G0512, F0001–F0256. Preserve B0512 Regalia for saved collections and assign it to BK02; B1024 霊極機精 エトリア fills its BK01 slot. Per-set membership is explicit, not inferred from numeric ID.
+- Ordinary and fusion beasts both have category:'beast', so user-facing beast category1280 (640 per set). Preserve internal type:'beast' vs type:'fusion'. User-facing fusion name is 合成魔獣.
 - Main deck EXACT32 of ordinary beasts/miracles/gimmicks; special deck EXACT4 of fusion beasts; combined36, mandatory for every CPU/online start. At most2 copies of one ID in each deck, additionally limited by owned quantity for ALL types including fusion. Constant DECK_COPY_LIMIT=2. Constants DECK_SIZE=DECK_MIN=DECK_MAX=32, SPECIAL_DECK_SIZE=4. validateDeck/validateSpecialDeck enforce type/count/copy constraints.
-- Eight starters persist, each main16 beasts/8miracles/8gimmicks, including two M0256. Each has specialIds of four distinct associated-origin fusion beasts.
+- Four starters are selectable (星冠の契約, 蒼海の記憶, 紅炎の鼓動, 風嵐の約束); eight historical deck presets persist for old saves and CPU opponents, each main16 beasts/8miracles/8gimmicks, including two M0256. Each has specialIds of four distinct associated-origin fusion beasts.
 - The special deck is placed in 特殊ゾーン. Materials sent away go to 異世界ゾーン and cannot be reused; internal state name banished remains. Eliminated cards go to お墓ゾーン (grave). Use 消滅 for elimination and 守備力 for beast defense; hp/maxHp remain internal compatibility fields.
 
 ## Origins, rarities and models
 
 - Public ORIGINS has seven entries in the exact user order: mountain山, river川, seed種, grass草, flower花, tree木, king王. ELEMENTS is the same alias. Public origin names and sorting must follow this order.
-- Private CARD_SERIES keeps eight original generation families and all IDs/names/art/effects. Mapping: dawn→flower, tide→river, ember→seed, gale→grass, grove→tree, stone→mountain, dusk→seed, aether→grass. Cards/starters retain the old internal series and expose the new canonical element/origin. Eight starter decks remain across six origins. Old family names are not public origin labels.
+- Private CARD_SERIES keeps eight original generation families and all IDs/names/art/effects. Mapping: dawn→flower, tide→river, ember→seed, gale→grass, grove→tree, stone→mountain, dusk→seed, aether→grass. Cards/starters retain the old internal series and expose the new canonical element/origin. Four public starter decks remain; historical presets across six origins remain compatible. Old family names are not public origin labels.
 - Rarities in ascending order: Nノーマル, Rレア, KRキラレア, KKRキラキラレア, GRギラレア, GGRギラギラレア.
-- MODEL_LABELS: attack:'アタック型', defense:'ディフェンス型', hybrid:'アタック・ディフェンス型'. Ordinary beasts MUST be exactly256 of each model. Each original64-card family selects32 defense models using guard/defense-priority ordering; remaining32 are attack. ALL128 fusion beasts have model:'hybrid', combining attack and defense; they are outside the ordinary256/256 count. Model classification is fixed on the card; do not recompute it as stats change.
+- MODEL_LABELS: attack:'アタック型', defense:'ディフェンス型', hybrid:'アタック・ディフェンス型'. Ordinary beasts MUST be exactly256 of each model per set (512 each overall). Each original64-card family selects32 defense models using guard/defense-priority ordering; remaining32 are attack. ALL256 fusion beasts have model:'hybrid', combining attack and defense; they are outside the ordinary512/512 total count. Model classification is fixed on the card; do not recompute it as stats change.
 - All five placement categories remain upright: ordinary attack models slightly forward toward the opponent; ordinary defense models slightly backward toward the owner; hybrid fusion beasts exactly centered; miracles slightly left of their reference frame; gimmicks slightly right of their reference frame.
 - Gimmicks retain two actual set slots. The miracle frame displays the most recent public activation from players[].lastMiracle; it is a visual record, not an extra card zone. A used miracle still moves to grave and cannot be played or used as a material from that visual display. Do not duplicate card counts or alter36-card conservation for this record.
 
@@ -65,7 +65,7 @@ getFusionMaterials(state,who=state.active) returns eligible objects {zone:'hand'
 ## Collection, treasure and packs
 
 - The first set 六源の覚醒 contains ordinary512+fusion128+miracle256+gimmick256=1152. Every catalog card is in PACK_CARD_IDS; fusion cards are not an unrestricted special library.
-- Initial collection grants enough copies to construct any of the eight starter decks, including their four fusion cards. Shared starter IDs use the maximum required quantity, not an unrestricted unlock. Other cards are acquired from packs. All deck editors and start gates enforce owned quantities and exact32+4.
+- Initial collection grants enough copies to construct any of the four public starter decks, including their four fusion cards. Shared starter IDs use the maximum required quantity, not an unrestricted unlock. Other cards are acquired from packs. All deck editors and start gates enforce owned quantities and exact32+4.
 - Initial treasure100. Pack price100, size12, with one slot guaranteed R-or-higher. The remaining slots can also be rare. The collection holds at most3 of each ID; every fourth-or-later copy converts immediately to5 treasure.
 - Completed battle rewards: win60, loss20, draw30, forfeit0. Award a completed result once; avoid duplicate settlement from renders, reloads, polling or repeated end-state callbacks.
 - Local v6 state stores playerName, collection, treasure, decks, CPU progress/stats and settings. Root owns migration/backup logic. Preserve valid compatible saves; do not grant all1152 or all fusion cards during migration. Online credentials/profile/rating are not part of a game backup.
@@ -117,9 +117,14 @@ Root owns v6 save version and migration implementation. Preserve valid compatibl
 
 ## Original card artwork and King origin
 
-- All 1,152 card IDs map to distinct illustrations. B0512 is 王冠竜 レガリア, origin king, ordinary beast, cost 8 (the maximum ordinary-beast cost), GGR. Preserve its defense model, 700 ATK, 900 DEF, drain keyword and physical ID so saved collections stay compatible.
+- All 2,304 main-game card IDs map to distinct illustration cells, using 144 new 4×4 atlases and the preserved B0512 illustration. B0512 is 王冠竜 レガリア, origin king, ordinary beast, cost 8 (the maximum ordinary-beast cost), GGR. Preserve its defense model, 700 ATK, 900 DEF, drain keyword and physical ID so saved collections stay compatible.
 - Rarity finishing is clipped to artwork only: N quiet, R moving satin, KR animated sparkles, KKR moving gold sweep, GR animated iridescence, GGR royal iridescence and breathing crown. Apply it to card grids, hands and revealed field/arcana cards, while hidden opponent cards remain hidden. Reduced-motion settings disable movement.
-- Atlas cells use a 1% safety inset. Nonuniform atlases use measured boundaries in layouts.json and generated card-art-layouts.js, shared by browser rendering and owner material export. Keep the portable owner gallery outside the public frontend.
+- Atlas cells use a 1.2% safety inset for the native-resolution redraw release. Nonuniform atlases use measured boundaries in layouts.json and generated card-art-layouts.js, shared by browser rendering and owner material export. Keep the portable owner gallery outside the public frontend.
 - Copyright text is © 2026 Beast King.
 - Discourage native artwork save/drag/long-press and accidental selection/zoom while preserving form editing and the hidden seven-click operator gesture. Browser screenshots and external browser/OS controls cannot be prevented.
 - The additive origin_v2 column supports king without rebuilding or deleting existing profile rows. Reads use origin_v2 with legacy origin fallback; all profile writes keep the legacy column valid.
+
+## Complete release verification
+
+- `npm run verify:release` must pass after packaging the native artwork. It verifies actual file existence, SHA-256, 2,304 unique artwork cells, exact crop bounds, four starters and three different mode backgrounds. Metadata-only tests cannot substitute for this gate.
+- Root frontend is the integrated public game. `/rebuild/` preserves the earlier independent saves and historical card IDs; its two Regalia printings intentionally share the specified original art. Do not migrate those IDs into the main catalog.

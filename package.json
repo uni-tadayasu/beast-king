@@ -7,6 +7,8 @@
     "test": "node --test tests/*.test.mjs",
     "build": "node scripts/build-online.mjs",
     "build:online": "node scripts/build-online.mjs",
-    "db:check": "node scripts/build-online.mjs --check-schema"
+    "build:client": "node scripts/build-client.mjs",
+    "db:check": "node scripts/build-online.mjs --check-schema",
+    "verify:release": "node scripts/verify-release.mjs"
   }
 }

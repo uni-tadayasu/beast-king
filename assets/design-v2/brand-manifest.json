@@ -37,8 +37,8 @@
     },
     {
       "path": "assets/social-ogp.jpg",
-      "bytes": 99404,
-      "sha256": "f457deca93caa0ddb4c011775168f3d1230c3d02aa4683fa5920f26b63bd6a1c"
+      "bytes": 99705,
+      "sha256": "13b4f87cc70dd8794b6ebec8bb0c865912339f997e8c217dade1481cefc5116c"
     },
     {
       "path": "assets/profiles/mountain.svg",
@@ -82,8 +82,8 @@
     },
     {
       "path": "assets/design-v2/brand/social-ogp.svg",
-      "bytes": 10181,
-      "sha256": "1b4ae8ffdb5edc751fcadd33a5c934a7dee5c8e9a22e8adadb0589986872f89e"
+      "bytes": 10182,
+      "sha256": "16d2b99e842744ae2d819ec2abad85fb1117e9e0fd71da88c1067132ce904122"
     }
   ]
 }

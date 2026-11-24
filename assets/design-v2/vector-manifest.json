@@ -51,10 +51,10 @@
       "color": "#edbd65"
     }
   ],
-  "total": 59,
+  "total": 62,
   "groups": {
     "brand": 2,
-    "ui-icon": 31,
+    "ui-icon": 34,
     "origin": 7,
     "card-frame": 4,
     "card-back": 1,
@@ -65,6 +65,9 @@
   },
   "inlineModule": "brand-icons.js",
   "inlineKeys": [
+    "chevron-left",
+    "chevron-right",
+    "users",
     "music",
     "musicMute",
     "treasure",
@@ -134,6 +137,51 @@
       "copyright": "© 2026 Beast King",
       "sha256": "ea0574aca662118347370e46a28e008ff96fad1222c066dfe1d8cee6e417ef70",
       "textFallback": "Georgia, 'Times New Roman', serif"
+    },
+    {
+      "id": "ui-icon-chevron-left",
+      "path": "assets/design-v2/icons/chevron-left.svg",
+      "displayName": "前のページ",
+      "group": "ui-icon",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "usage": "24×24の共通UIアイコン。currentColorで色を変更できる。",
+      "transparent": true,
+      "format": "svg",
+      "copyright": "© 2026 Beast King",
+      "sha256": "039a4bca962ef8bf254177da89cfce035e2ba1b0eb6e1a7120e0100a30b15292",
+      "inlineKey": "chevron-left"
+    },
+    {
+      "id": "ui-icon-chevron-right",
+      "path": "assets/design-v2/icons/chevron-right.svg",
+      "displayName": "次のページ",
+      "group": "ui-icon",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "usage": "24×24の共通UIアイコン。currentColorで色を変更できる。",
+      "transparent": true,
+      "format": "svg",
+      "copyright": "© 2026 Beast King",
+      "sha256": "d93882c8bbf5d42c251ef3d11bebc72be4f8a6be8dea9275059df0a5609dddc8",
+      "inlineKey": "chevron-right"
+    },
+    {
+      "id": "ui-icon-users",
+      "path": "assets/design-v2/icons/users.svg",
+      "displayName": "ルーム対戦",
+      "group": "ui-icon",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "usage": "24×24の共通UIアイコン。currentColorで色を変更できる。",
+      "transparent": true,
+      "format": "svg",
+      "copyright": "© 2026 Beast King",
+      "sha256": "e3264ea766eab24b0a2ac084e48e4babc887294dba8ce72c8dfbb475f583d895",
+      "inlineKey": "users"
     },
     {
       "id": "ui-icon-music",
@@ -720,12 +768,13 @@
       "width": 360,
       "height": 520,
       "viewBox": "0 0 360 520",
-      "usage": "直立カード用。透明なアート窓、静かな説明欄、細い金属線。四隅には自然の6オリジンを表す6芽の彫金を配置。中央の王冠は王のオリジンを表す。カード画像に重ね、文字は各safeAreaに別途表示する。",
+      "usage": "306×306の透明な原画窓。金属の面取りと紙の質感を備え、コスト・二行のカード名・オリジン・効果・能力値を独立した領域に表示する。",
       "transparent": true,
       "format": "svg",
       "copyright": "© 2026 Beast King",
-      "sha256": "75522b906803a736550d690397b62de27da118eb21fa66bc3e072ab73f3ebcc2",
-      "accent": "#b3c6dc",
+      "sha256": "c26073ebf8429c0c63d0d3d36262846669f8a2e151c5a145bd40a52b6ec39b11",
+      "accent": "#b8c3d6",
+      "template": "scripts/design-templates/cards/frame-beast.svg",
       "motifs": {
         "cornerBudCount": 6,
         "origins": [
@@ -737,38 +786,38 @@
           "tree",
           "king"
         ],
-        "categoryShape": "獣の牙"
+        "categoryShape": "獣の牙・鋼の彫金"
       },
       "safeAreas": {
         "art": [
-          24,
-          66,
-          312,
-          312
+          27,
+          68,
+          306,
+          306
         ],
         "name": [
-          61,
-          26,
-          243,
-          29
+          62,
+          20,
+          234,
+          44
         ],
         "rules": [
-          31,
-          408,
-          298,
-          65
+          29,
+          404,
+          302,
+          47
         ],
         "stats": [
-          31,
-          485,
-          298,
-          17
+          29,
+          457,
+          302,
+          25
         ],
         "cost": [
-          24,
-          26,
           22,
-          23
+          20,
+          36,
+          41
         ]
       }
     },
@@ -780,12 +829,13 @@
       "width": 360,
       "height": 520,
       "viewBox": "0 0 360 520",
-      "usage": "直立カード用。透明なアート窓、静かな説明欄、細い金属線。四隅には自然の6オリジンを表す6芽の彫金を配置。中央の王冠は王のオリジンを表す。カード画像に重ね、文字は各safeAreaに別途表示する。",
+      "usage": "306×306の透明な原画窓。金属の面取りと紙の質感を備え、コスト・二行のカード名・オリジン・効果・能力値を独立した領域に表示する。",
       "transparent": true,
       "format": "svg",
       "copyright": "© 2026 Beast King",
-      "sha256": "5b3bdc9490871704b0df83c1ffacf295e3db89387a8f89cb8189d0f58c92a9cc",
-      "accent": "#d4b7f0",
+      "sha256": "bf02ee2aab9cd575f79fce8dd76eb21dab5d66e2d46408351c724450b99802d4",
+      "accent": "#d7b9eb",
+      "template": "scripts/design-templates/cards/frame-fusion.svg",
       "motifs": {
         "cornerBudCount": 6,
         "origins": [
@@ -797,38 +847,38 @@
           "tree",
           "king"
         ],
-        "categoryShape": "連なる六角"
+        "categoryShape": "双翼の稜線・紫の金属"
       },
       "safeAreas": {
         "art": [
-          24,
-          66,
-          312,
-          312
+          27,
+          68,
+          306,
+          306
         ],
         "name": [
-          61,
-          26,
-          243,
-          29
+          62,
+          20,
+          234,
+          44
         ],
         "rules": [
-          31,
-          408,
-          298,
-          65
+          29,
+          404,
+          302,
+          47
         ],
         "stats": [
-          31,
-          485,
-          298,
-          17
+          29,
+          457,
+          302,
+          25
         ],
         "cost": [
-          24,
-          26,
           22,
-          23
+          20,
+          36,
+          41
         ]
       }
     },
@@ -840,12 +890,13 @@
       "width": 360,
       "height": 520,
       "viewBox": "0 0 360 520",
-      "usage": "直立カード用。透明なアート窓、静かな説明欄、細い金属線。四隅には自然の6オリジンを表す6芽の彫金を配置。中央の王冠は王のオリジンを表す。カード画像に重ね、文字は各safeAreaに別途表示する。",
+      "usage": "306×306の透明な原画窓。金属の面取りと紙の質感を備え、コスト・二行のカード名・オリジン・効果・能力値を独立した領域に表示する。",
       "transparent": true,
       "format": "svg",
       "copyright": "© 2026 Beast King",
-      "sha256": "2787080a939da624992a1e24e0c89a2a2c68cffee9eba756755cd581a56d69f9",
-      "accent": "#b6c2f4",
+      "sha256": "9d74bc213faf54f8f7e2b80eda38fd187d2717aa5e283609fe585722ad7047fc",
+      "accent": "#b4dbe8",
+      "template": "scripts/design-templates/cards/frame-miracle.svg",
       "motifs": {
         "cornerBudCount": 6,
         "origins": [
@@ -857,38 +908,38 @@
           "tree",
           "king"
         ],
-        "categoryShape": "四方の光"
+        "categoryShape": "流れる光・青白い真珠"
       },
       "safeAreas": {
         "art": [
-          24,
-          66,
-          312,
-          312
+          27,
+          68,
+          306,
+          306
         ],
         "name": [
-          61,
-          26,
-          243,
-          29
+          62,
+          20,
+          234,
+          44
         ],
         "rules": [
-          31,
-          408,
-          298,
-          65
+          29,
+          404,
+          302,
+          47
         ],
         "stats": [
-          31,
-          485,
-          298,
-          17
+          29,
+          457,
+          302,
+          25
         ],
         "cost": [
-          24,
-          26,
           22,
-          23
+          20,
+          36,
+          41
         ]
       }
     },
@@ -900,12 +951,13 @@
       "width": 360,
       "height": 520,
       "viewBox": "0 0 360 520",
-      "usage": "直立カード用。透明なアート窓、静かな説明欄、細い金属線。四隅には自然の6オリジンを表す6芽の彫金を配置。中央の王冠は王のオリジンを表す。カード画像に重ね、文字は各safeAreaに別途表示する。",
+      "usage": "306×306の透明な原画窓。金属の面取りと紙の質感を備え、コスト・二行のカード名・オリジン・効果・能力値を独立した領域に表示する。",
       "transparent": true,
       "format": "svg",
       "copyright": "© 2026 Beast King",
-      "sha256": "be199dbcfcc021bd1ff48ccf7f65b547e343e6a234442ca42910d9379baf80db",
-      "accent": "#e1c68f",
+      "sha256": "479a3849126506c3282187572a0694efc561b946ef01496dd59fa1faec927651",
+      "accent": "#dfc58f",
+      "template": "scripts/design-templates/cards/frame-gimmick.svg",
       "motifs": {
         "cornerBudCount": 6,
         "origins": [
@@ -917,38 +969,38 @@
           "tree",
           "king"
         ],
-        "categoryShape": "噛み合う機構"
+        "categoryShape": "歯車・真鍮の鋲"
       },
       "safeAreas": {
         "art": [
-          24,
-          66,
-          312,
-          312
+          27,
+          68,
+          306,
+          306
         ],
         "name": [
-          61,
-          26,
-          243,
-          29
+          62,
+          20,
+          234,
+          44
         ],
         "rules": [
-          31,
-          408,
-          298,
-          65
+          29,
+          404,
+          302,
+          47
         ],
         "stats": [
-          31,
-          485,
-          298,
-          17
+          29,
+          457,
+          302,
+          25
         ],
         "cost": [
-          24,
-          26,
           22,
-          23
+          20,
+          36,
+          41
         ]
       }
     },
@@ -964,7 +1016,8 @@
       "transparent": true,
       "format": "svg",
       "copyright": "© 2026 Beast King",
-      "sha256": "df5e572547038beae45b5de1cc7e780048e733d43d55d9d55755673df37bcc79"
+      "sha256": "a9d5a4af9558e65cec7c4c7d7aeb3319f658503add6d6bdd75c4fc9c03d8d5e5",
+      "template": "scripts/design-templates/cards/back.svg"
     },
     {
       "id": "rarity-n",

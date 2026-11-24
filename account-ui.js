@@ -2,12 +2,13 @@ import {accountSyncView,operatorGateView,operatorDashboardView,playerInboxView} 
 
 /** Account dialogs use the same server identity as online battles. No role or
  * activation credential is saved in the game data or inferred from the UI. */
-export function createAccountUi({client,cloud,ensureReady,isBattleActive,showModal,setModal,getModal,closeModal,render,toast,esc,icon,getCard,setPublicNotice,beforeLink,afterLink,documentImpl=globalThis.document}={}) {
+export function createAccountUi({client,cloud,ensureReady,isBattleActive,showModal,setModal,getModal,closeModal,render,toast,esc,icon,getCard,setPublicNotice,beforeLink,afterLink,onOperatorDeckChange,onEquipOperatorDeck,documentImpl=globalThis.document}={}) {
   const byId=id=>documentImpl.getElementById(id);
   const value=id=>byId(id)?.value?.trim()||'';
   let account={link:null,devices:[],busy:false,error:''};
   let inbox={messages:[],gifts:[],events:[],busy:false,error:''};
   let operator={snapshot:null,eventDraft:null,busy:false,error:''};
+  let operatorDeck=null,deckRequest=null;
   let brandCount=0,brandAt=0,operatorTimer=null;
   const pending=new Map();
   const kind=()=>getModal()?.kind;
@@ -43,6 +44,23 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     if(saved)restoreFields(saved,clearPrefix);
   }
   function gateModal(error=''){dialog('operator-gate','アクセス確認',operatorGateView({esc,icon,error,busy:operator.busy}));}
+  function regaliaModal(error=''){dialog('operator-regalia','特別コードの確認',operatorGateView({esc,icon,error,busy:operator.busy,purpose:'regalia',regaliaClaimed:!!operator.snapshot?.regalia?.claimedAt}));}
+  const getOperatorDeck=()=>operatorDeck?structuredClone(operatorDeck):null;
+  function acceptOperatorDeck(value){
+    const next=value&&Array.isArray(value.ids)&&value.ids.length===32&&Array.isArray(value.specialIds)&&value.specialIds.length===4?structuredClone(value):null;
+    if(JSON.stringify(operatorDeck)===JSON.stringify(next))return;
+    operatorDeck=next;onOperatorDeckChange?.(getOperatorDeck());
+  }
+  function refreshOperatorDeck(){
+    if(deckRequest)return deckRequest;
+    const owner=operator;
+    const request=(async()=>{
+      try{await ensureReady();const result=await client.getOperatorDeck();if(operator===owner)acceptOperatorDeck(result.deck);}
+      catch(error){if(operator===owner&&(error?.status===401||error?.status===404))acceptOperatorDeck(null);}
+      return operator===owner?getOperatorDeck():null;
+    })();
+    deckRequest=request;request.finally(()=>{if(deckRequest===request)deckRequest=null;});return request;
+  }
   function disallowDuringBattle(){
     if(!isBattleActive())return false;
     toast('対戦やマッチングを終了してから、この操作を行ってください。',true);return true;
@@ -72,7 +90,7 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     await accountAction(async()=>{
       const deviceName=/Android|iPhone|iPad|Mobile/i.test(globalThis.navigator?.userAgent||'')?'スマホ・タブレット':'PCブラウザ';
       await beforeLink?.();try{await cloud.claimDeviceLink(code,deviceName);}finally{await afterLink?.();}
-      account.link=null;operator={snapshot:null,eventDraft:null,busy:false,error:''};pending.clear();
+      account.link=null;operator={snapshot:null,eventDraft:null,busy:false,error:''};acceptOperatorDeck(null);deckRequest=null;pending.clear();
       const input=byId('device-link-code');if(input)input.value='';
       await loadDevices();render();toast('連携しました。同じプレイヤーのデータを読み込みました。');
     });
@@ -109,7 +127,7 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     stopOperatorRefresh();if(kind()!=='operator')return;
     operatorTimer=setTimeout(async()=>{
       operatorTimer=null;if(kind()!=='operator')return;
-      if(!operator.busy&&!documentImpl.hidden)try{operator.snapshot=(await client.getOperator()).operator;if(kind()==='operator')operatorModal();}catch(error){if(error.status===401||error.status===404){closeModal();toast('認証を確認してください。',true);return;}}
+      if(!operator.busy&&!documentImpl.hidden)try{operator.snapshot=(await client.getOperator()).operator;acceptOperatorDeck(operator.snapshot?.deck);if(kind()==='operator')operatorModal();}catch(error){if(error.status===401||error.status===404){acceptOperatorDeck(null);closeModal();toast('認証を確認してください。',true);return;}}
       scheduleOperatorRefresh();
     },30000);
   }
@@ -118,14 +136,17 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     operator.busy=true;operator.error='';
     try{
       await ensureReady();
-      const result=await client.getOperator();operator.snapshot=result.operator;operator.busy=false;operatorModal({preserve:false});scheduleOperatorRefresh();
+      const result=await client.getOperator();operator.snapshot=result.operator;acceptOperatorDeck(result.operator?.deck);operator.busy=false;operatorModal({preserve:false});scheduleOperatorRefresh();
     }catch(error){
       operator.snapshot=null;operator.busy=false;
+      if(error?.status===401||error?.status===404)acceptOperatorDeck(null);
       if(error?.payload?.setupAvailable===true)gateModal();
       else toast(error?.status===404?'この操作は利用できません。':safeError(error),true);
     }
   }
   async function activate(){
+    // Enter on the original password field follows the existing app handler.
+    if(kind()==='operator-regalia'){await claimRegalia();return;}
     if(operator.busy||kind()!=='operator-gate')return;
     const field=byId('operator-code'),code=field?.value||'';
     if(!code)return;
@@ -136,6 +157,53 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       operator.snapshot=result.operator;operator.busy=false;operatorModal({preserve:false});scheduleOperatorRefresh();
       toast('初回設定が完了しました。');
     }catch(error){operator.busy=false;try{operator.snapshot=(await client.getOperator()).operator;operatorModal({preserve:false});scheduleOperatorRefresh();}catch{gateModal(safeError(error));}}
+  }
+  function openRegalia(){
+    if(operator.busy||!operator.snapshot||kind()!=='operator')return;
+    stopOperatorRefresh();regaliaModal();
+  }
+  async function claimRegalia(){
+    if(operator.busy||!operator.snapshot||kind()!=='operator-regalia'||disallowDuringBattle())return;
+    const owner=operator;
+    const field=byId('operator-code'),code=field?.value||'';
+    if(!code)return;
+    if(field)field.value='';
+    operator.busy=true;regaliaModal();
+    try{
+      await ensureReady();await cloud.flush();
+      if(operator!==owner)return;
+      const result=await client.claimOperatorRegalia(code,cloud.getState().revision);
+      if(operator!==owner)return;
+      const sync=await cloud.acceptServerSave(result.save);
+      if(operator!==owner)return;
+      operator.snapshot={...operator.snapshot,regalia:{claimedAt:result.claim.claimedAt},deck:result.deck||null};
+      operator.busy=false;
+      acceptOperatorDeck(result.deck);
+      render();
+      if(kind()==='operator-regalia'){operatorModal({preserve:false});scheduleOperatorRefresh();}
+      const converted=result.claim.convertedTreasure||0;
+      toast(sync.phase==='conflict'?'受取はクラウドで確定しました。設定の「端末連携と同期」で保存内容を確認してください。':result.replayed?'𠮷良原デッキは開放済みです。':result.upgraded?'𠮷良原デッキを開放しました。必要なカードもそろいました。':converted?`𠮷良原デッキを開放しました。レガリアの所持上限を超えた分は${converted}秘宝に変わりました。`:'王冠竜 レガリアを2枚受け取り、𠮷良原デッキを開放しました。');
+    }catch(error){
+      if(operator!==owner)return;
+      operator.busy=false;
+      if(kind()==='operator-regalia')regaliaModal(safeError(error));
+    }
+  }
+  async function equipOperatorDeck(){
+    if(operator.busy||!operatorDeck||typeof onEquipOperatorDeck!=='function'||disallowDuringBattle())return;
+    const owner=operator;operator.busy=true;
+    try{
+      await ensureReady();await cloud.flush();if(operator!==owner)return;
+      const result=await client.getOperatorDeck();if(operator!==owner)return;
+      acceptOperatorDeck(result.deck);
+      if(!operatorDeck)throw new Error('専用デッキの開放を確認してください。');
+      await onEquipOperatorDeck(getOperatorDeck());if(operator!==owner)return;
+      closeModal();toast('𠮷良原デッキを使用します。ソロ・ルーム対戦・ランクマッチで使えます。');
+    }catch(error){
+      if(operator!==owner)return;
+      if(error?.status===401||error?.status===404)acceptOperatorDeck(null);
+      toast(safeError(error),true);
+    }finally{if(operator===owner)operator.busy=false;}
   }
   function recipient(prefix){
     if(value(prefix+'-audience')==='all')return 'all';
@@ -198,6 +266,10 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       case'inbox-claim':void claimReward(element.dataset.id);break;
       case'event-claim':void claimReward(element.dataset.id,true);break;
       case'operator-activate':void activate();break;
+      case'operator-regalia-open':openRegalia();break;
+      case'operator-regalia-claim':void claimRegalia();break;
+      case'operator-regalia-back':if(!operator.busy&&operator.snapshot&&kind()==='operator-regalia'){operatorModal({preserve:false});scheduleOperatorRefresh();}break;
+      case'operator-deck-use':void equipOperatorDeck();break;
       case'operator-save':void operate('settings');break;
       case'operator-message-send':void operate('message');break;
       case'operator-gift-send':void operate('gift');break;
@@ -210,10 +282,10 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     return true;
   }
   return {
-    handleAction,openAccount,openInbox,onModalClosed:stopOperatorRefresh,
+    handleAction,openAccount,openInbox,getOperatorDeck,refreshOperatorDeck,onModalClosed:stopOperatorRefresh,
     onCloudState(){if(kind()==='account')accountModal();},
     touchBrand(){const now=Date.now();brandCount=now-brandAt<1800?brandCount+1:1;brandAt=now;if(brandCount<7)return false;brandCount=0;void openOperator();return true;},
-    clearIdentity(){stopOperatorRefresh();account.link=null;account.devices=[];inbox={messages:[],gifts:[],events:[],busy:false,error:''};operator={snapshot:null,eventDraft:null,busy:false,error:''};pending.clear();},
+    clearIdentity(){stopOperatorRefresh();account.link=null;account.devices=[];inbox={messages:[],gifts:[],events:[],busy:false,error:''};operator={snapshot:null,eventDraft:null,busy:false,error:''};acceptOperatorDeck(null);deckRequest=null;pending.clear();},
   };
 }
 

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { STARTER_DECKS, ELEMENTS, validateDeck, validateSpecialDeck } from '../catalog.js';
+import { STARTER_DECKS, DECK_PRESETS, ELEMENTS, validateDeck, validateSpecialDeck } from '../catalog.js';
 import { newGame } from '../engine.js';
 import { soloView } from '../mode-views.js';
 import {
@@ -22,7 +22,7 @@ test('all ten chapters contain two playable battles using real 32 + 4 decks and 
   assert.equal(new Set(CAMPAIGN_BATTLES.map(battle => battle.cpuDeckId)).size, 8);
   assert.ok(Object.isFrozen(CAMPAIGN_CHAPTERS));
   assert.ok(Object.isFrozen(CAMPAIGN_BATTLES));
-  const deckMap = new Map(STARTER_DECKS.map(deck => [deck.id, deck]));
+  const deckMap = new Map(DECK_PRESETS.map(deck => [deck.id, deck]));
   const player = STARTER_DECKS[0];
   for (const [chapterIndex, chapter] of CAMPAIGN_CHAPTERS.entries()) {
     assert.equal(chapter.number, chapterIndex + 1);

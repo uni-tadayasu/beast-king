@@ -1,0 +1,1375 @@
+{
+  "createdAt": "2026-11-24T00:52:29Z",
+  "expectedAtlases": 144,
+  "availableAtlases": 144,
+  "missingAtlases": [],
+  "checkedCards": 2304,
+  "unusedAtlasCells": [
+    {
+      "atlas": "beast-32",
+      "row": 3,
+      "column": 3,
+      "reason": "B0512 uses preserved king.webp instead"
+    }
+  ],
+  "duplicateAtlasSha256": [],
+  "duplicateExactPixelCells": [],
+  "duplicateNormalizedCells": [],
+  "strongPerceptualCandidates": [],
+  "closestLowPhashPairs": [],
+  "methods": {
+    "exact": "Decoded RGB pixels plus dimensions",
+    "normalized": "96x96 Lanczos RGB pixels SHA-256",
+    "phash": "32x32 luminance; 8x8 DCT, DC omitted, median threshold (63-bit)",
+    "dhash": "9x8 luminance horizontal differences (64-bit)",
+    "candidateThreshold": "pHash distance <= 6 AND dHash distance <= 10",
+    "cellCrop": "Equal 4x4 cells with 4% inward safety crop; source images unchanged",
+    "limitations": "Perceptual hashes flag strong image reuse, not thematic similarity or all possible composition similarities. Candidate pairs require visual review."
+  },
+  "visualReview": {
+    "status": "complete",
+    "reviewedNewAtlases": [
+      "fusion-12",
+      "fusion-14",
+      "fusion-15",
+      "fusion-16",
+      "gimmick-23",
+      "gimmick-24",
+      "gimmick-25",
+      "gimmick-26",
+      "gimmick-27",
+      "gimmick-28",
+      "gimmick-29",
+      "gimmick-30",
+      "gimmick-31",
+      "gimmick-32",
+      "miracle-26",
+      "miracle-27",
+      "miracle-29",
+      "miracle-30",
+      "miracle-31",
+      "miracle-32"
+    ],
+    "findings": [
+      "Each reviewed atlas has sixteen square scenes in a four-by-four grid.",
+      "No card frames, card text, labels or watermarks observed in the reviewed generated artwork.",
+      "Reviewed fusion atlases contain distinct creature silhouettes; reviewed miracle atlases use different props, scene scales and viewpoints.",
+      "Shared thematic motifs occur among cards of the same origin, but the reviewed illustrations are not identical copies or simple recolors.",
+      "Gimmick 23–32: all ten accepted atlases independently reviewed; each has 4x4 scenes, different apparatus silhouettes or viewpoints, no observed lettering, and intact scene boundaries.",
+      "The accepted fallback candidates gimmick-28, gimmick-29 and gimmick-31 were reviewed from art-recovered, matching production nativeSha256. Late unaccepted art-new candidates were excluded."
+    ],
+    "nearDuplicateCandidatesReviewed": 0,
+    "result": "All 20 newly generated accepted atlases visually reviewed. No exact cell reuse, normalized cell reuse, or strong perceptual duplication detected across all 2304 accepted card illustrations.",
+    "reviewedNewAtlasCount": 20
+  },
+  "productionOriginalsVerified": {
+    "sourceDirectory": "art-recovered",
+    "atlasesVerifiedAgainstNativeSha256": 144,
+    "publishedWebPVerifiedAgainstSha256": 144,
+    "excludedDirectories": [
+      "art-new",
+      "art-fallback"
+    ],
+    "productionManifestSha256": "b894481cdf1ce961a9fabfeb481ba892b2a22b8a7f48540dbc502bec726f4c25"
+  },
+  "status": "passed",
+  "finalizedAt": "2026-11-24T00:52:36Z",
+  "atlasSources": [
+    {
+      "atlas": "beast-01",
+      "sourceFile": "beast-01.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "ccdc6452a11b042ab04baac13b43e4a7817b19468d48d041f7a65e9cd5b7587a"
+    },
+    {
+      "atlas": "beast-02",
+      "sourceFile": "beast-02.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "fb371b779bfaf115eb961066707e4dd6d3c2daae377549b07cb3a2651ef683b2"
+    },
+    {
+      "atlas": "beast-03",
+      "sourceFile": "beast-03.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "ae16e83a5158877037422844df40406c6f6ac53b0f042bbca49abdebf5a7007a"
+    },
+    {
+      "atlas": "beast-04",
+      "sourceFile": "beast-04.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "aef7cefc6b90158563013dc560898276d0dd3aeb95557ec367c9b2b53f53f05f"
+    },
+    {
+      "atlas": "beast-05",
+      "sourceFile": "beast-05.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "cdf856b4d6d141ddf048080b597611ef6b4b0dbca055cce82c257f100764bd01"
+    },
+    {
+      "atlas": "beast-06",
+      "sourceFile": "beast-06.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "af85ef5d61486beb8e166053961b5e409270627839ae1a3011de3745c1502b67"
+    },
+    {
+      "atlas": "beast-07",
+      "sourceFile": "beast-07.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "5dec23122b8d1dd2453b761c0ee8becbe92aa2ec94367054a7693a0f31a34c06"
+    },
+    {
+      "atlas": "beast-08",
+      "sourceFile": "beast-08.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "0916aa4d3003083b81f7626442b01afa423d2bed159fa2e23dd24f778c56e46a"
+    },
+    {
+      "atlas": "beast-09",
+      "sourceFile": "beast-09.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "cebcebb2245d9e04fac8d5ef7f82acbb29ceeef18c2a997f4fabd019f87f8bdb"
+    },
+    {
+      "atlas": "beast-10",
+      "sourceFile": "beast-10.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "62face6cd24f3862a2b550b92ddb983706d72ff63cc8784af5ff3a639fea8dd6"
+    },
+    {
+      "atlas": "beast-11",
+      "sourceFile": "beast-11.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "18aa53e528f31fb824a5533bb561fb619519d720e904f4b65306dfab38612f54"
+    },
+    {
+      "atlas": "beast-12",
+      "sourceFile": "beast-12.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "c0f46e89ba962705400dec2413a81806655a121d74b505fd852ac687b3af2381"
+    },
+    {
+      "atlas": "beast-13",
+      "sourceFile": "beast-13.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "13c3fc6937242d765bfab1b97ffa95cc62b85976ae0c7756921f702193523ffb"
+    },
+    {
+      "atlas": "beast-14",
+      "sourceFile": "beast-14.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "0c4c6397ae519e529aae155946a67b043812ae8bb794d32a292b5beb5ab3f9fc"
+    },
+    {
+      "atlas": "beast-15",
+      "sourceFile": "beast-15.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "f8e5d42cf74203d2e0a4d9058ebd55e62f1784734fdef392f7892dfe9c97b4aa"
+    },
+    {
+      "atlas": "beast-16",
+      "sourceFile": "beast-16.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "3761de6c8703d0541df25f24bb86d4b258904b0212779289c94002c15b7f1463"
+    },
+    {
+      "atlas": "beast-17",
+      "sourceFile": "beast-17.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "bf9625f9113933c21f487a4c8b364ddef24b4ebca794070a67ec1fb770dcbe60"
+    },
+    {
+      "atlas": "beast-18",
+      "sourceFile": "beast-18.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "dc1309a3bde3fb6e16db04aab642ac0e760671d6bd931dcd8eba1b36702803a6"
+    },
+    {
+      "atlas": "beast-19",
+      "sourceFile": "beast-19.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "24081983e09a2d424060d8fb0e386d60e0e92de9fd5317415d7be12e9c2e8385"
+    },
+    {
+      "atlas": "beast-20",
+      "sourceFile": "beast-20.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "62a7f9095c4ae30136000b14c3068f1710481cf0bee66fe0eeff0da9ebde497f"
+    },
+    {
+      "atlas": "beast-21",
+      "sourceFile": "beast-21.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "57da934060f54f9ef1d69dfe3fe4d60860c19d23832dfae98d61d8fc232caffa"
+    },
+    {
+      "atlas": "beast-22",
+      "sourceFile": "beast-22.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "9356b9fad8906ab77dac623495b7c49b32980499de10f0debb793b611d33d576"
+    },
+    {
+      "atlas": "beast-23",
+      "sourceFile": "beast-23.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "20b70dc6f9947473399d58142b5087de26cd4110402a29075df0741251aef9bc"
+    },
+    {
+      "atlas": "beast-24",
+      "sourceFile": "beast-24.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "ac261643e526a3012aef1234447cabd27a48c54e93f7a615c7d5412a6ed5b3be"
+    },
+    {
+      "atlas": "beast-25",
+      "sourceFile": "beast-25.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "ac3ab46e536b97d085aa87bb469de624a5c339914454f476ec077b571e1ab558"
+    },
+    {
+      "atlas": "beast-26",
+      "sourceFile": "beast-26.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "b67d32fbb3075ed03425dc5cce50f178d71ca108c49a2d8b48b8081d5cdacac0"
+    },
+    {
+      "atlas": "beast-27",
+      "sourceFile": "beast-27.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "6ec74d8b6b8cb1ddad7eeb2f047197dd8e3768e07a6188368ebbe8ae1f8e4f18"
+    },
+    {
+      "atlas": "beast-28",
+      "sourceFile": "beast-28.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "4d565a32cad44d0b05d883ca960737f7fe11a9a8103ec9a784b909d5d3177f5e"
+    },
+    {
+      "atlas": "beast-29",
+      "sourceFile": "beast-29.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "cc3a02116a32da8f274e8a4741765b31c334a9329f927308d4b3a359917d4fe5"
+    },
+    {
+      "atlas": "beast-30",
+      "sourceFile": "beast-30.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "e0b3be9b4b5ca5c1756928d019668dc052b1ac2d63d8fde8c758ac98a2130249"
+    },
+    {
+      "atlas": "beast-31",
+      "sourceFile": "beast-31.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "0785e540347e03a28ecc7cebc9b8a5096fd6a51f276b534961a0dcd3e65f95d8"
+    },
+    {
+      "atlas": "beast-32",
+      "sourceFile": "beast-32.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "0da3a6980f1c3a6eb16e325f4c7cc30f568d66fa5023897fbde4019a436e1d95"
+    },
+    {
+      "atlas": "beast-33",
+      "sourceFile": "beast-33.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "0f4e162b57f5de0b0a2ab2494d7510c40b5a143ef8886510ec9b465ebfbc534e"
+    },
+    {
+      "atlas": "beast-34",
+      "sourceFile": "beast-34.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "306b5c89db8fdc9d29c0feacd44f84ce289652d3c33541eb0b5bca08e63fee17"
+    },
+    {
+      "atlas": "beast-35",
+      "sourceFile": "beast-35.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "bcfed5d8555cba41efd8f3094c529575a4a62002494958ff6502958d63124166"
+    },
+    {
+      "atlas": "beast-36",
+      "sourceFile": "beast-36.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "6fa76e86773681075ed63b788f97d1c6d94cd32c225a8ea71f486b83749e847a"
+    },
+    {
+      "atlas": "beast-37",
+      "sourceFile": "beast-37.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "1c3d4d0781011bc6dda73f856066abff3489a1aeca0d96c8199094f4e3064f81"
+    },
+    {
+      "atlas": "beast-38",
+      "sourceFile": "beast-38.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "1db5cfc39ee5535076bf2461e9aaa41dae24c732ad411c715366cfc4b8950084"
+    },
+    {
+      "atlas": "beast-39",
+      "sourceFile": "beast-39.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "6b19c934b88eaa4f4a9aaa20248b969a5f32ba967cd415946f75ac32c44e4aa7"
+    },
+    {
+      "atlas": "beast-40",
+      "sourceFile": "beast-40.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "56b37c74bfba1006b9bd552e2721fc1d8741c1846d3dfac6b3ba2cfbcbd21249"
+    },
+    {
+      "atlas": "beast-41",
+      "sourceFile": "beast-41.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "84fda84fec74f70e7b4c82c4ffe6e7f516277f82a09263cda4e69ee826c7526d"
+    },
+    {
+      "atlas": "beast-42",
+      "sourceFile": "beast-42.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "e5a662a202c5fbec33bd05b33b30abcac42f569b94fa305279d7187bfc8ea5db"
+    },
+    {
+      "atlas": "beast-43",
+      "sourceFile": "beast-43.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "4b7a2469a00d56fa6d304787f7b938a7f5dda9131d0753d6e3ce8983156208ae"
+    },
+    {
+      "atlas": "beast-44",
+      "sourceFile": "beast-44.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "eeb2ea50f7d432db2e5a1622727357237153976ac6b6e1d99dc1a996532edf5e"
+    },
+    {
+      "atlas": "beast-45",
+      "sourceFile": "beast-45.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "19e385f703203fbc28f1780ff498da602a040f8b97aeeda3299425325cf32f4d"
+    },
+    {
+      "atlas": "beast-46",
+      "sourceFile": "beast-46.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "67311e3983bf841e7c369383f0c3cd22785e3c31cdbdd124e2f033a09a299dd0"
+    },
+    {
+      "atlas": "beast-47",
+      "sourceFile": "beast-47.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "779df6cfc23efc64c9c8b657cdae8ef4d4d3979fb5491709ee537d2dc68d185e"
+    },
+    {
+      "atlas": "beast-48",
+      "sourceFile": "beast-48.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "6ca8f9ac0ace76388df141ca2bcb32ed9aeeb876d27d70ddbb82baa711e978ae"
+    },
+    {
+      "atlas": "beast-49",
+      "sourceFile": "beast-49.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "5c0b1cd5111a1dc6e8e39089d9668cb5ddce8a64114225f3079aabab33437227"
+    },
+    {
+      "atlas": "beast-50",
+      "sourceFile": "beast-50.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "6b268150d4d551739d0dce49bf2c38512dc17384b1199bb60365073880324810"
+    },
+    {
+      "atlas": "beast-51",
+      "sourceFile": "beast-51.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "d5f1e880c4441c3a8a46b508fc1f8c5db6a69eb4e9842acf85865119597cc7b5"
+    },
+    {
+      "atlas": "beast-52",
+      "sourceFile": "beast-52.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "70b4d74e4f2f17bd9baf3524865f0890b741dfd432d41fe3edd542f53438d674"
+    },
+    {
+      "atlas": "beast-53",
+      "sourceFile": "beast-53.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "e846b888fba0d394f1a2d2de378a2846ab2ea52bcd6405d1094f5ec3448766cf"
+    },
+    {
+      "atlas": "beast-54",
+      "sourceFile": "beast-54.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "559719c5ece9f64d4bdcb6041bd99636af3c031aec8b83f910cac2816c1c4091"
+    },
+    {
+      "atlas": "beast-55",
+      "sourceFile": "beast-55.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "855935ec905975a8b5c2be1065f9fcb77d66ce7794140641977cc381ffb7ddaa"
+    },
+    {
+      "atlas": "beast-56",
+      "sourceFile": "beast-56.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "9ca596f7c83b9f04ff9b7d7d4cf6f9c3a9ebda508d3db092689dd7f921ce1786"
+    },
+    {
+      "atlas": "beast-57",
+      "sourceFile": "beast-57.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "5a57d755b0e1be743192af89c50accb7cca9a6e90dcfb0ede168ab62855945b3"
+    },
+    {
+      "atlas": "beast-58",
+      "sourceFile": "beast-58.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "24034c5d5fc6d0622513f0a61fa4b0336fb025be95a343e3056e4e9d514f5cc9"
+    },
+    {
+      "atlas": "beast-59",
+      "sourceFile": "beast-59.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "04754eac0c0502098e33d8ca68f4a8dac5375322e609ff77a74cfb6cdd47cbd7"
+    },
+    {
+      "atlas": "beast-60",
+      "sourceFile": "beast-60.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "013a729f0b1b71a426af3d9b3d69bb6fba8a0665d532ba41fe140cb9df3b0a1f"
+    },
+    {
+      "atlas": "beast-61",
+      "sourceFile": "beast-61.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "53509261a761b398c3d718c2a1434d955fbe1a1494ffa67751404018061cf017"
+    },
+    {
+      "atlas": "beast-62",
+      "sourceFile": "beast-62.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "17b746511351ff37ca92f2aa07675fb4056c6e1701d641a7d2bbd95d9a415410"
+    },
+    {
+      "atlas": "beast-63",
+      "sourceFile": "beast-63.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "aa3db8af8316ab2fadd37aa1bcb414fddd1efd14af53aa75bb9fd32d2f62dd4b"
+    },
+    {
+      "atlas": "beast-64",
+      "sourceFile": "beast-64.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "df82a860b603b23986ac628fc1c3557193c7962187070c347d2c67e40cc6f192"
+    },
+    {
+      "atlas": "fusion-01",
+      "sourceFile": "fusion-01.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "a931ad47b3503f35d4d04767d0fdcddfced354881a62d4c2252f8f4c02dcb7ca"
+    },
+    {
+      "atlas": "fusion-02",
+      "sourceFile": "fusion-02.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "0df33463ffeae44eb0bcf88c7df6b18291ef835de57e1bdcba33c84bd08d51b9"
+    },
+    {
+      "atlas": "fusion-03",
+      "sourceFile": "fusion-03.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "16b0ecf352c2de2bc203f79e994b195af057321ecf7b7b382cc386fe2670c1ce"
+    },
+    {
+      "atlas": "fusion-04",
+      "sourceFile": "fusion-04.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "0811d2a11f2a2112776857fb19f3b16b7bde32e55458d0509cc1566701f7ded8"
+    },
+    {
+      "atlas": "fusion-05",
+      "sourceFile": "fusion-05.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "9d99ca0c0431d6a21244332678d5ba4270b0879d757849ed7e748034d9b1ecb5"
+    },
+    {
+      "atlas": "fusion-06",
+      "sourceFile": "fusion-06.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "24d0a8d9bb8f63bdbf1cdc7a8b31c3b57076640168f4d7a66e45ca41ce20c2aa"
+    },
+    {
+      "atlas": "fusion-07",
+      "sourceFile": "fusion-07.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "68a0682028efc9a802890a69d62d31665028f4f4e6ce7c22371030fe7e65902b"
+    },
+    {
+      "atlas": "fusion-08",
+      "sourceFile": "fusion-08.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "224967c5c4cccf9a9514ae9840730c98634c46bc2b63bbd577c8c7f67febaec3"
+    },
+    {
+      "atlas": "fusion-09",
+      "sourceFile": "fusion-09.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "59faa440a9869e74fa32d97c4a474703714ea983e555489ac3ef1772be51c31a"
+    },
+    {
+      "atlas": "fusion-10",
+      "sourceFile": "fusion-10.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "7dd1f2ebf423c29acaaef57efa8ff079069367be78f1ed34478c8b344083682d"
+    },
+    {
+      "atlas": "fusion-11",
+      "sourceFile": "fusion-11.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "2e2458f5c3d6c33f4c91c492de4999dd9efa7a4c41f1c07e454a7ec97b0d966d"
+    },
+    {
+      "atlas": "fusion-12",
+      "sourceFile": "fusion-12.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "2b37543e8f8052b3e8122e583a5b15862589bb391193d45382fa404c9a7b22fd"
+    },
+    {
+      "atlas": "fusion-13",
+      "sourceFile": "fusion-13.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "e290cd18c0cdfbadc251db33a82edb397ceb8a82995d09dd93b4088054f9d88a"
+    },
+    {
+      "atlas": "fusion-14",
+      "sourceFile": "fusion-14.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "e1ef75760eb1c9f1a5c190e663c497c0bea2d8552e3c38fa5c5fa60846ab4ad9"
+    },
+    {
+      "atlas": "fusion-15",
+      "sourceFile": "fusion-15.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "bf9fc28d2e70cadc267d3d9cc6de124550aa94ac9a7f45471a311bcde9df863a"
+    },
+    {
+      "atlas": "fusion-16",
+      "sourceFile": "fusion-16.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "7d0105256ac78cbfe0ad3ebea6a074d5ab51a412a8d26a0b93a59e8e299db8a9"
+    },
+    {
+      "atlas": "miracle-01",
+      "sourceFile": "miracle-01.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "7eec7bddb011ee600ded06ea1704f02a3800b6da8c08609aeb530cf2b77fb533"
+    },
+    {
+      "atlas": "miracle-02",
+      "sourceFile": "miracle-02.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "de15af8db28dd984c3bb202d181ccb68e777d90249a591a3af67f14935126586"
+    },
+    {
+      "atlas": "miracle-03",
+      "sourceFile": "miracle-03.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "103012a27ce9bd1c4ce692bb0b079122bd8a247938193a1a0c8219986bbb76a5"
+    },
+    {
+      "atlas": "miracle-04",
+      "sourceFile": "miracle-04.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "496a9bcf00e2842c28fc761aeed487132a0bc6a5b6c369e88518a081ff71e9b5"
+    },
+    {
+      "atlas": "miracle-05",
+      "sourceFile": "miracle-05.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "d08c5935d1969536d69ac84c4f60c43c0aa9c4e68aa938fb4fee9e129867e398"
+    },
+    {
+      "atlas": "miracle-06",
+      "sourceFile": "miracle-06.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "30c1e87c730f622e1d8633e5eb44135d012ce6310c57f8f0911be7e8d3913952"
+    },
+    {
+      "atlas": "miracle-07",
+      "sourceFile": "miracle-07.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "91b7c089947cef20bf4fc394cc0a9a346623cfef22317c3078d87d50a2fd2b6e"
+    },
+    {
+      "atlas": "miracle-08",
+      "sourceFile": "miracle-08.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "5dd67a047d53c655d47792cef5f067c398f78fffe9105570c5ff4d89ad6d12be"
+    },
+    {
+      "atlas": "miracle-09",
+      "sourceFile": "miracle-09.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "73bbd14c406825f28514823aa36b14403f6b5976bbb4c24fd0bdf74e86d3119b"
+    },
+    {
+      "atlas": "miracle-10",
+      "sourceFile": "miracle-10.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "7f923c2bc676f7bcef4f47b9278b378725f527a7d40c2298f178b2b744d1e7fc"
+    },
+    {
+      "atlas": "miracle-11",
+      "sourceFile": "miracle-11.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "dbc097a204d852d39c520cb0096b16cba63daed6dc57f2ed86fcc8aa80f7654a"
+    },
+    {
+      "atlas": "miracle-12",
+      "sourceFile": "miracle-12.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "f03a6d5b9376a2d9b67591b623fa1432c7ce9a03c8fc3e681cccc3f15d1ca600"
+    },
+    {
+      "atlas": "miracle-13",
+      "sourceFile": "miracle-13.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "3e8b2eccd93a05c61752a72ca8a70fd1ba17f174a6a4be3ba5ddba52eb67b688"
+    },
+    {
+      "atlas": "miracle-14",
+      "sourceFile": "miracle-14.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "dd6d8c7fd2f08c1969cf901fc8e46ac1dfe74f10c6c6626b6a48cf1f8dea6d6a"
+    },
+    {
+      "atlas": "miracle-15",
+      "sourceFile": "miracle-15.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "7f12bb5bbaa558af97fbabba0ad2a28c8606406b9d7a40734ee0c37318c5d1a6"
+    },
+    {
+      "atlas": "miracle-16",
+      "sourceFile": "miracle-16.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "2407475c95f80f7543d358367a6ba9250debad810e348fb76b2424a86f607b8a"
+    },
+    {
+      "atlas": "miracle-17",
+      "sourceFile": "miracle-17.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "d5f89aed373f29660e630d9c44f6ee79168bded7898c8f8d562d28569f9d1235"
+    },
+    {
+      "atlas": "miracle-18",
+      "sourceFile": "miracle-18.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "eb0ee083dd0b6ad2b16f9ef915b63b16e1c50253271940f248be267ca11e6ad1"
+    },
+    {
+      "atlas": "miracle-19",
+      "sourceFile": "miracle-19.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "3fd0425f185b7f3224ca0ca1aec999aee8df1d38dde460b5cd789aa681b1e86a"
+    },
+    {
+      "atlas": "miracle-20",
+      "sourceFile": "miracle-20.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "36ed528b80613b8c2a077d0e109c072ba7cdd6f768f2e26af322c0ebdf7bf6e2"
+    },
+    {
+      "atlas": "miracle-21",
+      "sourceFile": "miracle-21.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "19f2e67b287293d64825ced480035c16ab52f02966a52f83860b06e207980b69"
+    },
+    {
+      "atlas": "miracle-22",
+      "sourceFile": "miracle-22.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "c64897b367273bb6ff0a9ec8baf4f28b7ffd8596f739a0625cbe15395a6dab82"
+    },
+    {
+      "atlas": "miracle-23",
+      "sourceFile": "miracle-23.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "541a4d168d172409f311bf36081759b5211e0140447cd5fd1013592c81d69740"
+    },
+    {
+      "atlas": "miracle-24",
+      "sourceFile": "miracle-24.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "0bdb49de6da72ee978047a18b91318d217c41ba6c5c6811d23ad28d9f5fec254"
+    },
+    {
+      "atlas": "miracle-25",
+      "sourceFile": "miracle-25.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "503a31e0514ae1f44502c121cedb9cdb2521afb744a06e40d6e771f73686f43e"
+    },
+    {
+      "atlas": "miracle-26",
+      "sourceFile": "miracle-26.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "eb23a6ad07b9a93e5881b7ecc8484f0cf25dd70173fc9cbdf76205d131d8662a"
+    },
+    {
+      "atlas": "miracle-27",
+      "sourceFile": "miracle-27.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "2b6ae823c8056391507be024e58e030ebdf74356e67ab1a1a4500a932e7f0662"
+    },
+    {
+      "atlas": "miracle-28",
+      "sourceFile": "miracle-28.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "421e6165cf94928a77a28013f27ed248d7f20042edd9be2819949412f58ff32d"
+    },
+    {
+      "atlas": "miracle-29",
+      "sourceFile": "miracle-29.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "33e82e874ed871f51410755cf8d9fe451d8a0f9cae91a6b3626fd7f7fbe31af4"
+    },
+    {
+      "atlas": "miracle-30",
+      "sourceFile": "miracle-30.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "b56658e2fa7cfd80347db051bba2695e6f5776297a7fe119b5bd6149005e42f8"
+    },
+    {
+      "atlas": "miracle-31",
+      "sourceFile": "miracle-31.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "156a126af0c536a3e77420cd5ad5407b041994b4f45b89c7d29486b4efc23c66"
+    },
+    {
+      "atlas": "miracle-32",
+      "sourceFile": "miracle-32.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "9b0fb2262efa3b39419673b3e1c7741e7825a950acee546e8243b861be840f5e"
+    },
+    {
+      "atlas": "gimmick-01",
+      "sourceFile": "gimmick-01.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "8caa3934c610e58422c46cbef60c9da24e3e9b387071bff8e3bdcc991b9988b7"
+    },
+    {
+      "atlas": "gimmick-02",
+      "sourceFile": "gimmick-02.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "f437da9668caf472565260150647023fac0e8e8292600dceb61f088d4b8ec926"
+    },
+    {
+      "atlas": "gimmick-03",
+      "sourceFile": "gimmick-03.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "d88957c1500d717ac87acfd7ac2c6ca0095e8077d0aad800498d3ed6987418cc"
+    },
+    {
+      "atlas": "gimmick-04",
+      "sourceFile": "gimmick-04.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "e2f958d0b262da9f6bb2531ca65bbdd99d8848153ae9b0b482328f1a0d210e5b"
+    },
+    {
+      "atlas": "gimmick-05",
+      "sourceFile": "gimmick-05.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "a7b39116cf989f414934783ac5be8dc9858596206de287cc4b5ff23e278bbce1"
+    },
+    {
+      "atlas": "gimmick-06",
+      "sourceFile": "gimmick-06.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "79eb47015172f74673a5719406b37e1d6de7824297a47d08bc23ff4cdf8800aa"
+    },
+    {
+      "atlas": "gimmick-07",
+      "sourceFile": "gimmick-07.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "c58784f95341e1683ee7ee74a32284c6ae08c9537279bee8783372694508133c"
+    },
+    {
+      "atlas": "gimmick-08",
+      "sourceFile": "gimmick-08.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "703ea08a7854d0df429fbf49e5b76b28eacdb8554214201844a61defd4ff8046"
+    },
+    {
+      "atlas": "gimmick-09",
+      "sourceFile": "gimmick-09.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "0385271411121aec02b8e3a4eb5cb42f093c84e12789c5a65b701077ea85281e"
+    },
+    {
+      "atlas": "gimmick-10",
+      "sourceFile": "gimmick-10.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "e5dfda5e65b11495c406e790a9aceb7c72820c39cddf3c19c94044a5bdbe2563"
+    },
+    {
+      "atlas": "gimmick-11",
+      "sourceFile": "gimmick-11.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "40a4be1561e4377cce7cc1c87044640a2965b077a6c3c54e5cf725831198b5c3"
+    },
+    {
+      "atlas": "gimmick-12",
+      "sourceFile": "gimmick-12.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "597b233d43ec2fe9781a18f43fc98b650b9244072158e47726cb42e1321f2853"
+    },
+    {
+      "atlas": "gimmick-13",
+      "sourceFile": "gimmick-13.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "35a4b905a07b9aa85edb26e7916125557acf021699214b0a763f19ce7bcff3d8"
+    },
+    {
+      "atlas": "gimmick-14",
+      "sourceFile": "gimmick-14.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "369fe370e133f62b66e0402bf1aa96430fb4c9447a07193b4de0bc6c9b9bae46"
+    },
+    {
+      "atlas": "gimmick-15",
+      "sourceFile": "gimmick-15.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "846ed2a7926ce695a4509f2db23467cb504fa9cdcc484cb706b74d70950caa08"
+    },
+    {
+      "atlas": "gimmick-16",
+      "sourceFile": "gimmick-16.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "15e7d6e88d53f087594c8b9c916e1a58cf6800358259d2df95247065cf1442e0"
+    },
+    {
+      "atlas": "gimmick-17",
+      "sourceFile": "gimmick-17.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "747cf9fdf2536834e9a0e54178699540bbb09b10f7d0aa22538de66236a2b356"
+    },
+    {
+      "atlas": "gimmick-18",
+      "sourceFile": "gimmick-18.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "dd4e819787aec16fb3a14eaea3bae7cb49f4124d802ecbf90a5e5dbc6e0c8ac3"
+    },
+    {
+      "atlas": "gimmick-19",
+      "sourceFile": "gimmick-19.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "4c6e4a99f3c8209fa09ca94f366d952ce79eff7f88e6feb9708037cec853268a"
+    },
+    {
+      "atlas": "gimmick-20",
+      "sourceFile": "gimmick-20.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "79c229614c773786576d5a17d4155394096e9c63a0713f0e3f38c29f6f322739"
+    },
+    {
+      "atlas": "gimmick-21",
+      "sourceFile": "gimmick-21.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "7308e94bc19a84cb1087c7d57a14a3fa62c50a1d6b349f85f8725f8893258daa"
+    },
+    {
+      "atlas": "gimmick-22",
+      "sourceFile": "gimmick-22.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "5a8cf2341e4cfeb1de0175f1c6cd477438ee8fa0a0a5c4de7dcdf9b3ad2d7264"
+    },
+    {
+      "atlas": "gimmick-23",
+      "sourceFile": "gimmick-23.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "a74dcd1daa11ab317d468fc521b6dfc52dfa6876f06c6b7c537c8a485ea2c7c8"
+    },
+    {
+      "atlas": "gimmick-24",
+      "sourceFile": "gimmick-24.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "47659339082c0eff1fa7e4fa0c706070b0b8f024331156249ab56fed8443e282"
+    },
+    {
+      "atlas": "gimmick-25",
+      "sourceFile": "gimmick-25.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "05cdb816873c1a78843f41ce92ca397d8d91ad9a00a082d4b8438769fcf43e91"
+    },
+    {
+      "atlas": "gimmick-26",
+      "sourceFile": "gimmick-26.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "6843e38d2d0864177e4ebf40d1183027552c0b5fa2fc39d8ec7686e2f9a398f7"
+    },
+    {
+      "atlas": "gimmick-27",
+      "sourceFile": "gimmick-27.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "ce64f342348c6c54a824926a03b9958f921ae79b5412bcfd06ff43031191a906"
+    },
+    {
+      "atlas": "gimmick-28",
+      "sourceFile": "gimmick-28.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "3361c4e2e5afd329a496244831cf8ddb983a0097b6dabfdd55506ad7dbe927a5"
+    },
+    {
+      "atlas": "gimmick-29",
+      "sourceFile": "gimmick-29.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "0367388aeb635467b711d16c078412272ad8ee55a9c79ed1f710ef2437236174"
+    },
+    {
+      "atlas": "gimmick-30",
+      "sourceFile": "gimmick-30.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "7c6e31b224afbb3f37bcb40aa63347bcd5c0d04087238415b147e2eece826298"
+    },
+    {
+      "atlas": "gimmick-31",
+      "sourceFile": "gimmick-31.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "29eb4dbd4ae462b7ab17865b900fd38442edf8540c23ee6306fd0a1730cf084e"
+    },
+    {
+      "atlas": "gimmick-32",
+      "sourceFile": "gimmick-32.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "8d47410245ddcb58aa1a0a9d5c5fd3fb6921ee390993558834ec157ec992c044"
+    }
+  ]
+}

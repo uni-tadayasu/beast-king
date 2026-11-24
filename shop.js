@@ -1,10 +1,7 @@
-import { CARDS, CARD_MAP, STARTER_DECKS } from './catalog.js';
+import { CARD_SETS, CARD_MAP, STARTER_DECKS, getCardsForSet } from './catalog.js';
 
 // Pure economy rules shared by the browser and an authoritative server.
 // A server should inject its own secure random function into openPack.
-export const PACK_ID = 'BK01';
-export const PACK_NAME = '六源の覚醒';
-export const PACK_DESCRIPTION = '通常魔獣512枚・合成魔獣128枚・ミラクル256枚・ギミック256枚、全1,152枚を収録した第一弾パック。12枚入り、1枚はレア以上確定。';
 export const PACK_COST = 100;
 export const PACK_SIZE = 12;
 export const STARTING_TREASURE = 100;
@@ -13,10 +10,20 @@ export const MAX_CARD_COPIES = 3;
 export const RARITY_ODDS = Object.freeze({ N: 58, R: 25, KR: 10, KKR: 5, GR: 1.5, GGR: 0.5 });
 export const BATTLE_REWARDS = Object.freeze({ win: 60, loss: 20, draw: 30, forfeit: 0 });
 
-// The first expansion includes all regular and fusion beasts, miracles, and gimmicks.
-const packCards = Object.freeze([...CARDS]);
-export const PACK_CARD_IDS = Object.freeze(packCards.map(card => card.id));
-export const PACK_CARD_COUNT = PACK_CARD_IDS.length;
+// Both expansions have separate complete pools; existing aliases select BK01.
+export const PACKS = Object.freeze(CARD_SETS.map(set => Object.freeze({
+  ...set,
+  description: `通常魔獣512枚・合成魔獣128枚・ミラクル256枚・ギミック256枚、全1,152枚を収録した${set.editionLabel}パック。12枚入り、1枚はレア以上確定。`,
+  cardIds: Object.freeze(getCardsForSet(set.id).map(card => card.id)),
+  cost: PACK_COST, size: PACK_SIZE,
+})));
+const packsById = new Map(PACKS.map(pack => [pack.id, pack]));
+export const getPack = id => packsById.get(id);
+export const PACK_ID = PACKS[0].id;
+export const PACK_NAME = PACKS[0].name;
+export const PACK_DESCRIPTION = PACKS[0].description;
+export const PACK_CARD_IDS = PACKS[0].cardIds;
+export const PACK_CARD_COUNT = PACKS[0].cardCount;
 
 const rarityEntries = Object.entries(RARITY_ODDS);
 const guaranteedEntries = rarityEntries.filter(([rarity]) => rarity !== 'N');
@@ -25,10 +32,10 @@ export const GUARANTEED_RARITY_ODDS = Object.freeze(Object.fromEntries(
   guaranteedEntries.map(([rarity, weight]) => [rarity, weight / guaranteedWeight * 100]),
 ));
 
-const cardPools = new Map(rarityEntries.map(([rarity]) => [
+const cardPools = new Map(PACKS.map(pack => [pack.id, new Map(rarityEntries.map(([rarity]) => [
   rarity,
-  Object.freeze(packCards.filter(card => card.rarity === rarity).map(card => card.id)),
-]));
+  Object.freeze(getCardsForSet(pack.id).filter(card => card.rarity === rarity).map(card => card.id)),
+]))]));
 
 /** Return a new known-card inventory. Zero counts are omitted; valid counts are integers 1–3. */
 export function normalizeCollection(raw) {
@@ -56,9 +63,9 @@ export function grantDeckCollection(raw, ids) {
   return collection;
 }
 
-/** Enough owned cards to play any existing starter, including all special decks. */
-export function createStarterCollection() {
-  let collection = {};
+/** Grant the four current starters without removing cards from an existing collection. */
+export function createStarterCollection(raw = {}) {
+  let collection = normalizeCollection(raw);
   for (const starter of STARTER_DECKS) {
     collection = grantDeckCollection(collection, [...starter.ids, ...(starter.specialIds || [])]);
   }
@@ -73,7 +80,7 @@ function randomUnit(randomFn) {
   return value;
 }
 
-function pickCard(randomFn, guaranteed) {
+function pickCard(packId, randomFn, guaranteed) {
   const entries = guaranteed ? guaranteedEntries : rarityEntries;
   const total = guaranteed ? guaranteedWeight : 100;
   const roll = randomUnit(randomFn);
@@ -86,7 +93,7 @@ function pickCard(randomFn, guaranteed) {
       break;
     }
   }
-  const pool = cardPools.get(chosenRarity);
+  const pool = cardPools.get(packId)?.get(chosenRarity);
   if (!pool?.length) throw new Error('The selected rarity has no cards.');
   return pool[Math.floor(randomUnit(randomFn) * pool.length)];
 }
@@ -106,17 +113,23 @@ function failure(state, errorCode, error) {
 /**
  * Purchase one pack atomically without mutating state or state.collection.
  * The first 11 slots use RARITY_ODDS; the final slot excludes N and renormalizes.
- * All BK01 cards of the chosen rarity are equally likely. Fusion beasts are excluded.
+ * All cards of the selected set and chosen rarity are equally likely, including fusions.
+ * Legacy openPack(state, randomFn) selects BK01; options may select either pack.
  * isNew means the player owned zero copies immediately before that pull.
  * converted means the player already owned three copies, including earlier pulls.
  * On failure, the original balance and collection are returned unchanged.
  */
-export function openPack(state, randomFn = Math.random) {
+export function openPack(state, options = Math.random) {
+  const config = options && typeof options === 'object' && !Array.isArray(options) ? options : null;
+  const packId = config?.packId === undefined ? PACK_ID : config.packId;
+  const pack = getPack(packId);
+  const randomFn = config ? (config.randomFn === undefined ? Math.random : config.randomFn) : options;
+  if (!pack) return failure(state, 'INVALID_PACK', '開封するパックを選び直してください。秘宝は消費されていません。');
   if (!state || !Number.isSafeInteger(state.treasure) || state.treasure < 0) {
     return failure(state, 'INVALID_BALANCE', '秘宝の所持数が正しくありません。');
   }
-  if (state.treasure < PACK_COST) {
-    return failure(state, 'INSUFFICIENT_TREASURE', `パックを開くには秘宝が${PACK_COST}個必要です。`);
+  if (state.treasure < pack.cost) {
+    return failure(state, 'INSUFFICIENT_TREASURE', `パックを開くには秘宝が${pack.cost}個必要です。`);
   }
   if (typeof randomFn !== 'function') {
     return failure(state, 'INVALID_RANDOM', '抽選を開始できませんでした。秘宝は消費されていません。');
@@ -126,9 +139,9 @@ export function openPack(state, randomFn = Math.random) {
     const collection = normalizeCollection(state.collection);
     const pulls = [];
     let bonusTreasure = 0;
-    for (let index = 0; index < PACK_SIZE; index++) {
-      const guaranteed = index === PACK_SIZE - 1;
-      const cardId = pickCard(randomFn, guaranteed);
+    for (let index = 0; index < pack.size; index++) {
+      const guaranteed = index === pack.size - 1;
+      const cardId = pickCard(pack.id, randomFn, guaranteed);
       const owned = collection[cardId] || 0;
       const converted = owned >= MAX_CARD_COPIES;
       if (converted) bonusTreasure += EXTRA_COPY_TREASURE;
@@ -137,7 +150,8 @@ export function openPack(state, randomFn = Math.random) {
     }
     return {
       ok: true,
-      treasure: state.treasure - PACK_COST + bonusTreasure,
+      packId: pack.id,
+      treasure: state.treasure - pack.cost + bonusTreasure,
       collection,
       pulls,
       bonusTreasure,

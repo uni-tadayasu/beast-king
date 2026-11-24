@@ -1,29 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="360" height="520" viewBox="0 0 360 520" role="img" aria-labelledby="card-frame-beast-title" color="#e8e3f1"><title id="card-frame-beast-title">通常魔獣カードフレーム</title><desc>直立カード用。透明なアート窓、静かな説明欄、細い金属線。四隅には自然の6オリジンを表す6芽の彫金を配置。中央の王冠は王のオリジンを表す。カード画像に重ね、文字は各safeAreaに別途表示する。</desc><metadata>© 2026 Beast King. Original vector artwork for BEAST KING.</metadata><defs><linearGradient id="frame-beast-metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b3c6dc"/><stop offset=".36" stop-color="#70657e"/><stop offset=".7" stop-color="#d5cce0"/><stop offset="1" stop-color="#5e6392"/></linearGradient><linearGradient id="frame-beast-panel" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#20213a" stop-opacity=".95"/><stop offset=".2" stop-color="#171a31" stop-opacity=".99"/><stop offset="1" stop-color="#13172b"/></linearGradient></defs>
-  <path d="M23 3H337L357 23V497L337 517H23L3 497V23Z M29 15H331L345 29V491L331 505H29L15 491V29Z" fill="#17182e" fill-rule="evenodd"/>
-  <path d="M23 3H337L357 23V497L337 517H23L3 497V23Z" fill="none" stroke="url(#frame-beast-metal)" stroke-width="1.65"/>
-  <path d="M29 15H331L345 29V491L331 505H29L15 491V29Z" fill="none" stroke="#b3c6dc" stroke-opacity=".46" stroke-width=".8"/>
-  <path d="M32 18h296l14 14v30H18V32Z" fill="#15192e" fill-opacity=".93" stroke="#b3c6dc" stroke-opacity=".35"/>
-  <path d="M18 390h324v101l-14 14H32l-14-14Z" fill="url(#frame-beast-panel)"/>
-  <path d="M24 396h134m44 0h134M31 477h298" fill="none" stroke="#b3c6dc" stroke-opacity=".32" stroke-width=".7"/>
-  <g transform="translate(0 42)" fill="none" stroke="#b3c6dc" stroke-width="1" stroke-opacity=".8" stroke-linecap="round" stroke-linejoin="round"><path d="m168 350 6 9 6-7 6 7 6-9m-18 9 6 6 6-6"/></g>
-  <g><path d="M7.5 58V27.5l20-20H58" fill="none" stroke="#b3c6dc" stroke-opacity=".7" stroke-width=".7"/>
-  <g fill="#b3c6dc" fill-opacity=".26" stroke="#b3c6dc" stroke-opacity=".83" stroke-width=".65" stroke-linejoin="round">
-    <path d="M29 7.5c1.5-3 4-3.5 6-1-1.5 3-4 3.5-6 1Zm10 0c1.5-3 4-3.5 6-1-1.5 3-4 3.5-6 1Zm10 0c1.5-3 4-3.5 6-1-1.5 3-4 3.5-6 1Z"/>
-    <path d="M7.5 29c-3 1.5-3.5 4-1 6 3-1.5 3.5-4 1-6Zm0 10c-3 1.5-3.5 4-1 6 3-1.5 3.5-4 1-6Zm0 10c-3 1.5-3.5 4-1 6 3-1.5 3.5-4 1-6Z"/>
-  </g><path d="m16.3 16.3 3.1-.8-.8 3.1-3.1.8Z" fill="#b3c6dc" fill-opacity=".6"/></g><g transform="translate(360 0) scale(-1 1)"><path d="M7.5 58V27.5l20-20H58" fill="none" stroke="#b3c6dc" stroke-opacity=".7" stroke-width=".7"/>
-  <g fill="#b3c6dc" fill-opacity=".26" stroke="#b3c6dc" stroke-opacity=".83" stroke-width=".65" stroke-linejoin="round">
-    <path d="M29 7.5c1.5-3 4-3.5 6-1-1.5 3-4 3.5-6 1Zm10 0c1.5-3 4-3.5 6-1-1.5 3-4 3.5-6 1Zm10 0c1.5-3 4-3.5 6-1-1.5 3-4 3.5-6 1Z"/>
-    <path d="M7.5 29c-3 1.5-3.5 4-1 6 3-1.5 3.5-4 1-6Zm0 10c-3 1.5-3.5 4-1 6 3-1.5 3.5-4 1-6Zm0 10c-3 1.5-3.5 4-1 6 3-1.5 3.5-4 1-6Z"/>
-  </g><path d="m16.3 16.3 3.1-.8-.8 3.1-3.1.8Z" fill="#b3c6dc" fill-opacity=".6"/></g><g transform="translate(0 520) scale(1 -1)"><path d="M7.5 58V27.5l20-20H58" fill="none" stroke="#b3c6dc" stroke-opacity=".7" stroke-width=".7"/>
-  <g fill="#b3c6dc" fill-opacity=".26" stroke="#b3c6dc" stroke-opacity=".83" stroke-width=".65" stroke-linejoin="round">
-    <path d="M29 7.5c1.5-3 4-3.5 6-1-1.5 3-4 3.5-6 1Zm10 0c1.5-3 4-3.5 6-1-1.5 3-4 3.5-6 1Zm10 0c1.5-3 4-3.5 6-1-1.5 3-4 3.5-6 1Z"/>
-    <path d="M7.5 29c-3 1.5-3.5 4-1 6 3-1.5 3.5-4 1-6Zm0 10c-3 1.5-3.5 4-1 6 3-1.5 3.5-4 1-6Zm0 10c-3 1.5-3.5 4-1 6 3-1.5 3.5-4 1-6Z"/>
-  </g><path d="m16.3 16.3 3.1-.8-.8 3.1-3.1.8Z" fill="#b3c6dc" fill-opacity=".6"/></g><g transform="translate(360 520) scale(-1 -1)"><path d="M7.5 58V27.5l20-20H58" fill="none" stroke="#b3c6dc" stroke-opacity=".7" stroke-width=".7"/>
-  <g fill="#b3c6dc" fill-opacity=".26" stroke="#b3c6dc" stroke-opacity=".83" stroke-width=".65" stroke-linejoin="round">
-    <path d="M29 7.5c1.5-3 4-3.5 6-1-1.5 3-4 3.5-6 1Zm10 0c1.5-3 4-3.5 6-1-1.5 3-4 3.5-6 1Zm10 0c1.5-3 4-3.5 6-1-1.5 3-4 3.5-6 1Z"/>
-    <path d="M7.5 29c-3 1.5-3.5 4-1 6 3-1.5 3.5-4 1-6Zm0 10c-3 1.5-3.5 4-1 6 3-1.5 3.5-4 1-6Zm0 10c-3 1.5-3.5 4-1 6 3-1.5 3.5-4 1-6Z"/>
-  </g><path d="m16.3 16.3 3.1-.8-.8 3.1-3.1.8Z" fill="#b3c6dc" fill-opacity=".6"/></g>
-  <g fill="none" stroke="#b3c6dc" stroke-opacity=".8" stroke-width=".9" stroke-linecap="round" stroke-linejoin="round"><path d="m8 137 8 10-8 10m344-20-8 10 8 10M8 282l8 10-8 10m344-20-8 10 8 10"/></g>
-  <path d="m35 17 17 10v20L35 57 18 47V27Z" fill="#25243b" stroke="url(#frame-beast-metal)" stroke-width="1.25"/>
-  <g transform="translate(311 28) scale(.86)" color="#b3c6dc"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 3 4.5 4 3.5-1 3.5 1L20 3l-1 13-7 5.5L5 16Z"/><path d="m6.5 10.5 4 1.5-2 1.5-2-3Zm11 0-4 1.5 2 1.5 2-3ZM10 16l2-1 2 1-2 2Z" fill="currentColor" stroke="none"/></g></g>
-  <path d="M103 510h64m26 0h64" fill="none" stroke="#b3c6dc" stroke-opacity=".3" stroke-width=".7"/><path d="m180 507 2 3-2 3-2-3Z" fill="#b3c6dc" fill-opacity=".7"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="520" viewBox="0 0 360 520" role="img" aria-labelledby="frame-beast-title">
+<title id="frame-beast-title">通常魔獣カードフレーム</title>
+<desc>細い金属の面取り、六芽の彫金、活版調の説明欄を持つ直立カード。306 × 306の透明な原画窓と、コスト・二行のカード名・オリジン・効果・能力値の独立した印刷領域。</desc>
+<metadata>© 2026 Beast King. Original vector artwork. Frame 360 × 520; illustration x27 y68 width306 height306.</metadata>
+<defs>
+ <linearGradient id="frame-beast-metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d7dde8"/><stop offset=".19" stop-color="#8493af"/><stop offset=".43" stop-color="#d7dde8"/><stop offset=".61" stop-color="#8493af"/><stop offset=".84" stop-color="#b8c3d6"/><stop offset="1" stop-color="#141925"/></linearGradient>
+ <linearGradient id="frame-beast-stock" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#283044"/><stop offset=".38" stop-color="#141925"/><stop offset="1" stop-color="#12131e"/></linearGradient>
+ <linearGradient id="frame-beast-plate" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#283044"/><stop offset=".16" stop-color="#141925"/><stop offset="1" stop-color="#101420"/></linearGradient>
+ <pattern id="frame-beast-fiber" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 .5H5M.5 0V5" fill="none" stroke="#d7dde8" stroke-width=".35" stroke-opacity=".035"/></pattern>
+ <g id="frame-beast-corner" fill="none" stroke="#b8c3d6" stroke-linejoin="round">
+  <path d="M11 61V30L30 11H61" stroke-opacity=".75" stroke-width=".75"/>
+  <path d="M16 51V32L32 16H51" stroke-opacity=".28" stroke-width=".6"/>
+  <g fill="#b8c3d6" fill-opacity=".22" stroke-opacity=".8" stroke-width=".7">
+   <path d="M31 10c2-4 6-4 8-1-2 3-6 3-8 1Zm11 0c2-4 6-4 8-1-2 3-6 3-8 1Zm11 0c2-4 6-4 8-1-2 3-6 3-8 1Z"/>
+   <path d="M10 31c-4 2-4 6-1 8 3-2 3-6 1-8Zm0 11c-4 2-4 6-1 8 3-2 3-6 1-8Zm0 11c-4 2-4 6-1 8 3-2 3-6 1-8Z"/>
+  </g>
+  <path d="m20 20 3.8-1-1 3.8-3.8 1Z" fill="#d7dde8" fill-opacity=".65" stroke="none"/>
+ </g>
+</defs>
+<!-- The aperture is genuinely transparent; no frame texture covers the illustration. -->
+<path d="M23 3H337L357 23V497L337 517H23L3 497V23Z M27 68H333V374H27Z" fill="url(#frame-beast-stock)" fill-rule="evenodd"/>
+<path d="M23 3H337L357 23V497L337 517H23L3 497V23Z M26 9H334L351 26V494L334 511H26L9 494V26Z" fill="url(#frame-beast-metal)" fill-rule="evenodd"/>
+<path d="M23 3H337L357 23V497L337 517H23L3 497V23Z" fill="none" stroke="#060a12" stroke-width="1.5"/>
+<path d="M26 9H334L351 26V494L334 511H26L9 494V26Z" fill="none" stroke="#d7dde8" stroke-opacity=".6" stroke-width=".65"/>
+<path d="M29 16H331L344 29V491L331 504H29L16 491V29Z" fill="none" stroke="#b8c3d6" stroke-opacity=".48" stroke-width=".7"/>
+<path d="M29 16H331L344 29V491L331 504H29L16 491V29Z M27 68H333V374H27Z" fill="url(#frame-beast-fiber)" fill-rule="evenodd"/>
+<path d="M30 19h300l11 12v31H19V31Z" fill="url(#frame-beast-plate)" stroke="#b8c3d6" stroke-opacity=".36" stroke-width=".8"/>
+<path d="M62 24H299M62 58H299" stroke="#d7dde8" stroke-opacity=".1" stroke-width=".6"/>
+<rect x="24.5" y="65.5" width="311" height="311" rx="1" fill="none" stroke="#080a13" stroke-width="3"/>
+<rect x="26.25" y="67.25" width="307.5" height="307.5" fill="none" stroke="url(#frame-beast-metal)" stroke-width="1.5"/>
+<path d="M27 374V68H333" fill="none" stroke="#d7dde8" stroke-opacity=".5" stroke-width=".5"/>
+<path d="M24 384h312v107l-6 6H30l-6-6Z" fill="url(#frame-beast-plate)" stroke="#b8c3d6" stroke-opacity=".25" stroke-width=".7"/>
+<path d="M31 380H164m32 0h133M32 500h296" fill="none" stroke="#b8c3d6" stroke-opacity=".5" stroke-width=".7"/>
+<path d="m170 377 5 5 5-6 5 6 5-5-2 7h-16Z" fill="#b8c3d6" fill-opacity=".58"/>
+<path d="m39 19 18 11v22L39 63 21 52V30Z" fill="#0b1020" stroke="url(#frame-beast-metal)" stroke-width="1.6"/>
+<path d="m39 23 14.5 9v18L39 59 24.5 50V32Z" fill="url(#frame-beast-stock)" stroke="#d7dde8" stroke-opacity=".25" stroke-width=".55"/>
+<circle cx="321" cy="42" r="16" fill="#101422" stroke="url(#frame-beast-metal)" stroke-width="1.1"/>
+<circle cx="321" cy="42" r="12.7" fill="none" stroke="#b8c3d6" stroke-opacity=".2" stroke-width=".6"/>
+<use href="#frame-beast-corner"/><use href="#frame-beast-corner" transform="translate(360 0) scale(-1 1)"/><use href="#frame-beast-corner" transform="translate(0 520) scale(1 -1)"/><use href="#frame-beast-corner" transform="translate(360 520) scale(-1 -1)"/>
+<g fill="none" stroke="#b8c3d6" stroke-opacity=".57" stroke-width=".8" stroke-linecap="round">
+ <path d="M10 116v31m0 13v29m0 84v31m0 13v29M350 116v31m0 13v29m0 84v31m0 13v29"/>
+ <path d="m10 149 3 5-3 5-3-5Zm0 157 3 5-3 5-3-5Zm340-157 3 5-3 5-3-5Zm0 157 3 5-3 5-3-5Z"/>
+</g>
+<path d="M108 509h59m26 0h59" stroke="#b8c3d6" stroke-opacity=".6" stroke-width=".7"/>
+<path d="m180 505 3 4-3 4-3-4Z" fill="#b8c3d6" fill-opacity=".8"/>
+<g fill="none" stroke="#c1ccdd" stroke-opacity=".56" stroke-width=".8"><path d="m18 201 4 7-4 7-4-7Zm0 20 4 7-4 7-4-7Zm324-20 4 7-4 7-4-7Zm0 20 4 7-4 7-4-7Z"/><path d="M17 87v96m326-96v96M17 257v96m326-96v96"/></g>
+</svg>

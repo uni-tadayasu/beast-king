@@ -1,8 +1,18 @@
 /**
  * ビーストキング — The First Chronicle
- * Original, deterministic 1,024-card core set + 128 fusion cards. All rules text corresponds to
+ * Two deterministic 1,152-card sets; 2,304 unique cards in total. All rules text corresponds to
  * effects implemented in engine.js; no network, randomized content, or filler IDs.
  */
+import {
+  SECOND_SET_CLANS, secondBeastDefinition, secondMiracleDefinition,
+  secondGimmickDefinition, secondFusionDefinition,
+} from './second-set-data.js';
+
+export const CARD_SETS = Object.freeze([
+  { id: 'BK01', edition: 1, editionLabel: '第一弾', name: '六源の覚醒', reading: 'ろくげんのかくせい', coverId: 'B0001', cardCount: 1152 },
+  { id: 'BK02', edition: 2, editionLabel: '第二弾', name: '王源の継承', reading: 'おうげんのけいしょう', coverId: 'B0512', cardCount: 1152 },
+].map(Object.freeze));
+
 const CARD_SERIES = Object.freeze([
   { id: 'dawn', name: '星光', color: '#e9c475', glyph: '✦', description: '星を冠する守護者。結界と回復で、揺るがない戦線を築く。' },
   { id: 'tide', name: '蒼海', color: '#72cce8', glyph: '◈', description: '記憶を湛えた深海。手札を整え、静かな波で勝機を引き寄せる。' },
@@ -158,11 +168,11 @@ const freezeCard = card => {
   else if (card.type === 'miracle' && kind !== 'fusion') text = miracleText(kind, value);
   else if (card.type === 'gimmick') text = gimmickText(kind, value);
   const royal = card.id === 'B0512';
-  const origin = royal ? 'king' : ORIGIN_MAP[card.element];
+  const origin = royal ? 'king' : (card.origin || ORIGIN_MAP[card.element]);
   const model = card.type === 'fusion' ? 'hybrid' : card.type === 'beast' ? (card.model || (card.keywords.includes('guard') || card.hp > card.attack ? 'defense' : 'attack')) : null;
   const subtype = card.type === 'miracle' ? (['damage_enemy','draw','buff','sweep'].includes(kind) ? 'power' : 'regeneration') : card.type === 'gimmick' ? (['ambush','barrier'].includes(kind) ? 'reflection' : 'support') : null;
   if (model) text += ' ' + MODEL_DESCRIPTIONS[model];
-  return Object.freeze({ ...card, ...(royal ? { name: '王冠竜 レガリア', flavor: '王冠は与えられるものではない。守り抜いた誓いが、黄金の翼になる。' } : {}), ...(model ? { model } : {}), ...(subtype ? { subtype } : {}), series: card.element, element: origin, origin, attack: card.attack * POINT_SCALE, hp: card.hp * POINT_SCALE, effect, text, keywords: Object.freeze(card.keywords) });
+  return Object.freeze({ ...card, ...(royal ? { name: '王冠竜 レガリア', flavor: '王冠は与えられるものではない。守り抜いた誓いが、黄金の翼になる。' } : {}), ...(model ? { model } : {}), ...(subtype ? { subtype } : {}), setId: card.setId || (royal ? 'BK02' : 'BK01'), series: card.series || card.element, element: origin, origin, attack: card.attack * POINT_SCALE, hp: card.hp * POINT_SCALE, effect, text, keywords: Object.freeze(card.keywords) });
 };
 const TIER_RARITIES = Object.freeze(['N', 'N', 'R', 'KR', 'KR', 'KKR', 'GR', 'GGR']);
 const rarityForTier = tier => TIER_RARITIES[tier];
@@ -340,7 +350,93 @@ function makeFusions() {
   return result;
 }
 
-export const CARDS = Object.freeze([...makeBeasts(), ...makeMiracles(), ...makeGimmicks(), ...makeFusions()]);
+function makeSecondBeasts() {
+  const result = [];
+  SECOND_SET_CLANS.forEach((clan, e) => {
+    const seriesIndex = CARD_SERIES.findIndex(series => series.id === clan.balanceSeries);
+    const realm = REALMS[seriesIndex], group = [];
+    for (let local = 0; local < (e === 7 ? 63 : 64); local++) {
+      const tier = Math.floor(local / 8), variant = local % 8, cost = tier + 1;
+      const index = e * 64 + local;
+      const kind = realm.effects[(variant + tier + e) % 8];
+      const keywords = [];
+      if ((['king', 'mountain'].includes(clan.origin) && variant % 3 === 1) || variant === 6) keywords.push('guard');
+      if ((['seed', 'grass'].includes(clan.origin) && variant % 3 === 0) || (variant === 3 && tier % 2 === 1)) keywords.push('rush');
+      if ((clan.id === 'eclipse' && variant % 3 === 0) || (variant === 7 && tier >= 3)) keywords.push('drain');
+      const value = kind === 'none' ? 0 : kind === 'draw' || kind === 'buff_all' ? (cost >= 7 ? 2 : 1) : kind === 'heal' ? 2 + Math.floor(cost / 2) : kind === 'damage_core' ? 1 + Math.floor(cost / 3) : 1 + Math.floor(cost / 2);
+      const tax = (kind === 'none' ? 0 : 1) + (kind === 'draw' || kind === 'buff_all' ? 1 : 0);
+      group.push({
+        ...secondBeastDefinition(index), index: 1153 + index, category: 'beast', element: clan.balanceSeries,
+        cost, rarity: rarityForTier(tier),
+        attack: clamp(cost + (variant % 3) - 1 - Math.floor(tax / 2) - (keywords.includes('drain') ? 1 : 0), 1, 9),
+        hp: clamp(cost + 2 - (variant % 3) - (tax % 2) - (keywords.includes('rush') ? 1 : 0) + (keywords.includes('guard') ? 1 : 0), 1, 10),
+        effect: { kind, value }, keywords, flavor: clan.lore, art: seriesIndex * 2 + variant % 2,
+      });
+    }
+    const score = c => (c.keywords.includes('guard') ? 1000 : 0) + (c.hp - c.attack) * 100 + c.hp * 10;
+    const defense = new Set([...group].sort((a, b) => score(b) - score(a) || a.index - b.index).slice(0, e === 7 ? 31 : 32).map(card => card.id));
+    result.push(...group.map(card => freezeCard({ ...card, model: defense.has(card.id) ? 'defense' : 'attack' })));
+  });
+  return result;
+}
+
+function makeSecondMiracles(fusionText) {
+  return Array.from({ length: 256 }, (_, index) => {
+    const clan = SECOND_SET_CLANS[Math.floor(index / 32)], local = index % 32, rank = Math.floor(local / 8), k = local % 8;
+    const kind = MIRACLE_KINDS[k], fusion = index === 255, { cost, value } = miracleStats(kind, rank, clan.balanceSeries);
+    return freezeCard({
+      ...secondMiracleDefinition(index), index: 1665 + index, element: clan.balanceSeries,
+      cost: fusion ? 3 : cost,
+      rarity: fusion ? 'R' : rank === 3 && k >= 6 ? (k === 6 ? 'GR' : 'GGR') : ['N', 'R', 'KR', 'KKR'][rank],
+      attack: 0, hp: 0, effect: fusion ? { kind: 'fusion', value: 0 } : { kind: kind === 'shield' ? 'shield_heal' : kind, value }, keywords: [],
+      text: fusion ? fusionText : '', flavor: fusion ? '受け継いだ誓いが、王の源へ新しい姿を刻む。' : `${clan.name}の誓いが、王国の明日を形づくる。`, art: fusion ? 18 : 16 + k % 4,
+    });
+  });
+}
+
+function makeSecondGimmicks() {
+  return Array.from({ length: 256 }, (_, index) => {
+    const clan = SECOND_SET_CLANS[Math.floor(index / 32)], local = index % 32, rank = Math.floor(local / 4), k = local % 4;
+    const kind = GIMMICK_KINDS[k], { cost, value } = gimmickStats(kind, rank, clan.balanceSeries);
+    return freezeCard({
+      ...secondGimmickDefinition(index), index: 1921 + index, element: clan.balanceSeries,
+      cost, rarity: TIER_RARITIES[rank], attack: 0, hp: 0, effect: { kind, value }, keywords: [],
+      flavor: `${clan.name}が託した仕掛けは、守るべき瞬間を待っている。`, art: 20 + k,
+    });
+  });
+}
+
+function makeSecondFusions() {
+  return Array.from({ length: 128 }, (_, index) => {
+    const e = Math.floor(index / 16), local = index % 16, rank = Math.floor(local / 4), variant = local % 4;
+    const clan = SECOND_SET_CLANS[e], seriesIndex = CARD_SERIES.findIndex(series => series.id === clan.balanceSeries);
+    const kind = REALMS[seriesIndex].effects[(rank * 2 + variant + e) % 8];
+    const value = kind === 'none' ? 0 : kind === 'heal' || kind === 'shield' ? 2 + rank : kind === 'damage_core' ? 1 + Math.floor(rank / 2) : 1;
+    const keywords = variant === 1 || (rank === 3 && variant === 0) ? ['guard'] : variant === 2 && ['seed', 'grass'].includes(clan.origin) ? ['rush'] : variant === 3 && clan.id === 'eclipse' ? ['drain'] : [];
+    return freezeCard({
+      ...secondFusionDefinition(index), index: 2177 + index, category: 'beast', model: 'hybrid', element: clan.balanceSeries,
+      cost: 0, rarity: FUSION_RARITIES[local], attack: 4 + rank, hp: 4 + (rank + variant + 1) % 4,
+      effect: { kind, value }, keywords, flavor: `${clan.name}の異なる命が結び合い、継承に新しい道を拓く。`, art: 24 + seriesIndex * 2 + variant % 2,
+    });
+  });
+}
+
+// Existing indices, IDs, names and balance values remain fixed. Regalia changes
+// only its pack membership; the restored original design receives a new ID.
+const legacyCards = [...makeBeasts(), ...makeMiracles(), ...makeGimmicks(), ...makeFusions()];
+const restoredAether = Object.freeze({
+  ...legacyCards[511], id: 'B1024', index: 1664, setId: 'BK01',
+  name: '霊極機精 エトリア', flavor: REALMS[7].lore, element: 'grass', origin: 'grass', series: 'aether',
+  artBrief: Object.freeze({ species: 'ancient mechanical spirit', anatomy: 'a small empty copper torso surrounded by independently floating gear limbs, translucent luminous membrane wings, a single delicate eye suspended inside an open ring-shaped head; no humanoid face', material: 'verdigris copper, clear glass, pale grass-green energy', palette: 'dark olive, amber brass and luminous lime', environment: 'abandoned clockwork garden under warm early-morning sun', composition: 'full-body suspended pose with limbs widely separated' }),
+});
+export const CARDS = Object.freeze([
+  ...legacyCards, ...makeSecondBeasts(), restoredAether,
+  ...makeSecondMiracles(legacyCards.find(card => card.id === FUSION_CARD_ID).text),
+  ...makeSecondGimmicks(), ...makeSecondFusions(),
+]);
+const cardsBySet = new Map(CARD_SETS.map(set => [set.id, Object.freeze(CARDS.filter(card => card.setId === set.id))]));
+const EMPTY_SET = Object.freeze([]);
+export const getCardsForSet = id => cardsBySet.get(id) || EMPTY_SET;
 export const CARD_MAP = new Map(CARDS.map(card => [card.id, card]));
 export const getCard = id => CARD_MAP.get(id);
 export const DECK_SIZE = 32;
@@ -383,7 +479,8 @@ const STARTER_INFO = [
   ['aether-future', '霊機の共鳴', '知恵を重ね、連携を組み上げる', 'ドローで手札を回し、霊機兵 オルフェンで味方を一斉強化。展開を重視する。'],
 ];
 
-export const STARTER_DECKS = Object.freeze(CARD_SERIES.map((element, e) => {
+// Keep historical presets available to restored saves and authored campaign opponents.
+export const DECK_PRESETS = Object.freeze(CARD_SERIES.map((element, e) => {
   const b = local => idFor('B', e * 64 + local);
   const m = local => idFor('M', e * 32 + local);
   const g = local => idFor('G', e * 32 + local);
@@ -401,4 +498,9 @@ export const STARTER_DECKS = Object.freeze(CARD_SERIES.map((element, e) => {
   return Object.freeze({ id, name, subtitle, description, series: element.id, element: ORIGIN_MAP[element.id], origin: ORIGIN_MAP[element.id], ids: Object.freeze(ids), specialIds: Object.freeze(specialIds) });
 }));
 
-export const CATALOG_VERSION = 2;
+/** The four starter packs offered to new players and selectable in free practice. */
+export const STARTER_DECKS = Object.freeze(DECK_PRESETS.slice(0, 4));
+const deckPresetById = new Map(DECK_PRESETS.map(deck => [deck.id, deck]));
+export const getDeckPreset = id => deckPresetById.get(id);
+
+export const CATALOG_VERSION = 3;

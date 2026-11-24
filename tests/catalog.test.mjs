@@ -1,28 +1,28 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  CARDS, CARD_MAP, ELEMENTS, ORIGINS, STARTER_DECKS, DECK_SIZE, DECK_MIN, DECK_MAX,
+  CARDS, CARD_MAP, ELEMENTS, ORIGINS, STARTER_DECKS, DECK_PRESETS, getCardsForSet, DECK_SIZE, DECK_MIN, DECK_MAX,
   SPECIAL_DECK_SIZE, DECK_COPY_LIMIT, FUSION_CARD_ID, POINT_SCALE, FUSION_MATERIAL_BONUS, RARITY_ORDER, RARITY_LABELS, MODEL_LABELS, MODEL_DESCRIPTIONS, SUBTYPE_LABELS,
   getCard, validateDeck, validateSpecialDeck,
 } from '../catalog.js';
 
-test('expanded catalog contains 1152 unique cards with the original core intact', () => {
-  assert.equal(CARDS.length, 1152);
-  assert.equal(new Set(CARDS.map(c => c.id)).size, 1152);
-  assert.equal(new Set(CARDS.map(c => c.name)).size, 1152);
-  assert.equal(CARD_MAP.size, 1152);
-  assert.equal(CARDS.filter(c=>c.category==='beast').length,640);
+test('two expansions contain 2304 unique cards with the original identities intact', () => {
+  assert.equal(CARDS.length, 2304);
+  assert.equal(new Set(CARDS.map(c => c.id)).size, 2304);
+  assert.equal(new Set(CARDS.map(c => c.name)).size, 2304);
+  assert.equal(CARD_MAP.size, 2304);
+  assert.equal(CARDS.filter(c=>c.category==='beast').length,1280);
   assert.deepEqual(MODEL_LABELS,{attack:'アタック型',defense:'ディフェンス型',hybrid:'アタック・ディフェンス型'});
-  for(const model of ['attack','defense']) assert.equal(CARDS.filter(c=>c.type==='beast'&&c.model===model).length,256);
-  assert.equal(CARDS.filter(c=>c.type==='fusion'&&c.model==='hybrid').length,128);
+  for(const model of ['attack','defense']) assert.equal(CARDS.filter(c=>c.type==='beast'&&c.model===model).length,512);
+  assert.equal(CARDS.filter(c=>c.type==='fusion'&&c.model==='hybrid').length,256);
   assert.equal(CARDS.filter(c=>c.type==='beast'&&c.model==='hybrid').length,0);
   for(const [type,subtypes] of [['miracle',['power','regeneration']],['gimmick',['reflection','support']]]) {
-    for(const subtype of subtypes) assert.equal(CARDS.filter(c=>c.type===type&&c.subtype===subtype).length,128);
+    for(const subtype of subtypes) assert.equal(CARDS.filter(c=>c.type===type&&c.subtype===subtype).length,256);
   }
   assert.deepEqual(Object.keys(SUBTYPE_LABELS),['power','regeneration','reflection','support']);
-  for (const [type, expected] of [['beast',512],['miracle',256],['gimmick',256],['fusion',128]]) assert.equal(CARDS.filter(c => c.type === type).length, expected);
-  assert.deepEqual(CARDS.map(c => c.index), Array.from({length:1152}, (_,i) => i+1));
-  assert.deepEqual(CARDS.filter(c=>c.type==='fusion').map(c=>c.id),Array.from({length:128},(_,i)=>`F${String(i+1).padStart(4,'0')}`));
+  for (const [type, expected] of [['beast',1024],['miracle',512],['gimmick',512],['fusion',256]]) assert.equal(CARDS.filter(c => c.type === type).length, expected);
+  assert.deepEqual(CARDS.map(c => c.index), Array.from({length:2304}, (_,i) => i+1));
+  assert.deepEqual(CARDS.filter(c=>c.type==='fusion').map(c=>c.id),Array.from({length:256},(_,i)=>`F${String(i+1).padStart(4,'0')}`));
 });
 
 test('all cards have supported effects, costs, art keys and usable rules text', () => {
@@ -73,17 +73,18 @@ test('seven origins preserve the card counts with one maximum-cost King beast', 
   assert.deepEqual(ORIGINS.map(o=>o.id),['mountain','river','seed','grass','flower','tree','king']);
   assert.deepEqual(ORIGINS.map(o=>o.name),['山','川','種','草','花','木','王']);
   const mapping={dawn:'flower',tide:'river',ember:'seed',gale:'grass',grove:'tree',stone:'mountain',dusk:'seed',aether:'grass'};
-  assert.equal(new Set(CARDS.map(c=>c.series)).size,8);
+  assert.equal(new Set(CARDS.map(c=>c.series)).size,16);
+  const legacy=CARDS.filter(c=>c.index<=1152);
   for (const [series,origin] of Object.entries(mapping)) {
     for (const [type,n] of [['beast',64],['miracle',32],['gimmick',32],['fusion',16]]) {
-      const cards=CARDS.filter(c=>c.series===series&&c.type===type);
+      const cards=legacy.filter(c=>c.series===series&&c.type===type);
       assert.equal(cards.length,n,`${series}/${type}`);
       assert.ok(cards.every(c=>c.origin===(c.id==='B0512'?'king':origin)&&c.element===c.origin));
     }
   }
   for (const origin of ORIGINS.filter(o=>o.id!=='king')) {
     const multiplier=['seed','grass'].includes(origin.id)?2:1;
-    for (const [type,n] of [['beast',64],['miracle',32],['gimmick',32],['fusion',16]]) assert.equal(CARDS.filter(c=>c.origin===origin.id&&c.type===type).length,n*multiplier-(origin.id==='grass'&&type==='beast'?1:0));
+    for (const [type,n] of [['beast',64],['miracle',32],['gimmick',32],['fusion',16]]) assert.equal(legacy.filter(c=>c.origin===origin.id&&c.type===type).length,n*multiplier-(origin.id==='grass'&&type==='beast'?1:0));
   }
 });
 
@@ -91,11 +92,12 @@ test('King representative remains a normal beast at the maximum cost', () => {
   const king=getCard('B0512');
   assert.equal(king.name,'王冠竜 レガリア');assert.equal(king.type,'beast');assert.equal(king.origin,'king');
   assert.equal(king.cost,Math.max(...CARDS.filter(c=>c.type==='beast').map(c=>c.cost)));
-  assert.equal(king.cost,8);assert.equal(king.rarity,'GGR');assert.equal(CARDS.filter(c=>c.origin==='king').length,1);
+  assert.equal(king.cost,8);assert.equal(king.rarity,'GGR');assert.equal(CARDS.filter(c=>c.origin==='king').length,288);assert.equal(king.setId,'BK02');
 });
 
-test('eight starters each provide exactly 32 main plus 4 special cards', () => {
-  assert.equal(STARTER_DECKS.length,8);
+test('four starters each provide exactly 32 main plus 4 special cards', () => {
+  assert.equal(STARTER_DECKS.length,4);
+  assert.equal(DECK_PRESETS.length,8);
   for(const deck of STARTER_DECKS) {
     assert.deepEqual(validateDeck(deck.ids),{valid:true,errors:[]});
     assert.deepEqual(validateSpecialDeck(deck.specialIds),{valid:true,errors:[]});
@@ -191,7 +193,7 @@ test('draw rules state the four-card cap and delayed support gimmicks match thei
     assert.ok(!card.text.includes('墓地へ送る'));
   }
   const boosts=CARDS.filter(c=>c.type==='gimmick'&&c.effect.kind==='spring');
-  assert.equal(boosts.length,64);
+  assert.equal(boosts.length,128);
   for (const card of boosts) {
     assert.ok([100,200,300].includes(card.effect.value));
     assert.ok(card.text.includes('攻撃力・現在守備力・最大守備力'));
@@ -199,7 +201,7 @@ test('draw rules state the four-card cap and delayed support gimmicks match thei
     assert.ok(!card.text.includes('結界'));
   }
   const restores=CARDS.filter(c=>c.type==='gimmick'&&c.effect.kind==='fountain');
-  assert.equal(restores.length,64);
+  assert.equal(restores.length,128);
   for(const card of restores) {
     assert.ok(card.text.includes(`守備力を${card.effect.value}回復`));
     assert.ok(card.text.includes('最大守備力を超えない'));
@@ -236,4 +238,11 @@ test('battle points use hundreds without scaling counts, costs or energy', () =>
   assert.ok(getCard('M0002').text.includes('上限は5000'));
   assert.ok(getCard(FUSION_CARD_ID).text.includes('守備力+100'));
   assert.equal(getCard(FUSION_CARD_ID).cost,3);
+});
+
+test('both packs have identical complete type counts and disjoint membership',()=>{
+ const sets=['BK01','BK02'].map(getCardsForSet);
+ for(const cards of sets){assert.equal(cards.length,1152);assert.deepEqual(Object.fromEntries(['beast','fusion','miracle','gimmick'].map(type=>[type,cards.filter(c=>c.type===type).length])),{beast:512,fusion:128,miracle:256,gimmick:256});}
+ assert.equal(new Set(sets.flat().map(c=>c.id)).size,2304);
+ assert.deepEqual(STARTER_DECKS.map(d=>d.id),['star-crown','azure-memory','crimson-pulse','sky-promise']);
 });

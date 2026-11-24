@@ -1,0 +1,287 @@
+/* BEAST KING — six animated finishes.
+   Load after product-cards.css (or rebuild/style.css). All animated pixels stay
+   inside the illustration: names, costs, effects, stats and input stay clear.
+   The layers use transforms/opacity; no canvas loop or external asset needed. */
+
+.card-finish.bk-fx-ready {
+  display: block;
+  overflow: hidden;
+  contain: paint;
+  pointer-events: none;
+}
+.card-finish.bk-fx-ready::before,
+.card-finish.bk-fx-ready::after,
+.card-finish.bk-fx-ready > .finish-crown,
+.card .art.bk-fx-ready::after { content: none !important; display: none !important; animation: none !important; }
+.card .art.bk-fx-ready { position: relative; isolation: isolate; overflow: hidden; }
+.bk-fx, .bk-fx * { box-sizing: border-box; pointer-events: none !important; }
+.bk-fx {
+  --fx-tint: #d9e8f1;
+  --fx-accent: #a6c5df;
+  --fx-strength: .48;
+  --fx-foil: .24;
+  --fx-glints: .48;
+  --fx-phase: 0s;
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: inherit;
+  isolation: isolate;
+  z-index: 1;
+  color: var(--fx-tint);
+}
+.bk-fx > i { position: absolute; display: block; inset: 0; margin: 0; padding: 0; border: 0; background-color: transparent; }
+.bk-fx i::before, .bk-fx i::after { content: ''; position: absolute; display: block; pointer-events: none; }
+.bk-fx[data-rarity='N'] { --fx-tint: #e9e1d4; --fx-accent: #c2cec9; --fx-foil: .11; --fx-glints: .24; }
+.bk-fx[data-rarity='R'] { --fx-tint: #c9fff4; --fx-accent: #7fd7cf; --fx-foil: .2; --fx-glints: .48; }
+.bk-fx[data-rarity='KR'] { --fx-tint: #e0edff; --fx-accent: #83bfff; --fx-foil: .28; --fx-glints: .66; }
+.bk-fx[data-rarity='KKR'] { --fx-tint: #fff1bd; --fx-accent: #e4b358; --fx-foil: .34; --fx-glints: .76; }
+.bk-fx[data-rarity='GR'] { --fx-tint: #f8ddff; --fx-accent: #bd9bff; --fx-foil: .38; --fx-glints: .86; }
+.bk-fx[data-rarity='GGR'] { --fx-tint: #fff4ce; --fx-accent: #a5f3ff; --fx-foil: .43; --fx-glints: 1; }
+
+/* Wide diagonal reflection with a second, independent fine reflection. */
+.bk-fx .bk-fx-foil {
+  inset: -42% -100%;
+  opacity: var(--fx-foil);
+  background: linear-gradient(115deg, transparent 38%, #fff0 43%, var(--fx-tint) 49.5%, #fff 50%, var(--fx-accent) 51%, #fff0 57%, transparent 62%);
+  mix-blend-mode: screen;
+  animation: bk-fx-sweep 5.6s cubic-bezier(.3, 0, .3, 1) infinite;
+  animation-delay: var(--fx-phase);
+}
+.bk-fx-foil::after {
+  inset: 0;
+  background: linear-gradient(118deg, transparent 46%, #fff0 48.6%, #fff 49%, #fff0 49.4%, transparent 54%);
+  opacity: .75;
+  transform: translateX(-15%);
+}
+.bk-fx[data-rarity='N'] .bk-fx-foil { animation-duration: 9.8s; }
+.bk-fx[data-rarity='R'] .bk-fx-foil { animation-duration: 7.3s; }
+.bk-fx[data-rarity='GGR'] .bk-fx-foil { animation-duration: 4.1s; }
+
+/* Multiple groups blink gently out of phase, never a full-card flash. */
+.bk-fx .bk-fx-glints {
+  opacity: var(--fx-glints);
+  background:
+    radial-gradient(ellipse 2px 7px at 14% 23%, #fff 8%, var(--fx-tint) 18%, #fff0 78%),
+    radial-gradient(ellipse 7px 2px at 14% 23%, #fff 8%, var(--fx-tint) 18%, #fff0 78%),
+    radial-gradient(ellipse 1.5px 5px at 77% 73%, #fff 8%, var(--fx-tint) 18%, #fff0 78%),
+    radial-gradient(ellipse 5px 1.5px at 77% 73%, #fff 8%, var(--fx-tint) 18%, #fff0 78%),
+    radial-gradient(circle at 91% 35%, #fff 0 1px, #fff0 2.5px),
+    radial-gradient(circle at 47% 88%, var(--fx-tint) 0 1px, #fff0 2px),
+    radial-gradient(circle at 39% 14%, var(--fx-tint) 0 .7px, #fff0 1.8px);
+  animation: bk-fx-glint 3.7s ease-in-out infinite;
+  animation-delay: var(--fx-phase);
+  mix-blend-mode: screen;
+}
+.bk-fx-glints::after {
+  inset: 0;
+  background:
+    radial-gradient(ellipse 1.5px 6px at 83% 17%, #fff 8%, var(--fx-tint) 18%, #fff0 78%),
+    radial-gradient(ellipse 6px 1.5px at 83% 17%, #fff 8%, var(--fx-tint) 18%, #fff0 78%),
+    radial-gradient(ellipse 1px 4px at 21% 67%, #fff 8%, var(--fx-tint) 18%, #fff0 78%),
+    radial-gradient(ellipse 4px 1px at 21% 67%, #fff 8%, var(--fx-tint) 18%, #fff0 78%),
+    radial-gradient(circle at 64% 38%, var(--fx-tint) 0 .8px, #fff0 2px),
+    radial-gradient(circle at 65% 92%, #fff 0 1px, #fff0 2.5px);
+  animation: bk-fx-glint 4.9s ease-in-out infinite reverse;
+  animation-delay: calc(var(--fx-phase) - 1.8s);
+}
+.bk-fx[data-rarity='N'] .bk-fx-glints { background: radial-gradient(circle at 14% 23%, #fff 0 .7px, #fff0 2px), radial-gradient(circle at 77% 73%, #fff 0 .7px, #fff0 2px); animation-duration: 7s; }
+.bk-fx[data-rarity='N'] .bk-fx-glints::after { display: none; }
+
+/* Rising points use two sheets, avoiding dozens of animated DOM particles. */
+.bk-fx .bk-fx-dust {
+  inset: -24% -12%;
+  opacity: .54;
+  background:
+    radial-gradient(circle at 7% 51%, var(--fx-tint) 0 .65px, #fff0 1.5px),
+    radial-gradient(circle at 25% 83%, #fff 0 .8px, #fff0 1.8px),
+    radial-gradient(circle at 43% 31%, var(--fx-tint) 0 .7px, #fff0 1.7px),
+    radial-gradient(circle at 67% 71%, #fff 0 .6px, #fff0 1.5px),
+    radial-gradient(circle at 92% 41%, var(--fx-tint) 0 .9px, #fff0 2px);
+  background-size: 73% 63%;
+  animation: bk-fx-drift 9s linear infinite;
+  animation-delay: var(--fx-phase);
+  mix-blend-mode: screen;
+}
+.bk-fx-dust::after {
+  inset: 0;
+  background: radial-gradient(circle at 21% 66%, var(--fx-accent) 0 1px, #fff0 2.2px), radial-gradient(circle at 74% 35%, var(--fx-tint) 0 .7px, #fff0 1.8px), radial-gradient(circle at 38% 19%, #fff 0 .5px, #fff0 1.6px);
+  background-size: 61% 47%;
+  animation: bk-fx-drift 7s linear infinite reverse;
+  animation-delay: calc(var(--fx-phase) - 3.1s);
+}
+.bk-fx[data-rarity='GGR'] .bk-fx-dust { opacity: .9; background-size: 51% 43%; }
+
+/* Prism has low area opacity, preserving the card's actual illustration. */
+.bk-fx .bk-fx-prism {
+  inset: -50%;
+  opacity: .12;
+  background: conic-gradient(from 20deg at 50% 50%, #fff0 0 18deg, #64dfff 30deg, #fff0 48deg 88deg, #b892ff 108deg, #fff0 134deg 190deg, #ffe5a4 213deg, #fff0 238deg 295deg, #97ffe5 318deg, #fff0 340deg);
+  mix-blend-mode: color-dodge;
+  animation: bk-fx-prism 23s linear infinite;
+  animation-delay: var(--fx-phase);
+}
+.bk-fx[data-rarity='KKR'] .bk-fx-prism { background: conic-gradient(from 20deg, #fff0 0 36deg, #ffe49c 58deg, #fff0 90deg 180deg, #fff5d1 208deg, #fff0 240deg 310deg, #d7a55d 336deg, #fff0 360deg); }
+.bk-fx[data-rarity='GR'] .bk-fx-prism { opacity: .2; }
+.bk-fx[data-rarity='GGR'] .bk-fx-prism { opacity: .25; animation-duration: 17s; }
+
+.bk-fx .bk-fx-comet {
+  inset: -20% -50%;
+  opacity: .65;
+  transform: translate(-40%, -30%) rotate(-32deg);
+  background: linear-gradient(90deg, #fff0 10%, var(--fx-accent) 40%, #fff 53%, #fff0 54%) 0 31% / 62% 1px no-repeat;
+  animation: bk-fx-comet 6.7s ease-in-out infinite;
+  animation-delay: calc(var(--fx-phase) - 2.4s);
+  mix-blend-mode: screen;
+}
+.bk-fx-comet::after { inset: 0; background: linear-gradient(90deg, #fff0 15%, var(--fx-tint) 45%, #fff 57%, #fff0 58%) 19% 77% / 45% 1px no-repeat; opacity: .72; }
+.bk-fx[data-rarity='GGR'] .bk-fx-comet { animation-duration: 4.8s; }
+
+/* Filigree circles remain peripheral: the subject's face stays unobscured. */
+.bk-fx .bk-fx-orbit {
+  inset: 6%;
+  border: 1px solid #fff0;
+  border-top-color: var(--fx-tint);
+  border-bottom-color: var(--fx-accent);
+  border-radius: 50%;
+  opacity: .5;
+  transform: rotate(-24deg);
+  animation: bk-fx-orbit 31s linear infinite;
+  animation-delay: var(--fx-phase);
+  box-shadow: 0 0 8px #ffe4a015, inset 0 0 8px #ffe4a012;
+}
+.bk-fx-orbit::before {
+  inset: 5%;
+  border-radius: 50%;
+  border: 1px dashed var(--fx-tint);
+  opacity: .3;
+  animation: bk-fx-orbit 24s linear infinite reverse;
+}
+.bk-fx-orbit::after {
+  width: 5px;
+  height: 5px;
+  top: 13%;
+  left: 13%;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 5px 1px var(--fx-tint), 0 0 12px 2px var(--fx-accent);
+}
+.bk-fx[data-rarity='GGR'] .bk-fx-orbit { inset: 3.5%; opacity: .64; animation-duration: 22s; }
+
+.bk-fx .bk-fx-shards {
+  inset: -25%;
+  opacity: .2;
+  background: repeating-conic-gradient(from 5deg, #fff0 0 41deg, #a1edff38 42deg, #fff0 45deg 83deg, #ffdcaf88 86deg, #fff0 89deg 110deg);
+  -webkit-mask-image: radial-gradient(circle, #0000 18%, #000 48%, #0000 74%);
+  mask-image: radial-gradient(circle, #0000 18%, #000 48%, #0000 74%);
+  animation: bk-fx-prism 41s linear infinite reverse;
+  animation-delay: calc(var(--fx-phase) - 8s);
+  mix-blend-mode: screen;
+}
+.bk-fx-shards::after { inset: 0; background: repeating-conic-gradient(from 14deg, #fff0 0 58deg, #ffffff80 59deg, #fff0 60deg 120deg); animation: bk-fx-orbit 29s linear infinite; opacity: .55; }
+
+.bk-fx .bk-fx-halo {
+  inset: 0;
+  opacity: .56;
+  border: 1px solid #ffe6ba91;
+  box-shadow: inset 0 0 11px #c4acff80, inset 0 0 24px #74dfff32;
+  animation: bk-fx-halo 5.2s ease-in-out infinite;
+  animation-delay: var(--fx-phase);
+}
+.bk-fx-halo::before { inset: 4px; border: 1px solid #fff1bb60; clip-path: polygon(0 0, 15% 0, 15% 1%, 1% 1%, 1% 15%, 0 15%, 0 0, 100% 0, 100% 15%, 99% 15%, 99% 1%, 85% 1%, 85% 0, 100% 0, 100% 100%, 85% 100%, 85% 99%, 99% 99%, 99% 85%, 100% 85%, 100% 100%, 0 100%, 0 85%, 1% 85%, 1% 99%, 15% 99%, 15% 100%, 0 100%); }
+.bk-fx[data-rarity='GGR'] .bk-fx-halo { border-color: #fff1c7cf; box-shadow: inset 0 0 12px #fff0b55c, inset 0 0 28px #b1b7ff55; }
+
+.bk-fx .bk-fx-constellation {
+  inset: 12%;
+  border-radius: 50%;
+  border: 1px solid #fff3;
+  border-left-color: #b4eeffc4;
+  border-right-color: #ebc9ffb0;
+  opacity: .58;
+  animation: bk-fx-orbit 37s linear infinite reverse;
+  animation-delay: calc(var(--fx-phase) - 4s);
+}
+.bk-fx-constellation::before { inset: -5%; border: 1px dotted #fff1b98c; border-radius: 50%; transform: rotate(17deg); }
+.bk-fx-constellation::after { inset: -8%; background: radial-gradient(ellipse 2px 7px at 50% 2%, #fff 0 15%, #fff0 80%), radial-gradient(ellipse 7px 2px at 50% 2%, #fff 0 15%, #fff0 80%), radial-gradient(ellipse 2px 5px at 4% 69%, #fff 0 15%, #fff0 80%), radial-gradient(ellipse 5px 2px at 4% 69%, #fff 0 15%, #fff0 80%), radial-gradient(ellipse 2px 5px at 96% 69%, #fff 0 15%, #fff0 80%), radial-gradient(ellipse 5px 2px at 96% 69%, #fff 0 15%, #fff0 80%); }
+
+.bk-fx .bk-fx-rays {
+  inset: -18%;
+  opacity: .18;
+  background: repeating-conic-gradient(from 0deg, #fff0 0 13deg, #fff5c4 13.2deg 13.7deg, #fff0 14deg 30deg);
+  -webkit-mask-image: radial-gradient(circle, #0000 0 29%, #000 55%, #0000 69%);
+  mask-image: radial-gradient(circle, #0000 0 29%, #000 55%, #0000 69%);
+  animation: bk-fx-rays 19s linear infinite;
+  animation-delay: var(--fx-phase);
+  mix-blend-mode: screen;
+}
+
+.bk-fx .bk-fx-crown {
+  inset: 5% 5% auto auto;
+  width: 15%;
+  aspect-ratio: 1;
+  border: 1px solid #ffe9b455;
+  border-radius: 50%;
+  background: radial-gradient(circle, #25112955 10%, #15132400 73%);
+  box-shadow: 0 0 11px #e8c4ff55;
+  animation: bk-fx-crown 4.7s ease-in-out infinite;
+  animation-delay: var(--fx-phase);
+}
+.bk-fx-crown::before { inset: 23% 17% 27%; background: linear-gradient(135deg, #fff7d4, #f1c980 55%, #fff5c5); clip-path: polygon(0 10%, 28% 42%, 50% 0, 72% 42%, 100% 10%, 87% 90%, 13% 90%); }
+.bk-fx-crown::after { inset: -14%; border: 1px dashed #fff2ce85; border-radius: 50%; animation: bk-fx-orbit 18s linear infinite reverse; }
+
+@keyframes bk-fx-sweep { 0%, 9% { transform: translateX(-41%); } 67%, 100% { transform: translateX(41%); } }
+@keyframes bk-fx-glint { 0%, 100% { opacity: .15; transform: scale(.995); } 37% { opacity: .85; } 63% { opacity: .38; } 82% { opacity: .65; transform: scale(1.015); } }
+@keyframes bk-fx-drift { from { transform: translate3d(-2%, 9%, 0); } to { transform: translate3d(3%, -9%, 0); } }
+@keyframes bk-fx-prism { from { transform: rotate(0deg) scale(1); } to { transform: rotate(360deg) scale(1); } }
+@keyframes bk-fx-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes bk-fx-comet { 0%, 28% { transform: translate(-48%, -24%) rotate(-32deg); opacity: 0; } 34% { opacity: .8; } 57% { opacity: .7; } 66%, 100% { transform: translate(45%, 24%) rotate(-32deg); opacity: 0; } }
+@keyframes bk-fx-halo { 0%, 100% { opacity: .45; } 50% { opacity: .8; } }
+@keyframes bk-fx-rays { from { transform: rotate(0deg) scale(.94); opacity: .12; } 50% { opacity: .22; transform: rotate(180deg) scale(1.03); } to { transform: rotate(360deg) scale(.94); opacity: .12; } }
+@keyframes bk-fx-crown { 0%, 100% { opacity: .62; transform: translateY(0) scale(.97); } 50% { opacity: 1; transform: translateY(-4%) scale(1.02); } }
+
+/* Strong identity without competing with existing selected/targetable outlines. */
+.game-card.rarity-GR:not(.selected):not(.targetable),
+.card.GR:not(.selected) { box-shadow: 0 0 0 1px #d5b7f25e, 0 0 15px #b990e534, 0 7px 22px #0007; }
+.game-card.rarity-GGR:not(.selected):not(.targetable),
+.card.GGR:not(.selected) { box-shadow: 0 0 0 1px #ffe9b6b0, 0 0 0 3px #d2b6fa24, 0 0 17px #c7a2ff55, 0 0 30px #7ce6ec24, 0 8px 24px #0007; }
+.game-card.rarity-GGR .rarity { color: #ffedc7; text-shadow: 0 0 7px #d9b1ff85; }
+
+/* Keep a selection readable even when several rare cards share the field. */
+.hidden-gimmick .bk-fx,
+.hidden-special .bk-fx,
+[data-face-down='true'] .bk-fx { display: none !important; }
+[data-fx-visible='false'] .bk-fx *,
+[data-fx-visible='false'] .bk-fx *::before,
+[data-fx-visible='false'] .bk-fx *::after,
+html[data-bk-fx-hidden] .bk-fx *,
+html[data-bk-fx-hidden] .bk-fx *::before,
+html[data-bk-fx-hidden] .bk-fx *::after { animation-play-state: paused !important; }
+
+/* Existing in-game motion toggle and system preference both work immediately. */
+.reduce-motion .bk-fx *, .reduce-motion .bk-fx *::before, .reduce-motion .bk-fx *::after,
+[data-motion='reduced'] .bk-fx *, [data-motion='reduced'] .bk-fx *::before, [data-motion='reduced'] .bk-fx *::after {
+  animation: none !important;
+  transition: none !important;
+}
+.reduce-motion .bk-fx-foil, [data-motion='reduced'] .bk-fx-foil { opacity: .12; transform: rotate(5deg); }
+.reduce-motion .bk-fx-comet, [data-motion='reduced'] .bk-fx-comet { display: none; }
+.reduce-motion .bk-fx-prism, [data-motion='reduced'] .bk-fx-prism { opacity: .1; }
+@media (prefers-reduced-motion: reduce) {
+  .bk-fx *, .bk-fx *::before, .bk-fx *::after { animation: none !important; transition: none !important; }
+  .bk-fx .bk-fx-foil { opacity: .12; transform: rotate(5deg); }
+  .bk-fx .bk-fx-comet { display: none; }
+  .bk-fx .bk-fx-prism { opacity: .1; }
+}
+@media (forced-colors: active) { .bk-fx { display: none; } }
+
+/* The highest finish carries denser simultaneous light, with a clear centre. */
+.bk-fx[data-rarity='GGR'] { --fx-foil: .54; }
+.bk-fx[data-rarity='GGR'] .bk-fx-dust { background-size: 35% 31%; opacity: .96; animation-duration: 6.4s; }
+.bk-fx[data-rarity='GGR'] .bk-fx-glints { animation-duration: 2.8s; }
+.bk-fx[data-rarity='GGR'] .bk-fx-prism { opacity: .36; animation-duration: 13s; }
+.bk-fx[data-rarity='GGR'] .bk-fx-orbit { opacity: .9; animation-duration: 15s; border-width: 1.4px; box-shadow: 0 0 8px #ffe4a044,inset 0 0 12px #a4e8ff33; }
+.bk-fx[data-rarity='GGR'] .bk-fx-constellation { opacity: .82; animation-duration: 23s; }
+.bk-fx[data-rarity='GGR'] .bk-fx-shards { opacity: .34; animation-duration: 27s; }
+.bk-fx[data-rarity='GGR'] .bk-fx-comet { animation-duration: 3.7s; background-size: 62% 2px; }
+.bk-fx[data-rarity='GR'] .bk-fx-dust { background-size: 49% 47%; opacity: .77; }

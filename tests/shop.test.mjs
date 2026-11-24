@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CARDS, CARD_MAP, STARTER_DECKS, FUSION_CARD_ID } from '../catalog.js';
+import { CARDS, CARD_MAP, STARTER_DECKS, getCardsForSet, FUSION_CARD_ID } from '../catalog.js';
 import {
   PACK_ID, PACK_NAME, PACK_DESCRIPTION, PACK_CARD_IDS, PACK_CARD_COUNT,
   PACK_COST, PACK_SIZE, STARTING_TREASURE, EXTRA_COPY_TREASURE,
@@ -39,9 +39,9 @@ test('normalization rejects unknown IDs and invalid counts without mutating inpu
   assert.equal(raw.B0001, 7);
 });
 
-test('starter ownership supports all eight main and special decks using maxima', () => {
+test('starter ownership supports all four main and special decks using maxima', () => {
   const collection = createStarterCollection();
-  assert.equal(STARTER_DECKS.length, 8);
+  assert.equal(STARTER_DECKS.length, 4);
   for (const deck of STARTER_DECKS) {
     const required = new Map();
     for (const id of [...deck.ids, ...deck.specialIds]) required.set(id, (required.get(id) || 0) + 1);
@@ -150,8 +150,8 @@ test('each advertised rarity range reaches that rarity in a regular slot', () =>
   }
 });
 
-test('all 1,152 first-set cards, including 128 fusion beasts, can be drawn', () => {
-  const mainCards = CARDS;
+for(const packId of ['BK01','BK02']) test(packId+' draws every one of its 1152 cards including all 128 fusion beasts', () => {
+  const mainCards = getCardsForSet(packId);
   const reached = new Set();
   const midpoints = {};
   let cumulative = 0;
@@ -163,16 +163,16 @@ test('all 1,152 first-set cards, including 128 fusion beasts, can be drawn', () 
     const cards = mainCards.filter(c => c.rarity === rarity);
     for (let index = 0; index < cards.length; index++) {
       const rolls = [midpoints[rarity], (index + 0.5) / cards.length];
-      const result = openPack({ treasure: 100, collection: {} }, () => rolls.length ? rolls.shift() : 0);
+      const result = openPack({ treasure: 100, collection: {} }, {packId,randomFn:() => rolls.length ? rolls.shift() : 0});
       assert.equal(result.ok, true);
       assert.equal(result.pulls[0].cardId, cards[index].id);
       reached.add(result.pulls[0].cardId);
     }
   }
-  assert.equal(CARDS.length, 1152);
-  assert.equal(CARDS.filter(c => c.type === 'fusion').length, 128);
+  assert.equal(mainCards.length, 1152);
+  assert.equal(mainCards.filter(c => c.type === 'fusion').length, 128);
   assert.equal(reached.size, 1152);
-  assert.deepEqual([...reached].sort(), [...PACK_CARD_IDS].sort());
+  assert.deepEqual([...reached].sort(), mainCards.map(c=>c.id).sort());
   assert.deepEqual(mainCards.reduce((counts, card) => {
     counts[card.type] = (counts[card.type] || 0) + 1;
     return counts;

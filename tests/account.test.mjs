@@ -358,3 +358,43 @@ test('Rebuild cloud backup is isolated, authenticated, revision checked, and res
  assert.deepEqual((await f.api('GET','/api/cloud-save',a.token)).data.save,legacy.data.save);
  assert.equal((await f.api('GET','/api/profile',a.token)).data.profile.nickname,'新生版検証');
 });
+
+test('operator deck code requires the stored role and grants the normal Regalia pair only once across devices',async t=>{
+ const f=fixture(t),ordinary=await f.profile('一般の王'),operator=await f.operator();
+ f.env.BK_OPERATOR_REGALIA_CODE='fixture-regalia-pair';
+ const route='/api/operator/regalia/claim';
+ assert.equal((await f.api('POST',route,ordinary.token,{code:f.env.BK_OPERATOR_REGALIA_CODE,revision:0})).status,404);
+ assert.equal((await f.api('GET','/api/operator',ordinary.token)).status,404);
+ assert.equal((await f.api('POST',route,operator.token,{code:f.env.BK_OPERATOR_REGALIA_CODE,revision:0})).status,409);
+ assert.equal((await f.save(operator)).status,200);
+ assert.equal((await f.api('POST',route,operator.token,{code:'wrong-code',revision:1})).status,404);
+ const granted=await f.api('POST',route,operator.token,{code:f.env.BK_OPERATOR_REGALIA_CODE,revision:1});
+ assert.equal(granted.status,200,JSON.stringify(granted.data));
+ const {save,deck}=granted.data;
+ assert.equal(save.data.collection.B0512,2);assert.equal(deck.name,'𠮷良原デッキ');
+ assert.equal(deck.ids.length,32);assert.equal(deck.specialIds.length,4);
+ const all=[...deck.ids,...deck.specialIds];
+ assert.equal(all.filter(id=>id==='B0512').length,2);
+ assert.equal(all.filter(id=>getCard(id).setId==='BK01').length,20);
+ assert.equal(all.filter(id=>getCard(id).setId==='BK02').length,16);
+ assert.ok(all.every(id=>save.data.collection[id]>=all.filter(x=>x===id).length));
+ const linked=await f.link(operator);
+ const replay=await f.api('POST',route,linked.token,{code:f.env.BK_OPERATOR_REGALIA_CODE,revision:1});
+ assert.equal(replay.status,200);assert.equal(replay.data.replayed,true);
+ assert.deepEqual(replay.data.save,save);
+ const read=await f.api('GET','/api/operator/deck',linked.token);
+ assert.equal(read.status,200);assert.equal(read.data.deck.id,deck.id);
+ assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_reward_claims WHERE item_id='operator-regalia-v1'").get().n,1);
+});
+
+test('operator deck claim rejects an outdated save revision without losing newer inventory',async t=>{
+ const f=fixture(t),operator=await f.operator();f.env.BK_OPERATOR_REGALIA_CODE='fixture-regalia-pair';
+ await f.save(operator);
+ const fresh=saveData(operator);fresh.treasure=777;fresh.collection.B1023=1;
+ assert.equal((await f.save(operator,fresh,1)).status,200);
+ const result=await f.api('POST','/api/operator/regalia/claim',operator.token,{code:f.env.BK_OPERATOR_REGALIA_CODE,revision:1});
+ assert.equal(result.status,409);
+ const saved=(await f.api('GET','/api/cloud-save',operator.token)).data.save;
+ assert.equal(saved.data.treasure,777);assert.equal(saved.data.collection.B1023,1);assert.equal(saved.data.collection.B0512,undefined);
+ assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_reward_claims').get().n,0);
+});
