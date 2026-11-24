@@ -86,13 +86,26 @@ try{
  const general=['.navigation-dock>.dock-link','.site-controls>button'];
  for(const [width,height] of [[1920,1080],[1366,768],[1024,600],[768,1024],[390,844],[320,568],[844,390]]){
   await viewport(width,height);
-  for(const [page,selectors] of [['home',['.home-mode-rail>.home-mode','.home-card-fan>.game-card']],['deck',['.deck-panel-head,.deck-zone-tabs,.deck-list,.deck-panel-foot','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination','.card-wrap>.card-owned,.card-wrap>.quick-add']],['collection',['.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination']],['shop',['.product-section-tabs>button']],['rules',['.rulebook-tabs>button']]]){
+  for(const [page,selectors] of [['home',['.home-mode-rail>.home-mode','.home-card-fan>.game-card']],['deck',['.deck-panel-head,.deck-zone-tabs,.deck-list,.deck-panel-foot','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination','.transfer-card>.transfer-counts,.transfer-card>.transfer-actions']],['collection',['.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination']],['shop',['.product-section-tabs>button']],['rules',['.rulebook-tabs>button']]]){
    await click('.navigation-dock [data-nav='+page+']');await waitElement('main[data-page='+page+']');await delay(180);
    if(page==='home'){const modeVisibility=await evaluate('(()=>{const p=document.querySelector(".home-page").getBoundingClientRect();return [...document.querySelectorAll(".home-mode-rail>.home-mode")].map(e=>{const r=e.getBoundingClientRect();return r.top>=p.top-2&&r.bottom<=p.bottom+2&&r.left>=p.left-2&&r.right<=p.right+2})})()');assert.deepEqual(modeVisibility,[true,true,true],width+'x'+height+' all three mode controls fully visible');}
    // Card ownership/action pairs are tested per card, not between distinct tiles.
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
-  await click('.navigation-dock [data-nav=deck]');assert.equal(await evaluate('document.querySelectorAll("#deck-bank-select option").length'),4);await click('[data-action=deck-inspect-open]');await waitElement('.deck-inspector .inspect-slot-nav');assert.ok((await evaluate('document.querySelector(".inspect-slot-nav strong").textContent')).includes('1 / 32'));await click('[data-action=deck-inspect-next]');assert.ok((await evaluate('document.querySelector(".inspect-slot-nav strong").textContent')).includes('2 / 32'));await click('[data-action=deck-inspect-all]');assert.equal(await evaluate('Number(document.querySelector(".inspect-gallery").dataset.total)'),32);await click('[data-action=deck-inspect-zone][data-section=special]');assert.equal(await evaluate('Number(document.querySelector(".inspect-gallery").dataset.total)'),4);await click('.modal-close');assert.ok(await evaluate('Boolean(document.querySelector(".deck-row .qty-btn"))'));
+  await click('.navigation-dock [data-nav=deck]');assert.equal(await evaluate('document.querySelectorAll("#deck-bank-select option").length'),4);
+  assert.ok(await evaluate('Boolean(document.querySelector(".transfer-source .transfer-card")&&document.querySelector(".deck-panel .deck-row"))'));
+  assert.equal(await evaluate('document.querySelector("[data-action=deck-filter-scope][data-scope=owned]").getAttribute("aria-pressed")'),'true');
+  const transferId=await evaluate('document.querySelector(".deck-row [data-action=deck-remove]").dataset.id');
+  const before=await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent');
+  await click('.deck-row [data-action=deck-remove][data-id='+transferId+']');
+  assert.equal(await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent'),'31/32');
+  await evaluate('(()=>{const e=document.querySelector("#card-search");e.value='+JSON.stringify(transferId)+';e.dispatchEvent(new Event("input",{bubbles:true}));return true})()');
+  await until(()=>evaluate('Boolean(document.querySelector(".transfer-add[data-id='+transferId+']:not(:disabled)"))'),'returned card is available again');
+  await click('.transfer-add[data-id='+transferId+']');
+  assert.equal(await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent'),before);
+  await evaluate('(()=>{const e=document.querySelector("#card-search");e.value="";e.dispatchEvent(new Event("input",{bubbles:true}));return true})()');
+  await click('[data-action=deck-list-mode][data-mode=images]');assert.equal(await evaluate('Number(document.querySelector(".deck-image-grid").dataset.total)'),32);await click('[data-action=deck-list-mode][data-mode=list]');
+  await click('[data-action=deck-inspect-open]');await waitElement('.deck-inspector .inspect-slot-nav');assert.ok((await evaluate('document.querySelector(".inspect-slot-nav strong").textContent')).includes('1 / 32'));await click('[data-action=deck-inspect-next]');assert.ok((await evaluate('document.querySelector(".inspect-slot-nav strong").textContent')).includes('2 / 32'));await click('[data-action=deck-inspect-all]');assert.equal(await evaluate('Number(document.querySelector(".inspect-gallery").dataset.total)'),32);await click('[data-action=deck-inspect-zone][data-section=special]');assert.equal(await evaluate('Number(document.querySelector(".inspect-gallery").dataset.total)'),4);await click('.modal-close');assert.ok(await evaluate('Boolean(document.querySelector(".deck-row .qty-btn"))'));
   await click('.navigation-dock [data-nav=home]');await click('[data-action=solo-mode]');await waitElement('.solo-mode');await check(width+'x'+height+' solo',general);
   await click('[data-action=solo-section][data-section=practice]');await check(width+'x'+height+' practice',['.solo-level-grid>.solo-level']);
   await click('.navigation-dock [data-nav=home]');await click('[data-action=multi-mode]');await waitElement('.mode-lobby');await check(width+'x'+height+' room',general);
@@ -104,7 +117,7 @@ try{
   await viewport(width,height);
   await check(width+'x'+height+' duel',['.duel-top-actions>button','.arena>.duelist,.arena>.field-row,.arena>.hand-section,.arena>.zone-strip,.midline>.turn-label,.midline>.end-turn,.midline>.arcana-zone-row,.own-zone-row>.arcana-zone-row,.own-zone-row>.zone-strip','.hand-cards>.hand-card']);
  }
- await send('Page.navigate',{url:url+'about.html'});await waitElement('body.about-page');await check('about page');
+ await send('Page.navigate',{url:url+'about.html'});await waitElement('body.about-page');await waitElement('.bk-fit-article .bk-fit-target[data-fit-scale]');await delay(150);await check('about page');
  assert.deepEqual(exceptions,[],'No uncaught browser errors');
  console.log('Layout smoke passed: root home, deck, collection, shop, rules, solo, practice, room, rank, details, battle, about; seven viewports');
 }finally{

@@ -353,3 +353,14 @@ test('deck library keeps starter edits, active deck and drafts independent',()=>
  assert.equal(app.saveDeck(true),true);assert.equal(app.data.activeDeckId,'starter-'+second.id);
  assert.equal(app.createBankDeck(),true);assert.equal(app.data.deckLibrary.length,5);
 });
+
+test('returning a card to the shared pool does not change inventory or a different saved deck',()=>{
+ const {app}=boot();const first=catalog.STARTER_DECKS[0],second=catalog.STARTER_DECKS[1];
+ assert.equal(app.loadBankEntry('starter-'+first.id),true);
+ const cardId=app.workingDeck[0],before=plain(app.data.collection),other=plain(app.data.deckLibrary.find(d=>d.id==='starter-'+second.id));
+ const count=app.workingDeck.filter(id=>id===cardId).length;
+ app.editDeck(cardId,false);assert.equal(app.workingDeck.filter(id=>id===cardId).length,count-1);assert.equal(app.workingDeck.length,31);
+ assert.deepEqual(plain(app.data.collection),before);
+ app.editDeck(cardId,true);assert.equal(app.workingDeck.length,32);assert.equal(app.workingDeck.filter(id=>id===cardId).length,count);
+ assert.deepEqual(plain(app.data.collection),before);assert.deepEqual(plain(app.data.deckLibrary.find(d=>d.id==='starter-'+second.id)),other);
+});

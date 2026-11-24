@@ -71,6 +71,29 @@ function fitApp(){
  const portrait=w<650&&h>w;
  fit(target,w,h,{logicalMin:portrait&&target.matches('.royal-shell')?640:0});
 }
+const pagedLists=new WeakMap();
+function paginateLongLists(){
+ const size=innerHeight<=500?3:innerHeight<=750?5:8;
+ for(const selector of ['.battle-log-drawer:not([hidden]) .battle-log-entries','.operator-player-list','.operator-audit','.account-device-list','.zone-card-list']){
+  for(const list of doc.querySelectorAll(selector)){
+   let state=pagedLists.get(list);if(!state&&list.children.length<=size)continue;
+   if(!state){
+    const bar=doc.createElement('div'),prev=doc.createElement('button'),next=doc.createElement('button'),label=doc.createElement('span');
+    bar.className='bk-fit-inline-pager';bar.setAttribute('aria-label','一覧ページ');
+    prev.type=next.type='button';prev.textContent='前へ';next.textContent='次へ';bar.append(prev,label,next);list.after(bar);
+    state={bar,prev,next,label,index:0,size};pagedLists.set(list,state);list.dataset.fitPaged='true';
+    prev.addEventListener('click',()=>{state.index--;updatePagedList(list,state);schedule();});next.addEventListener('click',()=>{state.index++;updatePagedList(list,state);schedule();});
+   }
+   state.size=size;updatePagedList(list,state);
+  }
+ }
+}
+function updatePagedList(list,state){
+ const items=children(list),pages=Math.max(1,Math.ceil(items.length/state.size));state.index=clamp(state.index,0,pages-1);
+ items.forEach((el,i)=>{el.hidden=Math.floor(i/state.size)!==state.index;});
+ const label=(state.index+1)+' / '+pages+' · '+items.length+'件';if(state.label.textContent!==label)state.label.textContent=label;
+ state.prev.disabled=state.index===0;state.next.disabled=state.index===pages-1;state.bar.hidden=pages===1;
+}
 function fitModal(){
  const modal=doc.querySelector('#modal-root .modal,dialog[open],.news-dialog');
  if(!modal)return;
@@ -86,8 +109,8 @@ function fitModal(){
 }
 function run(){
  pending=false;if(running)return;running=true;
- try{paginateAbout();fitApp();if(about){const {frame,main}=about;fit(main,frame.clientWidth,frame.clientHeight,{logicalMin:Math.min(640,frame.clientWidth)});}fitModal();}finally{running=false;}
+ try{paginateAbout();paginateLongLists();fitApp();if(about){const {frame,main}=about;fit(main,frame.clientWidth,frame.clientHeight,{logicalMin:Math.min(640,frame.clientWidth)});}fitModal();}finally{running=false;}
 }
 function schedule(){if(pending)return;pending=true;requestAnimationFrame(run);}
 new MutationObserver(records=>{if(records.some(r=>r.type==='childList'&&(r.addedNodes.length||r.removedNodes.length)))schedule();}).observe(doc.body,{childList:true,subtree:true});
-window.addEventListener('resize',schedule,{passive:true});window.visualViewport?.addEventListener('resize',schedule,{passive:true});window.addEventListener('bk-fit-layout',schedule);document.fonts?.ready.then(schedule);schedule();
+doc.addEventListener('toggle',schedule,true);window.addEventListener('resize',schedule,{passive:true});window.visualViewport?.addEventListener('resize',schedule,{passive:true});window.addEventListener('bk-fit-layout',schedule);document.fonts?.ready.then(schedule);schedule();

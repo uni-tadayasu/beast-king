@@ -126,3 +126,48 @@ html.bk-fit .bk-fit-target.shell .deck-rows,html.bk-fit .bk-fit-target.shell .si
  html.bk-fit .deck-workshop .deck-panel-foot{padding:4px}
  html.bk-fit .duel-shell .arena{grid-template-rows:auto auto auto auto auto auto!important}
 }
+
+/* Side-by-side card transfer. The selected deck and shared inventory are
+   always in one workspace; their page controls are independent. */
+.deck-scope-tabs,.deck-display-tabs{display:flex;flex-wrap:wrap;align-items:center;gap:4px;flex:none}
+.deck-scope-tabs>.btn,.deck-display-tabs>.btn{min-height:30px;padding:5px 8px;font-size:11px;white-space:normal}
+.transfer-workspace{min-width:0}
+.transfer-heading{display:flex;align-items:center;justify-content:space-between;gap:4px 8px;flex-wrap:wrap;padding:7px 8px;border-bottom:1px solid #b49ac64a;margin-bottom:5px;background:#211f36;color:#ead8b5}
+.transfer-heading>strong{font-size:13px}
+.transfer-heading>small{font-size:10px;color:#bfb3cf}
+.transfer-source{min-width:0}
+html.bk-fit .deck-workshop #card-results .transfer-card{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;gap:4px;min-width:0}
+.transfer-card>.game-card{grid-column:1}
+.transfer-counts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));min-width:0;gap:2px;text-align:center;font-size:10px;line-height:1.25}
+.transfer-counts>span{display:grid;gap:2px;padding:4px 1px;border:1px solid #a88abb3b;background:#1b2033;border-radius:3px;min-width:0;white-space:normal}
+.transfer-counts b{font-size:13px;color:#e8d7b9;font-variant-numeric:tabular-nums}
+.transfer-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+.transfer-actions>.btn{min-width:0;min-height:29px;padding:4px 2px;font-size:11px;line-height:1.3;white-space:normal}
+.transfer-actions>.transfer-remove{background:#30283b}
+.deck-display-tabs{justify-content:center;padding:3px 8px}
+.deck-display-tabs>.btn{flex:1}
+.deck-workshop .deck-row .row-name{display:flex;align-items:center;gap:5px;min-width:0;padding:0}
+.deck-row .row-name>span:last-child{min-width:0;overflow-wrap:anywhere}
+.deck-row-art{display:block;flex:0 0 27px;width:27px;height:30px;border-radius:3px;border:1px solid #d6bd824d;background-repeat:no-repeat}
+.deck-image-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;min-width:0;align-items:start}
+.deck-image-slot{display:grid;gap:4px;min-width:0;justify-items:center;padding:4px;border:1px solid #bda0c94d;border-radius:4px}
+.deck-image-slot>small{font-size:10px;color:#cabbd7}
+.deck-image-slot>.game-card{width:100%;max-width:94px;height:auto;aspect-ratio:360/520;transform:none}
+.deck-image-slot>.btn{min-height:27px;width:100%;padding:3px 2px;font-size:10px}
+html.bk-fit body.bk-about main [hidden],html.bk-fit [data-fit-paged]>[hidden]{display:none!important}
+html.bk-fit .bk-fit-article{min-height:0!important;height:0;flex:1 1 0;overflow:hidden!important}
+html.bk-fit .bk-fit-modal [data-fit-paged]{max-height:none!important;overflow:visible!important}
+.bk-fit-inline-pager{display:flex;align-items:center;justify-content:center;gap:8px;margin:4px 0;font-size:11px}
+.bk-fit-inline-pager button{min-height:30px;padding:4px 9px;border:1px solid #b49ac677;border-radius:4px;color:#eee0ca;background:#27263e}
+.bk-fit-inline-pager button:disabled{opacity:.4}
+@media(max-width:800px){
+ html.bk-fit .deck-workshop .transfer-workspace{grid-template-columns:minmax(0,1fr) minmax(180px,245px);align-items:start}
+ .transfer-counts,.transfer-actions>.btn{font-size:10px}
+ .deck-row-art{width:22px;height:26px;flex-basis:22px}
+}
+@media(max-height:500px){
+ .transfer-heading{padding:3px 5px;margin:0 0 3px}
+ .transfer-counts>span{padding:2px 1px}
+ .transfer-actions>.btn{min-height:25px}
+ .deck-image-slot>.game-card{max-width:72px}
+}
