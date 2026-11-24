@@ -1,6 +1,14 @@
 # BEAST KING — artwork production and provenance
 
-## Current four-pack edition — r29
+## Current five-pack edition — r31
+
+BK05 **幻彩の夢界** adds 96 individually authored card illustrations, in four native six-by-four atlases under `assets/design-v5/cards/`. The families are folded paper (折紙), stained glass (玻璃), shadow theatre (影絵), and living pigment (彩墨). Each atlas has 24 independently directed scenes: 12 ordinary beasts, 6 miracles, 4 gimmicks and 2 fusions. The separate portrait cover is `assets/design-v3/packs/bk05-cover.webp`.
+
+The fifth-set generation plan fixes the names, subjects and exact row-major card order before generation. Each source is generated with the built-in image tool, visually reviewed, and encoded as WebP without resizing. The production manifest records native dimensions, source/output/prompt hashes, the original scene direction, reviewed status, each cell's image hash, and browser crop bounds. `card-art-fifth.js` is the explicit browser registry, avoiding the historical numeric-ID fallback.
+
+The complete catalogue now has **4,721 card assignments and 4,714 distinct displayed illustrations**. The only shared illustration group remains the eight user-specified Selva cards. The original four sets' artwork records and all 17 premium illustrations stay unchanged. `validate-fifth-art.mjs` adds strict 96-card coverage, unique crop/source checks, native dimensions and review checks; `verify-release.mjs` also checks actual asset bytes and all prior gates.
+
+## Earlier four-pack edition — r29
 
 The r29 catalogue contains 4,625 cards across BK01, BK02, BK03 and BK04: 1,157 in BK01 and 1,156 in each of the other packs. Seventeen new Regalia support cards add 17 distinct native illustrations under `assets/design-v4/premium/`, assigned through `card-art-premium.js`. The eight Selva variants share the user's specified original PNG through `card-art-user.js`; this explicit shared-art group makes 4,618 distinct displayed illustrations across 4,625 card assignments. The current card inventory, provenance and validation scope are recorded in [the r29 release record](RELEASE-2026-11-24.md).
 

@@ -17,7 +17,7 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', starter
     </header>
     <div class="entry-layout">
       <section class="entry-content">
-        <div class="entry-edition"><span class="entry-edition-star" aria-hidden="true">${glyph('spark')}</span><span>王冠竜プレミアム 登場 <span class="entry-edition-dot" aria-hidden="true">·</span> <span class="entry-card-total">4,625 CARDS</span></span></div>
+        <div class="entry-edition"><span class="entry-edition-star" aria-hidden="true">${glyph('spark')}</span><span>第五弾「幻彩の夢界」登場 <span class="entry-edition-dot" aria-hidden="true">·</span> <span class="entry-card-total">4,721 CARDS</span></span></div>
         <h1 id="entry-title" class="entry-title"><span class="entry-title-en" lang="en">BEAST KING</span><span class="entry-title-ja">ビーストキング</span></h1>
         <p class="entry-invitation">魔獣と出会い、君だけの王道を。</p>
         <form id="entry-start-form" class="entry-start-panel" novalidate>

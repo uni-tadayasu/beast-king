@@ -86,6 +86,36 @@ async function assertFits(){
  const dimensions=await evaluate('({w:innerWidth,h:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight})');
  assert.ok(dimensions.sw<=dimensions.w+1,'Horizontal overflow: '+JSON.stringify(dimensions));assert.ok(dimensions.sh<=dimensions.h+1,'Vertical overflow: '+JSON.stringify(dimensions));
 }
+async function assertReadableModal(label,{fullViewport=false,controls=[],body=[],labels=[]}={}){
+ const result=await evaluate(`(()=>{
+  const modal=document.querySelector('#modal-root .modal'),viewport=layoutViewport(),box=layoutRect(modal),scale=box.width/modal.offsetWidth;
+  const visible=node=>{const r=layoutRect(node),s=getComputedStyle(node);return r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden'};
+  const identify=node=>node.id||node.dataset.action||node.className||node.tagName;
+  const inside=r=>r.left>=box.left-2&&r.right<=box.right+2&&r.top>=box.top-2&&r.bottom<=box.bottom+2;
+  const controlSelectors=${JSON.stringify(controls)},missing=controlSelectors.filter(selector=>{const nodes=[...modal.querySelectorAll(selector)];return !nodes.length||nodes.some(node=>!visible(node))});
+  const nodes=[...modal.querySelectorAll('h2,h3,p,small,label,input,button,output,code')].filter(visible);
+  const clipped=nodes.filter(node=>{const r=layoutRect(node),s=getComputedStyle(node);return !inside(r)||(s.display!=='inline'&&node.clientHeight>0&&(node.scrollHeight>node.clientHeight+2||node.scrollWidth>node.clientWidth+2))}).map(node=>({node:identify(node),box:layoutRect(node).toJSON(),client:[node.clientWidth,node.clientHeight],scroll:[node.scrollWidth,node.scrollHeight]}));
+  const fontChecks=[...${JSON.stringify(body)}.map(selector=>({selector,min:16})),...${JSON.stringify(labels)}.map(selector=>({selector,min:14}))];
+  const small=fontChecks.flatMap(({selector,min})=>[...modal.querySelectorAll(selector)].filter(visible).map(node=>({node:identify(node),size:parseFloat(getComputedStyle(node).fontSize)*scale,min}))).filter(item=>item.size<item.min-.25);
+  const buttons=[...modal.querySelectorAll('button,input:not([type=hidden]),select')].filter(visible),overlaps=[];
+  for(let i=0;i<buttons.length;i++)for(let j=i+1;j<buttons.length;j++){
+   const a=layoutRect(buttons[i]),b=layoutRect(buttons[j]);
+   if(Math.min(a.right,b.right)-Math.max(a.left,b.left)>2&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>2)overlaps.push([identify(buttons[i]),identify(buttons[j])]);
+  }
+  const close=modal.querySelector('.modal-close'),closeBox=layoutRect(close),closeText=[],walker=document.createTreeWalker(modal,NodeFilter.SHOW_TEXT);
+  while(walker.nextNode()){
+   const text=walker.currentNode,parent=text.parentElement;if(!text.textContent.trim()||parent.closest('button,input,select,textarea,svg')||!visible(parent))continue;
+   const range=document.createRange();range.selectNodeContents(text);
+   if([...range.getClientRects()].some(raw=>{const r=layoutRect({getBoundingClientRect:()=>raw});return Math.min(r.right,closeBox.right)-Math.max(r.left,closeBox.left)>2&&Math.min(r.bottom,closeBox.bottom)-Math.max(r.top,closeBox.top)>2}))closeText.push(text.textContent.trim().slice(0,40));
+  }
+  return {viewport,box:box.toJSON(),scale,fitScale:Number(modal.dataset.fitScale),missing,clipped,small,overlaps,closeText,scrolling:[...modal.querySelectorAll('*'),modal].filter(visible).filter(node=>['auto','scroll'].includes(getComputedStyle(node).overflowY)).map(identify)};
+ })()`);
+ assert.ok(result.box.left>=-2&&result.box.top>=-2&&result.box.right<=result.viewport.width+2&&result.box.bottom<=result.viewport.height+2,label+' modal inside viewport '+JSON.stringify(result));
+ assert.ok(Math.abs(result.box.left-(result.viewport.width-result.box.right))<=3,label+' centered modal '+JSON.stringify(result));
+ if(fullViewport)assert.ok(result.scale>=.98&&result.fitScale>=.98&&result.box.width>=result.viewport.width*.92&&result.box.height>=result.viewport.height*.92,label+' readable full-size workspace '+JSON.stringify(result));
+ for(const key of ['missing','clipped','small','overlaps','closeText','scrolling'])assert.deepEqual(result[key],[],label+' '+key+' '+JSON.stringify(result[key]));
+ await assertFits();
+}
 try{
  await new Promise((res,rej)=>{server.once('error',rej);server.listen(0,'127.0.0.1',res)});
  const url='http://127.0.0.1:'+server.address().port+'/';
@@ -149,8 +179,8 @@ try{
      await until(()=>evaluate('document.querySelector(".product-shop").dataset.bkShopMode==='+JSON.stringify(mode)+'&&document.querySelector('+JSON.stringify(selector)+').getAttribute("aria-pressed")==="true"'),'shop '+mode+' pane');
      await delay(120);
     };
-    assert.equal(await evaluate('document.querySelectorAll(".product-section-tabs [data-action=pack-select]").length'),4);
-    for(const pack of ['BK03','BK04']){
+    assert.equal(await evaluate('document.querySelectorAll(".product-section-tabs [data-action=pack-select]").length'),5);
+    for(const pack of ['BK03','BK04','BK05']){
      const packSelector='.product-section-tabs [data-action=pack-select][data-pack='+pack+']';
      await assertShopVisible(packSelector,1,pack+' selector');await click(packSelector);await delay(160);
      await selectShopPane('pack');
@@ -160,7 +190,7 @@ try{
      await selectShopPane('details');
      await assertShopVisible('.pack-offer>p:not([class]),.pack-assurance,.pack-collection,.pack-offer>[data-action=pack-odds]',4,pack+' complete pack description and collection details',true);
      const packContent=await evaluate(`(async()=>{
-      const {getPack}=await import('./shop.js?v=20261124-30'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
+      const {getPack}=await import('./shop.js?v=20261124-31'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
       return {description:document.querySelector('.pack-offer>p:not([class])').textContent===pack.description,purchase:buy.dataset.pack===pack.id&&buy.textContent.includes(pack.cost+'秘宝で'+pack.size+'枚'),guarantee:document.querySelector('.pack-assurance').textContent.includes('レア以上を1枚保証'),collection:document.querySelector('.pack-collection').textContent.includes(pack.cardCount.toLocaleString('ja-JP')+'種類')};
      })()`);
      assert.deepEqual(packContent,{description:true,purchase:true,guarantee:true,collection:true},pack+' complete supply information');
@@ -180,7 +210,7 @@ try{
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
   // Long scheduled operator content is rendered locally; never sent to live players.
-  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261124-30');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
+  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261124-31');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
   // Real native news dialog, not a synthetic layout. Every notice must
   // appear exactly once, fully within the viewport and outside the controls.
   await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);
@@ -232,7 +262,7 @@ try{
   const panes=await evaluate(`(()=>{const frame=layoutRect(document.querySelector('.bk-native-pane')),left=layoutRect(document.querySelector('.transfer-source')),right=layoutRect(document.querySelector('.deck-panel'));return {left:left.toJSON(),right:right.toJSON(),frame:frame.toJSON(),scrollHeight:document.querySelector('.bk-native-pane').scrollHeight,clientHeight:document.querySelector('.bk-native-pane').clientHeight,overflow:getComputedStyle(document.querySelector('.bk-native-pane')).overflowY}})()`);
   assert.ok(Math.abs(panes.left.width-panes.right.width)<=2&&panes.left.width>0&&panes.right.width>0&&panes.left.right<=panes.right.left+2,width+'x'+height+' separate left and right panes '+JSON.stringify(panes));
   assert.ok(panes.left.top>=panes.frame.top-2&&panes.right.top>=panes.frame.top-2&&panes.left.bottom<=panes.frame.bottom+3&&panes.right.bottom<=panes.frame.bottom+3&&['hidden','clip'].includes(panes.overflow),width+'x'+height+' both panes within the content frame '+JSON.stringify(panes));
-  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),4625);
+  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),4721);
   const cardGeometry=await evaluate(`(()=>{
    const failures=[];
    for(const [grid,selector] of [['.transfer-source .cards-grid','.transfer-card'],['.deck-image-grid','.deck-image-slot']]){
@@ -282,10 +312,10 @@ try{
   await click('[data-bk-screen-tab=filter]');await delay(120);await click('[data-action=deck-advanced-filters]');await delay(200);await check(width+'x'+height+' expanded deck filters',['.transfer-source>.transfer-heading,.transfer-source>.deck-source-tools,.transfer-source>.filter-bar,.transfer-source>#card-results','.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','.filters-secondary>select']);
   await click('[data-action=deck-advanced-filters]');await delay(120);await click('[data-bk-screen-tab=cards]');await delay(160);
   await click('[data-action=deck-filter-scope][data-scope=owned]');
-  const ownedTotal=await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)');assert.ok(ownedTotal>0&&ownedTotal<4625);
+  const ownedTotal=await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)');assert.ok(ownedTotal>0&&ownedTotal<4721);
   assert.equal(await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent'),'32/32');
   await click('[data-action=deck-filter-scope][data-scope=all]');
-  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),4625);
+  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),4721);
   assert.equal(await evaluate('document.querySelector("[data-action=deck-filter-scope][data-scope=all]").getAttribute("aria-pressed")'),'true');
   const transferId=await evaluate('document.querySelector(".deck-image-slot [data-action=deck-return-slot]").dataset.id');
   const before=await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent');
@@ -326,6 +356,77 @@ try{
   assert.deepEqual(detailClose.overlaps,[],width+'x'+height+' close control leaves card artwork, text and actions unobstructed');
   await click('.modal-close');assert.equal(await evaluate('Boolean(document.querySelector("#modal-root .modal"))'),false,'Close control dismisses the detail');
  }
+ // Account layout uses the real controller and view with in-memory server
+ // responses. No account choice, link claim or production mutation is made.
+ for(const {width,height,mobile} of [{width:1920,height:810,mobile:false},{width:1366,height:768,mobile:false},{width:390,height:844,mobile:true},{width:320,height:568,mobile:true}]){
+  await viewport(width,height,mobile);await click('.navigation-dock [data-nav=home]');
+  await evaluate(`(async()=>{
+   const {createAccountUi}=await import('./account-ui.js'),{BRAND_ICONS}=await import('./brand-icons.js');
+   const root=document.querySelector('#modal-root'),icon=name=>'<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">'+(BRAND_ICONS[name]||BRAND_ICONS.spark)+'</svg>';
+   const now=Date.now(),state={phase:'conflict',playerId:'layout-account-1234567890',lastSyncedAt:now,dirty:true,conflict:{reason:'revision',remoteRevision:7}};
+   let modal=null,expired=false,sessions=Array.from({length:2},(_,index)=>({id:'layout-device-'+index,label:index?'PCブラウザ':'このスマートフォン',isCurrent:index===0,createdAt:now,lastSeenAt:now}));
+   const calls={create:0,claim:0,remote:0,local:0,revoke:0};
+   const client={profile:{id:state.playerId,nickname:'画面表示テスト十二文字',origin:'river'},getSessions:async()=>({sessions}),revokeSession:async()=>{calls.revoke++;}};
+   const cloud={getState:()=>state,refresh:async()=>{state.lastSyncedAt+=1000;},createDeviceLink:async()=>{calls.create++;return {code:'LAYOUT-123456',expiresAt:expired?now-1000:Date.now()+600000};},claimDeviceLink:async()=>{calls.claim++;},reloadCloud:async()=>{calls.remote++;},keepLocal:async()=>{calls.local++;}};
+   const ui=createAccountUi({client,cloud,ensureReady:async()=>{},isBattleActive:()=>false,getModal:()=>modal,setModal:value=>modal=value,showModal:(html,wide)=>{root.innerHTML='<div class="modal-backdrop"><section class="modal '+(wide?'wide':'')+'" role="dialog" aria-modal="true" tabindex="-1"><button class="icon-btn modal-close" data-action="close-modal" aria-label="閉じる">'+icon('close')+'</button>'+html+'</section></div>';setTimeout(()=>{if(!root.contains(document.activeElement))root.querySelector('.modal')?.focus({preventScroll:true});},0);},closeModal:()=>{root.innerHTML='';modal=null;},render(){},toast(){},icon});
+   const listener=event=>{const button=event.target.closest('[data-action]');if(!button)return;if(button.dataset.action==='close-modal'){event.preventDefault();event.stopImmediatePropagation();ui.onModalClosed();root.innerHTML='';modal=null;return;}if(button.dataset.action.startsWith('cloud-')){event.preventDefault();event.stopImmediatePropagation();ui.handleAction(button.dataset.action,button);}};
+   root.addEventListener('click',listener,true);
+   window.__accountLayoutFixture={ui,state,calls,expire:()=>expired=true,manyDevices:()=>{sessions=Array.from({length:9},(_,index)=>({id:'layout-device-'+index,label:'表示検証の端末 '+(index+1),isCurrent:index===0,revokedAt:index===1?now:null,createdAt:now,lastSeenAt:now}));},close:()=>{ui.onModalClosed();root.removeEventListener('click',listener,true);root.innerHTML='';modal=null;}};
+   await ui.openAccount();return true;
+  })()`);
+  await waitElement('.account-fullscreen .account-workspace');await delay(300);
+  const label=width+'x'+height+' account';
+  const readAccount=async(name,controls=[],body=[])=>assertReadableModal(label+' '+name,{fullViewport:true,controls:['.modal-close','.account-task-tabs [data-action=cloud-account-tab]',...controls],body,labels:['.account-task-tabs [data-action=cloud-account-tab]','.account-button','.account-label','.account-small-label','.account-status','.account-sync-meta','.account-link-result>p','.account-device-copy small','.account-device-copy strong']});
+  const accountTab=async(name)=>{await click('[data-action=cloud-account-tab][data-tab='+name+']');await until(()=>evaluate('document.querySelector(".account-workspace").dataset.accountTab==='+JSON.stringify(name)),label+' '+name+' tab');await delay(160);};
+  assert.equal(await evaluate('document.querySelector(".account-workspace").dataset.accountTab'),'sync');
+  await readAccount('conflict',['[data-action=cloud-conflict-remote]','[data-action=cloud-conflict-local]','[data-action=cloud-refresh]'],['#cloud-sync-status>p','.account-conflict>p','.account-conflict-options small']);
+  await accountTab('devices');
+  await readAccount('two linked devices',height===568?[]:['[data-action=cloud-revoke-session]']);
+  assert.equal(await evaluate('document.querySelectorAll(".account-device-list>li").length'),height===568?1:2,label+' device page adapts to available height');
+  await accountTab('receive');
+  await readAccount('receive',['#device-link-code','[data-action=cloud-link-claim]'],['.account-replace-note']);
+  const draftCode='入力途中-TEST-99';
+  await evaluate('(()=>{const input=document.querySelector("#device-link-code");input.value='+JSON.stringify(draftCode)+';input.dispatchEvent(new Event("input",{bubbles:true}));return true})()');
+  await accountTab('send');
+  await readAccount('send before code',['[data-action=cloud-link-create]']);
+  await click('[data-action=cloud-link-create]');await waitElement('.account-link-code');await until(()=>evaluate('!document.querySelector("[data-action=cloud-link-create]").disabled'),label+' code creation complete');await delay(160);
+  assert.equal(await evaluate('document.querySelector(".account-link-code").textContent'),'LAYOUT-123456');
+  assert.ok(await evaluate('document.querySelector(".account-link-result").textContent.includes("有効期限")'),label+' generated code retains its expiry');
+  assert.equal(await evaluate('document.querySelector("[data-action=cloud-link-copy]").disabled'),false);
+  await readAccount('generated code',['[data-action=cloud-link-create]','[data-action=cloud-link-copy]','.account-link-code']);
+  await accountTab('receive');
+  assert.equal(await evaluate('document.querySelector("#device-link-code").value'),draftCode,label+' unsent code survives tab changes and link creation');
+  await evaluate('(()=>{const input=document.querySelector("#device-link-code");input.focus({preventScroll:true});input.setSelectionRange(3,3);window.__accountLayoutFixture.state.lastSyncedAt+=1000;window.__accountLayoutFixture.ui.onCloudState();return true})()');await delay(160);
+  assert.deepEqual(await evaluate('(()=>{const input=document.querySelector("#device-link-code");return {tab:document.querySelector(".account-workspace").dataset.accountTab,value:input.value,focused:document.activeElement===input,selection:input.selectionStart}})()'),{tab:'receive',value:draftCode,focused:true,selection:3},label+' background redraw preserves code, selected tab, focus and cursor');
+  await accountTab('send');await evaluate('window.__accountLayoutFixture.expire();true');await click('[data-action=cloud-link-create]');await waitElement('.account-link-result.is-expired');await delay(160);
+  assert.equal(await evaluate('document.querySelector("[data-action=cloud-link-copy]").disabled'),true,label+' expired code cannot be copied');
+  await readAccount('expired code',['[data-action=cloud-link-create]','.account-link-code']);
+  await evaluate('window.__accountLayoutFixture.manyDevices();true');await accountTab('sync');await click('[data-action=cloud-refresh]');await until(()=>evaluate('!document.querySelector("[data-action=cloud-refresh]").disabled'),label+' device refresh complete');await accountTab('devices');
+  const deviceIds=[];let devicePages=0;
+  while(true){
+   await readAccount('device page '+(devicePages+1),['[data-action=cloud-device-prev]','[data-action=cloud-device-next]']);
+   const page=await evaluate('(()=>{const rows=[...document.querySelectorAll(".account-device-list>li")];return {ids:rows.map(row=>row.dataset.deviceId),nextDisabled:document.querySelector("[data-action=cloud-device-next]").disabled,prevDisabled:document.querySelector("[data-action=cloud-device-prev]").disabled}})()');
+   assert.ok(page.ids.length>0&&page.ids.every(Boolean),label+' device rows expose stable identities');
+   assert.equal(page.prevDisabled,devicePages===0,label+' previous device page availability');
+   deviceIds.push(...page.ids);devicePages++;
+   if(page.nextDisabled)break;
+   assert.ok(devicePages<9,label+' device pagination terminates');await click('[data-action=cloud-device-next]');await delay(160);
+  }
+  assert.deepEqual(deviceIds,Array.from({length:9},(_,index)=>'layout-device-'+index),label+' every linked device appears once, including current and revoked devices');
+  assert.deepEqual(await evaluate('window.__accountLayoutFixture.calls'),{create:2,claim:0,remote:0,local:0,revoke:0},label+' layout navigation never applies an account mutation or conflict choice');
+  await evaluate('window.__accountLayoutFixture.close();delete window.__accountLayoutFixture;true');
+  if(width===1366||width===320){
+   await click('[data-action=settings]');await click('[data-action=settings-tab][data-tab=account]');await waitElement('#settings-account:not([hidden])');await delay(300);
+   await assertReadableModal(width+'x'+height+' data settings',{controls:['.modal-close','[data-action=settings-tab]','#settings-account [data-action=online-name]','[data-action=cloud-open]','[data-action=inbox-open]','[data-action=export]','[data-action=import]','#settings-account a'],body:['#settings-account .modal-intro'],labels:['#settings-account .setting-row','#settings-account small','#settings-account button','#settings-account a','.settings-tabs button']});
+   await click('#settings-account [data-action=online-name]');await waitElement('#online-nickname');await delay(300);
+   assert.equal(await evaluate('document.querySelectorAll(".profile-options .profile-option").length'),7);
+   await assertReadableModal(width+'x'+height+' profile',{controls:['.modal-close','#online-nickname','.profile-options .profile-option','[data-action=online-name-save]'],body:['.modal-intro','#online-nickname'],labels:['.profile-name-label','.profile-choice-label','.profile-option','.modal-actions button']});
+   await click('.modal-close');await click('.navigation-dock [data-nav=home]');await click('[data-bk-screen-tab=command]');await delay(160);await click('[data-action=deck-analysis]');await waitElement('.deck-check-summary');await delay(300);
+   await assertReadableModal(width+'x'+height+' deck analysis',{controls:['.modal-close','.modal-actions button'],body:['.modal-intro','.deck-check-note'],labels:['.deck-check-summary>div','.deck-curve>div>span','.modal-actions button']});
+   assert.equal(await evaluate('(()=>{const curve=document.querySelector(".deck-curve");return curve.scrollHeight<=curve.clientHeight+2})()'),true,'The chart includes all bar labels without overflowing into the advice row');
+   await click('.modal-close');
+  }
+ }
  await click('.navigation-dock [data-nav=home]');await click('[data-action=solo-mode]');await click('[data-action=solo-section][data-section=practice]');await click('[data-action=start-game]');await waitElement('.duel-shell');
  for(const {width,height,mobile} of viewports){
   await viewport(width,height,mobile);
@@ -354,7 +455,7 @@ try{
   }
  }
  assert.deepEqual(exceptions,[],'No uncaught browser errors');
- console.log('Layout smoke passed: entry, home, deck, collection, shop, rules, solo, practice, room, rank, details, battle and every chapter in both guides; eight desktop/mobile viewports including portrait touch landscape fallback');
+ console.log('Layout smoke passed: entry, home, deck, collection, shop, rules, solo, practice, room, rank, details, battle and every chapter in both guides; eight desktop/mobile viewports including portrait touch landscape fallback; readable account workspaces, conflict/code/device pages and profile/settings/analysis dialogs');
 }finally{
  for(const p of pending.values())clearTimeout(p.timer);
  server.close();server.closeAllConnections();

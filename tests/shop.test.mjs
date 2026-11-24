@@ -16,6 +16,7 @@ const expectedTypes={
  BK02:{beast:513,fusion:130,miracle:257,gimmick:256},
  BK03:{beast:513,fusion:128,miracle:258,gimmick:257},
  BK04:{beast:513,fusion:128,miracle:258,gimmick:257},
+ BK05:{beast:48,fusion:8,miracle:24,gimmick:16},
 };
 
 function seededRandom(seed) {
@@ -42,23 +43,24 @@ test('pack prices, guarantees, and advertised percentages are consistent', () =>
   assert.ok(Math.abs(GUARANTEED_RARITY_ODDS.R - 25 / 42 * 100) < 1e-10);
 });
 
-test('all four products and odds views show their real pools and additional GGR counts',()=>{
- assert.equal(PACKS.length,4);
+test('all five products and odds views show their real pools and additional GGR counts',()=>{
+ assert.equal(PACKS.length,5);
  for(const pack of PACKS){
   const cards=getCardsForSet(pack.id),types=expectedTypes[pack.id],expected=Object.values(types).reduce((sum,n)=>sum+n,0);
   assert.equal(pack.cardCount,expected);
   assert.equal(CARD_SETS.find(set=>set.id===pack.id).cardCount,expected);
   assert.deepEqual(pack.typeCounts,types);
   assert.equal(pack.cardIds.length,cards.length);
-  assert.equal(pack.premiumGgrCount,PREMIUM_SET_ADDITIONS[pack.id]);
+  assert.equal(pack.premiumGgrCount,PREMIUM_SET_ADDITIONS[pack.id]??0);
   assert.equal(pack.premiumGgrCount,cards.filter(card=>PREMIUM_CARD_IDS.includes(card.id)&&card.rarity==='GGR').length);
   assert.equal(pack.cost,100);assert.equal(pack.size,12);
   const view=packOddsView({packId:pack.id,RARITY_LABELS});
-  for(const text of [expected.toLocaleString('ja-JP'),`通常魔獣${types.beast}枚`,`合成魔獣${types.fusion}枚`,`ミラクル${types.miracle}枚`,`ギミック${types.gimmick}枚`,`レガリア専用GGR${pack.premiumGgrCount}種追加`]){
+  for(const text of [expected.toLocaleString('ja-JP'),`通常魔獣${types.beast}枚`,`合成魔獣${types.fusion}枚`,`ミラクル${types.miracle}枚`,`ギミック${types.gimmick}枚`,...(pack.premiumGgrCount?[`レガリア専用GGR${pack.premiumGgrCount}種追加`]:[])]){
    assert.ok(pack.description.includes(text),pack.id+' description '+text);
    assert.ok(view.includes(text),pack.id+' odds '+text);
   }
   assert.ok(!view.includes('1,152'));
+  if(pack.id==='BK05'){assert.ok(!view.includes('レガリア専用GGR'));assert.ok(!pack.description.includes('レガリア専用GGR'));}
  }
  assert.equal(PACKS.reduce((sum,pack)=>sum+pack.premiumGgrCount,0),PREMIUM_CARD_IDS.length);
 });
@@ -221,7 +223,7 @@ test('each advertised rarity range reaches that rarity in a regular slot', () =>
   }
 });
 
-for(const packId of ['BK01','BK02','BK03','BK04']) test(packId+' reaches its entire expanded pool including every new GGR support card', () => {
+for(const packId of ['BK01','BK02','BK03','BK04','BK05']) test(packId+' reaches every card in its complete published pool', () => {
   const mainCards = getCardsForSet(packId);
   const reached = new Set();
   const midpoints = {};
@@ -250,7 +252,7 @@ for(const packId of ['BK01','BK02','BK03','BK04']) test(packId+' reaches its ent
     return counts;
   }, {}), expectedTypes[packId]);
   const added=mainCards.filter(card=>PREMIUM_CARD_IDS.includes(card.id));
-  assert.equal(added.length,PREMIUM_SET_ADDITIONS[packId]);
+  assert.equal(added.length,PREMIUM_SET_ADDITIONS[packId]??0);
   assert.ok(added.every(card=>card.rarity==='GGR'&&reached.has(card.id)));
   const ggr=mainCards.filter(card=>card.rarity==='GGR');
   for(const card of added){

@@ -2,7 +2,7 @@
  * These lists grant no ownership, operator entitlement or special artwork.
  * "Environment" is the game's authored challenge roster, not a measured usage ranking.
  */
-import {CARDS,ORIGINS,EXPANSION_FAMILIES,getCard,validateDeck,validateSpecialDeck} from './catalog.js?v=20261124-30';
+import {CARDS,ORIGINS,EXPANSION_FAMILIES,getCard,validateDeck,validateSpecialDeck} from './catalog.js?v=20261124-31';
 
 const older=card=>card.setId==='BK01'||card.setId==='BK02';
 const pairs=cards=>cards.flatMap(card=>[card.id,card.id]);
@@ -72,7 +72,7 @@ for(const [index,[series,origin,name]] of legacyThemes.entries()){
  const used=new Set(),beasts=[...pick(oldPool.filter(c=>c.type==='beast'&&c.setId==='BK01'&&c.cost<=3),4,c=>bodyScore(c),used),...pick(oldPool.filter(c=>c.type==='beast'&&c.setId==='BK02'&&c.cost<=5),3,c=>bodyScore(c),used),...pick(newPool.filter(c=>c.type==='beast'&&['legacy_rally','legacy_bond','legacy_aegis'].includes(c.effect.kind)),3,c=>bodyScore(c),used)];
  add({id:'event-inheritance-'+series,name,group:'inheritance',origin,style:'tempo',subtitle:'第一弾・第二弾を第三弾で強化',description:'二つの時代の魔獣を揃え、継承の強化と直接ダメージを重ねる。'},beasts,support([...oldPool,...newPool,getCard('M0256')],{legacy:true}),[...oldPool,...newPool]);
 }
-for(const family of EXPANSION_FAMILIES)for(const style of ['tempo','control']){
+for(const family of EXPANSION_FAMILIES.filter(family=>family.setId==='BK04'))for(const style of ['tempo','control']){
  const pool=CARDS.filter(c=>c.family===family.id);
  add({id:'event-'+family.id+'-'+style,name:family.name+(style==='tempo'?'連環':'深奥'),group:'genesis',family:family.id,origin:pool.find(c=>c.type==='beast').origin,style,subtitle:style==='tempo'?'第四弾・展開と連携':'第四弾・防御と切り返し',description:family.description},creatureCurve(pool.filter(c=>c.type==='beast'),style),support(pool,{style,family:family.id}),pool);
 }

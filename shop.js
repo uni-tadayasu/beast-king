@@ -1,6 +1,6 @@
-import { CARD_SETS, CARD_MAP, STARTER_DECKS, getCardsForSet, getExpansionDeck } from './catalog.js?v=20261124-30';
-import { PREMIUM_CARD_IDS } from './premium-cards.js?v=20261124-30';
-import { PREMIUM_DECK, PREMIUM_DECK_ID } from './premium-deck.js?v=20261124-30';
+import { CARD_SETS, CARD_MAP, STARTER_DECKS, getCardsForSet, getExpansionDeck } from './catalog.js?v=20261124-31';
+import { PREMIUM_CARD_IDS } from './premium-cards.js?v=20261124-31';
+import { PREMIUM_DECK, PREMIUM_DECK_ID } from './premium-deck.js?v=20261124-31';
 
 // Pure economy rules shared by the browser and an authoritative server.
 // A server should inject its own secure random function into openPack.
@@ -21,7 +21,7 @@ export const PACKS = Object.freeze(CARD_SETS.map(set => {
   const premiumGgrCount = cards.filter(card => premiumCardIds.has(card.id) && card.rarity === 'GGR').length;
   return Object.freeze({
     ...set, cardCount: cards.length, typeCounts, typeSummary, premiumGgrCount,
-    description: `${set.theme?set.theme+' ':''}${typeSummary}、全${cards.length.toLocaleString('ja-JP')}枚。レガリア専用GGR${premiumGgrCount}種追加。12枚入り、1枚はレア以上確定。`,
+    description: `${set.theme?set.theme+' ':''}${typeSummary}、全${cards.length.toLocaleString('ja-JP')}枚。${premiumGgrCount?`レガリア専用GGR${premiumGgrCount}種追加。`:''}12枚入り、1枚はレア以上確定。`,
     cardIds: Object.freeze(cards.map(card => card.id)),
     cost: PACK_COST, size: PACK_SIZE,
   });

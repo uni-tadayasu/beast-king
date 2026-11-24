@@ -1,0 +1,14 @@
+{
+  "id": "bk05-cover",
+  "src": "assets/design-v3/packs/bk05-cover.webp",
+  "sha256": "856f9b9c2c734b52530c70aec4fabeb7284f81a49d2b0961a2539ffab5c92b05",
+  "sourceSha256": "c0bec0864ac56c92c9cf3671392a0a0a3cfe23731c2c740363aa79db40e0a2d3",
+  "nativeMaster": "exec-fa4915af-375b-4697-85c0-847516144ed2.png",
+  "promptSha256": "6f5553ca8ac8b467ea28108d83330e635cac1270246a20742b949219f0e10c1a",
+  "width": 1024,
+  "height": 1536,
+  "alpha": true,
+  "method": "built-in-imagegen",
+  "nativeDimensionsPreserved": true,
+  "visualReview": "reviewed"
+}

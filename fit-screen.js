@@ -150,8 +150,12 @@ function fit(node,width,height,{modal=false,logicalMin=0,center=false,fill=false
   }
   node.style.transform=scale>=.999?'none':'scale('+scale+')';
   node.dataset.fitScale=scale.toFixed(4);
-  node.dataset.fitWidth=String(Math.round(result.w*scale));
-  node.dataset.fitHeight=String(Math.round(result.h*scale));
+  node.dataset.fitWidth=String(Math.round(result.n.w*scale));
+  node.dataset.fitHeight=String(Math.round(result.n.h*scale));
+  if(modal&&center){
+   node.style.setProperty('left',Math.max(0,(width-result.n.w*scale)/2)+'px','important');
+   node.style.setProperty('top',Math.max(0,(height-result.n.h*scale)/2)+'px','important');
+  }
  }else{
   // Dialogs keep their own reading layout; a wide dialog may occupy the entire
   // available width without altering the native application frame behind it.
@@ -296,7 +300,7 @@ function paginateLongLists(){
   ['.campaign-chapters',phone||tight?1:short?2:4,'章'],
   ['.battle-log-panel .battle-log-entries',1,'対戦履歴'],
   ['.battle-log-drawer .battle-log-entries',short?2:4,'対戦履歴'],
-  ['.operator-player-list,.operator-audit,.account-device-list,.zone-card-list,.special-deck-list',general,'一覧'],
+  ['.operator-player-list,.operator-audit,.account-device-list:not([data-account-paged]),.zone-card-list,.special-deck-list',general,'一覧'],
   ['.operator-event-list,.operator-delivery-history',general,'履歴'],
   ['.shell .deck-rows',phone||short?3:6,'編成カード'],
   ['.shell .side .log',general,'対戦履歴'],
@@ -358,19 +362,35 @@ function fitPagedInbox(modal){
  modal.dataset.fitScale='1.0000';
  return true;
 }
+function fitAccountWorkspace(modal){
+ if(!modal.querySelector(':scope > .account-workspace'))return false;
+ modal.classList.add('account-fullscreen');
+ for(const key of ['width','height','min-height','max-width','max-height','left','top','right','bottom','transform'])modal.style.removeProperty(key);
+ modal.dataset.fitScale='1.0000';
+ modal.dataset.fitWidth=String(modal.offsetWidth);
+ modal.dataset.fitHeight=String(modal.offsetHeight);
+ return true;
+}
 function fitModal(){
  const modal=doc.querySelector('#modal-root .modal,dialog[open]:not(.news-dialog)');
  if(!modal)return;
  const w=Math.max(1,layoutWidth()-20),h=Math.max(1,layoutHeight()-20);
  if(modal!==lastModal){lastModal=modal;modal.classList.add('bk-fit-modal');}
- if(fitOperatorConsole(modal)||fitPagedInbox(modal))return;
+ if(fitAccountWorkspace(modal)||fitOperatorConsole(modal)||fitPagedInbox(modal))return;
  const wrap=modal.parentElement;
  const inBackdrop=wrap?.classList.contains('modal-backdrop');
+ // A logical fit canvas may be wider than its parent before scaling. A legacy
+ // max-width:100% cap otherwise shrinks the text while leaving half the screen
+ // blank. Remove both caps before measuring the real content box.
+ modal.style.setProperty('max-width','none','important');
+ modal.style.setProperty('max-height','none','important');
  // Native dialogs remain in the top layer and use its centered positioning.
  if(!inBackdrop){modal.style.setProperty('max-height','none','important');modal.style.setProperty('overflow','visible','important');modal.style.width=Math.min(w,960)+'px';modal.style.height='auto';modal.style.setProperty('--bk-dialog-scale','1');modal.style.transform='none';const n=naturalSize(modal);const factor=Math.min(1,w/n.w,h/n.h);modal.style.setProperty('--bk-dialog-scale',String(factor));modal.style.transform='scale('+factor+')';modal.style.transformOrigin='center center';return;}
  const wide=modal.classList.contains('wide');
- fit(modal,wide?w:Math.min(w,960),h,{modal:true,logicalMin:0,center:true,fill:wide});
- if(!wide)modal.style.setProperty('left',(Number.parseFloat(modal.style.left||'0')+(w-Math.min(w,960))/2)+'px','important');
+ const readingWidth=modal.querySelector('.cyber-card-detail')?1400:modal.querySelector('.settings-tabs,.deck-insight-layout')?1280:modal.querySelector('#online-nickname')?1120:960;
+ const targetWidth=wide?w:Math.min(w,readingWidth);
+ fit(modal,targetWidth,h,{modal:true,logicalMin:0,center:true,fill:wide});
+ if(!wide)modal.style.setProperty('left',(Number.parseFloat(modal.style.left||'0')+(w-targetWidth)/2)+'px','important');
  modal.style.setProperty('left',(Number.parseFloat(modal.style.left||'0')+10)+'px','important');modal.style.setProperty('top',(Number.parseFloat(modal.style.top||'0')+10)+'px','important');
 }
 // Block native scroll containers left by older component styles. Clip only

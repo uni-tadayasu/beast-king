@@ -40,12 +40,12 @@ test('one fixed shuffle distributes all new cards into the ordinary four public 
   M1027:'BK01',M1029:'BK02',M1028:'BK03',G1025:'BK04',B2054:'BK01',B2049:'BK02',B2051:'BK03',M1030:'BK04',B2050:'BK01',
  });
  assert.deepEqual(PREMIUM_SET_ADDITIONS,{BK01:5,BK02:4,BK03:4,BK04:4});
- for(const set of CARD_SETS){
+ for(const set of CARD_SETS.filter(set=>set.id!=='BK05')){
   const cards=getCardsForSet(set.id);assert.equal(cards.length,set.cardCount);assert.equal(cards.filter(c=>c.regaliaSupport).length,PREMIUM_SET_ADDITIONS[set.id]);
   assert.equal(cards.filter(c=>!c.regaliaSupport).length,1152);
  }
  for(const id of PREMIUM_CARD_IDS){const card=getCard(id);assert.equal(card.setId,PREMIUM_CARD_SET_ASSIGNMENTS[id]);assert.ok(getCardsForSet(card.setId).includes(card));}
- assert.equal(CARDS.length,4625);assert.equal(getCard('B0512').setId,'BK02');
+ assert.equal(CARDS.length,4721);assert.equal(getCard('B0512').setId,'BK02');
 });
 
 test('the canonical Regalia has the same public strength and summon effect for both seats',()=>{

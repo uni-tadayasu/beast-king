@@ -1,0 +1,755 @@
+{
+  "id": "bk05-origami",
+  "family": "origami",
+  "src": "assets/design-v5/cards/bk05-origami.webp",
+  "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+  "sourceSha256": "138184dfcc425d070084191b7defa48eec23580362c868622b203833d17f771c",
+  "nativeMaster": "exec-b53a0cab-78ba-486e-81ac-8c1cf0e2cf17.png",
+  "promptSha256": "7634ef0a8cea8e003556112f4c301a970ea6c2a8d6155d58dc61d63dc7d8e19b",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "cardIds": [
+    "B2056",
+    "B2057",
+    "B2058",
+    "B2059",
+    "B2060",
+    "B2061",
+    "B2062",
+    "B2063",
+    "B2064",
+    "B2065",
+    "B2066",
+    "B2067",
+    "M1031",
+    "M1032",
+    "M1033",
+    "M1034",
+    "M1035",
+    "M1036",
+    "G1027",
+    "G1028",
+    "G1029",
+    "G1030",
+    "F0515",
+    "F0516"
+  ],
+  "nativeDimensionsPreserved": true,
+  "visualReview": "reviewed",
+  "cards": [
+    {
+      "id": "B2056",
+      "name": "折紙の灯兎 トモリ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "origami",
+      "origin": "mountain",
+      "subject": "a tiny amber paper rabbit carrying a glowing folded lantern across a moonlit desk. low three-quarter view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "73d66395a64b650b1a21a85e9f7cbe5feabbf2f1ef602307d6a89722e5a6fd4b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2057",
+      "name": "折紙の風燕 ハヤテ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "origami",
+      "origin": "river",
+      "subject": "an ivory origami swallow slicing through blue wind ribbons above a paper canyon. graceful diagonal side view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "5e8b239b80c19a228974c8988ed5d245ed92b2c3b238be0eacff5af7fd9529a7",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2058",
+      "name": "折紙の結び亀 ムスビ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "origami",
+      "origin": "seed",
+      "subject": "a jade folded-paper tortoise with a knotted ceremonial cord shell beside a quiet pond. front three-quarter view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "cd675d9e1ee99cd07a336cf387cdd6e53f923fb05d3685108bc8d2d3c92c966b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2059",
+      "name": "折紙の刃狐 キリカ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "origami",
+      "origin": "grass",
+      "subject": "a vermilion origami fox with razor-sharp pleated tails leaping between hanging paper screens. slightly elevated cinematic view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "559c99a25aefb9b295434cd6df69e69364288abedb0faec145f6038749ed374f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2060",
+      "name": "折紙の綴じ狼 ツヅリ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "origami",
+      "origin": "flower",
+      "subject": "a cobalt paper wolf with stitched book-spine armor guarding a bridge of floating pages. dynamic upward-curving composition. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "3e642c22a972e9e90697f2852fe0d00bba582eb6518826fa2f66c274dc1d9638",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2061",
+      "name": "折紙の舞鶴 オリハ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "origami",
+      "origin": "tree",
+      "subject": "a long-necked white and coral origami crane dancing over a golden fan-shaped stage. broad foreground silhouette with deep scenic perspective. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "cellSha256": "d1cb13b0e44e30c3c89f91f89ce26063c102817ec8c34980fec6d677b7c52df3",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2062",
+      "name": "折紙の鎧犀 カサネ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "origami",
+      "origin": "mountain",
+      "subject": "a broad indigo paper rhinoceros plated in layered folded armor pushing through confetti mist. low three-quarter view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "9b5beb60409fa8bdb5cee9d7c3a8a8d7054e94b23cd946a6215db15efb8597b6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2063",
+      "name": "折紙の回し鹿 マワリ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "origami",
+      "origin": "river",
+      "subject": "a mint paper stag with rotating pinwheel antlers standing among spiral paper trees. graceful diagonal side view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "220599386e0e9cfc12f0d8715d94473f1a696933a9f394d96ed7316b6a8591a2",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2064",
+      "name": "折紙の便箋梟 フミノ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "origami",
+      "origin": "seed",
+      "subject": "a parchment origami owl with sealed-envelope wings perched on an inkless fountain pen. front three-quarter view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "3c6d4cd9fec3174c30e5f48b57816d4096bc98ce07314641510360fbfa65c442",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2065",
+      "name": "折紙の夜行虎 ヨイリ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "origami",
+      "origin": "grass",
+      "subject": "a black and saffron folded-paper tiger stalking through a red lantern alley. slightly elevated cinematic view. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "18ef55ef28873a46a57230ef857b0d5483995881b245fd68e3b600b36f50bd3f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2066",
+      "name": "折紙の扇尾鳳 センカ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "origami",
+      "origin": "flower",
+      "subject": "a magnificent origami phoenix with a wide rainbow folding-fan tail emerging from paper flames. dynamic upward-curving composition. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "222fcd8ab75348649a3a0c98fd605fb9c39b2efa055990261390c35937f6c836",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B2067",
+      "name": "折紙の白頁麒麟 ハクヨウ",
+      "setId": "BK05",
+      "type": "beast",
+      "family": "origami",
+      "origin": "tree",
+      "subject": "a luminous white-paper qilin with elegant folded horns and gold-edged mane in a vast blank-paper palace. broad foreground silhouette with deep scenic perspective. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "cellSha256": "d648b9b3b9c391a0c76e93a0bc8dda256f2b02984f5827663bbbe4968bac4274",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1031",
+      "name": "折紙・一閃の折り目",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "origami",
+      "origin": "mountain",
+      "subject": "a single blazing diagonal crease splitting a dark sheet of paper into luminous wings. low three-quarter view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "65223cdfea568b55e95c14470b0d15e265af28a8870d40bf12286cf6a19eddc1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1032",
+      "name": "折紙・千羽の帳",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "origami",
+      "origin": "river",
+      "subject": "a protective dome made of hundreds of tiny white folded cranes above a sleeping village. graceful diagonal side view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "c82bbe77f295bfa17a6f538033b0531ae2b74184cbc1166cd4415714f9ada130",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1033",
+      "name": "折紙・連ねる翼",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "origami",
+      "origin": "seed",
+      "subject": "a flock of connected red and gold folded wings spiraling into a rising helix. front three-quarter view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "ac4d6c17bfe43deffa485c18290a23c5fe4621da67516d1762de264da1732b49",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1034",
+      "name": "折紙・一葉の誓い",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "origami",
+      "origin": "grass",
+      "subject": "one ivory folded leaf unfolding into a radiant crest over a fox silhouette. slightly elevated cinematic view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "badfd4ea3b80f6bd8ffd238b35604d5bfc65c613a0372cbabe6e59d0f8f0b276",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1035",
+      "name": "折紙・白紙の朝",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "origami",
+      "origin": "flower",
+      "subject": "soft dawn light washing ink wounds from a folded paper heart beside a clear spring. dynamic upward-curving composition. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "b4fdf6b08c6593027bd925249989a55d89221e814409cb07ab412fa79e7286ca",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M1036",
+      "name": "折紙・夢綴じの合成",
+      "setId": "BK05",
+      "type": "miracle",
+      "family": "origami",
+      "origin": "tree",
+      "subject": "two intricate origami animal silhouettes joining inside a luminous bookbinding circle. broad foreground silhouette with deep scenic perspective. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "cellSha256": "df82c8445dd2e08dd8aae6921a2b4c571dd5b08029e032bff0131b2a5a288cc6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1027",
+      "name": "折紙・切返しの屏風",
+      "setId": "BK05",
+      "type": "gimmick",
+      "family": "origami",
+      "origin": "mountain",
+      "subject": "a crimson folding screen snapping shut with a concealed paper-blade animal shadow. low three-quarter view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "46c2534489a9fd6b9173ee6b5a8885be1e3abe6ec6a344d2b1117d6c3b2ed8a4",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1028",
+      "name": "折紙・折返しの鏡庭",
+      "setId": "BK05",
+      "type": "gimmick",
+      "family": "origami",
+      "origin": "river",
+      "subject": "an angular mirrored paper garden bending an incoming beam back through nested folds. graceful diagonal side view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "6ec17a87fa86e0cbfb21678ad00c6664720b6563b19c0f209fcfad5b88b9fa7e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1029",
+      "name": "折紙・眠れる白城",
+      "setId": "BK05",
+      "type": "gimmick",
+      "family": "origami",
+      "origin": "seed",
+      "subject": "a sleeping miniature white origami castle surrounded by nested translucent paper shields. front three-quarter view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "57eb6247e4ea67dc93085b99850f617107017b555f5c516a857185b49867a560",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1030",
+      "name": "折紙・旅立ちの工房",
+      "setId": "BK05",
+      "type": "gimmick",
+      "family": "origami",
+      "origin": "grass",
+      "subject": "a warm lantern-lit workshop where unfinished paper beasts grow wide new wings. slightly elevated cinematic view. A clearly identifiable detailed magical event or physical device dominates a richly illustrated environment; never an icon or diagram.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "bd8b1ecfa37dfad3be0cf8bb59b5483cbf41f3def3f2cb6044361c38d8eabc59",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0515",
+      "name": "夢綴獣 オリガミ・アーク",
+      "setId": "BK05",
+      "type": "fusion",
+      "family": "origami",
+      "origin": "flower",
+      "subject": "an enormous origami chimera with crane wings, fox tails and a lion body unfolding from an ancient ivory storybook. dynamic upward-curving composition. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "b12b9c9ae2d1a34f61ef7c201c3c74def065f7debc1a39707933e9f07724da7e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "F0516",
+      "name": "千折王 キリガミ・アマツ",
+      "setId": "BK05",
+      "type": "fusion",
+      "family": "origami",
+      "origin": "tree",
+      "subject": "a regal many-folded paper dragon-deer with a vast fan crown towering above a floating pagoda of pages. broad foreground silhouette with deep scenic perspective. The complete large creature silhouette, face, limbs, wings and tails are fully inside its own square; ornate individually painted surroundings establish scale.",
+      "palette": "warm ivory washi, coral-red folds, indigo ink details and turquoise light; paper-cut theatre and suspended folded landscapes",
+      "src": "assets/design-v5/cards/bk05-origami.webp",
+      "sha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "cellSha256": "3e2d47df543919e8085a4ed3bbea788ce5da4b289fd45e6e5d30c80279f2f8f2",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

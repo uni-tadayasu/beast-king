@@ -224,3 +224,139 @@ textarea.account-input { resize: vertical; min-height: 96px; white-space: pre-wr
   .operator-stats { margin-block: 18px; }
   .operator-section > summary { min-height: 48px; }
 }
+
+/* Device linking is a task workspace: keep native text size and page the
+   operations, rather than scaling every label to fit a long form. */
+html.bk-fit #modal-root .account-fullscreen .account-workspace{
+ --account-line:#456780;--account-soft:#b9cbdc;--account-accent:#84efff;
+ flex:1;min-height:0;min-width:0;width:100%;height:100%;display:flex;flex-direction:column;gap:18px;
+ container-type:size;container-name:account-workspace;color:#edf7ff;font-size:16px;line-height:1.5;
+}
+html.bk-fit #modal-root .account-fullscreen .account-workspace [hidden]{display:none!important}
+html.bk-fit #modal-root .account-fullscreen .account-workspace-header{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.8fr);gap:28px;align-items:center;padding-right:48px;flex:none;min-width:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace-heading{min-width:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace h2{font-size:clamp(24px,2.2vw,36px);line-height:1.25;margin:5px 0 8px;padding:0;letter-spacing:.03em}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .eyebrow{font-size:12px;line-height:1.3;margin:0;color:#77edff}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-intro{font-size:16px;line-height:1.5;margin:0;color:#b9cbdc}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-summary{margin:0;padding:14px 18px;gap:14px;border-radius:9px;border-color:#3e697e;background:linear-gradient(120deg,#15334b,#102236);min-width:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-summary-copy strong{font-size:22px;font-weight:750;line-height:1.3;margin:3px 0;color:#f0faff}
+html.bk-fit #modal-root .account-fullscreen .account-workspace :is(.account-small-label,.account-summary-copy code,.account-status,.account-inline-badge){font-size:14px;line-height:1.4;letter-spacing:0;color:#b9d4e7}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-status{white-space:normal;padding:5px 9px;color:#b0f2e5;border-color:#53899b;background:#102d3f}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-status.status-conflict{color:#ffe0aa;border-color:#bd965c;background:#473323}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;flex:none}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-tabs button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:8px 12px;font-size:16px;font-weight:750;line-height:1.35;white-space:normal;border:1px solid #456780;border-radius:7px;background:#11263b;color:#c5d9e9}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-tabs button[aria-selected=true]{color:#c5fbff;border-color:#76e5f8;background:#173e53;box-shadow:inset 0 -3px #79efff}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-tab-attention{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;flex:none;border:1px solid #f5c878;border-radius:50%;font-size:14px;color:#ffe0a5}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-workspace-feedback:empty{display:none}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-feedback{margin:0;padding:10px 14px;font-size:16px;line-height:1.4}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-stage{flex:1;min-height:0;min-width:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-panel{height:100%;min-width:0;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:24px}
+html.bk-fit #modal-root .account-fullscreen .account-workspace :is(h3,.account-link-step h3){font-size:clamp(18px,1.5vw,25px);font-weight:750;line-height:1.4;color:#effaff;margin:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace :is(p,.account-link-step>p,.account-conflict>p){font-size:16px;line-height:1.55;color:#c9dbe9;margin:0;overflow-wrap:anywhere}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-button{min-height:44px;padding:10px 16px;font-size:16px;font-weight:700;line-height:1.35;white-space:normal;border:1px solid #52798f;border-radius:7px;color:#e5faff;background:linear-gradient(145deg,#1a3d52,#12283e);box-shadow:inset 0 1px #b2f6ff10;min-width:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-button.primary{color:#04212a;border-color:#9ff7ff;background:linear-gradient(100deg,#85f4ff,#48cfe6)}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-button:hover:not(:disabled){border-color:#a6f7ff;box-shadow:0 0 16px #6ae7ff24}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-button.quiet{background:#0d2135;color:#ccebf6}
+html.bk-fit #modal-root .account-fullscreen .account-workspace :is(.account-label,.account-sync-meta,.account-device-copy small,.account-section-heading>span){font-size:14px;line-height:1.45;color:#b8cedf}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-label{margin:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-input{min-height:46px;padding:10px 12px;font-size:16px!important;line-height:1.4;background:#061523;color:#f0faff;border-color:#567b92}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-overview{display:flex;flex-direction:column;justify-content:center;gap:24px;min-width:0;min-height:0;padding:clamp(16px,2vw,32px);border:1px solid #3b5c73;border-radius:10px;background:#0b1d2f}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-sync-status{display:grid;gap:18px;padding:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace #cloud-sync-status{display:grid;gap:14px;min-width:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-sync-meta{display:flex;flex-wrap:wrap;gap:5px 18px;margin:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-sync-meta b{font-weight:600;color:#d1edf7}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-sync-meta .account-pending{color:#ffdc99}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-scope{margin:0;padding-top:18px;display:flex;align-items:start;gap:12px;border-top:1px solid #395a70}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-scope>.icon,html.bk-fit #modal-root .account-fullscreen .account-workspace .account-scope>span .icon{width:24px;height:24px}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-scope small{display:block;margin-top:10px;font-size:14px;line-height:1.45;color:#9db8cc}
+html.bk-fit #modal-root .account-fullscreen .account-workspace :is(.account-conflict,.account-next-step,.account-link-step,.account-code-card){display:flex;flex-direction:column;justify-content:center;gap:18px;min-width:0;min-height:0;margin:0;padding:clamp(16px,2vw,32px);border:1px solid #42637b;border-radius:10px;background:linear-gradient(140deg,#132a3f,#0d2031)}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-conflict{border-color:#967f52;background:linear-gradient(140deg,#332b27,#162436)}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-conflict h3{color:#ffe6b9}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-conflict-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-conflict-options>div{min-width:0;display:flex;flex-direction:column;gap:12px}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-conflict-options small{font-size:16px;line-height:1.5;color:#e2d5c9;margin:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-symbol .icon{width:48px;height:48px;color:#8ceffd}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-link-result{margin:0;padding:0;border:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-code-row{display:flex;align-items:center;gap:12px;margin:14px 0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-link-code{min-width:0;flex:1;font:700 clamp(20px,2.2vw,32px)/1.35 ui-monospace,monospace;letter-spacing:.04em;color:#9df4ff;overflow-wrap:anywhere;word-break:break-all;user-select:text}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-link-result>p{font-size:14px;line-height:1.5;color:#b8cddd}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-code-placeholder{display:flex;flex-direction:column;gap:16px}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-code-placeholder .icon{width:48px;height:48px;color:#80d8e8}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-replace-note{padding-left:12px;border-left:3px solid #dfa96d;margin:0;font-size:16px;line-height:1.55;color:#f4d7bd}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-receive-form{gap:18px}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-devices-panel{display:flex;flex-direction:column;gap:14px;border:1px solid #42637b;border-radius:10px;background:#0b1d2f;padding:20px 24px}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-section-heading{margin:0;display:flex;justify-content:space-between;align-items:center;gap:16px;flex:none}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-section-heading h3>span{display:inline-block;min-width:28px;padding:2px 8px;font-size:14px;line-height:1.4;color:#b8f7ff;background:#1b3c50;border:1px solid #5d9cae;border-radius:5px;vertical-align:middle}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-list{list-style:none;display:grid;grid-auto-rows:minmax(0,1fr);gap:10px;min-height:0;flex:1;margin:0;padding:0;max-height:none;overflow:visible}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-list>li{display:flex;align-items:center;gap:16px;padding:12px 18px;border:1px solid #304d64;border-radius:8px;background:#12283c;min-width:0;min-height:0}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;flex:none;color:#8eeaf7}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-mark .icon{width:26px;height:26px}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-copy{min-width:0;flex:1}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-copy strong{font-size:18px;line-height:1.35;font-weight:700;overflow-wrap:anywhere;color:#edf8ff}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-copy small{display:block;margin-top:5px}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-inline-badge{display:inline-block;margin-left:9px;padding:2px 6px;border:1px solid #548b97;border-radius:4px;color:#acefe1}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-pagination{flex:none;display:flex;align-items:center;justify-content:center;gap:18px;font-size:16px;line-height:1.4;color:#d2eaf6}
+html.bk-fit #modal-root .account-fullscreen .account-workspace .account-empty-inline{flex:1;display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1.5;margin:0}
+@container account-workspace (max-height: 540px){
+ html.bk-fit #modal-root .account-fullscreen .account-workspace-header{grid-template-columns:minmax(150px,.6fr) minmax(0,1fr);gap:14px;padding-right:42px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-intro{display:none}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace h2{font-size:24px;margin:0}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-summary{padding:8px 10px;gap:8px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-summary-copy strong{font-size:18px;margin:0}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-summary-copy>.account-small-label{display:none}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-tabs button{min-height:40px;padding:6px 8px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace :is(.account-overview,.account-conflict,.account-next-step,.account-link-step,.account-code-card){padding:14px;gap:12px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-panel{gap:14px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-scope{padding-top:12px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-code-placeholder .icon,html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-symbol .icon{width:28px;height:28px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-devices-panel{padding:12px 16px;gap:10px}
+}
+@container account-workspace (max-height: 370px){
+ html.bk-fit #modal-root .account-fullscreen .account-workspace-header{grid-template-columns:150px minmax(0,1fr);gap:8px;padding-right:38px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace h2{font-size:20px;line-height:1.2;margin:0}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .eyebrow{display:none}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-summary{padding:0;gap:7px;border:0;background:none;box-shadow:none}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-summary-copy strong{font-size:14px;line-height:1.3}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-summary-copy code{display:none}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-avatar,html.bk-fit #modal-root .account-fullscreen .account-workspace .account-avatar img{width:26px;height:26px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-status{font-size:14px;padding:3px 6px;line-height:1.2}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-tabs{gap:5px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-tabs button{font-size:14px;line-height:1.25;min-height:36px;padding:5px 4px;gap:4px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-stage{min-height:0}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-panel{gap:10px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace :is(.account-overview,.account-conflict,.account-next-step,.account-link-step,.account-code-card){padding:9px;gap:8px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace :is(h3,.account-link-step h3){font-size:18px;line-height:1.3}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace :is(p,.account-link-step>p,.account-conflict>p,.account-conflict-options small){font-size:16px;line-height:1.35}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-button{font-size:14px;line-height:1.3;min-height:36px;padding:6px 8px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-input{font-size:16px!important;line-height:1.3;min-height:38px;padding:7px 9px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-sync-panel{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:7px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-overview{padding:0;border:0;background:none}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-sync-status{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace #cloud-sync-status{gap:4px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace #cloud-sync-status>h3,html.bk-fit #modal-root .account-fullscreen .account-workspace .account-scope{display:none}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace[data-account-conflict=true] #cloud-sync-status>p{display:none}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-sync-meta{font-size:14px;line-height:1.3;gap:2px 14px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-conflict{padding:8px 10px;gap:5px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-conflict-options{gap:10px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-conflict-options>div{gap:5px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-next-step{display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,.6fr);gap:6px 12px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-task-symbol{display:none}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-next-step>button{grid-column:2;grid-row:1/3}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-receive-help{display:none}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-replace-note{font-size:16px;line-height:1.35;padding-left:8px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-receive-form{gap:10px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-code-row{display:grid;grid-template-columns:minmax(0,1fr) auto;margin:6px 0;gap:6px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-link-code{font-size:20px;line-height:1.2;flex-basis:100%;letter-spacing:0}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-link-result>p{font-size:14px;line-height:1.35}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-code-placeholder{gap:8px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-code-placeholder>span{display:none}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-devices-panel{padding:10px 12px;gap:8px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-list{gap:6px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-list>li{padding:7px 10px;gap:9px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-mark{width:26px;height:26px}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-copy strong{font-size:16px;line-height:1.3}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-copy small{margin-top:3px;font-size:14px;line-height:1.3}
+ html.bk-fit #modal-root .account-fullscreen .account-workspace .account-device-pagination{gap:12px;font-size:14px}
+}
+html.bk-fit #modal-root .account-fullscreen .account-workspace{box-sizing:border-box}
+html.bk-fit body[data-layout-short=true] #modal-root .account-fullscreen .account-workspace{gap:8px}
