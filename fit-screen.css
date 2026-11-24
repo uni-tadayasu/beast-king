@@ -1017,3 +1017,42 @@ html.bk-fit .bk-native-screen .dual-workshop .workshop-tools .operator-deck-pres
 html.bk-fit .bk-native-screen .dual-workshop .workshop-tools .deck-panel-foot{
  flex:none!important;min-height:0!important;height:auto!important;max-height:none!important
 }
+
+/* The measured tracks are definite lengths rather than independent content
+   sizes. This keeps the right pager at the bottom even with only one row
+   of cards, and makes the two image rectangles exactly congruent. */
+html.bk-fit .bk-native-screen .dual-workshop>.transfer-workspace{
+ height:var(--workshop-panel-height,100%)!important;
+ align-self:stretch!important;align-items:stretch!important;
+ grid-template-rows:var(--workshop-panel-height,minmax(0,1fr))!important;
+}
+html.bk-fit .bk-native-screen .dual-workshop .transfer-source,
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel{
+ height:var(--workshop-panel-height,100%)!important;
+ min-height:0!important;max-height:none!important;
+ grid-template-columns:minmax(0,1fr)!important;
+ grid-template-rows:var(--workshop-tools-height) var(--workshop-list-height,minmax(0,1fr))!important;
+ align-self:stretch!important;align-items:stretch!important;justify-self:stretch!important;
+}
+html.bk-fit .bk-native-screen .dual-workshop #card-results,
+html.bk-fit .bk-native-screen .dual-workshop .deck-list{
+ grid-column:1!important;grid-row:2!important;
+ grid-template-columns:minmax(0,1fr)!important;
+ grid-template-rows:var(--workshop-meta-height) var(--workshop-image-height,145px) var(--workshop-pager-height)!important;
+ height:var(--workshop-list-height,100%)!important;
+ align-self:stretch!important;justify-self:stretch!important;
+ min-height:0!important;max-height:none!important;border:0!important;padding:0!important
+}
+html.bk-fit .bk-native-screen .dual-workshop #card-results>.results-meta,
+html.bk-fit .bk-native-screen .dual-workshop .deck-list>.results-meta,
+html.bk-fit .bk-native-screen .dual-workshop #card-results>.cards-grid,
+html.bk-fit .bk-native-screen .dual-workshop .deck-list>.deck-image-grid,
+html.bk-fit .bk-native-screen .dual-workshop #card-results>.pagination,
+html.bk-fit .bk-native-screen .dual-workshop .deck-list>.deck-list-pagination{
+ grid-column:1!important;justify-self:stretch!important;min-width:0!important
+}
+html.bk-fit .bk-native-screen .dual-workshop #card-results>.cards-grid,
+html.bk-fit .bk-native-screen .dual-workshop .deck-list>.deck-image-grid{
+ height:var(--workshop-image-height,145px)!important;
+ min-height:0!important;max-height:none!important;align-self:stretch!important;
+}

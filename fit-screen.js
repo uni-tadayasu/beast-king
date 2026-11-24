@@ -43,7 +43,7 @@ function measureCardPane(node,height){
 // subgrid row can shrink below its intrinsic controls when the viewport is
 // short. Measure the controls themselves, reserve their full height, and only
 // then calculate the remaining identical image rectangles.
-function measureWorkshopTracks(node){
+function measureWorkshopTracks(node,logicalHeight){
  const workspace=node.querySelector('.dual-workshop>.transfer-workspace');
  if(!workspace)return null;
  const panels=[workspace.querySelector('.transfer-source'),workspace.querySelector('.deck-panel')];
@@ -64,7 +64,17 @@ function measureWorkshopTracks(node){
  const required=Math.ceil(tools+meta+pager+chrome+145+3);
  workspace.style.setProperty('min-height',required+'px','important');
  const bounds=node.getBoundingClientRect(),box=workspace.getBoundingClientRect(),style=getComputedStyle(node);
- return {workspace,requiredHeight:Math.ceil(box.top-bounds.top+required+num(style,'paddingBottom')+num(style,'borderBottomWidth'))};
+ const outside=Math.ceil(box.top-bounds.top+num(style,'paddingBottom')+num(style,'borderBottomWidth'));
+ // Reserve exactly the same full logical panel and image heights. A grid
+ // item's legacy intrinsic/percentage height must never shorten one side.
+ const panelHeight=Math.max(required,Math.floor(logicalHeight-outside));
+ const imageHeight=Math.max(145,Math.floor(panelHeight-tools-meta-pager-chrome));
+ const listHeight=Math.ceil(meta+imageHeight+pager+2*Math.max(...panels.map(panel=>num(getComputedStyle(panel.querySelector('#card-results,.deck-list')),'rowGap'))));
+ workspace.style.setProperty('height',panelHeight+'px','important');
+ workspace.style.setProperty('--workshop-panel-height',panelHeight+'px');
+ workspace.style.setProperty('--workshop-image-height',imageHeight+'px');
+ workspace.style.setProperty('--workshop-list-height',listHeight+'px');
+ return {workspace,requiredHeight:outside+required};
 }
 function fitDeckWorkshop(node,width,height){
  if(width<1||height<1)return;
@@ -72,7 +82,7 @@ function fitDeckWorkshop(node,width,height){
  function trial(scale){
   const w=width/scale,h=height/scale;
   setCanvas(node,w,h,true);
-  const tracks=measureWorkshopTracks(node);
+  const tracks=measureWorkshopTracks(node,h);
   return {w,h,needed:tracks?.requiredHeight||h,ok:(tracks?.requiredHeight||h)<=h+0.5};
  }
  let scale=1,result=trial(1);
