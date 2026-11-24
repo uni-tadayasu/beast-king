@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import { webcrypto } from 'node:crypto';
 import {BRAND_ICONS} from '../brand-icons.js';
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
+import {CARD_ART_OVERRIDES} from '../card-art-overrides.js';
 import * as catalog from '../catalog.js';
 import * as engine from '../engine.js';
 import * as shop from '../shop.js';
@@ -94,7 +95,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     sendAction: async () => ({ ok: true }),
   };
   const context = vm.createContext({
-    ...catalog, ...engine, ...shop, ...campaign, ...product, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS,
+    ...catalog, ...engine, ...shop, ...campaign, ...product, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS, CARD_ART_OVERRIDES,
     createOnlineClient: options => { callbacks = options; return client; },
     createCloudSync: () => ({ getState: () => ({phase:'synced',revision:1,dirty:false}), start: async () => ({phase:'synced',revision:1,dirty:false}), markDirty() {}, flush: async () => ({revision:1}), refresh: async () => ({revision:1}) }),
     createAccountUi: () => ({getOperatorDeck:()=>hooks.operatorDeck||null,onCloudState() {},handleAction:()=>false,touchBrand:()=>false,clearIdentity(){},onModalClosed(){}}),
@@ -438,4 +439,12 @@ test('50/50 editor card geometry includes the entire action footer',()=>{
   assert.ok(layout.columns*layout.cardWidth+(layout.columns-1)*6<=width-10);
   assert.ok(layout.rows*(layout.cardWidth*520/360+58)+(layout.rows-1)*6<=height-9);
  }
+});
+
+test('illustration replacements affect only the selected public card faces',()=>{
+ const {app}=boot();
+ assert.equal(Object.keys(CARD_ART_OVERRIDES).length,12);
+ for(const id of Object.keys(CARD_ART_OVERRIDES)){const c=catalog.getCard(id);assert.ok(c);const r=CARD_ART_OVERRIDES[id];assert.ok(app.artStyle(c).includes(r.src));assert.ok(app.cardMarkup(c).includes('rarity-'+c.rarity));}
+ assert.ok(app.artStyle(catalog.getCard('B0001')).includes('beast-01.webp'));
+ assert.ok(app.artStyle(catalog.getCard('B0512')).includes('king.webp'));
 });

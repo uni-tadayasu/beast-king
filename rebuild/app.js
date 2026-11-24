@@ -7,6 +7,7 @@ import {createRebuildCloudClient} from './cloud-client.js';
 import {validateRebuildBackup,ROLLBACK_KEY} from './backup.js';
 import {CARDS,ORIGINS,TYPE_LABELS,RARITY_LABELS,MODEL_LABELS,STARTER_DECKS,PACKS,SECOND_REGALIA_ID,getCard} from './catalog.js';
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
+import {CARD_ART_OVERRIDES} from '../card-art-overrides.js';
 import {newGame,playCard,attack,endTurn,runCpuTurn,getLegalTargets,getAttackTargets,getPlayableCards,getFusionMaterials,canAttack} from './engine.js';
 import {CAMPAIGN_BATTLES} from '../campaign.js';
 import {STARTERS,STORAGE_KEY,initialProfile,loadProfile,persistProfile,checkDeck,saveDeck,chooseStarter,counts,purchase,recordSolo,endSuspendedSolo} from './profile.js';
@@ -42,6 +43,7 @@ function art(c,operatorArt=false){
  const custom=artOverride(c);if(custom)return "background-image:url('../"+custom+"');background-position:center;background-size:cover";
  if(isPendingArt(c))return 'background:radial-gradient(ellipse at 50% 30%,'+(origin(c.origin)?.color||'#afc2b9')+'33,#0a201e 80%)';
  if(c.artAsset)return "background-image:url('../"+c.artAsset+"');background-position:center;background-size:cover";
+ const replacement=CARD_ART_OVERRIDES[c.artSourceId||c.id];if(replacement){const r=replacement;return "background-image:url('../"+r.src+"?v="+r.sha256.slice(0,12)+"');background-position:"+(r.x*100/(r.width-r.size))+"% "+(r.y*100/(r.height-r.size))+"%;background-size:"+(r.width*100/r.size)+"% "+(r.height*100/r.size)+"%";}
  const artId=c.artSourceId||c.id,n=Number(artId.slice(1))-1,b=String(Math.floor(n/16)+1).padStart(2,'0'),cell=n%16;
  const base="background-image:url('../assets/design-v2/cards/individual/"+c.type+"-"+b+".webp?art=20261124');",crop=CARD_ART_CROPS[artId];
  if(crop)return base+'background-position:'+crop.x*100/(crop.width-crop.size)+'% '+crop.y*100/(crop.height-crop.size)+'%;background-size:'+crop.width*100/crop.size+'% '+crop.height*100/crop.size+'%';

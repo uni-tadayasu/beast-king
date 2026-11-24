@@ -23,6 +23,14 @@ out = args.output.resolve()
 out.mkdir(parents=True, exist_ok=True)
 manifest = json.loads((root / "assets/design-v2/cards/individual/manifest.json").read_text(encoding="utf-8"))
 cards = manifest["cards"]
+# Match the actual browser override map, not just the original atlas manifest.
+source = (root / 'card-art-overrides.js').read_text(encoding='utf-8')
+overrides = json.loads(source.split('Object.freeze(',1)[1].rsplit(');',1)[0])
+for card in cards:
+    if card['id'] in overrides:
+        r = overrides[card['id']]
+        card['src'] = r['src']
+        card['pixelCrop'] = [r['x'],r['y'],r['size'],r['size']]
 assert len(cards) == 2304 and len({c["id"] for c in cards}) == 2304
 font = ImageFont.load_default()
 images = {}

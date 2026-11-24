@@ -6,6 +6,7 @@ import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {CARDS,STARTER_DECKS,getCardsForSet} from '../catalog.js';
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
+import {CARD_ART_OVERRIDES} from '../card-art-overrides.js';
 import {validateCardArtManifest} from './validate-card-art.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
@@ -41,6 +42,16 @@ for(const card of manifest.cards){
  assert(crop.x>=0&&crop.y>=0&&crop.size>0&&crop.x+crop.size<=crop.width&&crop.y+crop.size<=crop.height,'Invalid crop bounds: '+card.id);
 }
 assert.equal(cells.size,2304);
+const replacementFiles=new Map(),replacementCells=new Set();
+for(const [id,r] of Object.entries(CARD_ART_OVERRIDES)){
+ assert(id!=='B0512'&&CARDS.some(c=>c.id===id),'Invalid or protected override: '+id);
+ assert(/^assets\/design-v2\/cards\/individual\/illustration-update-\d+\.webp$/.test(r.src),'Invalid override path');
+ assert([r.x,r.y,r.size,r.width,r.height].every(Number.isInteger)&&r.x>=0&&r.y>=0&&r.size>0&&r.x+r.size<=r.width&&r.y+r.size<=r.height,'Invalid replacement crop: '+id);
+ if(!replacementFiles.has(r.src)){const bytes=await read(r.src);assert.equal(bytes.toString('ascii',0,4),'RIFF');assert.equal(bytes.toString('ascii',8,12),'WEBP');replacementFiles.set(r.src,hash(bytes));}
+ assert.equal(replacementFiles.get(r.src),r.sha256,'Replacement image hash mismatch');
+ const key=[r.src,r.x,r.y,r.size].join(':');assert(!replacementCells.has(key),'Duplicate replacement cell');replacementCells.add(key);
+}
+assert.equal(replacementCells.size,12);
 for(const setId of ['BK01','BK02'])assert.equal(getCardsForSet(setId).length,1152);
 assert.equal(STARTER_DECKS.length,4);
 for(const deck of STARTER_DECKS){
@@ -50,4 +61,4 @@ for(const deck of STARTER_DECKS){
 const fields=await Promise.all(['solo','multi','rank'].map(name=>read('assets/design-v2/backgrounds/'+name+'.webp')));
 assert.equal(new Set(fields.map(hash)).size,3,'Each game mode needs a different battlefield.');
 for(const path of ['assets/icon.svg','assets/favicon-32.png','assets/apple-touch-icon.png','assets/social-ogp.jpg','assets/audio/menu.mp3','assets/audio/battle.mp3','assets/audio/battle-danger.mp3'])assert((await stat(resolve(root,path))).size>0,'Missing shipped asset: '+path);
-console.log(JSON.stringify({cards:CARDS.length,uniqueIllustrations:cells.size,atlases:production.atlases.length,redrawn:manifest.cards.filter(c=>c.status==='redrawn').length,preserved:['B0512'],packs:[1152,1152],starters:4,battlefields:3,allFilesVerified:true}));
+console.log(JSON.stringify({cards:CARDS.length,uniqueIllustrations:cells.size,atlases:production.atlases.length,redrawn:manifest.cards.filter(c=>c.status==='redrawn').length,preserved:['B0512'],packs:[1152,1152],starters:4,battlefields:3,illustrationReplacements:replacementCells.size,allFilesVerified:true}));
