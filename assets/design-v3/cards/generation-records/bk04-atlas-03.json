@@ -1,0 +1,994 @@
+{
+  "id": "bk04-atlas-03",
+  "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+  "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+  "sourceSha256": "b273aceaa3074d8d3527dade163bdc2cd63ece11d9f9da677b1f9f65574134a0",
+  "nativeMaster": "exec-1b470111-a00c-4290-8a2a-9c89df3997de.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "17238b03dd5ea00fd9deba20bd44811feaa9ec80a6a8a9001415b4af366e8356",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "B1549",
+    "B1677",
+    "B1805",
+    "B1933",
+    "B1550",
+    "B1678",
+    "B1806",
+    "B1934",
+    "B1551",
+    "B1679",
+    "B1807",
+    "B1935",
+    "B1552",
+    "B1680",
+    "B1808",
+    "B1936",
+    "B1553",
+    "B1681",
+    "B1809",
+    "B1937",
+    "B1554",
+    "B1682",
+    "B1810",
+    "B1938"
+  ],
+  "cards": [
+    {
+      "id": "B1549",
+      "name": "星巡旅路守航交誓星狐 リスティ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "orbit",
+      "origin": "seed",
+      "subject": "star fox with three comet tails, rearing or stretching upward beside a giant crystal, wide cinematic view with the creature large in the foreground, wearing layered scale armor with small floating gemstones; a vast cloud citadel seen from a hanging bridge. Agile young creature with finely drawn anatomy",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "d6f56df62b241937bd4d1c6f93e48b42680f60c1c9e25791c90c65ae53a21286",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1677",
+      "name": "残響旅路守航交誓夢鯨 レミニア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "echo",
+      "origin": "flower",
+      "subject": "translucent dream whale, rearing or stretching upward beside a giant crystal, low three-quarter view, wearing a sweeping feather mantle and gilt anatomical markings; sunken library arches lit by luminous fish. Agile young creature with finely drawn anatomy",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "2d65f07378439d554a6bd448a5332009ebc0356b84aa1984990e244fcffda0b8",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1805",
+      "name": "命誓旅路守航交誓脈動犀 グランセ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "vow",
+      "origin": "mountain",
+      "subject": "crimson armored rhinoceros, rearing or stretching upward beside a giant crystal, side view with the face turned toward the viewer, wearing a luminous chest crystal with trailing ceremonial cords; a copper and jade forge carved into living stone. Agile young creature with finely drawn anatomy",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "fa6d518547b54782dda571067f3d4919b5cd80a0c96b5a789e05aa08256e79a1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1933",
+      "name": "封機旅路守航交誓機紋狼 ギルド",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "forge",
+      "origin": "seed",
+      "subject": "teal mechanical wolf with copper armor, rearing or stretching upward beside a giant crystal, dramatic elevated three-quarter view, wearing light crownlike antlers or decorative crest and orbiting fireflies; a ruined ivory observatory above an ocean of stars. Agile young creature with finely drawn anatomy",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "98d38346a8d8ba2513e263112e19624556c03b68cc41c0d835edc117e5e329e1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1550",
+      "name": "星巡旅路守航補修衛星亀 サテラ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "orbit",
+      "origin": "grass",
+      "subject": "satellite tortoise with a cratered moon-shell, leaping forward across a broken bridge, low three-quarter view, wearing a luminous chest crystal with trailing ceremonial cords; a ruined ivory observatory above an ocean of stars. Agile young creature with finely drawn anatomy",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "fafa2d193860d1bcf4f154d04308b29da11a6fabb8506dd991331646ba4afa38",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1678",
+      "name": "残響旅路守航補修音晶狐 ノイア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "echo",
+      "origin": "tree",
+      "subject": "amethyst crystal fox, leaping forward across a broken bridge, side view with the face turned toward the viewer, wearing light crownlike antlers or decorative crest and orbiting fireflies; turquoise cascades through an ancestral sanctuary. Agile young creature with finely drawn anatomy",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "003f549714472ece6cae396a73b2b7e8943b99cc70548c052e4a78ac3843696a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1806",
+      "name": "命誓旅路守航補修誓羽狐 フェディ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "vow",
+      "origin": "river",
+      "subject": "red fox with wing-shaped tails, leaping forward across a broken bridge, dramatic elevated three-quarter view, wearing antique shoulder plates and small ancestral bells; a coral garden of floating golden terraces. Agile young creature with finely drawn anatomy",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "065c9e5e2a0f2157fb6233de9ecdd820904fae515b22ec35b50a6a0ebcffa0bf",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1934",
+      "name": "封機旅路守航補修歯車亀 クロシェ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "forge",
+      "origin": "grass",
+      "subject": "bronze tortoise with interlocking gear shell, leaping forward across a broken bridge, front three-quarter view, wearing curling botanical engravings and crystal-tipped plumes; a violet moonlit grove with giant flowering roots. Agile young creature with finely drawn anatomy",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 13,
+        "role": 5,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "93c7a67226f97237245ff62fcec0459fa79e2b6d02e9ae349b79d6882dbeeef4",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1551",
+      "name": "星巡旅路守航伝令光翼獣 フィルナ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "orbit",
+      "origin": "flower",
+      "subject": "celestial eagle-lion griffin, standing alert on a high windblown ledge, side view with the face turned toward the viewer, wearing antique shoulder plates and small ancestral bells; a violet moonlit grove with giant flowering roots. Agile young creature with finely drawn anatomy",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "77211d3aa2d516163a3f29d8abedcbd8c9a26c2d124d8c5d160e24ebaa3d1655",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1679",
+      "name": "残響旅路守航伝令銀声獣 ヴェルソ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "echo",
+      "origin": "mountain",
+      "subject": "antlered leonine memory spirit, standing alert on a high windblown ledge, dramatic elevated three-quarter view, wearing curling botanical engravings and crystal-tipped plumes; a shattered crystal canyon crossed by a silver stream. Agile young creature with finely drawn anatomy",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "0ab78f32ca3a852b29f4f2836f4970106b685d69769af845b00e9a19a21a5154",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1807",
+      "name": "命誓旅路守航伝令命環獣 アニマ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "vow",
+      "origin": "seed",
+      "subject": "gold-maned lion spirit with crimson oath threads, standing alert on a high windblown ledge, front three-quarter view, wearing a flowing two-tone mantle and linked gold rings; a vast cloud citadel seen from a hanging bridge. Agile young creature with finely drawn anatomy",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "82a9462c391daf0e275145bdbf69d1113965d1c1e683366eb5bc2421dcce909d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1935",
+      "name": "封機旅路守航伝令封函獣 アルケ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "forge",
+      "origin": "flower",
+      "subject": "four-armed sealed reliquary titan, standing alert on a high windblown ledge, full-body diagonal action view, wearing a delicate engraved neck harness and long silk ribbons; sunken library arches lit by luminous fish. Agile young creature with finely drawn anatomy",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 14,
+        "role": 6,
+        "tier": 1,
+        "angle": "full-body diagonal action view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "1c998ccbab96e4046fc9aae541883272dffb88b83b1225f19ef0f1a148328a6f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1552",
+      "name": "星巡旅路守航終奏天球竜 ソラリス",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "orbit",
+      "origin": "tree",
+      "subject": "sky dragon with a long elegant sapphire body, descending toward a luminous pool, dramatic elevated three-quarter view, wearing a flowing two-tone mantle and linked gold rings; sunken library arches lit by luminous fish. Agile young creature with finely drawn anatomy",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "descending toward a luminous pool",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "2a33c833f633a6832183998adab3f02feed7c3af9d8e304de80da5135e1ea34b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1680",
+      "name": "残響旅路守航終奏残響竜 エコリス",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "echo",
+      "origin": "river",
+      "subject": "long-necked purple memory dragon, descending toward a luminous pool, front three-quarter view, wearing a delicate engraved neck harness and long silk ribbons; a copper and jade forge carved into living stone. Agile young creature with finely drawn anatomy",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "descending toward a luminous pool",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "d985670a062eda1cae088fd78717984b983474101dc85d9a1d1a1b40e3f293dc",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1808",
+      "name": "命誓旅路守航終奏盟誓竜 コルディア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "vow",
+      "origin": "grass",
+      "subject": "ivory-and-crimson oath dragon, descending toward a luminous pool, full-body diagonal action view, wearing layered scale armor with small floating gemstones; a ruined ivory observatory above an ocean of stars. Agile young creature with finely drawn anatomy",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "full-body diagonal action view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "descending toward a luminous pool",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "203130b39efd2ff348831f75ecf86b65ff6f7e2898bb2a672ff7a0c4c284da0e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1936",
+      "name": "封機旅路守航終奏創機竜 テクノア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "forge",
+      "origin": "tree",
+      "subject": "sinuous copper-and-ivory segmented dragon, descending toward a luminous pool, rear three-quarter view with visible expressive face, wearing a sweeping feather mantle and gilt anatomical markings; turquoise cascades through an ancestral sanctuary. Agile young creature with finely drawn anatomy",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 15,
+        "role": 7,
+        "tier": 1,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "descending toward a luminous pool",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "7ad060a18865d98959c137da1dbcff0f81761efc485255da3b8ac4ee4013c912",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1553",
+      "name": "星巡導標守航先導星鹿 アステル",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "orbit",
+      "origin": "mountain",
+      "subject": "cosmic stag with constellation antlers, sweeping diagonally across the frame, close dynamic view with the entire main silhouette inside the tile, wearing a sweeping feather mantle and gilt anatomical markings; a coral garden of floating golden terraces. Powerful mature creature, elaborate flowing silhouette",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 16,
+        "role": 0,
+        "tier": 2,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "1967506db14019e5ba2f5ed96d9f9ed35cbc4b2b6c322c6ca171c3bea87c030b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1681",
+      "name": "残響導標守航先導響狼 リフレン",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "echo",
+      "origin": "seed",
+      "subject": "violet ghost wolf, sweeping diagonally across the frame, wide cinematic view with the creature large in the foreground, wearing a luminous chest crystal with trailing ceremonial cords; a violet moonlit grove with giant flowering roots. Powerful mature creature, elaborate flowing silhouette",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 16,
+        "role": 0,
+        "tier": 2,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "164a9416d36bd37903e831764d90c9afa25c9b3b59d4f12ba43f8d567b797975",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1809",
+      "name": "命誓導標守航先導誓鹿 セリア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "vow",
+      "origin": "flower",
+      "subject": "rose-antlered crimson stag, sweeping diagonally across the frame, low three-quarter view, wearing light crownlike antlers or decorative crest and orbiting fireflies; a shattered crystal canyon crossed by a silver stream. Powerful mature creature, elaborate flowing silhouette",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 16,
+        "role": 0,
+        "tier": 2,
+        "angle": "low three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "55473e5ab65e30ca10039c0fe83a9defaa3903f6038790ed4c2c31798fbf64b1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1937",
+      "name": "封機導標守航先導封印蟹 クレヴィ",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "forge",
+      "origin": "mountain",
+      "subject": "copper plated crab with articulated jade claws, sweeping diagonally across the frame, side view with the face turned toward the viewer, wearing antique shoulder plates and small ancestral bells; a vast cloud citadel seen from a hanging bridge. Powerful mature creature, elaborate flowing silhouette",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 16,
+        "role": 0,
+        "tier": 2,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "0377ca7e479c4e286c83ca0e8952292bd0b1431f9da914aa2078b17fc5ff074b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1554",
+      "name": "星巡導標守航護衛軌道鯨 オルビア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "orbit",
+      "origin": "river",
+      "subject": "great astral whale with winglike fins, rearing or stretching upward beside a giant crystal, wide cinematic view with the creature large in the foreground, wearing light crownlike antlers or decorative crest and orbiting fireflies; a vast cloud citadel seen from a hanging bridge. Powerful mature creature, elaborate flowing silhouette",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "de3306ca3dbc74efd691619c65d003065dca1ca31b4526818c1b41284c6f4f50",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1682",
+      "name": "残響導標守航護衛記憶蛾 メモリア",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "echo",
+      "origin": "grass",
+      "subject": "silver patterned memory moth, rearing or stretching upward beside a giant crystal, low three-quarter view, wearing antique shoulder plates and small ancestral bells; sunken library arches lit by luminous fish. Powerful mature creature, elaborate flowing silhouette",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "low three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "f0630fa70f5776f284fa9e662e3cdf0e466b36dcecdf0e15935ae189b5396798",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1810",
+      "name": "命誓導標守航護衛血晶虎 ルベル",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "vow",
+      "origin": "tree",
+      "subject": "ivory tiger with crimson crystal stripes, rearing or stretching upward beside a giant crystal, side view with the face turned toward the viewer, wearing curling botanical engravings and crystal-tipped plumes; a copper and jade forge carved into living stone. Powerful mature creature, elaborate flowing silhouette",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "e2b95fa0f46e13436f3630f9fec7a8bb8fe82195c8785af91f6e06684257d02c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1938",
+      "name": "封機導標守航護衛銅環牛 ブロント",
+      "setId": "BK04",
+      "type": "beast",
+      "family": "forge",
+      "origin": "river",
+      "subject": "bronze ring-horned bull, rearing or stretching upward beside a giant crystal, dramatic elevated three-quarter view, wearing a flowing two-tone mantle and linked gold rings; a ruined ivory observatory above an ocean of stars. Powerful mature creature, elaborate flowing silhouette",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-03.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "b2ce2b8fd64af8a4962c759428a9a3824eb89d43c9e9df9b107c6ef8d17065fc",
+      "cellSha256": "dba164726d5dd06da94e68fb1862e0e29bb8a463f23136f2b61da5c6eca855fe",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

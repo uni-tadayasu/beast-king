@@ -1,5 +1,6 @@
 import {CARDS} from './catalog.js?v=20261124-26';
 import {accountSyncView,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js?v=20261124-26';
+import {operatorRewardPageSize} from './operator-paging.js?v=20261124-26';
 
 /** Account dialogs use the same server identity as online battles. No role or
  * activation credential is saved in the game data or inferred from the UI. */
@@ -22,7 +23,9 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       if(field.id&&field.type!=='password')values.push({id:field.id,value:field.value,checked:field.checked});
     }
     const active=documentImpl.activeElement;
-    return {values,openDetails:[...documentImpl.querySelectorAll('#modal-root details')].map((node,index)=>node.open?index:-1).filter(index=>index>=0),activeId:active?.id,selection:typeof active?.selectionStart==='number'?active.selectionStart:null,scroll:documentImpl.querySelector('#modal-root .modal')?.scrollTop||0};
+    const readers=[...documentImpl.querySelectorAll('#modal-root [data-op-reader-page]')].filter(node=>node.dataset?.opReaderPage!==undefined).map(node=>node.dataset.opReaderPage);
+    const panels=[...documentImpl.querySelectorAll('#modal-root [data-op-panel-active]')].filter(node=>node.dataset?.opPanelActive!==undefined).map(node=>node.dataset.opPanelActive);
+    return {values,readers,panels,openDetails:[...documentImpl.querySelectorAll('#modal-root details')].map((node,index)=>node.open?index:-1).filter(index=>index>=0),activeId:active?.id,selection:typeof active?.selectionStart==='number'?active.selectionStart:null,scroll:documentImpl.querySelector('#modal-root .modal')?.scrollTop||0};
   }
   function restoreFields(saved,clearPrefix=''){
     for(const [index,node] of [...documentImpl.querySelectorAll('#modal-root details')].entries())node.open=saved.openDetails.includes(index);
@@ -30,6 +33,9 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       const node=byId(field.id);if(node){node.value=field.value;if(typeof field.checked==='boolean')node.checked=field.checked;}
     }
     const modal=documentImpl.querySelector('#modal-root .modal');if(modal)modal.scrollTop=saved.scroll;
+    for(const [index,node] of [...documentImpl.querySelectorAll('#modal-root [data-op-reader-page]')].entries())if(node.dataset&&saved.readers?.[index]!==undefined)node.dataset.opReaderPage=saved.readers[index];
+    for(const [index,node] of [...documentImpl.querySelectorAll('#modal-root [data-op-panel-active]')].entries())if(node.dataset&&saved.panels?.[index]!==undefined)node.dataset.opPanelActive=saved.panels[index];
+    const win=documentImpl.defaultView;if(win)win.dispatchEvent(new win.Event('bk-operator-page-layout'));
     if(saved.activeId&&!saved.activeId.startsWith(clearPrefix||'\u0000'))setTimeout(()=>{
       const field=byId(saved.activeId);if(field){field.focus({preventScroll:true});if(saved.selection!==null&&typeof field.setSelectionRange==='function')try{field.setSelectionRange(saved.selection,saved.selection);}catch{}}
     },0);
@@ -260,7 +266,7 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   }
   async function selectOperatorTab(tab,page=0){
     if(operator.busy)return;
-    operator.tab=tab;operator.page=page;operator.draft=null;if(tab==='maintenance')operator.settingsDraft=structuredClone(operator.snapshot?.settings||{});operator.receiptItem=null;operator.receipts=null;operator.error='';operator.busy=true;operatorModal({preserve:false});
+    operator.tab=tab;operator.page=page;operator.draft=null;if(tab==='maintenance')operator.settingsDraft=structuredClone(operator.snapshot?.settings||{});operator.receiptItem=null;operator.receiptDetailId=null;operator.receipts=null;operator.error='';operator.busy=true;operatorModal({preserve:false});
     const owner=operator;
     try{await loadOperatorRecords();}catch(error){if(operator===owner)operator.error=safeError(error);}
     finally{if(operator===owner){operator.busy=false;if(kind()==='operator')operatorModal({preserve:false});}}
@@ -275,7 +281,7 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   function editContent(type,id){const row=findContent(type,id);if(!row)return;operator.tab=type;operator.draft={...structuredClone(row),kind:type};operator.step=0;operator.previewPage=0;operator.rewardPage=0;operator.rewardMatches=[];operator.error='';operatorModal({preserve:false});}
   async function loadReceipts(type,id,page=0){
     const item=findContent(type,id)||operator.receiptItem;if(!item||operator.busy)return;
-    const owner=operator;operator.busy=true;operator.receiptItem={...item,kind:type};operator.draft=null;operatorModal({preserve:false});
+    const owner=operator;operator.busy=true;operator.receiptItem={...item,kind:type};operator.receiptDetailId=null;operator.draft=null;operatorModal({preserve:false});
     try{const result=await client.getOperatorRecords({kind:type==='message'?'reads':'claims',itemId:id,itemType:type,page,pageSize:4});if(operator===owner)operator.receipts=result;}
     catch(error){if(operator===owner)operator.error=safeError(error);}
     finally{if(operator===owner){operator.busy=false;if(kind()==='operator')operatorModal({preserve:false});}}
@@ -363,6 +369,8 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       case'operator-content-receipts':void loadReceipts(element.dataset.kind,element.dataset.id);break;
       case'operator-receipts-prev':case'operator-receipts-next':void loadReceipts(operator.receiptItem.kind,operator.receiptItem.id,Math.max(0,(operator.receipts?.page||0)+(action.endsWith('next')?1:-1)));break;
       case'operator-receipts-back':operator.receiptItem=null;operator.receipts=null;operatorModal({preserve:false});break;
+      case'operator-receipt-open':operator.receiptDetailId=element.dataset.id;operatorModal({preserve:false});break;
+      case'operator-receipt-close':operator.receiptDetailId=null;operatorModal({preserve:false});break;
       case'operator-editor-cancel':void selectOperatorTab(operator.tab);break;
       case'operator-editor-step':changeEditor(()=>operator.step=Number(element.dataset.step));break;
       case'operator-editor-prev':case'operator-editor-next':changeEditor(()=>operator.step=Math.max(0,Math.min(3,operator.step+(action.endsWith('next')?1:-1))));break;
@@ -370,7 +378,7 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       case'operator-preview-prev':case'operator-preview-next':changeEditor(()=>operator.previewPage=Math.max(0,(operator.previewPage||0)+(action.endsWith('next')?1:-1)));break;
       case'operator-reward-search':changeEditor(()=>{operator.rewardQuery=value('operator-reward-query');const query=operator.rewardQuery.toLocaleLowerCase('ja');operator.rewardMatches=query?CARDS.filter(card=>card.id.toLowerCase().includes(query)||card.name.toLocaleLowerCase('ja').includes(query)).slice(0,3):[];});break;
       case'operator-reward-add':changeEditor(()=>{const id=element.dataset.id;if(!operator.draft.deliveryLocked&&getCard(id)&&operator.draft.cards.length<12&&!operator.draft.cards.some(c=>c.cardId===id))operator.draft.cards.push({cardId:id,count:1});});break;
-      case'operator-reward-remove':changeEditor(()=>{if(!operator.draft.deliveryLocked)operator.draft.cards=operator.draft.cards.filter(c=>c.cardId!==element.dataset.id);operator.rewardPage=Math.min(operator.rewardPage,Math.max(0,Math.ceil(operator.draft.cards.length/4)-1));});break;
+      case'operator-reward-remove':changeEditor(()=>{if(!operator.draft.deliveryLocked)operator.draft.cards=operator.draft.cards.filter(c=>c.cardId!==element.dataset.id);operator.rewardPage=Math.min(operator.rewardPage,Math.max(0,Math.ceil(operator.draft.cards.length/operatorRewardPageSize())-1));});break;
       case'operator-reward-prev':case'operator-reward-next':changeEditor(()=>operator.rewardPage=Math.max(0,operator.rewardPage+(action.endsWith('next')?1:-1)));break;
       case'operator-message-send':case'operator-gift-send':case'operator-event-save':void operate(operator.draft?.kind);break;
       case'operator-refresh':void openOperator();break;

@@ -1,5 +1,5 @@
 /** Prepare explicit, reproducible imagegen directions; this script makes no API calls. */
-import {mkdir,writeFile} from 'node:fs/promises';
+import {mkdir,writeFile,rename} from 'node:fs/promises';
 import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {CARDS} from '../catalog.js';
@@ -45,6 +45,7 @@ function direction(c){
  if(type==='beast'||type==='fusion')subject=`${species}, ${action}, ${angle}, wearing ${ornament}; ${environment}. ${tier<2?'Agile young creature with finely drawn anatomy':tier<6?'Powerful mature creature, elaborate flowing silhouette':'Ancient majestic creature, large expressive silhouette and complex flowing details'}`;
  else if(type==='miracle')subject=`${miracles[role]}, happening in ${environment}; ${angle}; ${['diagonal flow from upper left','an upward spiral','two intersecting arcs of light','a wide sweeping crescent','a branching central burst','a curtain of falling light','a layered wave across the foreground','a deep perspective through monumental arches'][tier%8]}. Tiny ${family?.species[(role+3)%8]??legacy[group][0]} figures establish scale and story`;
  else subject=`${devices[role]}, physically constructed in ${environment}; ${angle}; ${['open and charging','partially unfolded','projecting a diagonal beam','surrounded by floating broken stones','with luminous threads reaching into the ground','reflecting a spirit animal in its core','with ornamental outer rings in motion','releasing a curved wave of energy'][tier%8]}. Detailed perspective and grounded cast shadows`;
+ if(type==='beast'&&tier>=8)subject+=' Expedition form: an extended, winding body gesture, layered sail-like fins or feather plumes following its anatomy, a swept-back ornamental crest, and a small hovering companion behind it';
  return {id:c.id,name:c.name,setId:c.setId,type,family:c.family,origin:c.origin,subject,palette,composition:{group,local,role,tier,angle,environment,action,ornament}};
 }
 const jobs=[],cards=CARDS.filter(c=>['BK03','BK04'].includes(c.setId));
@@ -70,5 +71,6 @@ for(const setId of ['BK03','BK04']){
 }
 if(cards.length!==2304||new Set(jobs.flatMap(j=>j.cardIds)).size!==2304)throw new Error('Expansion art job coverage is incomplete.');
 await mkdir(dirname(output),{recursive:true});
-await writeFile(output,JSON.stringify({version:1,mode:'built-in-imagegen',grid,columns,rows:rowCount,cardCount:cards.length,atlasCount:jobs.length,jobs},null,2)+'\n');
+await writeFile(output+'.writing',JSON.stringify({version:1,mode:'built-in-imagegen',grid,columns,rows:rowCount,cardCount:cards.length,atlasCount:jobs.length,jobs},null,2)+'\n');
+await rename(output+'.writing',output);
 console.log(JSON.stringify({output,columns,rows:rowCount,cards:cards.length,atlases:jobs.length}));
