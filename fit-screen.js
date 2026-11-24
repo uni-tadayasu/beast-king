@@ -39,6 +39,66 @@ function measureCardPane(node,height){
  // A replaced app render needs the current calculation even if geometry is identical.
  if(key!==lastCardMetrics||!node.dataset.bkMetricsApplied){lastCardMetrics=key;node.dataset.bkMetricsApplied='true';window.dispatchEvent(new CustomEvent('bk-fit-card-metrics',{detail:metrics}));}
 }
+// The editor has two real grids, with measured shared tracks. An auto-sized
+// subgrid row can shrink below its intrinsic controls when the viewport is
+// short. Measure the controls themselves, reserve their full height, and only
+// then calculate the remaining identical image rectangles.
+function measureWorkshopTracks(node){
+ const workspace=node.querySelector('.dual-workshop>.transfer-workspace');
+ if(!workspace)return null;
+ const panels=[workspace.querySelector('.transfer-source'),workspace.querySelector('.deck-panel')];
+ if(panels.some(p=>!p))return null;
+ const maxHeight=selector=>Math.ceil(Math.max(0,...panels.map(panel=>{
+  const el=panel.querySelector(selector);return el?Math.max(el.offsetHeight,el.scrollHeight):0;
+ })));
+ const tools=maxHeight('.workshop-tools'),meta=maxHeight('.results-meta'),pager=Math.max(33,maxHeight('.pagination,.deck-list-pagination'));
+ workspace.style.setProperty('--workshop-tools-height',tools+'px');
+ workspace.style.setProperty('--workshop-meta-height',meta+'px');
+ workspace.style.setProperty('--workshop-pager-height',pager+'px');
+ const num=(style,key)=>Number.parseFloat(style[key])||0;
+ const chrome=Math.max(...panels.map(panel=>{
+  const s=getComputedStyle(panel),list=panel.querySelector('#card-results,.deck-list'),l=getComputedStyle(list);
+  return num(s,'paddingTop')+num(s,'paddingBottom')+num(s,'borderTopWidth')+num(s,'borderBottomWidth')+num(s,'rowGap')+2*num(l,'rowGap')+num(l,'paddingTop')+num(l,'paddingBottom')+num(l,'borderTopWidth')+num(l,'borderBottomWidth');
+ }));
+ // At least one complete illustrated card plus counts and actions.
+ const required=Math.ceil(tools+meta+pager+chrome+145+3);
+ workspace.style.setProperty('min-height',required+'px','important');
+ const bounds=node.getBoundingClientRect(),box=workspace.getBoundingClientRect(),style=getComputedStyle(node);
+ return {workspace,requiredHeight:Math.ceil(box.top-bounds.top+required+num(style,'paddingBottom')+num(style,'borderBottomWidth'))};
+}
+function fitDeckWorkshop(node,width,height){
+ if(width<1||height<1)return;
+ node.style.transform='none';node.style.setProperty('left','0px','important');node.style.setProperty('top','0px','important');
+ function trial(scale){
+  const w=width/scale,h=height/scale;
+  setCanvas(node,w,h,true);
+  const tracks=measureWorkshopTracks(node);
+  return {w,h,needed:tracks?.requiredHeight||h,ok:(tracks?.requiredHeight||h)<=h+0.5};
+ }
+ let scale=1,result=trial(1);
+ if(!result.ok){
+  let high=1,low=0;
+  // Only scale the central deck workspace when the full control area and
+  // minimum complete tile genuinely cannot fit. Header/navigation stay native.
+  for(let n=0;n<9;n++){
+   high=scale;scale=Math.max(.08,Math.min(scale-.005,scale*result.h/result.needed*.99));
+   result=trial(scale);if(result.ok){low=scale;break;}
+  }
+  if(low){
+   for(let n=0;n<6;n++){
+    const candidate=(low+high)/2,r=trial(candidate);
+    if(r.ok)low=candidate;else high=candidate;
+   }
+   scale=low;result=trial(scale);
+  }
+ }
+ // Recalculate the actual shared tile budget once, at the final scale.
+ // Never use an outdated card's overflow to determine the control height.
+ measureCardPane(node,result.h);
+ node.style.transform=scale>=.999?'none':'scale('+scale+')';
+ node.dataset.fitScale=scale.toFixed(4);node.dataset.fitWidth=String(Math.round(result.w*scale));node.dataset.fitHeight=String(Math.round(result.h*scale));
+}
+
 function fit(node,width,height,{modal=false,logicalMin=0,center=false,fill=false,measureCards=false}={}){
  if(!node||width<1||height<1)return;
  node.style.transform='none';node.style.setProperty('left','0px','important');node.style.setProperty('top','0px','important');
@@ -120,7 +180,8 @@ function fitApp(){
    pane.classList.add('bk-fit-pane');lastCardMetrics='';
   }
   const w=frame.clientWidth,h=frame.clientHeight;
-  fit(pane,w,h,{fill:true,measureCards:pane.matches('.page')});
+  if(pane.dataset.page==='deck'&&pane.querySelector('.dual-workshop'))fitDeckWorkshop(pane,w,h);
+  else fit(pane,w,h,{fill:true,measureCards:pane.matches('.page')});
   target.dataset.fitScale='1.0000';target.dataset.fitWidth=String(target.clientWidth);target.dataset.fitHeight=String(target.clientHeight);
   lastRoot=target;return;
  }

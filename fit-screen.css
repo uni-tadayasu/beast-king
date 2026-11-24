@@ -964,3 +964,56 @@ html.bk-fit #modal-root .operator-fullscreen>.modal-close{
  .operator-console-nav{grid-template-columns:1fr;grid-auto-rows:minmax(16px,1fr);gap:2px}
  .operator-console-tab{padding:2px 4px;font-size:10px}
 }
+
+/* Replace the fragile nested subgrid with explicitly measured shared rows.
+   The editor minimum is set to the full natural height of its controls,
+   so a short screen cannot make the card grid occupy a control's space. */
+html.bk-fit .bk-native-screen .dual-workshop>.transfer-workspace{
+ grid-template-rows:minmax(0,1fr)!important;max-height:none!important;
+ align-items:stretch;align-content:stretch;
+ --workshop-tools-height:auto;--workshop-meta-height:auto;--workshop-pager-height:auto
+}
+html.bk-fit .bk-native-screen .dual-workshop .transfer-source,
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel{
+ grid-row:1!important;grid-template-rows:var(--workshop-tools-height) minmax(0,1fr)!important;
+ height:auto!important;max-height:none!important;min-height:0!important;
+ box-sizing:border-box;align-content:stretch;align-items:stretch
+}
+html.bk-fit .bk-native-screen .dual-workshop .workshop-tools{
+ grid-row:1;align-self:start;min-height:0!important;height:auto!important;
+ max-height:none!important;position:static!important;inset:auto!important;
+ margin:0!important;overflow:visible!important
+}
+html.bk-fit .bk-native-screen .dual-workshop #card-results,
+html.bk-fit .bk-native-screen .dual-workshop .deck-list{
+ grid-row:2!important;grid-template-rows:var(--workshop-meta-height) minmax(145px,1fr) var(--workshop-pager-height)!important;
+ min-height:0!important;height:auto!important;max-height:none!important;
+ align-content:stretch;position:static!important;inset:auto!important;transform:none!important;margin:0!important
+}
+html.bk-fit .bk-native-screen .dual-workshop #card-results>.results-meta,
+html.bk-fit .bk-native-screen .dual-workshop .deck-list>.results-meta{
+ align-self:start;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;
+ position:static!important;inset:auto!important;transform:none!important
+}
+html.bk-fit .bk-native-screen .dual-workshop #card-results>.pagination,
+html.bk-fit .bk-native-screen .dual-workshop .deck-list>.deck-list-pagination{
+ align-self:start;height:auto!important;max-height:none!important;min-height:33px!important;
+ margin:0!important;position:static!important;inset:auto!important;transform:none!important
+}
+html.bk-fit .bk-native-screen .dual-workshop .workshop-tools .deck-bank-toolbar{
+ min-width:0!important;max-width:100%;position:static!important
+}
+html.bk-fit .bk-native-screen .dual-workshop .workshop-tools .deck-panel-head{
+ min-height:0!important;height:auto!important;max-height:none!important
+}
+html.bk-fit .bk-native-screen .dual-workshop .workshop-tools .deck-panel-head>input{
+ width:0;min-width:0!important;max-width:100%!important
+}
+html.bk-fit .bk-native-screen .dual-workshop .workshop-tools .deck-panel-head>select,
+html.bk-fit .bk-native-screen .dual-workshop .workshop-tools .deck-total{display:none!important}
+html.bk-fit .bk-native-screen .dual-workshop .workshop-tools .operator-deck-preset{
+ flex:1 1 100%;min-height:0!important;height:auto!important;max-height:none!important
+}
+html.bk-fit .bk-native-screen .dual-workshop .workshop-tools .deck-panel-foot{
+ flex:none!important;min-height:0!important;height:auto!important;max-height:none!important
+}

@@ -78,7 +78,7 @@ try{
   assert.deepEqual(errors,[],label+' overlapping controls '+JSON.stringify(errors));
  }
  const general=['.navigation-dock>.dock-link','.site-controls>button'];
- for(const [width,height] of [[1920,1080],[1366,768],[1024,600],[768,1024],[390,844],[320,568],[844,390]]){
+ for(const [width,height] of [[1920,1080],[1902,800],[1366,768],[1024,600],[768,1024],[390,844],[320,568],[844,390]]){
   await viewport(width,height);
   for(const [page,selectors] of [['home',['.home-mode-rail>.home-mode','.home-card-fan>.game-card']],['deck',['.deck-panel>.workshop-tools,.deck-panel>.deck-list','.deck-panel>.workshop-tools>*','.transfer-source>.workshop-tools,.transfer-source>#card-results','.transfer-source>.workshop-tools>*','.deck-list>.results-meta,.deck-list>.deck-image-grid,.deck-list>.deck-list-pagination','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination','.transfer-card>.transfer-counts,.transfer-card>.transfer-actions','.deck-bank-actions>.btn','.deck-display-tabs>.btn','.deck-scope-tabs>.btn','.deck-source-tools>.deck-scope-tabs,.deck-source-tools>.btn,.deck-source-tools>.text-button']],['collection',['.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination']],['shop',['.product-section-tabs>button']],['rules',['.rulebook-tabs>button']]]){
    await click('.navigation-dock [data-nav='+page+']');await waitElement('main[data-page='+page+']');await waitElement('.bk-native-pane>.bk-fit-pane[data-fit-scale]');await delay(200);
@@ -108,6 +108,14 @@ try{
   const symmetric=await evaluate(`(()=>{const q=s=>document.querySelector(s).getBoundingClientRect(),a=q('.transfer-source .cards-grid'),b=q('.deck-image-grid'),c=q('.transfer-card>.game-card'),d=q('.deck-image-slot>.game-card'),p=q('.deck-list-pagination'),l=q('#card-results>.pagination'),foot=q('.deck-panel-foot');return {a:a.toJSON(),b:b.toJSON(),c:c.toJSON(),d:d.toJSON(),p:p.toJSON(),l:l.toJSON(),foot:foot.toJSON()}})()`);
   assert.ok(Math.abs(symmetric.a.top-symmetric.b.top)<=2&&Math.abs(symmetric.a.bottom-symmetric.b.bottom)<=2&&Math.abs(symmetric.c.width-symmetric.d.width)<=2&&Math.abs(symmetric.c.height-symmetric.d.height)<=2,width+'x'+height+' symmetric card grids '+JSON.stringify(symmetric));
   assert.ok(symmetric.foot.bottom<=symmetric.b.top+2&&symmetric.p.top>=symmetric.b.bottom-2&&Math.abs(symmetric.p.top-symmetric.l.top)<=2&&symmetric.p.bottom<=panes.right.bottom+2,width+'x'+height+' save and pager separated '+JSON.stringify(symmetric));
+  // The screenshot came from an authenticated deck with the extra operator
+  // row. Exercise that exact extra height without accessing a live account.
+  await evaluate(`(()=>{const head=document.querySelector('.deck-panel-head'),row=document.createElement('div');row.className='operator-deck-preset';row.dataset.layoutFixture='true';row.innerHTML='<span>運営構築 · 開放済み</span><button class="text-button">𠮷良原デッキを使う</button><button class="text-button">イラスト設定</button><small class="operator-art-status">専用イラスト未受信</small><button class="text-button">再取得</button>';head.append(row);return true})()`);
+  await delay(180);
+  await check(width+'x'+height+' operator deck with extra controls',['.deck-panel>.workshop-tools,.deck-panel>.deck-list','.deck-panel>.workshop-tools>*','.deck-list>.results-meta,.deck-list>.deck-image-grid,.deck-list>.deck-list-pagination','.operator-deck-preset>*']);
+  const operatorDeckFit=await evaluate(`(()=>{const q=s=>document.querySelector(s).getBoundingClientRect(),left=q('.transfer-source .cards-grid'),right=q('.deck-image-grid'),tools=q('.deck-panel>.workshop-tools'),pager=q('.deck-list-pagination'),panel=q('.deck-panel'),frame=q('.bk-native-pane');return {aligned:Math.abs(left.top-right.top)<=2&&Math.abs(left.bottom-right.bottom)<=2,clear:tools.bottom<=right.top+2&&pager.top>=right.bottom-2&&pager.bottom<=panel.bottom+2,inside:panel.bottom<=frame.bottom+2}})()`);
+  assert.deepEqual(operatorDeckFit,{aligned:true,clear:true,inside:true},width+'x'+height+' operator card grid fit');
+  await evaluate('document.querySelector("[data-layout-fixture]").remove();true');await delay(120);
   await click('[data-action=deck-advanced-filters]');await delay(200);await check(width+'x'+height+' expanded deck filters',['.transfer-source>.transfer-heading,.transfer-source>.deck-source-tools,.transfer-source>.filter-bar,.transfer-source>#card-results','.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','.filters-secondary>select']);
   await click('[data-action=deck-advanced-filters]');await delay(160);
   await click('[data-action=deck-filter-scope][data-scope=owned]');
