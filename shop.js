@@ -1,4 +1,4 @@
-import { CARD_SETS, CARD_MAP, STARTER_DECKS, getCardsForSet } from './catalog.js?v=20261124-26';
+import { CARD_SETS, CARD_MAP, STARTER_DECKS, getCardsForSet, getExpansionDeck } from './catalog.js?v=20261124-26';
 
 // Pure economy rules shared by the browser and an authoritative server.
 // A server should inject its own secure random function into openPack.
@@ -10,10 +10,10 @@ export const MAX_CARD_COPIES = 3;
 export const RARITY_ODDS = Object.freeze({ N: 58, R: 25, KR: 10, KKR: 5, GR: 1.5, GGR: 0.5 });
 export const BATTLE_REWARDS = Object.freeze({ win: 60, loss: 20, draw: 30, forfeit: 0 });
 
-// Both expansions have separate complete pools; existing aliases select BK01.
+// All expansions have separate complete pools; existing aliases select BK01.
 export const PACKS = Object.freeze(CARD_SETS.map(set => Object.freeze({
   ...set,
-  description: `通常魔獣512枚・合成魔獣128枚・ミラクル256枚・ギミック256枚、全1,152枚を収録した${set.editionLabel}パック。12枚入り、1枚はレア以上確定。`,
+  description: `${set.theme?set.theme+' ':''}通常魔獣512枚・合成魔獣128枚・ミラクル256枚・ギミック256枚、全1,152枚を収録した${set.editionLabel}パック。12枚入り、1枚はレア以上確定。`,
   cardIds: Object.freeze(getCardsForSet(set.id).map(card => card.id)),
   cost: PACK_COST, size: PACK_SIZE,
 })));
@@ -74,6 +74,15 @@ export function hasStarterCards(collection,starterId){
  const required={};for(const id of [...d.ids,...d.specialIds])required[id]=(required[id]||0)+1;
  return Object.entries(required).every(([id,n])=>Number.isInteger(collection?.[id])&&collection[id]>=n);
 }
+export function quoteDeckRecipe(collection,id){
+ const deck=getExpansionDeck(id);
+ if(!deck)return {deck:null,owned:false,missing:[],missingCopies:0};
+ const required=new Map();for(const cardId of [...deck.ids,...deck.specialIds])required.set(cardId,(required.get(cardId)||0)+1);
+ const missing=[];
+ for(const [cardId,count] of required){const owned=Number.isInteger(collection?.[cardId])?Math.max(0,collection[cardId]):0;if(owned<count)missing.push({cardId,required:count,owned,missing:count-owned});}
+ return {deck,owned:missing.length===0,missing,missingCopies:missing.reduce((sum,item)=>sum+item.missing,0)};
+}
+export const hasDeckRecipeCards=(collection,id)=>quoteDeckRecipe(collection,id).owned;
 
 /** Revoke only the extra free baseline from an unmarked old four-deck
  * inventory. Historical saves have no complete acquisition ledger; preserve

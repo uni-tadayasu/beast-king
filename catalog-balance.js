@@ -68,3 +68,22 @@ export function balancedGimmickStats(kind,rank,element) {
   if(kind==='fountain'){const cost=1+Math.floor(rank/2);return {cost,value:2+cost*2};}
   throw new Error(`Unsupported gimmick family: ${kind}`);
 }
+
+/** Expansion bodies pay for conditional engines before any combat points are
+ * printed. No rarity multiplier and no change to the original two sets. */
+export function balancedExpansionCreature({type,model,tier,role,kind,keywords,value}){
+ if(!['beast','fusion'].includes(type))return {attack:0,hp:0};
+ const rally=kind.endsWith('_rally')||kind==='echo_chorus',recall=kind.endsWith('_recall');
+ const tax=kind==='none'?0:rally?2:recall?2:1;
+ const tilt=[0,-1,1,0][role%4];
+ if(type==='fusion'){
+  const budget=clamp(12-tax-(keywords.length?1:0)-Math.floor(value/400),8,12);
+  const attack=clamp(Math.floor(budget/2)+tilt,4,7);
+  return {attack:attack*100,hp:clamp(budget-attack,4,7)*100};
+ }
+ const cost=Math.max(tier+1,rally||recall?3:kind==='none'?1:2);
+ const guard=keywords.includes('guard'),rush=keywords.includes('rush');
+ const attack=model==='attack'?clamp(cost+2+Math.floor(cost/3)+tilt-tax-(rush?1:0),1,12):clamp(cost+tilt-tax,1,9);
+ const hp=model==='attack'?clamp(cost+1-tilt-(rush?1:0),1,9):clamp(cost+2-tilt-(guard?1:0),2,10);
+ return {cost,attack:attack*100,hp:hp*100};
+}

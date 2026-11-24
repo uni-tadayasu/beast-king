@@ -1,0 +1,672 @@
+{
+  "id": "bk03-beast-01",
+  "src": "assets/design-v3/cards/bk03-beast-01.webp",
+  "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+  "sourceSha256": "b02c4e679aa8431a3201f69ca18a661537948925371a251bdf5d4b4c46a51023",
+  "nativeMaster": "exec-8bdb35f4-8f88-4a97-bd08-f25da8b5b84f.png",
+  "width": 1254,
+  "height": 1254,
+  "columns": 4,
+  "rows": 4,
+  "x": [
+    0,
+    314,
+    627,
+    940,
+    1254
+  ],
+  "y": [
+    0,
+    314,
+    627,
+    940,
+    1254
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "55a4b20e63547f13dc9918890a76e54aa7f2606b9a7d8cf6af191d2711d3ad36",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "B1025",
+    "B1089",
+    "B1153",
+    "B1217",
+    "B1281",
+    "B1345",
+    "B1409",
+    "B1473",
+    "B1026",
+    "B1090",
+    "B1154",
+    "B1218",
+    "B1282",
+    "B1346",
+    "B1410",
+    "B1474"
+  ],
+  "cards": [
+    {
+      "id": "B1025",
+      "name": "星継初灯守航先導白鹿 アウレア",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "ivory star-antlered stag, leaping forward across a broken bridge, low three-quarter view, wearing a delicate engraved neck harness and long silk ribbons; a ruined ivory observatory above an ocean of stars. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "low three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        13,
+        13,
+        288,
+        288
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "a6b0bb5db9469a8cccd1fb8008d943fbb3a4192b4fb8ef35e792c826459a2846",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1089",
+      "name": "潮継初灯守航先導水狐 マレディ",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "sleek turquoise river fox with flowing multiple tails, leaping forward across a broken bridge, side view with the face turned toward the viewer, wearing layered scale armor with small floating gemstones; turquoise cascades through an ancestral sanctuary. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        327,
+        14,
+        287,
+        287
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "00c64d17b205a83e2d9fce6c73dbfaa02d93374f06f30cf20eb15e2b0d0b4418",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1153",
+      "name": "火継初灯守航先導朱狼 イグニア",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "coral-maned red wolf with ember-patterned coat, leaping forward across a broken bridge, dramatic elevated three-quarter view, wearing a sweeping feather mantle and gilt anatomical markings; a coral garden of floating golden terraces. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        640,
+        14,
+        287,
+        287
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "09151c6f5c30397ade11f8e7a65ae1bc60393bb4902907c3e10bfbb2f4f469a1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1217",
+      "name": "風継初灯守航先導翼馬 ゼファル",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "white winged horse with long windblown mane, leaping forward across a broken bridge, front three-quarter view, wearing a luminous chest crystal with trailing ceremonial cords; a violet moonlit grove with giant flowering roots. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "front three-quarter view",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        953,
+        13,
+        288,
+        288
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "a6d139509d5610af116a472d0447bc21fd61b054404b8d1bf4352319a9d937b5",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1281",
+      "name": "花継初灯守航先導花鶴 フロレア",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "elegant flower crane with layered petal plumage, leaping forward across a broken bridge, full-body diagonal action view, wearing light crownlike antlers or decorative crest and orbiting fireflies; a shattered crystal canyon crossed by a silver stream. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "full-body diagonal action view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        14,
+        327,
+        287,
+        287
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "e0384c3ab4bbb103787b1374c86ca97dc53726caf7047be2348dc61a42164790",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1345",
+      "name": "樹継初灯守航先導森熊 アルシア",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "powerful moss bear with living branch armor, leaping forward across a broken bridge, rear three-quarter view with visible expressive face, wearing antique shoulder plates and small ancestral bells; a vast cloud citadel seen from a hanging bridge. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        327,
+        327,
+        287,
+        287
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "d4f69b7de8ea7bad0bc880653a0504edc2d96346323ab52d09f470cf083137a6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1409",
+      "name": "晶継初灯守航先導岩犀 ペトリア",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "massive crystal rhinoceros with faceted stone armor, leaping forward across a broken bridge, close dynamic view with the entire main silhouette inside the tile, wearing curling botanical engravings and crystal-tipped plumes; sunken library arches lit by luminous fish. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        640,
+        327,
+        287,
+        287
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "415e163da2b988da900610037ca4525bcf1cc7eb727b21cb1c9113ad1bc9f236",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1473",
+      "name": "月継初灯守航先導銀豹 ノクレア",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "silver panther with flowing moon markings, leaping forward across a broken bridge, wide cinematic view with the creature large in the foreground, wearing a flowing two-tone mantle and linked gold rings; a copper and jade forge carved into living stone. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 0,
+        "role": 0,
+        "tier": 0,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        954,
+        327,
+        287,
+        287
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "1187d7867ef43a6e1e15652d6c58866e00dfda03acc23d477f3105bb0bafa29c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1026",
+      "name": "星継初灯守航護衛白鹿 アウレア",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "ivory star-antlered stag, standing alert on a high windblown ledge, side view with the face turned toward the viewer, wearing a sweeping feather mantle and gilt anatomical markings; a violet moonlit grove with giant flowering roots. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 1,
+        "role": 1,
+        "tier": 0,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        14,
+        640,
+        287,
+        287
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "44ad1c047d9244cb82f858435ab88a069414174a4c0b07f44659d8dada97fc84",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1090",
+      "name": "潮継初灯守航護衛水狐 マレディ",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "sleek turquoise river fox with flowing multiple tails, standing alert on a high windblown ledge, dramatic elevated three-quarter view, wearing a luminous chest crystal with trailing ceremonial cords; a shattered crystal canyon crossed by a silver stream. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 1,
+        "role": 1,
+        "tier": 0,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        327,
+        640,
+        287,
+        287
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "67c3adb6bc4f0a627dcb0b9232b2ba40cbef922c4bd3dd49e8135de4ba71fb9a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1154",
+      "name": "火継初灯守航護衛朱狼 イグニア",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "coral-maned red wolf with ember-patterned coat, standing alert on a high windblown ledge, front three-quarter view, wearing light crownlike antlers or decorative crest and orbiting fireflies; a vast cloud citadel seen from a hanging bridge. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 1,
+        "role": 1,
+        "tier": 0,
+        "angle": "front three-quarter view",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        640,
+        640,
+        287,
+        287
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "b84868774bf17a3ea5593242a48db9d74008a0ad378154328002212e3f986f60",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1218",
+      "name": "風継初灯守航護衛翼馬 ゼファル",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "white winged horse with long windblown mane, standing alert on a high windblown ledge, full-body diagonal action view, wearing antique shoulder plates and small ancestral bells; sunken library arches lit by luminous fish. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 1,
+        "role": 1,
+        "tier": 0,
+        "angle": "full-body diagonal action view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        954,
+        640,
+        287,
+        287
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "19bec96bcf542db92f1c9c920401172281533917b41ffddbc603dc6a4f9153be",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1282",
+      "name": "花継初灯守航護衛花鶴 フロレア",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "elegant flower crane with layered petal plumage, standing alert on a high windblown ledge, rear three-quarter view with visible expressive face, wearing curling botanical engravings and crystal-tipped plumes; a copper and jade forge carved into living stone. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 1,
+        "role": 1,
+        "tier": 0,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        13,
+        953,
+        288,
+        288
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "f2fb5ba362081a75bb2b5788157d37da62dc9888fd058ea641f31230158de017",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1346",
+      "name": "樹継初灯守航護衛森熊 アルシア",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "powerful moss bear with living branch armor, standing alert on a high windblown ledge, close dynamic view with the entire main silhouette inside the tile, wearing a flowing two-tone mantle and linked gold rings; a ruined ivory observatory above an ocean of stars. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 1,
+        "role": 1,
+        "tier": 0,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        327,
+        954,
+        287,
+        287
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "3ded658d1c26817df547ca4cf458eed9396a3f960f74ed6cd7080e364db5c431",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1410",
+      "name": "晶継初灯守航護衛岩犀 ペトリア",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "massive crystal rhinoceros with faceted stone armor, standing alert on a high windblown ledge, wide cinematic view with the creature large in the foreground, wearing a delicate engraved neck harness and long silk ribbons; turquoise cascades through an ancestral sanctuary. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 1,
+        "role": 1,
+        "tier": 0,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        640,
+        954,
+        287,
+        287
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "8761787b772a8f73f99866bb711420d6d55a3ce46db75884c4e6de3e805e47f9",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "B1474",
+      "name": "月継初灯守航護衛銀豹 ノクレア",
+      "setId": "BK03",
+      "type": "beast",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "silver panther with flowing moon markings, standing alert on a high windblown ledge, low three-quarter view, wearing layered scale armor with small floating gemstones; a coral garden of floating golden terraces. Agile young creature with finely drawn anatomy",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 1,
+        "role": 1,
+        "tier": 0,
+        "angle": "low three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-beast-01.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 4,
+      "rows": 4,
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "pixelCrop": [
+        953,
+        953,
+        288,
+        288
+      ],
+      "sha256": "b3c49c14937587e175dec404f182e720f8d7ab84aa643671bd55b092e255fdc8",
+      "cellSha256": "a44f682d431f2a69d007764dabe010b2b998502ac1d22d9710975603d0e125f0",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

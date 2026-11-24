@@ -25,7 +25,7 @@ for(const item of production.atlases){
 const king=await readFile(resolve(root,directory+'king.webp'));
 sources.set(directory+'king.webp',sha(king));
 const inset=.012,crops={},keys=new Set();
-const cards=CARDS.map(card=>{
+const cards=CARDS.filter(card=>['BK01','BK02'].includes(card.setId)).map(card=>{
  const n=Number(card.id.slice(1))-1,protectedKing=card.id==='B0512';
  const src=directory+(protectedKing?'king':card.type+'-'+String(Math.floor(n/16)+1).padStart(2,'0'))+'.webp';
  const column=protectedKing?0:n%4,row=protectedKing?0:Math.floor(n%16/4);

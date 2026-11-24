@@ -117,9 +117,26 @@ try{
     // transformed card must nevertheless remain inside the content pane.
     const fan=await evaluate('(()=>{const p=layoutRect(document.querySelector(".bk-native-pane"));return {frame:p.toJSON(),cards:[...document.querySelectorAll(".home-card-fan>.game-card")].map(e=>{const r=layoutRect(e);return {visible:r.width>0&&r.height>0&&r.top>=p.top-2&&r.bottom<=p.bottom+2&&r.left>=p.left-2&&r.right<=p.right+2,box:r.toJSON()}})}})()');assert.deepEqual(fan.cards.map(c=>c.visible),[true,true,true],width+'x'+height+' all three featured cards fully visible '+JSON.stringify(fan));
    }
+   if(page==='shop'){
+    assert.equal(await evaluate('document.querySelectorAll("[data-action=pack-select]").length'),4);
+    for(const pack of ['BK03','BK04']){
+     await click('[data-action=pack-select][data-pack='+pack+']');await delay(160);
+     assert.equal(await evaluate('document.querySelector(".pack-cover-art").complete&&document.querySelector(".pack-cover-art").naturalWidth>0'),true,pack+' illustrated cover loads');
+     assert.equal(await evaluate('document.querySelectorAll(".recipe-launchers>button").length'),4);
+     await check(width+'x'+height+' '+pack,['.product-section-tabs>button','.pack-offer>.pack-buy,.pack-offer>.pack-assurance,.pack-offer>.pack-collection']);
+     const recipeId=await evaluate('document.querySelector(".recipe-launchers>button").dataset.id');
+     await click('[data-action=expansion-recipe][data-id='+recipeId+']');await waitElement('.recipe-card-list');await delay(120);
+     assert.equal(await evaluate('document.querySelector("[data-action=recipe-load]").disabled'),true,'Unowned recipes are not granted');
+     await check(width+'x'+height+' '+pack+' recipe',['.recipe-card-list>.recipe-card-row','.modal-actions>button']);
+     await click('[data-action=recipe-next]');await check(width+'x'+height+' '+pack+' recipe page2',['.recipe-card-list>.recipe-card-row']);
+     await click('.modal-close');
+    }
+   }
    // Card ownership/action pairs are tested per card, not between distinct tiles.
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
+  // Long scheduled operator content is rendered locally; never sent to live players.
+  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261124-26');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
   // Real native news dialog, not a synthetic layout. Every notice must
   // appear exactly once, fully within the viewport and outside the controls.
   await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);
@@ -135,23 +152,23 @@ try{
    await click('#news-dialog .news-next');
   }
   await click('#news-dialog .news-return');assert.equal(await evaluate('document.querySelector("#news-dialog").open'),false);
-  const fixture=await evaluate(`(async()=>{const {operatorDashboardView}=await import('./account-views.js');const snapshot={stats:{totalPlayers:4,activeBattles:0,onlinePlayers:1,recentLogins24h:4},settings:{notice:'検証用',maintenance:false},onlinePlayers:[{id:'fixture-test',nickname:'検証ユーザー',origin:'river',rating:1000,lastLoginAt:Date.now(),lastSeenAt:Date.now()}],recentLogins:[],recentPlayers:[],events:[],audit:[{action:'fixture',createdAt:Date.now()}],messages:[],gifts:[],deck:{unlockedAt:Date.now()}};const root=document.querySelector('#modal-root');root.innerHTML='<div class="modal-backdrop"><section class="modal wide" role="dialog"><button class="icon-btn modal-close" data-action="close-modal">×</button>'+operatorDashboardView({snapshot})+'</section></div>';return true})()`);
-  assert.equal(fixture,true);await waitElement('.operator-fullscreen .operator-console-nav');await delay(120);
-  const operatorBox=await evaluate(`(()=>{const r=layoutRect(document.querySelector('.operator-fullscreen')),s=layoutRect(document.querySelector('.operator-workspace')),nav=layoutRect(document.querySelector('.operator-console-nav')),pane=layoutRect(document.querySelector('.operator-console-content'));return {w:layoutViewport().width,h:layoutViewport().height,r:r.toJSON(),s:s.toJSON(),nav:nav.toJSON(),pane:pane.toJSON(),transform:getComputedStyle(document.querySelector('.operator-fullscreen')).transform}})()`);
+  const fixture=await evaluate(`(async()=>{const {operatorDashboardView}=await import('./account-views.js');const {getCard}=await import('./catalog.js');const snapshot={stats:{totalPlayers:4,activeBattles:0,onlinePlayers:1,recentLogins24h:4},settings:{notice:'検証用',maintenance:false,revision:0},onlinePlayers:[],recentLogins:[],recentPlayers:[],events:[],audit:[],messages:[],gifts:[],notices:[],deck:{unlockedAt:Date.now()}};const root=document.querySelector('#modal-root');const state={snapshot,tab:'overview',getCard};window.__opFixtureRender=(values={})=>{Object.assign(state,values);root.innerHTML='<div class="modal-backdrop"><section class="modal wide" role="dialog"><button class="icon-btn modal-close" data-action="close-modal">×</button>'+operatorDashboardView(state)+'</section></div>';};window.__opFixtureClick=event=>{const button=event.target.closest('[data-action="operator-tab"]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();window.__opFixtureRender({tab:button.dataset.tab,draft:null});};root.addEventListener('click',window.__opFixtureClick,true);window.__opFixtureRender();return true})()`);
+  assert.equal(fixture,true);await waitElement('.operator-fullscreen .op-nav');await delay(120);
+  const operatorBox=await evaluate(`(()=>{const r=layoutRect(document.querySelector('.operator-fullscreen')),s=layoutRect(document.querySelector('.op-workspace')),nav=layoutRect(document.querySelector('.op-nav')),pane=layoutRect(document.querySelector('.op-main'));return {w:layoutViewport().width,h:layoutViewport().height,r:r.toJSON(),s:s.toJSON(),nav:nav.toJSON(),pane:pane.toJSON(),transform:getComputedStyle(document.querySelector('.operator-fullscreen')).transform}})()`);
   assert.ok(operatorBox.transform==='none'&&operatorBox.r.width>=operatorBox.w-20&&operatorBox.r.height>=operatorBox.h-20&&operatorBox.r.left<=10&&operatorBox.r.right>=operatorBox.w-10,width+'x'+height+' operator fills viewport '+JSON.stringify(operatorBox));
-  await click('.operator-console-tab:nth-child(4)');await delay(120);
-  assert.equal(await evaluate('document.querySelectorAll(".operator-console-content>.operator-section:not([hidden])").length'),1);
-  assert.equal(await evaluate('document.querySelector("#operator-notice").closest("details").hidden'),false);
-  await click('.operator-console-tab:nth-child(1)');await delay(120);
-  assert.ok(await evaluate('(()=>{const section=document.querySelector("[data-action=operator-deck-use]").closest("details");return !section.hidden&&section.textContent.includes("認証後に自動で適用")&&!section.querySelector("[data-action=operator-artwork-open],input[type=file]")})()'));
-  await evaluate('document.querySelector("#modal-root").innerHTML="";true');
+  await click('.op-nav [data-tab=maintenance]');await delay(120);
+  assert.equal(await evaluate('document.querySelectorAll(".op-main>.op-maintenance").length'),1);
+  assert.equal(await evaluate('Boolean(document.querySelector("#operator-notice")&&document.querySelector("#operator-maintenance-start"))'),true);
+  await click('.op-nav [data-tab=overview]');await delay(120);
+  assert.ok(await evaluate('(()=>{const section=document.querySelector(".op-regalia");return section.textContent.includes("認証後に自動で適用")&&!section.querySelector("[data-action=operator-artwork-open],input[type=file]")})()'));
+  await evaluate('document.querySelector("#modal-root").removeEventListener("click",window.__opFixtureClick,true);document.querySelector("#modal-root").innerHTML="";delete window.__opFixtureRender;delete window.__opFixtureClick;true');
   await click('.navigation-dock [data-nav=deck]');assert.equal(await evaluate('document.querySelectorAll("#deck-bank-select option").length'),1);
   assert.ok(await evaluate('Boolean(document.querySelector(".transfer-source .transfer-card")&&document.querySelector(".deck-panel .deck-image-slot"))'));
   await waitElement('.bk-native-pane>.bk-fit-pane[data-fit-scale]');await delay(180);
   const panes=await evaluate(`(()=>{const frame=layoutRect(document.querySelector('.bk-native-pane')),left=layoutRect(document.querySelector('.transfer-source')),right=layoutRect(document.querySelector('.deck-panel'));return {left:left.toJSON(),right:right.toJSON(),frame:frame.toJSON(),scrollHeight:document.querySelector('.bk-native-pane').scrollHeight,clientHeight:document.querySelector('.bk-native-pane').clientHeight,overflow:getComputedStyle(document.querySelector('.bk-native-pane')).overflowY}})()`);
   assert.ok(Math.abs(panes.left.width-panes.right.width)<=2&&panes.left.width>0&&panes.right.width>0&&panes.left.right<=panes.right.left+2,width+'x'+height+' separate left and right panes '+JSON.stringify(panes));
   assert.ok(panes.left.top>=panes.frame.top-2&&panes.right.top>=panes.frame.top-2&&panes.left.bottom<=panes.frame.bottom+3&&panes.right.bottom<=panes.frame.bottom+3&&['hidden','clip'].includes(panes.overflow),width+'x'+height+' both panes within the content frame '+JSON.stringify(panes));
-  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),2304);
+  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),4608);
   const cardGeometry=await evaluate(`(()=>{const failures=[];for(const [grid,selector] of [['.transfer-source .cards-grid','.transfer-card'],['.deck-image-grid','.deck-image-slot']]){const container=document.querySelector(grid);if(!container){failures.push(grid);continue}const bounds=layoutRect(container);for(const tile of container.querySelectorAll(selector)){const r=layoutRect(tile),parts=[...tile.children].map(e=>layoutRect(e));if(r.left<bounds.left-2||r.right>bounds.right+2||r.top<bounds.top-2||r.bottom>bounds.bottom+2||parts.some((p,i)=>i>0&&p.top<parts[i-1].bottom-2))failures.push({grid,id:tile.dataset.transferId,tile:r.toJSON(),bounds:bounds.toJSON()});}}return failures})()`);
   assert.deepEqual(cardGeometry,[],width+'x'+height+' card art, counts, buttons and grid bounds');
   const symmetric=await evaluate(`(()=>{const q=s=>layoutRect(document.querySelector(s)),a=q('.transfer-source .cards-grid'),b=q('.deck-image-grid'),c=q('.transfer-card>.game-card'),d=q('.deck-image-slot>.game-card'),p=q('.deck-list-pagination'),l=q('#card-results>.pagination'),foot=q('.deck-panel-foot');return {a:a.toJSON(),b:b.toJSON(),c:c.toJSON(),d:d.toJSON(),p:p.toJSON(),l:l.toJSON(),foot:foot.toJSON()}})()`);
@@ -169,10 +186,10 @@ try{
   await click('[data-bk-screen-tab=filter]');await delay(120);await click('[data-action=deck-advanced-filters]');await delay(200);await check(width+'x'+height+' expanded deck filters',['.transfer-source>.transfer-heading,.transfer-source>.deck-source-tools,.transfer-source>.filter-bar,.transfer-source>#card-results','.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','.filters-secondary>select']);
   await click('[data-action=deck-advanced-filters]');await delay(120);await click('[data-bk-screen-tab=cards]');await delay(160);
   await click('[data-action=deck-filter-scope][data-scope=owned]');
-  const ownedTotal=await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)');assert.ok(ownedTotal>0&&ownedTotal<2304);
+  const ownedTotal=await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)');assert.ok(ownedTotal>0&&ownedTotal<4608);
   assert.equal(await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent'),'32/32');
   await click('[data-action=deck-filter-scope][data-scope=all]');
-  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),2304);
+  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),4608);
   assert.equal(await evaluate('document.querySelector("[data-action=deck-filter-scope][data-scope=all]").getAttribute("aria-pressed")'),'true');
   const transferId=await evaluate('document.querySelector(".deck-image-slot [data-action=deck-return-slot]").dataset.id');
   const before=await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent');

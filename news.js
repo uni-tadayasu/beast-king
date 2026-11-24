@@ -1,6 +1,9 @@
 import {ONLINE_API_BASE} from './online.js?v=20261124-26';
 /** Built-in release notices. Update these entries when a new game version is published. */
 export const NEWS_ITEMS = Object.freeze([
+ {date:'2026.11.24',title:'第三弾「継承の共鳴」発売 — 既存デッキを強化',text:'新カード1,152枚を収録。第一弾・第二弾の魔獣を強化・修復・回収するサポートが登場しました。ショップで混合デッキ4種類の構築例と必要な所持枚数を確認できます。12枚入り・100秘宝・レア以上1枚保証です。'},
+ {date:'2026.11.24',title:'第四弾「星界の創世」発売 — 4つの新系統',text:'星巡・残響・命誓・封機の4系統、計1,152枚が登場。第四弾だけで組める構築例を用意しました。全収録カードは4,608枚。図鑑では収録弾と系統で絞り込めます。'},
+ {date:'2026.11.24',title:'運営のお知らせ・プレゼント・イベントを刷新',text:'公開期間に応じたお知らせ、ゲーム内システムメール、カードや秘宝のプレゼント、イベント報酬に対応。受信箱から確認・受け取りできます。メンテナンス予定も最新情報へ表示します。'},
  {date:'2026.11.24',title:'王庭を一新 — 鮮やかな画面と新しい演出',text:'王庭・デッキ・ショップ・3つの決闘場を刷新。お気に入りとデッキ分析を追加しました。画面切り替え・召喚・攻撃・合成・パック開封に演出と効果音を追加し、設定から音量や演出の強さを調節できます。'},
  {date:'2026.11.24',title:'全カードのバランスを見直しました',text:'全2,304枚を見直し、1,915枚のコスト・能力値・効果を調整。新規対戦では後攻の最初の2ターンにエーテル+1（2→3→3→4…）を適用します。所持カード・保存デッキ・中断中の対戦は引き継げます。'},
  {date:'2026.11.24',title:'カードアートを統一・144枚を描き直し',text:'全カードの色調と描画の仕上げを統一し、144枚を新しいイラストに差し替えました。運営専用レガリアは利用権の確認後に自動適用され、イラスト設定は不要です。'},
@@ -19,11 +22,25 @@ export const NEWS_ITEMS = Object.freeze([
  {date:'2026.11.24',title:'対戦デッキは32枚＋4枚・同名2枚まで',text:'通常デッキ32枚と、合成魔獣の特殊デッキ4枚を使います。通常・特殊ともに、同じカードは2枚までです。合成魔獣はアタック・ディフェンス型を兼ねます。'},
  {date:'2026.11.24',title:'7つのオリジンのプロフィール',text:'名前とアイコンの登録は端末のブラウザで最初の1回だけ。次回から王庭が開き、プロフィール設定でいつでも変更できます。'}
 ]);
-let publicNotice={notice:'',maintenance:false};
-const noticeItems=()=>[...(publicNotice.maintenance?[{date:'現在の受付',title:'オンライン対戦はメンテナンス中',text:'新しいルーム作成・入室・ランクマッチの受付を一時停止しています。進行中の対戦は続けられます。'}]:[]),...(publicNotice.notice?[{date:'最新のお知らせ',title:publicNotice.notice,text:publicNotice.notice}]:[]),...NEWS_ITEMS];
+export function normalizePublicStatus(status={}){
+ const notices=(Array.isArray(status.notices)?status.notices:[]).filter(n=>n&&typeof n.title==='string'&&typeof n.body==='string'&&(!n.phase||n.phase==='active')&&(!n.status||n.status==='published')).slice(0,20).map(n=>({id:String(n.id||''),title:n.title.slice(0,160),body:n.body.slice(0,4000),startAt:n.startAt,revision:n.revision}));
+ const upcoming=status.upcomingMaintenance;
+ return {notice:typeof status.notice==='string'?status.notice.slice(0,200):'',notices,maintenance:status.maintenance===true,maintenanceMessage:typeof status.maintenanceMessage==='string'?status.maintenanceMessage.slice(0,2000):'',upcomingMaintenance:upcoming&&Number.isFinite(upcoming.startAt)?{startAt:upcoming.startAt,endAt:Number.isFinite(upcoming.endAt)?upcoming.endAt:null,message:typeof upcoming.message==='string'?upcoming.message.slice(0,2000):''}:null};
+}
+const noticeDate=value=>Number.isFinite(value)&&value>0?new Intl.DateTimeFormat('ja-JP',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(value)):'運営からのお知らせ';
+let publicNotice=normalizePublicStatus();
+export function publicNewsItems(status={}){
+ const p=normalizePublicStatus(status),items=[];
+ if(p.maintenance)items.push({date:'現在の受付',title:'オンライン対戦はメンテナンス中',text:[p.maintenanceMessage,'新しいルーム作成・入室・ランクマッチの成立を一時停止しています。進行中の対戦と、待機中のマッチングの取り消しは利用できます。'].filter(Boolean).join('\n')});
+ if(p.upcomingMaintenance){const m=p.upcomingMaintenance;items.push({date:'メンテナンス予定 / 日本時間',title:noticeDate(m.startAt)+'から受付を一時停止',text:[m.message,m.endAt?'終了予定：'+noticeDate(m.endAt):'終了時刻は決まり次第お知らせします。','進行中の対戦は続けられます。'].filter(Boolean).join('\n')});}
+ items.push(...p.notices.map(n=>({date:noticeDate(n.startAt),title:n.title,text:n.body})));
+ if(p.notice&&!p.notices.some(n=>n.title===p.notice))items.push({date:'最新のお知らせ',title:'運営からのお知らせ',text:p.notice});
+ return items;
+}
+const noticeItems=()=>[...publicNewsItems(publicNotice),...NEWS_ITEMS];
 export function setPublicNotice(status={}){
- const next={notice:typeof status.notice==='string'?status.notice.slice(0,200):'',maintenance:status.maintenance===true};
- if(next.notice===publicNotice.notice&&next.maintenance===publicNotice.maintenance)return;
+ const next=normalizePublicStatus(status);
+ if(JSON.stringify(next)===JSON.stringify(publicNotice))return;
  publicNotice=next;if(typeof document!=='undefined')mountNews();
 }
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -33,10 +50,29 @@ const playIcon='<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 3 10 7-1
 // game's global scaling controller. Measure each actual article and paginate
 // whole rows, preserving the first visible article across viewport changes.
 let newsFirst=0,newsPages=[],newsLayoutPending=false;
+const newsArticle=(item,i)=>`<article data-news-index="${i}" data-news-source="${i}" data-news-offset="0"><time>${escape(item.date)}</time><h3>${escape(item.title===item.text?'運営からのお知らせ':item.title)}</h3><p>${escape(item.text)}</p></article>`;
 function renderNewsItems(dialog){
- const items=dialog.querySelector('.news-items');
- items.innerHTML=noticeItems().map((item,i)=>`<article data-news-index="${i}"><time>${escape(item.date)}</time><h3>${escape(item.title===item.text?'運営からのお知らせ':item.title)}</h3><p>${escape(item.text)}</p></article>`).join('');
+ dialog.querySelector('.news-items').innerHTML=noticeItems().map(newsArticle).join('');
  if(dialog.open)layoutNews(dialog);
+}
+// Long operator notices are split by actual rendered height. Every character
+// stays reachable with the same page controls, even on a shallow phone display.
+function splitNewsArticles(grid,available){
+ for(const original of [...grid.children]){
+  if(original.offsetHeight<=available-2)continue;
+  const title=original.querySelector('h3').textContent,chars=Array.from(original.querySelector('p').textContent);
+  let offset=0,part=0;
+  while(offset<chars.length){
+   const article=original.cloneNode(true),paragraph=article.querySelector('p');
+   article.dataset.newsOffset=String(offset);
+   if(part)article.querySelector('h3').textContent=title+'（続き）';
+   grid.insertBefore(article,original);
+   let low=1,high=chars.length-offset,best=1;
+   while(low<=high){const mid=Math.floor((low+high)/2);paragraph.textContent=chars.slice(offset,offset+mid).join('');if(article.offsetHeight<=available-2){best=mid;low=mid+1;}else high=mid-1;}
+   paragraph.textContent=chars.slice(offset,offset+best).join('');offset+=best;part++;
+  }
+  original.remove();
+ }
 }
 function showNewsPage(dialog,index){
  const grid=dialog.querySelector('.news-items'),page=newsPages[index];
@@ -51,7 +87,9 @@ function showNewsPage(dialog,index){
 }
 function layoutNews(dialog){
  if(!dialog.open)return;
- const grid=dialog.querySelector('.news-items'),cards=[...grid.children];
+ const grid=dialog.querySelector('.news-items'),anchor=grid.children[newsFirst]?.dataset;
+ grid.innerHTML=noticeItems().map(newsArticle).join('');
+ let cards=[...grid.children];
  if(!cards.length)return;
  const available=grid.clientHeight,width=grid.clientWidth;
  if(available<1||width<1)return;
@@ -65,6 +103,9 @@ function layoutNews(dialog){
   cols=1;grid.style.setProperty('--news-columns','1');
   heights=cards.map(card=>card.offsetHeight);
  }
+ if(Math.max(...heights)>available-2){splitNewsArticles(grid,available);cards=[...grid.children];heights=cards.map(card=>card.offsetHeight);}
+ cards.forEach((card,index)=>card.dataset.newsIndex=String(index));
+ if(anchor){const same=cards.map((card,i)=>({card,i})).filter(x=>x.card.dataset.newsSource===anchor.newsSource&&Number(x.card.dataset.newsOffset)<=Number(anchor.newsOffset));if(same.length)newsFirst=same.at(-1).i;}
  const gap=Number.parseFloat(getComputedStyle(grid).rowGap)||0;
  let start=0,rows=[],used=0,pages=[];
  for(let i=0;i<cards.length;i+=cols){

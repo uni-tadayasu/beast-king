@@ -1,6 +1,6 @@
 /**
  * ビーストキング — The First Chronicle
- * Two deterministic 1,152-card sets; 2,304 unique cards in total. All rules text corresponds to
+ * Four deterministic 1,152-card sets; 4,608 unique cards in total. All rules text corresponds to
  * effects implemented in engine.js; no network, randomized content, or filler IDs.
  */
 import {
@@ -9,9 +9,15 @@ import {
 } from './second-set-data.js?v=20261124-26';
 import {balanceCreature, balancedMiracleStats, balancedGimmickStats} from './catalog-balance.js?v=20261124-26';
 
+import {ADDITIONAL_CARD_SETS,makeAdditionalCards,EXPANSION_FAMILIES as ADDITIONAL_FAMILIES,EXPANSION_EFFECT_KINDS as ADDITIONAL_EFFECT_KINDS} from './additional-set-data.js?v=20261124-26';
+import {makeExpansionRecipes} from './expansion-recipes.js?v=20261124-26';
+export const EXPANSION_FAMILIES=ADDITIONAL_FAMILIES;
+export const EXPANSION_EFFECT_KINDS=ADDITIONAL_EFFECT_KINDS;
+
 export const CARD_SETS = Object.freeze([
   { id: 'BK01', edition: 1, editionLabel: '第一弾', name: '六源の覚醒', reading: 'ろくげんのかくせい', coverId: 'B0001', cardCount: 1152 },
   { id: 'BK02', edition: 2, editionLabel: '第二弾', name: '王源の継承', reading: 'おうげんのけいしょう', coverId: 'B0512', cardCount: 1152 },
+  ...ADDITIONAL_CARD_SETS,
 ].map(Object.freeze));
 
 const CARD_SERIES = Object.freeze([
@@ -450,11 +456,11 @@ function balanceOrigins(cards){
  }
  return cards.map(card=>overrides.has(card.id)?Object.freeze({...card,origin:overrides.get(card.id),element:overrides.get(card.id)}):card);
 }
-export const CARDS = Object.freeze(balanceOrigins([
+export const CARDS = Object.freeze([...balanceOrigins([
   ...legacyCards.map(card => card.id === 'B0512' ? Object.freeze({...card, attack:1000, hp:1100}) : card), ...makeSecondBeasts(), restoredAether,
   ...makeSecondMiracles(legacyCards.find(card => card.id === FUSION_CARD_ID).text),
   ...makeSecondGimmicks(), ...makeSecondFusions(),
-]));
+]),...makeAdditionalCards({modelDescriptions:MODEL_DESCRIPTIONS,fusionText:legacyCards.find(card=>card.id===FUSION_CARD_ID).text})]);
 const cardsBySet = new Map(CARD_SETS.map(set => [set.id, Object.freeze(CARDS.filter(card => card.setId === set.id))]));
 const EMPTY_SET = Object.freeze([]);
 export const getCardsForSet = id => cardsBySet.get(id) || EMPTY_SET;
@@ -524,7 +530,10 @@ export const DECK_PRESETS = Object.freeze(CARD_SERIES.map((element, e) => {
 
 /** The four starter packs offered to new players and selectable in free practice. */
 export const STARTER_DECKS = Object.freeze(DECK_PRESETS.slice(0, 4));
-const deckPresetById = new Map(DECK_PRESETS.map(deck => [deck.id, deck]));
+export const EXPANSION_DECKS=makeExpansionRecipes(CARDS,STARTER_DECKS);
+const expansionDeckById=new Map(EXPANSION_DECKS.map(deck=>[deck.id,deck]));
+export const getExpansionDeck=id=>expansionDeckById.get(id);
+const deckPresetById = new Map([...DECK_PRESETS,...EXPANSION_DECKS].map(deck => [deck.id, deck]));
 export const getDeckPreset = id => deckPresetById.get(id);
 
-export const CATALOG_VERSION = 4;
+export const CATALOG_VERSION = 5;

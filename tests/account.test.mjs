@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
 import {createOnlineWorker} from '../server/worker.js';
-import {STARTER_DECKS,getCard} from '../catalog.js';
+import {CARDS,STARTER_DECKS,getCard} from '../catalog.js';
 import {newGame,endTurn} from '../engine.js';
 import {createStarterCollection} from '../shop.js';
 import {createCampaignProgress} from '../campaign.js';
@@ -230,7 +230,7 @@ test('maintenance blocks only new matchmaking, preserves existing matches, and a
   const waiting=(await f.api('POST','/api/rooms',later.token,deck())).data.room;
   assert.equal((await f.api('POST','/api/operator/settings',guest.token,{notice:'不正変更',maintenance:true})).status,404);
   const set=await f.send(operator,'settings',{notice:'調整中です',maintenance:true});assert.equal(set.status,200);assert.ok(set.data.operator.audit.some(x=>x.action==='settings.updated'));
-  assert.deepEqual((await f.api('GET','/api/public-status')).data,{ok:true,notice:'調整中です',maintenance:true});
+  const publicStatus=(await f.api('GET','/api/public-status')).data;assert.equal(publicStatus.ok,true);assert.equal(publicStatus.notice,'調整中です');assert.equal(publicStatus.maintenance,true);assert.deepEqual(publicStatus.notices,[]);assert.equal(publicStatus.serverTime,f.now());
   for(const path of ['/api/queue','/api/rooms','/api/rooms/'+waiting.code+'/join'])assert.equal((await f.api('POST',path,guest.token,deck())).data.code,'maintenance');
   const action=await f.api('POST','/api/matches/'+match.id+'/actions',host.token,{actionId:f.mutation(),revision:0,kind:'endTurn'});assert.equal(action.status,200,JSON.stringify(action.data));
   assert.equal((await f.api('GET','/api/matches/'+match.id,guest.token)).status,200);
@@ -295,7 +295,7 @@ test('published events list current and upcoming entries, honor exact time bound
   const base={title:'期間限定イベント',body:'参加で秘宝',startAt,endAt,status:'draft',treasure:50,cards:[]};
   const created=await f.send(operator,'events',base);assert.equal(created.status,200);const id=created.data.createdId;
   assert.equal((await f.api('GET','/api/events',p.token)).data.events.length,0);assert.equal((await f.api('POST','/api/events/'+id+'/claim',p.token,{revision:1})).status,409);
-  const published=await f.send(operator,'events',{...base,id,status:'published'});assert.equal(published.status,200);
+  const published=await f.send(operator,'events',{...base,id,revision:1,status:'published'});assert.equal(published.status,200);
   const upcoming=(await f.api('GET','/api/events',p.token)).data.events;assert.equal(upcoming.length,1);assert.equal(upcoming[0].claimable,false);
   f.advance(100);const claim=await f.api('POST','/api/events/'+id+'/claim',p.token,{revision:1});assert.equal(claim.status,200);assert.equal(claim.data.save.data.treasure,150);
   assert.equal((await f.api('GET','/api/events',p.token)).data.events[0].claimable,false);
@@ -307,7 +307,7 @@ test('an operator closing an event during claim preparation prevents stale rewar
   const f=fixture(t),operator=await f.operator(),p=await f.profile();await f.save(p);
   const event={title:'終了間際',body:'',startAt:f.now()-1,endAt:f.now()+1000,status:'published',treasure:50,cards:[]};const id=(await f.send(operator,'events',event)).data.createdId;
   const original=f.env.DB.batch.bind(f.env.DB);let intercepted=false;
-  f.env.DB.batch=async statements=>{if(!intercepted&&statements.some(s=>s.sql.startsWith('UPDATE bk_cloud_saves')&&s.sql.includes('bk_reward_claims'))){intercepted=true;const closed=await f.send(operator,'events',{...event,id,status:'ended'});assert.equal(closed.status,200);}return original(statements);};
+  f.env.DB.batch=async statements=>{if(!intercepted&&statements.some(s=>s.sql.startsWith('UPDATE bk_cloud_saves')&&s.sql.includes('bk_reward_claims'))){intercepted=true;const closed=await f.send(operator,'events',{...event,id,revision:1,status:'ended'});assert.equal(closed.status,200);}return original(statements);};
   const claim=await f.api('POST','/api/events/'+id+'/claim',p.token,{revision:1});assert.equal(claim.status,409);assert.equal(intercepted,true);assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_reward_claims').get().n,0);assert.equal((await f.api('GET','/api/cloud-save',p.token)).data.save.data.treasure,100);
 });
 
@@ -505,4 +505,165 @@ test('alternate raster Regalia is replaceable only by the authenticated entitled
  assert.equal((await f.api('GET','/api/cloud-save',operator.token)).data.save.revision,claim.data.save.revision);
  assert.ok(!JSON.stringify((await f.api('GET','/api/cloud-save',operator.token)).data).includes(image));
  assert.ok(!JSON.stringify((await f.api('GET','/api/public-status',null)).data).includes(image));
+});
+
+test('operator lifecycle migration preserves existing deliveries, receipts, saves and roles',t=>{
+ const db=new DatabaseSync(':memory:');t.after(()=>db.close());
+ for(const name of ['0000_beast_king_online','0001_profile_origin','0002_accounts_and_operator','0003_king_origin','0004_rebuild_saves'])db.exec(readFileSync(new URL('../drizzle/'+name+'.sql',import.meta.url),'utf8'));
+ db.prepare('INSERT INTO bk_profiles (id,token_hash,nickname,created_at,updated_at) VALUES (?,?,?,?,?)').run('legacy-operator','old-hash','運営',1,1);
+ db.prepare('INSERT INTO bk_operator VALUES (1,?,?)').run('legacy-operator',1);
+ db.prepare("INSERT INTO bk_announcements (id,kind,title,body,cards_json,created_at,created_by) VALUES (?,'message',?,?,'[]',?,?)").run('legacy-mail','従来のメール','本文',2,'legacy-operator');
+ db.prepare('INSERT INTO bk_inbox_reads VALUES (?,?,?)').run('legacy-operator','legacy-mail',3);
+ db.exec(readFileSync(new URL('../drizzle/0005_operator_lifecycle.sql',import.meta.url),'utf8'));
+ const row=db.prepare('SELECT * FROM bk_announcements WHERE id=?').get('legacy-mail');
+ assert.equal(row.title,'従来のメール');assert.equal(row.status,'published');assert.equal(row.publish_at,0);assert.equal(row.revision,1);
+ assert.equal(db.prepare('SELECT read_at FROM bk_inbox_reads').get().read_at,3);
+ assert.equal(db.prepare('SELECT player_id FROM bk_operator').get().player_id,'legacy-operator');
+ assert.equal(db.prepare('SELECT count(*) AS n FROM bk_notices').get().n,0,'no real notices are created by a migration');
+});
+
+test('draft and scheduled mail stay private until server time, then retain per-account reads after withdrawal',async t=>{
+ const f=fixture(t),op=await f.operator(),a=await f.profile('配信対象'),other=await f.profile('対象外');
+ const body={title:'予約メール',body:'本文',target:a.id,status:'draft',publishAt:f.now()+1000};
+ const made=await f.send(op,'messages',body);assert.equal(made.status,200);const id=made.data.createdId;
+ for(const who of [a,other])assert.equal((await f.api('GET','/api/inbox',who.token)).data.messages.length,0);
+ assert.equal((await f.api('POST',`/api/inbox/${id}/read`,a.token,{})).status,404);
+ const scheduled=await f.send(op,'messages',{...body,id,revision:1,status:'published'});assert.equal(scheduled.status,200);assert.equal(scheduled.data.operator.messages[0].phase,'scheduled');
+ f.advance(999);assert.equal((await f.api('GET','/api/inbox',a.token)).data.messages.length,0);
+ f.advance(1);const inbox=(await f.api('GET','/api/inbox?kind=message&pageSize=4',a.token)).data;assert.equal(inbox.messages[0].id,id);assert.equal(inbox.counts.unread,1);
+ assert.equal((await f.api('GET','/api/inbox',other.token)).data.messages.length,0);
+ assert.equal((await f.api('POST',`/api/inbox/${id}/read`,a.token,{})).status,200);
+ const ended=await f.send(op,'messages',{...body,id,revision:2,status:'ended'});assert.equal(ended.status,200);
+ const history=(await f.api('GET','/api/inbox',a.token)).data;assert.equal(history.messages[0].phase,'ended');assert.equal(history.counts.unread,0);
+ const receipts=await f.api('GET',`/api/operator/records?kind=reads&itemId=${id}&itemType=message`,op.token);assert.equal(receipts.data.total,1);assert.equal(receipts.data.items[0].id,a.id);
+ assert.equal((await f.api('GET','/api/operator/records?kind=message',a.token)).status,404);
+});
+
+test('scheduled gifts accept catalog-driven rewards, reconcile receipts, and lock rewards and targets after publication',async t=>{
+ const f=fixture(t),op=await f.operator(),a=await f.profile(),other=await f.profile('他の王');await f.save(a);
+ const cardId=CARDS.at(-1).id,body={title:'予約ギフト',body:'配信テスト',target:a.id,status:'published',publishAt:f.now()+100,expiresAt:f.now()+1000,treasure:50,cards:[{cardId,count:3}]};
+ const made=await f.send(op,'gifts',body);assert.equal(made.status,200,JSON.stringify(made.data));const id=made.data.createdId;
+ assert.equal((await f.api('POST',`/api/inbox/${id}/claim`,a.token,{revision:1})).data.code,'reward_unavailable');
+ f.advance(100);
+ assert.equal((await f.send(op,'gifts',{...body,id,revision:1,treasure:500})).data.code,'delivery_locked');
+ assert.equal((await f.send(op,'gifts',{...body,id,revision:1,target:other.id})).data.code,'delivery_locked');
+ const linked=await f.link(a);
+ const attempts=await Promise.all([a.token,linked.token].map(token=>f.api('POST',`/api/inbox/${id}/claim`,token,{revision:1})));
+ assert.ok(attempts.every(r=>r.status===200));assert.equal(attempts.filter(r=>r.data.replayed).length,1);
+ const saved=(await f.api('GET','/api/cloud-save',a.token)).data.save;assert.equal(saved.revision,2);assert.equal(saved.data.collection[cardId],3);assert.equal(saved.data.treasure,150);
+ const ended=await f.send(op,'gifts',{...body,id,revision:1,status:'ended'});assert.equal(ended.status,200);
+ const history=(await f.api('GET','/api/inbox?kind=gift&pageSize=4',a.token)).data.gifts[0];assert.equal(history.claimable,false);assert.equal(history.claim.contentRevision,1);assert.equal(history.claim.cards[0].cardId,cardId);
+ const records=(await f.api('GET',`/api/operator/records?kind=claims&itemId=${id}&itemType=gift`,op.token)).data;assert.equal(records.total,1);assert.equal(records.items[0].saveRevision,2);assert.equal(records.items[0].claim.treasure,50);
+ assert.equal((await f.api('POST',`/api/inbox/${id}/claim`,a.token,{revision:1})).data.replayed,true);
+});
+
+test('editing requires a revision and concurrent edits produce one resource, one audit and one mutation receipt',async t=>{
+ const f=fixture(t),op=await f.operator();
+ const body={title:'下書き',body:'元の本文',target:'all',status:'draft'};
+ const made=await f.send(op,'messages',body),id=made.data.createdId;
+ assert.equal((await f.send(op,'messages',{...body,id})).data.code,'revision_required');
+ const before=f.sqlite.prepare('SELECT count(*) AS n FROM bk_operator_audit').get().n;
+ const edits=await Promise.all(['編集A','編集B'].map(title=>f.send(op,'messages',{...body,id,revision:1,title})));
+ assert.deepEqual(edits.map(r=>r.status).sort(),[200,409]);
+ assert.equal(f.sqlite.prepare('SELECT revision FROM bk_announcements WHERE id=?').get(id).revision,2);
+ assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_operator_audit').get().n,before+1);
+ assert.equal((await f.send(op,'messages',{...body,id,revision:1})).data.code,'content_conflict');
+ const unchanged=f.sqlite.prepare('SELECT count(*) AS n FROM bk_operator_mutations').get().n;
+ assert.equal(unchanged,2,'creation plus exactly one accepted edit');
+});
+
+test('gift withdrawal racing a claim blocks the reward without writing a claim or losing the save',async t=>{
+ const f=fixture(t),op=await f.operator(),a=await f.profile();await f.save(a);
+ const gift={title:'取り下げテスト',body:'',target:'all',treasure:40,cards:[],status:'published'};
+ const id=(await f.send(op,'gifts',gift)).data.createdId,original=f.env.DB.batch.bind(f.env.DB);let intercepted=false;
+ f.env.DB.batch=async statements=>{if(!intercepted&&statements.some(s=>s.sql.startsWith('UPDATE bk_cloud_saves')&&s.sql.includes('bk_reward_claims'))){intercepted=true;assert.equal((await f.send(op,'gifts',{...gift,id,revision:1,status:'ended'})).status,200);}return original(statements);};
+ const claim=await f.api('POST',`/api/inbox/${id}/claim`,a.token,{revision:1});assert.equal(claim.status,409);assert.equal(claim.data.code,'save_conflict');
+ assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_reward_claims WHERE item_id=?').get(id).n,0);
+ assert.equal((await f.api('GET','/api/cloud-save',a.token)).data.save.data.treasure,100);
+});
+
+test('targeted events expose only their audience, preserve receipt history and cannot mutate issued rewards',async t=>{
+ const f=fixture(t),op=await f.operator(),a=await f.profile('参加対象'),other=await f.profile('対象外');await f.save(a);
+ const event={title:'個別イベント',body:'参加案内',target:a.id,startAt:f.now(),endAt:f.now()+1000,status:'published',treasure:20,cards:[]};
+ const created=await f.send(op,'events',event),id=created.data.createdId;assert.equal(created.status,200);
+ assert.equal((await f.api('GET','/api/events',other.token)).data.events.length,0);assert.equal((await f.api('POST',`/api/events/${id}/claim`,other.token,{revision:1})).status,404);
+ assert.equal((await f.api('POST',`/api/events/${id}/claim`,a.token,{revision:1})).status,200);
+ assert.equal((await f.send(op,'events',{...event,id,revision:1,treasure:21})).data.code,'delivery_locked');
+ f.advance(1000);const history=(await f.api('GET','/api/events',a.token)).data.events[0];assert.equal(history.phase,'expired');assert.equal(history.claimable,false);assert.equal(history.claim.treasure,20);
+});
+
+test('notices publish from drafts on exact server boundaries, order by priority and remain editable with revision checks',async t=>{
+ const f=fixture(t),op=await f.operator();
+ const base={title:'予告',body:'本文',status:'draft',startAt:f.now()+100,endAt:f.now()+1000,priority:2};
+ const draft=await f.send(op,'notices',base);assert.equal(draft.status,200);const id=draft.data.createdId;
+ assert.deepEqual((await f.api('GET','/api/public-status')).data.notices,[]);
+ assert.equal((await f.send(op,'notices',{...base,id,revision:1,status:'published'})).status,200);
+ f.advance(99);assert.equal((await f.api('GET','/api/public-status')).data.notices.length,0);
+ f.advance(1);assert.equal((await f.api('GET','/api/public-status')).data.notice,'予告');
+ const urgent=await f.send(op,'notices',{...base,title:'重要',startAt:f.now(),status:'published',priority:9});assert.equal(urgent.status,200);
+ assert.deepEqual((await f.api('GET','/api/public-status')).data.notices.map(r=>r.title),['重要','予告']);
+ const edit=await f.send(op,'notices',{...base,id,revision:2,title:'予告の補足',status:'published'});assert.equal(edit.status,200);
+ f.advance(900);assert.equal((await f.api('GET','/api/public-status')).data.notices.length,0);
+ const history=(await f.api('GET','/api/operator/records?kind=notice',op.token)).data;assert.equal(history.total,2);assert.ok(history.items.every(r=>r.phase==='expired'));
+});
+
+test('scheduled maintenance pauses waiting human and BOT matchmaking, permits ongoing actions and ends automatically',async t=>{
+ const f=fixture(t),op=await f.operator(),waiting=await f.profile('待機'),host=await f.profile('先攻'),guest=await f.profile('後攻');
+ const room=(await f.api('POST','/api/rooms',host.token,deck())).data.room;
+ const match=(await f.api('POST','/api/rooms/'+room.code+'/join',guest.token,deck())).data.match;
+ assert.equal((await f.api('POST','/api/queue',waiting.token,deck())).data.status,'waiting');
+ const settings={notice:'',maintenance:true,maintenanceMessage:'定期点検です',maintenanceStartAt:f.now()+60000,maintenanceEndAt:f.now()+61000};
+ assert.equal((await f.send(op,'settings',settings)).status,200);
+ const before=(await f.api('GET','/api/public-status')).data;assert.equal(before.maintenance,false);assert.equal(before.upcomingMaintenance.startAt,settings.maintenanceStartAt);
+ f.advance(60000);const active=(await f.api('GET','/api/public-status')).data;assert.equal(active.maintenance,true);assert.equal(active.maintenanceMessage,'定期点検です');
+ const paused=await f.api('GET','/api/queue',waiting.token);assert.equal(paused.data.status,'waiting');assert.equal(paused.data.queue.paused,true);assert.equal(paused.data.match,null);
+ assert.equal((await f.api('POST','/api/rooms',waiting.token,deck())).data.code,'maintenance');
+ assert.equal((await f.api('POST',`/api/matches/${match.id}/actions`,host.token,{kind:'endTurn',revision:0,actionId:f.mutation()})).status,200);
+ f.advance(1000);assert.equal((await f.api('GET','/api/public-status')).data.maintenance,false);
+ assert.equal((await f.api('GET','/api/queue',waiting.token)).data.status,'matched');
+});
+
+test('atomic maintenance guard blocks a match if the operator stops reception after the initial check',async t=>{
+ const f=fixture(t),op=await f.operator(),host=await f.profile('待つ王'),guest=await f.profile('入る王');
+ const room=(await f.api('POST','/api/rooms',host.token,deck())).data.room;
+ const original=f.env.DB.batch.bind(f.env.DB);let intercepted=false;
+ f.env.DB.batch=async statements=>{if(!intercepted&&statements.some(s=>s.sql.startsWith('INSERT INTO bk_matches'))){intercepted=true;assert.equal((await f.send(op,'settings',{notice:'点検',maintenance:true})).status,200);}return original(statements);};
+ const join=await f.api('POST','/api/rooms/'+room.code+'/join',guest.token,deck());assert.notEqual(join.status,200);assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_matches').get().n,0);
+});
+
+test('paginated operator histories do not truncate old items and omit credentials and private artwork payloads',async t=>{
+ const f=fixture(t),op=await f.operator(),ordinary=await f.profile();
+ for(let index=0;index<9;index++)assert.equal((await f.send(op,'messages',{title:'履歴 '+index,body:'',target:'all',status:'draft'})).status,200);
+ const ids=[];for(let page=0;page<3;page++){const data=(await f.api('GET',`/api/operator/records?kind=message&page=${page}&pageSize=4`,op.token)).data;assert.equal(data.total,9);ids.push(...data.items.map(row=>row.id));}
+ assert.equal(new Set(ids).size,9);assert.equal(ids.length,9);
+ const path='/api/operator/records?kind=player&query='+encodeURIComponent(ordinary.id),players=(await f.api('GET',path,op.token)).data;assert.equal(players.total,1);assert.equal(players.items[0].id,ordinary.id);
+ assert.equal((await f.api('GET','/api/operator/records?kind=message&page=-1',op.token)).status,400);
+ f.sqlite.prepare('INSERT INTO bk_operator_audit VALUES (?,?,?,?,?)').run('test-private-audit',op.id,'operator.artwork',JSON.stringify({artwork:'private-raster-fixture',token:'private-bearer-fixture'}),f.now()+1);
+ const audit=await f.api('GET','/api/operator/records?kind=audit',op.token);assert.equal(JSON.stringify(audit.data).includes('private-raster-fixture'),false);assert.equal(JSON.stringify(audit.data).includes('private-bearer-fixture'),false);
+ assert.equal((await f.api('GET','/api/operator/records?kind=audit',ordinary.token)).status,404);
+});
+
+test('scheduled reward edits cannot race a claim across the publication boundary for gifts or events',async t=>{
+ for(const kind of ['gift','event']){
+  const f=fixture(t),op=await f.operator(),a=await f.profile('先の受取'),b=await f.profile('後の受取');await f.save(a);await f.save(b);
+  const body={title:'予約報酬',body:'',target:'all',status:'published',treasure:10,cards:[],...(kind==='gift'?{publishAt:f.now()+100,expiresAt:f.now()+1000}:{startAt:f.now()+100,endAt:f.now()+1000})};
+  const created=await f.send(op,kind==='gift'?'gifts':'events',body),id=created.data.createdId,original=f.env.DB.batch.bind(f.env.DB);let intercepted=false;
+  const route=kind==='gift'?`/api/inbox/${id}/claim`:`/api/events/${id}/claim`;
+  f.env.DB.batch=async statements=>{if(!intercepted&&statements.some(s=>s.sql.startsWith('UPDATE '+(kind==='gift'?'bk_announcements':'bk_events')))){
+   intercepted=true;f.advance(100);const claimed=await f.api('POST',route,a.token,{revision:1});assert.equal(claimed.status,200);assert.equal(claimed.data.claim.treasure,10);
+  }return original(statements);};
+  const auditBefore=f.sqlite.prepare('SELECT count(*) AS n FROM bk_operator_audit').get().n;
+  const edited=await f.send(op,kind==='gift'?'gifts':'events',{...body,id,revision:1,treasure:20});assert.equal(edited.status,409);assert.equal(edited.data.code,'content_conflict');
+  assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_operator_audit').get().n,auditBefore,'the rejected edit cannot produce a false audit entry');
+  const claimed=await f.api('POST',route,b.token,{revision:1});assert.equal(claimed.status,200);assert.equal(claimed.data.claim.treasure,10);
+ }
+});
+
+test('a scheduled message recipient cannot change after another request has opened it at the start boundary',async t=>{
+ const f=fixture(t),op=await f.operator(),a=await f.profile('既読の王'),b=await f.profile('別の王');
+ const body={title:'予約メールの対象',body:'',target:a.id,status:'published',publishAt:f.now()+100};
+ const id=(await f.send(op,'messages',body)).data.createdId,original=f.env.DB.batch.bind(f.env.DB);let intercepted=false;
+ f.env.DB.batch=async statements=>{if(!intercepted&&statements.some(s=>s.sql.startsWith('UPDATE bk_announcements'))){intercepted=true;f.advance(100);assert.equal((await f.api('POST',`/api/inbox/${id}/read`,a.token,{})).status,200);}return original(statements);};
+ assert.equal((await f.send(op,'messages',{...body,id,revision:1,target:b.id})).status,409);
+ assert.equal((await f.api('GET','/api/inbox',a.token)).data.messages[0].id,id);assert.equal((await f.api('GET','/api/inbox',b.token)).data.messages.length,0);
 });

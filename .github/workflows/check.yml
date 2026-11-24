@@ -25,6 +25,21 @@ jobs:
         run: npm run build
       - name: Verify every published card illustration
         run: npm run verify:release
+
+      - name: Verify public delivery (read only, independent of build)
+        if: always()
+        continue-on-error: true
+        run: node scripts/check-public-release.mjs
+
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - name: Package public browser files
         run: npm run build:client
       - name: Check application syntax
@@ -37,8 +52,3 @@ jobs:
       - name: Test responsive layouts in the main game with Chrome
         if: ${{ !cancelled() && steps.syntax.outcome == 'success' }}
         run: node scripts/layout-browser-smoke.mjs dist/client
-
-      - name: Verify public delivery (read only, independent of build)
-        if: always()
-        continue-on-error: true
-        run: node scripts/check-public-release.mjs

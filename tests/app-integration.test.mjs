@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import { webcrypto } from 'node:crypto';
 import {BRAND_ICONS} from '../brand-icons.js';
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
+import {CARD_ART_EXPANSIONS} from '../card-art-expansion.js';
 import {CARD_ART_OVERRIDES} from '../card-art-overrides.js';
 import * as catalog from '../catalog.js';
 import * as engine from '../engine.js';
@@ -22,7 +23,7 @@ import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayou
 const appSource = readFileSync(new URL('../app.js', import.meta.url), 'utf8').replace(/^import\s+[^;]+;\s*$/gm, '');
 const expose = `
 globalThis.__appIntegration = {
-  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, inspectBattleEffect, inspectFieldEffect, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase, loadStarterFromShop, registerOwnedStarter,
+  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, inspectBattleEffect, inspectFieldEffect, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase, loadStarterFromShop, registerOwnedStarter, expansionRecipeModal, loadExpansionRecipe, needsTarget, targetHint,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
   purchasePack, packResultModal, closeModal,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
@@ -97,7 +98,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     sendAction: async () => ({ ok: true }),
   };
   const context = vm.createContext({
-    ...catalog, ...engine, ...shop, ...campaign, ...product, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS, CARD_ART_OVERRIDES,
+    ...catalog, ...engine, ...shop, ...campaign, ...product, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS, CARD_ART_OVERRIDES, CARD_ART_EXPANSIONS,
     createOnlineClient: options => { callbacks = options; return client; },
     createCloudSync: () => ({ getState: () => ({phase:'synced',revision:1,dirty:false}), start: async () => ({phase:'synced',revision:1,dirty:false}), markDirty() {}, flush: async () => ({revision:1}), refresh: async () => ({revision:1}) }),
     createAccountUi: () => ({getOperatorDeck:()=>hooks.operatorDeck||null,onCloudState() {},handleAction:()=>false,touchBrand:()=>false,clearIdentity(){},onModalClosed(){}}),
@@ -455,7 +456,7 @@ test('Regalia artwork is scoped to the authenticated deck instance and the click
 
 test('dual workshop displays a complete left catalogue and an independent right deck',()=>{
  const {app}=boot();app.setState({page:'deck',entered:true});
- assert.equal(app.filteredCards().length,2304);
+ assert.equal(app.filteredCards().length,4608);
  const view=app.deckView();assert.ok(view.indexOf('data-transfer-drop="pool"')<view.indexOf('data-transfer-drop="deck"'));
  assert.ok(view.includes('data-scope="all"')&&view.includes('data-scope="owned"'));
  assert.ok(view.includes('id="deck-bank-select"')&&view.includes('data-action="deck-save"'));
@@ -463,8 +464,40 @@ test('dual workshop displays a complete left catalogue and an independent right 
  assert.ok(!view.includes('deck-visible-rows')&&!view.includes('data-action="deck-list-mode"'));
  assert.ok(view.indexOf('class="deck-panel-foot"')<view.indexOf('class="deck-list"'));
  const id=app.workingDeck[0],collection=plain(app.data.collection);
- assert.equal(app.editDeck(id,false),true);assert.equal(app.filteredCards().length,2304);
+ assert.equal(app.editDeck(id,false),true);assert.equal(app.filteredCards().length,4608);
  assert.deepEqual(plain(app.data.collection),collection);
+});
+
+test('expansion recipes cannot grant cards and load an owned recipe without replacing active decks or drafts',()=>{
+ const {app}=boot(),recipe=catalog.EXPANSION_DECKS.find(d=>d.setId==='BK04');
+ app.setState({page:'shop',entered:true});
+ const before=plain(app.data.collection),treasure=app.data.treasure;
+ assert.equal(app.expansionRecipeModal(recipe.id),true);
+ assert.equal(app.loadExpansionRecipe(recipe.id),false);
+ assert.deepEqual(plain(app.data.collection),before);
+ for(const id of [...recipe.ids,...recipe.specialIds])app.data.collection[id]=2;
+ app.initializeDeckBank(app.data);
+ const oldId=app.data.activeDeckId,oldDeck=plain(app.data.deckIds),oldLibrary=plain(app.data.deckLibrary);
+ assert.equal(app.expansionRecipeModal(recipe.id),true);
+ assert.equal(app.loadExpansionRecipe(recipe.id),true);
+ assert.equal(app.page,'deck');
+ assert.equal(app.data.activeDeckId,oldId);
+ assert.deepEqual(plain(app.data.deckIds),oldDeck);
+ assert.deepEqual(plain(app.workingDeck),plain(recipe.ids));
+ assert.deepEqual(plain(app.data.deckLibrary.slice(0,oldLibrary.length)),oldLibrary);
+ assert.equal(app.data.deckLibrary.length,oldLibrary.length+1);
+ assert.equal(app.data.treasure,treasure);
+ app.setState({page:'shop'});app.expansionRecipeModal(recipe.id);
+ assert.equal(app.loadExpansionRecipe(recipe.id),true);
+ assert.equal(app.data.deckLibrary.length,oldLibrary.length+1,'Repeated load reuses the same unchanged recipe');
+});
+
+test('new targeted miracles enter target selection with the correct family explanation',()=>{
+ for(const target of ['legacy','orbit','vow']){
+  const card=catalog.CARDS.find(c=>c.type==='miracle'&&c.targetType===target);
+  const {app}=boot();assert.ok(card);assert.equal(app.needsTarget(card),true);
+  assert.match(app.targetHint(card),new RegExp(target==='legacy'?'第一弾・第二弾':catalog.EXPANSION_FAMILIES.find(f=>f.id===target).name));
+ }
 });
 
 test('50/50 editor card geometry includes the entire action footer',()=>{

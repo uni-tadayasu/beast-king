@@ -2,6 +2,8 @@
 import assert from 'node:assert/strict';
 
 export function validateCardArtManifest(manifest,cards){
+ // The original two-set release stays immutable when new sets are appended.
+ cards=cards.filter(c=>['BK01','BK02'].includes(c.setId));
  assert(cards.length===2304,'The source catalog must contain exactly 2,304 cards.');
  assert(manifest.total===cards.length&&Array.isArray(manifest.cards)&&manifest.cards.length===cards.length,'The artwork manifest must contain all 2,304 cards.');
  assert(Number.isFinite(manifest.atlasSafetyInset)&&manifest.atlasSafetyInset>=0&&manifest.atlasSafetyInset<.5,'Invalid artwork safety inset.');

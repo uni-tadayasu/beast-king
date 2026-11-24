@@ -1,3 +1,4 @@
+import {operatorPublicStatus,NEW_MATCHES_ALLOWED_SQL} from './operator-content.js';
 import {newGame,playCard,attack,endTurn,runCpuTurn,MAX_LOG_ENTRIES} from '../engine.js';
 import {ORIGINS,STARTER_DECKS,validateDeck,validateSpecialDeck} from '../catalog.js';
 import {authenticateAccount,handleAccountRoute,assertNewMatchesAllowed} from './account.js';
@@ -103,7 +104,7 @@ function createMatchRecord({mode,roomCode=null,a,b,now,bot=false}){
   return {id:uuid(),mode,room_code:roomCode,player0:a.id,player1:bot?null:b.id,name0:a.nickname,name1:b.nickname,
     rating0:a.rating,rating1:b.rating,bot:bot?1:0,state_json:JSON.stringify(state),revision:0,status:'active',turn_deadline:now+TURN_LIMIT,write_token:uuid(),created_at:now,updated_at:now};
 }
-function insertMatch(db,row,condition,args){return statement(db,`INSERT INTO bk_matches (${MATCH_COLUMNS.join(',')}) SELECT ${MATCH_COLUMNS.map(()=>'?').join(',')} WHERE ${condition}`,...MATCH_COLUMNS.map(k=>row[k]),...args);}
+function insertMatch(db,row,condition,args){return statement(db,`INSERT INTO bk_matches (${MATCH_COLUMNS.join(',')}) SELECT ${MATCH_COLUMNS.map(()=>'?').join(',')} WHERE (${condition}) AND ${NEW_MATCHES_ALLOWED_SQL}`,...MATCH_COLUMNS.map(k=>row[k]),...args,row.created_at,row.created_at);}
 function claimMatchStatements(db,row){
   return [
     statement(db,"UPDATE bk_occupancy SET kind='match',ref=?,updated_at=? WHERE player_id IN (?,?) AND EXISTS (SELECT 1 FROM bk_matches WHERE id=?)",row.id,row.created_at,row.player0,row.player1,row.id),
@@ -197,6 +198,7 @@ async function matchQueue(db,playerId,now){
     const o=await first(db,'SELECT * FROM bk_occupancy WHERE player_id=?',playerId);
     if(o?.kind==='match')return matchFor(db,o.ref,playerId,now);
     if(o?.kind!=='queue')return null;
+    if((await operatorPublicStatus(db,now)).maintenance)return null;
     const own=await first(db,'SELECT * FROM bk_queue WHERE player_id=? AND id=?',playerId,o.ref);
     if(!own)return null;
     const candidate=await first(db,"SELECT q.* FROM bk_queue q JOIN bk_occupancy o ON o.player_id=q.player_id AND o.kind='queue' AND o.ref=q.id WHERE q.player_id<>? AND q.last_seen>=? ORDER BY q.joined_at,q.id LIMIT 1",playerId,now-QUEUE_LIVE);
@@ -227,7 +229,8 @@ async function queueResponse(db,playerId,now,row=null){
   const o=await first(db,'SELECT * FROM bk_occupancy WHERE player_id=?',playerId);
   if(o?.kind==='match')return {ok:true,status:'matched',queue:null,match:await snapshot(db,await matchFor(db,o.ref,playerId,now),playerId,now)};
   const q=o?.kind==='queue'?await first(db,'SELECT * FROM bk_queue WHERE player_id=? AND id=?',playerId,o.ref):null;
-  return {ok:true,status:q?'waiting':'idle',queue:q?{id:q.id,joinedAt:q.joined_at,elapsedSeconds:Math.max(0,Math.floor((now-q.joined_at)/1000)),botAfterSeconds:BOT_WAIT/1000}:null,match:null};
+  const publicStatus=q?await operatorPublicStatus(db,now):null;
+  return {ok:true,status:q?'waiting':'idle',queue:q?{id:q.id,joinedAt:q.joined_at,elapsedSeconds:Math.max(0,Math.floor((now-q.joined_at)/1000)),botAfterSeconds:BOT_WAIT/1000,paused:publicStatus.maintenance}:null,match:null};
 }
 async function queueRoute(db,request,player,method,now){
   if(method==='DELETE'){
@@ -281,10 +284,11 @@ async function createRoom(db,request,player,now){
     const code=roomCode();
     try{
       const results=await db.batch([
-        statement(db,"INSERT INTO bk_rooms (code,host_id,status,host_deck_json,host_special_json,created_at,updated_at,expires_at) SELECT ?,?,'waiting',?,?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM bk_occupancy WHERE player_id=?)",code,player.id,storedDeck(selected),JSON.stringify(selected.special),now,now,now+ROOM_LIFE,player.id),
+        statement(db,`INSERT INTO bk_rooms (code,host_id,status,host_deck_json,host_special_json,created_at,updated_at,expires_at) SELECT ?,?,'waiting',?,?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM bk_occupancy WHERE player_id=?) AND ${NEW_MATCHES_ALLOWED_SQL}`,code,player.id,storedDeck(selected),JSON.stringify(selected.special),now,now,now+ROOM_LIFE,player.id,now,now),
         statement(db,"INSERT INTO bk_occupancy (player_id,kind,ref,updated_at) SELECT ?,'room',?,? WHERE EXISTS (SELECT 1 FROM bk_rooms WHERE code=? AND host_id=? AND status='waiting') AND NOT EXISTS (SELECT 1 FROM bk_occupancy WHERE player_id=?)",player.id,code,now,code,player.id,player.id)
       ]);
       if(changed(results[0]))return roomResponse(db,await loadRoom(db,code),player.id,now);
+      await assertNewMatchesAllowed(db,problem,now);
       const occupied=await occupancy(db,player.id,now);if(occupied)await busy(db,occupied,player.id,now);
     }catch(error){if(!/unique|constraint/i.test(error.message)||error instanceof ApiError)throw error;}
   }
@@ -310,6 +314,7 @@ async function joinRoom(db,request,player,code,now){
   room=await loadRoom(db,code);
   if(!changed(result[0])){
     if(room.status==='matched'&&(room.host_id===player.id||room.guest_id===player.id))return roomResponse(db,room,player.id,now);
+    await assertNewMatchesAllowed(db,problem,now);
     problem(409,'room_conflict','別の参加者が入室したか、ルームが閉じられました。');
   }
   return roomResponse(db,room,player.id,now);
@@ -429,7 +434,7 @@ export function createOnlineWorker({now=()=>Date.now()}={}){
       const account=await handleAccountRoute({db,request,env,now:time,path,method,problem,bodyJSON,profilePublic});
       if(account!==null)return respond(account);
       const player=await authenticateAccount(db,request,time,problem);
-      if(method==='POST'&&(path==='/api/queue'||path==='/api/rooms'||/^\/api\/rooms\/[A-Z2-9]{6}\/join$/.test(path)))await assertNewMatchesAllowed(db,problem);
+      if(method==='POST'&&(path==='/api/queue'||path==='/api/rooms'||/^\/api\/rooms\/[A-Z2-9]{6}\/join$/.test(path)))await assertNewMatchesAllowed(db,problem,time);
       if(path==='/api/queue'){
         if(!['GET','POST','DELETE'].includes(method))problem(405,'method_not_allowed','この操作は利用できません。');
         return respond(await queueRoute(db,request,player,method,time));

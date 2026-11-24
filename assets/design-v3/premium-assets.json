@@ -1,0 +1,59 @@
+{
+  "assets": [
+    {
+      "id": "bk01",
+      "src": "assets/design-v3/packs/bk01-cover.webp",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "268c67224b18ca83aae639d6502d8a233401c04c43e68df5737e0adc3ab01521",
+      "method": "built-in-imagegen",
+      "nativeDimensionsPreserved": true,
+      "alpha": true,
+      "bytes": 966664
+    },
+    {
+      "id": "bk02",
+      "src": "assets/design-v3/packs/bk02-cover.webp",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "6948f678b31581f1375b6c2f6a6b5d61dd8e7aa49f5edb7ebf4a6fe8f2d0be29",
+      "method": "built-in-imagegen",
+      "nativeDimensionsPreserved": true,
+      "alpha": true,
+      "bytes": 785492
+    },
+    {
+      "id": "bk03",
+      "src": "assets/design-v3/packs/bk03-cover.webp",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "69b352edaae5685f02797bab20ac90dbfab7f7c31a4b9d6f203baf3955054bfa",
+      "method": "built-in-imagegen",
+      "nativeDimensionsPreserved": true,
+      "alpha": true,
+      "bytes": 874034
+    },
+    {
+      "id": "bk04",
+      "src": "assets/design-v3/packs/bk04-cover.webp",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "5f3eaed01d0544bd8c012cd9fbbbbca05d51e5920668c333c77107a0910456dc",
+      "method": "built-in-imagegen",
+      "nativeDimensionsPreserved": true,
+      "alpha": true,
+      "bytes": 876510
+    },
+    {
+      "id": "realm",
+      "src": "assets/design-v3/backgrounds/realm-court.webp",
+      "width": 1672,
+      "height": 941,
+      "sha256": "900aa2545102b86ffdc21e49449d62efbec8a1fafd57ac4508d22aeab7b60f95",
+      "method": "built-in-imagegen",
+      "nativeDimensionsPreserved": true,
+      "alpha": false,
+      "bytes": 594514
+    }
+  ]
+}

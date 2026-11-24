@@ -20,10 +20,10 @@ const CHAPTERS = Object.freeze([
     id: 'cards', label: 'カード', heading: '四つのカードを使い分ける', summary: 'カードはすべて縦向き。種類ごとに役割と配置が変わります。',
     panels: [
       { title: 'カードの種類', icon: 'beast', rows: [
-        ['通常魔獣', '攻撃力と守備力を持つ、アタック型・ディフェンス型のカード。第一弾・第二弾に各512枚、合計1,024枚を収録しています。'],
-        ['ミラクル', '威力カード・再生カードの計512枚。「合成」は再生カードです。使用時にダメージ・強化・回復などを発揮。対象が必要なら、発動後に光る相手や味方を選びます。'],
-        ['ギミック', '反射カード・魔獣サポートカードの計512枚。相手の攻撃や次の自分のターンに自動で発動し、それまでは相手にカード名を見せません。'],
-        ['合成魔獣', '特殊デッキに入る256枚。ミラクル「合成」で特殊ゾーンから召喚する、アタック・ディフェンス型の魔獣です。'],
+        ['通常魔獣', '攻撃力と守備力を持つ、アタック型・ディフェンス型のカード。第一弾〜第四弾に各512枚、合計2,048枚を収録しています。'],
+        ['ミラクル', '威力カード・再生カードの計1,024枚。「合成」は再生カードです。使用時にダメージ・強化・回復などを発揮。対象が必要なら、発動後に光る相手や味方を選びます。'],
+        ['ギミック', '反射カード・魔獣サポートカードの計1,024枚。相手の攻撃や次の自分のターンに自動で発動し、それまでは相手にカード名を見せません。'],
+        ['合成魔獣', '特殊デッキに入る512枚。ミラクル「合成」で特殊ゾーンから召喚する、アタック・ディフェンス型の魔獣です。'],
       ] },
       { title: '場での配置', icon: 'book', rows: [
         ['アタック型', '出場ゾーンの枠より、相手側へ少し前に置きます。'],
@@ -67,11 +67,27 @@ const CHAPTERS = Object.freeze([
     ],
   },
   {
+    id: 'expansions', label: '新系統', heading: '共鳴を重ね、星界を拓く', summary: '第三弾は既存のデッキを支援。第四弾は独立した4系統を収録。',
+    panels: [
+      { title: '第三弾「継承の共鳴」', icon: 'shield', rows: [
+        ['継承支援', '第一弾・第二弾の味方魔獣を強化し、減った守備力を回復。対象となる収録弾はカード本文で確認できます。'],
+        ['再起と共鳴', 'お墓の低コスト魔獣を回収。第一弾と第二弾の魔獣を一緒に並べることで追加効果も生まれます。'],
+        ['構築例', 'ショップに混合デッキ4種類を用意。必要枚数をすべて所持すると、新しい保存枠へ読み込めます。'],
+      ] },
+      { title: '第四弾「星界の創世」', icon: 'spark', rows: [
+        ['星巡', '星巡の魔獣を異なるオリジンで展開。最大3種類までを参照し、強化や結界を増幅します。'],
+        ['残響', 'お墓の残響ミラクルを最大3枚まで参照。今まさに使用しているカード自身は数えません。'],
+        ['命誓', 'ハートポイント200を支払い、味方の強化や大きな効果へ。残り200以下では支払えません。'],
+        ['封機', 'お墓の封機の魔獣1枚を異世界へ送って効果を増幅。異世界のカードは再利用できません。'],
+      ], note: '系統の参照は第四弾の該当系統だけ。4系統それぞれに第四弾のみで組める構築例があります。' },
+    ],
+  },
+  {
     id: 'systems', label: 'システム', heading: 'カードを集め、対戦を続ける', summary: 'スターター、パック、オンライン対戦、保存について。',
     panels: [
       { title: 'カードを集める', icon: 'treasure', rows: [
         ['スターター', '初回に4種類のうち1種類だけ無料で受け取ります。残りは各300秘宝で購入でき、必要なカードをすべて所持した場合に読み込めます。'],
-        ['収録パック', '第一弾「六源の覚醒」と第二弾「王源の継承」。各弾は通常魔獣512枚・合成魔獣128枚・ミラクル256枚・ギミック256枚の1,152枚、合わせて全2,304枚です。'],
+        ['収録パック', '第一弾「六源の覚醒」・第二弾「王源の継承」・第三弾「継承の共鳴」・第四弾「星界の創世」。各弾は通常魔獣512枚・合成魔獣128枚・ミラクル256枚・ギミック256枚の1,152枚、合わせて全4,608枚です。'],
         ['パック', '100秘宝で12枚入りパックを開封できます。1枚はレア以上が確定。レガリアを含め、手に入れたカードはどのモードでも使えます。'],
       ] },
       { title: '対戦と保存', icon: 'book', rows: [
@@ -101,6 +117,6 @@ export function rulebookView({ title, esc, icon, section = 'basics' } = {}) {
       <header class="rulebook-sheet-heading"><h2 id="rulebook-chapter-title"><span>第${index + 1}章</span>${escape(chapter.heading)}</h2><p>${escape(chapter.summary)}</p></header>
       <div class="rulebook-spread">${chapter.panels.map(panel => `<article class="rulebook-panel"><h3><span aria-hidden="true">${glyph(panel.icon)}</span>${escape(panel.title)}</h3><dl class="rulebook-facts">${panel.rows.map(([label, text]) => `<div><dt>${escape(label)}</dt><dd>${escape(text)}</dd></div>`).join('')}</dl>${panel.note ? `<p class="rulebook-note">${escape(panel.note)}</p>` : ''}</article>`).join('')}</div>
     </section>
-    <footer class="rulebook-footer"><p class="rulebook-reference"><span class="rulebook-page-number" aria-label="全5章の第${index + 1}章">${pageNumber}<small> / 05</small></span><a href="about.html">ゲームの紹介・よくある質問</a></p><div class="rulebook-actions"><button type="button" class="btn" data-nav="deck">デッキを選ぶ</button><button type="button" class="btn primary" data-action="tutorial-battle">${glyph('sword')}見習いCPUと対戦</button></div></footer>
+    <footer class="rulebook-footer"><p class="rulebook-reference"><span class="rulebook-page-number" aria-label="全${CHAPTERS.length}章の第${index + 1}章">${pageNumber}<small> / ${String(CHAPTERS.length).padStart(2,'0')}</small></span><a href="about.html">ゲームの紹介・よくある質問</a></p><div class="rulebook-actions"><button type="button" class="btn" data-nav="deck">デッキを選ぶ</button><button type="button" class="btn primary" data-action="tutorial-battle">${glyph('sword')}見習いCPUと対戦</button></div></footer>
   </div>`;
 }

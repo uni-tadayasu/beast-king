@@ -17,13 +17,13 @@ const record = (row, winner, seat, turns) => {
   else if(winner==='draw')row.draws++;
   else row.unfinished++;
 };
-export async function runBalanceBenchmark({sourceRoot=resolve(dirname(fileURLToPath(import.meta.url)),'..'), presetSourceRoot, seeds=32, seedBase=BALANCE_SEED, opening='current'}={}) {
+export async function runBalanceBenchmark({sourceRoot=resolve(dirname(fileURLToPath(import.meta.url)),'..'), presetSourceRoot, seeds=32, seedBase=BALANCE_SEED, opening='current', expansions=true}={}) {
   if(!Number.isInteger(seeds)||seeds<1||seeds>256)throw new Error('seeds must be an integer from 1 to 256');
   if(!Number.isInteger(seedBase)||seedBase<1||seedBase>0xffffffff)throw new Error('seed must be an unsigned, nonzero 32-bit integer');
   if(!['current','legacy'].includes(opening))throw new Error('opening must be current or legacy');
   const load = file => import(pathToFileURL(resolve(sourceRoot,file)).href);
-  const [{CARDS,DECK_PRESETS,validateDeck,validateSpecialDeck},{newGame,runAutomatedTurn},{OPERATOR_DECK}] = await Promise.all([load('catalog.js'),load('engine.js'),load('operator-deck.js')]);
-  const presets=presetSourceRoot?(await import(pathToFileURL(resolve(presetSourceRoot,'catalog.js')).href)).DECK_PRESETS:DECK_PRESETS;
+  const [{CARDS,DECK_PRESETS,EXPANSION_DECKS=[],validateDeck,validateSpecialDeck},{newGame,runAutomatedTurn},{OPERATOR_DECK}] = await Promise.all([load('catalog.js'),load('engine.js'),load('operator-deck.js')]);
+  const presets=presetSourceRoot?(await import(pathToFileURL(resolve(presetSourceRoot,'catalog.js')).href)).DECK_PRESETS:[...DECK_PRESETS,...(expansions?EXPANSION_DECKS:[])];
   const probes=[{...OPERATOR_DECK,id:'operator-revision-2'},...BALANCE_PROBES];
   for(const d of [...presets,...probes])if(!validateDeck(d.ids).valid||!validateSpecialDeck(d.specialIds).valid)throw new Error(`Illegal benchmark deck: ${d.id}`);
   const pairs=[];
@@ -69,9 +69,9 @@ export async function runBalanceBenchmark({sourceRoot=resolve(dirname(fileURLToP
     return [probe.id,{...row,winRate:Number((row.wins/row.games).toFixed(4)),meanTurns:Number((row.turns/row.games).toFixed(2))}];
   }));
   const stats=group=>({count:group.length,meanCost:Number((group.reduce((s,c)=>s+c.cost,0)/group.length).toFixed(3)),meanAttack:Math.round(group.reduce((s,c)=>s+c.attack,0)/group.length),meanDefense:Math.round(group.reduce((s,c)=>s+c.hp,0)/group.length)});
-  const hashes=Object.fromEntries(await Promise.all(['catalog.js','catalog-balance.js','engine.js','operator-deck.js'].map(async file=>[file,await readFile(resolve(sourceRoot,file)).then(bytes=>createHash('sha256').update(bytes).digest('hex')).catch(error=>{if(error.code==='ENOENT')return null;throw error;})])));
+  const hashes=Object.fromEntries(await Promise.all(['catalog.js','catalog-balance.js','additional-set-data.js','expansion-recipes.js','engine.js','operator-deck.js'].map(async file=>[file,await readFile(resolve(sourceRoot,file)).then(bytes=>createHash('sha256').update(bytes).digest('hex')).catch(error=>{if(error.code==='ENOENT')return null;throw error;})])));
   return {
-    methodology:{seed:seedBase,seedsPerPair:seeds,seatsPerSeed:2,maxTurns:200,ai:'production hard CPU; source hashes identify the AI and catalog version',opening:opening==='legacy'?'legacy unmarked schedule':'source default',historicalPresets:Boolean(presetSourceRoot),totalGames:pairs.reduce((n,p)=>n+p.games,0),hashes},
+    methodology:{seed:seedBase,seedsPerPair:seeds,seatsPerSeed:2,maxTurns:200,ai:'production hard CPU; source hashes identify the AI and catalog version',opening:opening==='legacy'?'legacy unmarked schedule':'source default',historicalPresets:Boolean(presetSourceRoot),expansionRecipes:expansions&&!presetSourceRoot?EXPANSION_DECKS.length:0,totalGames:pairs.reduce((n,p)=>n+p.games,0),hashes},
     overall:{unfinished:pairs.reduce((n,p)=>n+p.unfinished,0),draws:pairs.reduce((n,p)=>n+p.draws,0),firstPlayerWins:pairs.reduce((n,p)=>n+p.firstWins+p.secondLosses,0),secondPlayerWins:pairs.reduce((n,p)=>n+p.secondWins+p.firstLosses,0),meanTurns:Number((pairs.reduce((n,p)=>n+p.turns,0)/pairs.reduce((n,p)=>n+p.games,0)).toFixed(2))},
     catalog:{cards:CARDS.length,byType:Object.fromEntries(['beast','miracle','gimmick','fusion'].map(type=>[type,stats(CARDS.filter(c=>c.type===type))])),byModel:Object.fromEntries(['attack','defense'].map(model=>[model,stats(CARDS.filter(c=>c.type==='beast'&&c.model===model))])),oneCostGuardEngines:CARDS.filter(c=>c.type==='beast'&&c.cost===1&&c.keywords.includes('guard')&&['draw','buff_all'].includes(c.effect.kind)).length},
     starters:summary(presetIds.slice(0,4)),presets:summary(presetIds),probes:probeSummary,pairs,
@@ -81,7 +81,7 @@ export async function runBalanceBenchmark({sourceRoot=resolve(dirname(fileURLToP
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   const args=process.argv.slice(2);
   const option=name=>args.find(arg=>arg.startsWith(`--${name}=`))?.slice(name.length+3);
-  const result=await runBalanceBenchmark({sourceRoot:option('source')?resolve(option('source')):undefined,presetSourceRoot:option('presets')?resolve(option('presets')):undefined,seeds:option('seeds')?Number(option('seeds')):32,seedBase:option('seed')?Number(option('seed')):BALANCE_SEED,opening:option('opening')||'current'});
+  const result=await runBalanceBenchmark({sourceRoot:option('source')?resolve(option('source')):undefined,presetSourceRoot:option('presets')?resolve(option('presets')):undefined,seeds:option('seeds')?Number(option('seeds')):32,seedBase:option('seed')?Number(option('seed')):BALANCE_SEED,opening:option('opening')||'current',expansions:option('expansions')!=='false'});
   if(option('output'))await writeFile(resolve(option('output')),JSON.stringify(result,null,2)+'\n');
   console.log(JSON.stringify({methodology:result.methodology,overall:result.overall,catalog:result.catalog,starters:result.starters,presets:result.presets,probes:result.probes,probePairs:result.pairs.filter(p=>['operator-revision-2','legacy-exploit','midrange-probe'].includes(p.a)&&['operator-revision-2','legacy-exploit','midrange-probe'].includes(p.b))},null,2));
 }

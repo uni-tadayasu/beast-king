@@ -149,7 +149,7 @@ test('each advertised rarity range reaches that rarity in a regular slot', () =>
   }
 });
 
-for(const packId of ['BK01','BK02']) test(packId+' draws every one of its 1152 cards including all 128 fusion beasts', () => {
+for(const packId of ['BK01','BK02','BK03','BK04']) test(packId+' draws every one of its 1152 cards including all 128 fusion beasts', () => {
   const mainCards = getCardsForSet(packId);
   const reached = new Set();
   const midpoints = {};

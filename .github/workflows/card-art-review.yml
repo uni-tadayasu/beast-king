@@ -7,6 +7,9 @@ on:
       - 'scripts/review-card-art.py'
       - '.github/workflows/card-art-review.yml'
       - 'assets/design-v2/cards/individual/**'
+      - 'assets/design-v3/cards/**'
+      - 'card-art-expansion.js'
+      - 'card-art-overrides.js'
 permissions:
   contents: read
 jobs:
@@ -19,7 +22,7 @@ jobs:
           python-version: '3.12'
       - name: Install image reader
         run: python -m pip install Pillow
-      - name: Build all 2,304 visual review thumbnails
+      - name: Build all 4,608 visual review thumbnails
         run: python scripts/review-card-art.py --output "${{ runner.temp }}/bk-art-review"
       - uses: actions/upload-artifact@v4
         with:

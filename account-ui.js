@@ -1,3 +1,4 @@
+import {CARDS} from './catalog.js?v=20261124-26';
 import {accountSyncView,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js?v=20261124-26';
 
 /** Account dialogs use the same server identity as online battles. No role or
@@ -6,8 +7,9 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   const byId=id=>documentImpl.getElementById(id);
   const value=id=>byId(id)?.value?.trim()||'';
   let account={link:null,devices:[],busy:false,error:''};
-  let inbox={messages:[],gifts:[],events:[],busy:false,error:''};
-  let operator={snapshot:null,eventDraft:null,busy:false,error:''};
+  const freshInbox=()=>({messages:[],gifts:[],events:[],tab:'gift',page:0,selected:null,bodyPage:0,counts:{},busy:false,error:''});
+  const freshOperator=()=>({snapshot:null,tab:'overview',records:null,page:0,query:'',draft:null,step:0,rewardPage:0,rewardMatches:[],busy:false,error:''});
+  let inbox=freshInbox(),operator=freshOperator();
   let operatorDeck=null,operatorDeckOwner=null,deckRequest=null;
   let brandCount=0,brandAt=0,operatorTimer=null;
   const pending=new Map();
@@ -40,7 +42,7 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   function inboxModal(){dialog('inbox','お知らせ・プレゼント',playerInboxView({...inbox,esc,icon,getCard}),true);}
   function operatorModal({preserve=true,clearPrefix=''}={}){
     const saved=preserve&&kind()==='operator'?rememberFields():null;
-    dialog('operator','運営管理',operatorDashboardView({...operator,esc,icon}),true);
+    dialog('operator','運営管理',operatorDashboardView({...operator,esc,icon,getCard}),true);
     if(saved)restoreFields(saved,clearPrefix);
   }
   function gateModal(error=''){dialog('operator-gate','アクセス確認',operatorGateView({esc,icon,error,busy:operator.busy}));}
@@ -91,7 +93,7 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     await accountAction(async()=>{
       const deviceName=/Android|iPhone|iPad|Mobile/i.test(globalThis.navigator?.userAgent||'')?'スマホ・タブレット':'PCブラウザ';
       await beforeLink?.();try{await cloud.claimDeviceLink(code,deviceName);}finally{await afterLink?.();}
-      account.link=null;operator={snapshot:null,eventDraft:null,busy:false,error:''};acceptOperatorDeck(null);deckRequest=null;pending.clear();
+      account.link=null;operator=freshOperator();acceptOperatorDeck(null);deckRequest=null;pending.clear();
       const input=byId('device-link-code');if(input)input.value='';
       await loadDevices();render();toast('連携しました。同じプレイヤーのデータを読み込みました。');
     });
@@ -102,14 +104,23 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     await accountAction(async()=>{await client.revokeSession(id);await loadDevices();toast('選んだ端末の連携を解除しました。');});
   }
   async function loadInbox(){
-    const [letters,events]=await Promise.all([client.getInbox(),client.getEvents()]);
-    inbox.messages=letters.messages||[];inbox.gifts=letters.gifts||[];inbox.events=events.events||[];
+    const owner=inbox,tab=inbox.tab,page=inbox.page;
+    const [letters,events]=await Promise.all([client.getInbox({kind:tab==='event'?'gift':tab,page:tab==='event'?0:page,pageSize:4}),client.getEvents({page:tab==='event'?page:0,pageSize:4})]);
+    if(inbox!==owner)return;
+    Object.assign(inbox,{messages:letters.messages||[],gifts:letters.gifts||[],events:events.events||[],counts:letters.counts||{},pagination:letters.pagination,eventPagination:events.pagination});
   }
   async function openInbox(){
-    inbox.busy=true;inbox.error='';inboxModal();
-    try{await ensureReady();await loadInbox();}
-    catch(error){inbox.error=safeError(error);}
-    finally{inbox.busy=false;if(kind()==='inbox')inboxModal();}
+    const owner=inbox;inbox.busy=true;inbox.error='';inboxModal();
+    try{await ensureReady();if(inbox===owner)await loadInbox();}
+    catch(error){if(inbox===owner)inbox.error=safeError(error);}
+    finally{if(inbox===owner){inbox.busy=false;if(kind()==='inbox')inboxModal();}}
+  }
+  async function openInboxItem(id){
+    if(inbox.busy)return;const owner=inbox;
+    inbox.selected=id;inbox.bodyPage=0;inbox.error='';inboxModal();
+    if(inbox.tab==='event')return;
+    try{await client.markInboxRead(id);if(inbox===owner){await loadInbox();if(kind()==='inbox')inboxModal();}}
+    catch(error){if(inbox===owner){inbox.error=safeError(error);if(kind()==='inbox')inboxModal();}}
   }
   async function claimReward(id,event=false){
     if(inbox.busy||disallowDuringBattle())return;
@@ -134,12 +145,15 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   }
   async function openOperator(){
     if(operator.busy)return;
-    operator.busy=true;operator.error='';
+    const owner=operator;operator.busy=true;operator.error='';
     try{
-      await ensureReady();
-      const result=await client.getOperator();operator.snapshot=result.operator;acceptOperatorDeck(result.operator?.deck);operator.busy=false;operatorModal({preserve:false});scheduleOperatorRefresh();
+      await ensureReady();if(operator!==owner)return;
+      const result=await client.getOperator();if(operator!==owner)return;
+      operator.snapshot=result.operator;if(operator.tab==='maintenance')operator.settingsDraft=structuredClone(result.operator.settings);
+      await loadOperatorRecords();if(operator!==owner)return;
+      acceptOperatorDeck(result.operator?.deck);operator.busy=false;operatorModal({preserve:false});scheduleOperatorRefresh();
     }catch(error){
-      operator.snapshot=null;operator.busy=false;
+      if(operator!==owner)return;operator.snapshot=null;operator.busy=false;
       if(error?.status===401||error?.status===404)acceptOperatorDeck(null);
       if(error?.payload?.setupAvailable===true)gateModal();
       else toast(error?.status===404?'この操作は利用できません。':safeError(error),true);
@@ -207,47 +221,95 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       toast(safeError(error),true);
     }finally{if(operator===owner)operator.busy=false;}
   }
-  function recipient(prefix){
-    if(value(prefix+'-audience')==='all')return 'all';
-    const target=value(prefix+'-player');if(!target)throw new Error('配布先のプレイヤーIDを入力してください。');return target;
+  function captureDraft(){
+    const draft=operator.draft;if(!draft)return;
+    const set=(id,key)=>{const field=byId(id);if(field)draft[key]=field.value;};
+    set('operator-editor-title','title');set('operator-editor-body','body');set('operator-editor-status','status');
+    if(byId('operator-editor-target-mode')&&!draft.deliveryLocked)draft.target=value('operator-editor-target-mode')==='all'?'all':value('operator-editor-target');
+    for(const [id,key] of [['operator-editor-start',['event','notice'].includes(draft.kind)?'startAt':'publishAt'],['operator-editor-end',['event','notice'].includes(draft.kind)?'endAt':'expiresAt']]){
+      if(byId(id)){const raw=value(id),time=raw?parseJapanDate(raw):null;if(raw&&!Number.isFinite(time))throw new Error('日時を日本時間で正しく入力してください。');draft[key]=time;}
+    }
+    if(byId('operator-editor-treasure')&&!draft.deliveryLocked)draft.treasure=Number(value('operator-editor-treasure')||0);
+    if(byId('operator-editor-priority'))draft.priority=Number(value('operator-editor-priority')||0);
+    if(!draft.deliveryLocked)for(const [index,card] of (draft.cards||[]).entries())if(byId('operator-reward-count-'+index))card.count=Number(value('operator-reward-count-'+index));
   }
-  function reward(prefix){
-    const treasure=Number(value(prefix+'-treasure')||0),cardId=value(prefix+'-card-id').toUpperCase(),count=Number(value(prefix+'-card-count')||1);
-    if(!Number.isSafeInteger(treasure)||treasure<0||treasure>100000)throw new Error('秘宝は0〜100,000の整数で指定してください。');
-    if(cardId&&(!getCard(cardId)||!Number.isInteger(count)||count<1||count>3))throw new Error('有効なカードIDと1〜3枚の枚数を指定してください。');
-    return {treasure,cards:cardId?[{cardId,count}]:[]};
-  }
-  function mutation(kind,body){
-    const fingerprint=JSON.stringify(body),old=pending.get(kind);
+  function changeEditor(operation){try{captureDraft();operator.error='';operation();operatorModal({preserve:false});}catch(error){operator.error=safeError(error);operatorModal();}}
+  function mutation(type,body){
+    const fingerprint=JSON.stringify(body),old=pending.get(type);
     if(old?.fingerprint===fingerprint)return {...body,mutationId:old.id};
-    const id=crypto.randomUUID();pending.set(kind,{id,fingerprint});return {...body,mutationId:id};
+    const id=crypto.randomUUID();pending.set(type,{id,fingerprint});return {...body,mutationId:id};
+  }
+  const listKey=type=>({message:'messages',gift:'gifts',event:'events',notice:'notices'}[type]);
+  function findContent(type,id){return [...(operator.records?.items||[]),...(operator.snapshot?.[listKey(type)]||[])].find(row=>row.id===id);}
+  async function loadOperatorRecords(){
+    if(['overview','maintenance'].includes(operator.tab))return;
+    const owner=operator,tab=operator.tab;
+    const result=await client.getOperatorRecords({kind:tab,page:operator.page,pageSize:4,query:operator.query||''});
+    if(operator===owner&&operator.tab===tab)operator.records=result;
+  }
+  async function selectOperatorTab(tab,page=0){
+    if(operator.busy)return;
+    operator.tab=tab;operator.page=page;operator.draft=null;if(tab==='maintenance')operator.settingsDraft=structuredClone(operator.snapshot?.settings||{});operator.receiptItem=null;operator.receipts=null;operator.error='';operator.busy=true;operatorModal({preserve:false});
+    const owner=operator;
+    try{await loadOperatorRecords();}catch(error){if(operator===owner)operator.error=safeError(error);}
+    finally{if(operator===owner){operator.busy=false;if(kind()==='operator')operatorModal({preserve:false});}}
+  }
+  function newContent(type,target='all',source=null){
+    const now=operator.snapshot?.serverTime||Date.now();
+    operator.tab=type;operator.step=0;operator.previewPage=0;operator.rewardPage=0;operator.rewardMatches=[];operator.rewardQuery='';operator.error='';operator.receiptItem=null;
+    operator.draft={kind:type,title:'',body:'',status:'draft',target,treasure:0,cards:[],publishAt:null,startAt:type==='event'?now:null,endAt:type==='event'?now+86400000:null,expiresAt:null,priority:0,...(source?structuredClone(source):{})};
+    if(source){delete operator.draft.id;operator.draft.revision=0;operator.draft.status='draft';operator.draft.deliveryLocked=false;operator.draft.publishAt=null;operator.draft.startAt=type==='event'?now:null;operator.draft.endAt=type==='event'?now+86400000:null;operator.draft.expiresAt=null;}
+    operatorModal({preserve:false});
+  }
+  function editContent(type,id){const row=findContent(type,id);if(!row)return;operator.tab=type;operator.draft={...structuredClone(row),kind:type};operator.step=0;operator.previewPage=0;operator.rewardPage=0;operator.rewardMatches=[];operator.error='';operatorModal({preserve:false});}
+  async function loadReceipts(type,id,page=0){
+    const item=findContent(type,id)||operator.receiptItem;if(!item||operator.busy)return;
+    const owner=operator;operator.busy=true;operator.receiptItem={...item,kind:type};operator.draft=null;operatorModal({preserve:false});
+    try{const result=await client.getOperatorRecords({kind:type==='message'?'reads':'claims',itemId:id,itemType:type,page,pageSize:4});if(operator===owner)operator.receipts=result;}
+    catch(error){if(operator===owner)operator.error=safeError(error);}
+    finally{if(operator===owner){operator.busy=false;if(kind()==='operator')operatorModal({preserve:false});}}
+  }
+  function draftPayload(){
+    captureDraft();const draft=operator.draft;
+    if(!draft||!draft.title?.trim())throw new Error('タイトルを入力してください。');
+    const body={...(draft.id?{id:draft.id,revision:draft.revision}:{}),title:draft.title.trim(),body:draft.body||'',status:draft.status};
+    if(draft.kind!=='notice'){if(!draft.target)throw new Error('個別配信のプレイヤーIDを入力してください。');body.target=draft.target;}
+    if(['event','notice'].includes(draft.kind)){
+      draft.startAt??=Date.now();body.startAt=draft.startAt;body.endAt=draft.endAt??null;
+      if(draft.kind==='event'&&(!Number.isFinite(body.endAt)||body.endAt<=body.startAt))throw new Error('イベントの終了を開始より後に指定してください。');
+    }else {body.publishAt=draft.publishAt??null;body.expiresAt=draft.expiresAt??null;}
+    if(draft.kind==='gift'||draft.kind==='event'){
+      if(!Number.isSafeInteger(draft.treasure)||draft.treasure<0||draft.treasure>100000)throw new Error('秘宝は0〜100,000の整数で指定してください。');
+      if(draft.cards.some(card=>!getCard(card.cardId)||!Number.isInteger(card.count)||card.count<1||card.count>3))throw new Error('カードの枚数は1〜3枚で指定してください。');
+      if(draft.kind==='gift'&&draft.status==='published'&&!draft.treasure&&!draft.cards.length)throw new Error('配布する秘宝かカードを指定してください。');
+      Object.assign(body,{treasure:draft.treasure,cards:draft.cards.map(({cardId,count})=>({cardId,count}))});
+    }
+    if(draft.kind==='notice')body.priority=draft.priority||0;
+    return body;
   }
   async function operate(type){
     if(operator.busy||!operator.snapshot||kind()!=='operator')return;
     let body;
     try{
-      if(type==='settings')body={notice:value('operator-notice'),maintenance:byId('operator-maintenance')?.checked===true};
-      if(type==='message')body={title:value('operator-message-title'),body:value('operator-message-body'),target:recipient('operator-message')};
-      if(type==='gift')body={title:value('operator-gift-title'),body:value('operator-gift-body'),target:recipient('operator-gift'),...reward('operator-gift')};
-      if(type==='event'){
-        const startAt=parseJapanDate(value('operator-event-start')),endAt=parseJapanDate(value('operator-event-end'));
-        if(!Number.isFinite(startAt)||!Number.isFinite(endAt)||endAt<=startAt)throw new Error('開始・終了日時を日本時間で指定し、終了を開始より後にしてください。');
-        body={...(value('operator-event-id')?{id:value('operator-event-id')}:{}),title:value('operator-event-title'),body:value('operator-event-body'),startAt,endAt,status:value('operator-event-status'),...reward('operator-event')};
+      if(type==='settings'){
+        const readDate=id=>{const raw=value(id),time=raw?parseJapanDate(raw):null;if(raw&&!Number.isFinite(time))throw new Error('メンテナンス日時を確認してください。');return time;};
+        body={revision:(operator.settingsDraft||operator.snapshot.settings).revision,notice:value('operator-notice'),maintenance:byId('operator-maintenance')?.checked===true,maintenanceMessage:value('operator-maintenance-message'),maintenanceStartAt:readDate('operator-maintenance-start'),maintenanceEndAt:readDate('operator-maintenance-end')};
+        operator.settingsDraft={...(operator.settingsDraft||operator.snapshot.settings),...body};
+      }else{
+        if(!operator.draft)return;if(operator.step!==3){changeEditor(()=>operator.step=3);return;}
+        type=operator.draft.kind;body=draftPayload();
       }
-      if(type!=='settings'&&(!body?.title||!body.body))throw new Error('タイトルと本文を入力してください。');
     }catch(error){operator.error=safeError(error);operatorModal();return;}
-    operator.busy=true;operator.error='';operatorModal();
-    let completed=false;
+    const owner=operator;operator.busy=true;operator.error='';operatorModal();
     try{
-      const methods={settings:'updateOperatorSettings',message:'sendOperatorMessage',gift:'sendOperatorGift',event:'saveOperatorEvent'};
-      const result=await client[methods[type]](type==='settings'?body:mutation(type,body));
-      pending.delete(type);completed=true;
-      operator.snapshot=result.operator||(await client.getOperator()).operator;
-      setPublicNotice?.(operator.snapshot?.settings||{});
-      if(type==='event')operator.eventDraft=null;
-      toast({settings:'お知らせと受付設定を保存しました。',message:'システムメッセージを送信しました。',gift:'プレゼントを配布しました。',event:'イベントを保存しました。'}[type]);
-    }catch(error){operator.error=safeError(error);}
-    finally{operator.busy=false;if(kind()==='operator')operatorModal({clearPrefix:completed&&type!=='settings'?'operator-'+type+'-':''});}
+      const methods={settings:'updateOperatorSettings',message:'sendOperatorMessage',gift:'sendOperatorGift',event:'saveOperatorEvent',notice:'saveOperatorNotice'};
+      const result=await client[methods[type]](mutation(type,body));if(operator!==owner)return;
+      pending.delete(type);operator.snapshot=result.operator;if(type==='settings')operator.settingsDraft=structuredClone(result.operator.settings);operator.draft=null;operator.status=type==='settings'?'受付設定を保存しました。':body.status==='draft'?'下書きを保存しました。':body.status==='ended'?'公開を終了しました。':'公開・予約設定を保存しました。';
+      try{setPublicNotice?.(await client.getPublicStatus());}catch{}
+      if(type!=='settings'){operator.page=0;try{await loadOperatorRecords();}catch{operator.records=null;}}
+      toast(operator.status);
+    }catch(error){if(operator===owner)operator.error=safeError(error);}
+    finally{if(operator===owner){operator.busy=false;if(kind()==='operator')operatorModal({preserve:false});}}
   }
   function keepLocalConfirmation(){
     if(disallowDuringBattle())return;
@@ -265,19 +327,41 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       case'cloud-conflict-local-confirm':accountModal(false);void accountAction(async()=>{await cloud.keepLocal();toast('この端末のデータをクラウドへ保存しました。');});break;
       case'cloud-revoke-session':void revokeSession(element.dataset.sessionId||element.dataset.id);break;
       case'inbox-open':case'inbox-refresh':void openInbox();break;
+      case'inbox-tab':inbox.tab=element.dataset.tab;inbox.page=0;inbox.selected=null;void openInbox();break;
+      case'inbox-page-prev':case'inbox-page-next':inbox.page=Math.max(0,inbox.page+(action.endsWith('next')?1:-1));void openInbox();break;
+      case'inbox-item-open':void openInboxItem(element.dataset.id);break;
+      case'inbox-item-back':inbox.selected=null;inboxModal();break;
+      case'inbox-body-prev':case'inbox-body-next':inbox.bodyPage=Math.max(0,inbox.bodyPage+(action.endsWith('next')?1:-1));inboxModal();break;
       case'inbox-claim':void claimReward(element.dataset.id);break;
       case'event-claim':void claimReward(element.dataset.id,true);break;
+      case'operator-open':void openOperator();break;
       case'operator-activate':void activate();break;
       case'operator-regalia-open':openRegalia();break;
       case'operator-regalia-claim':void claimRegalia();break;
       case'operator-regalia-back':if(!operator.busy&&operator.snapshot&&kind()==='operator-regalia'){operatorModal({preserve:false});scheduleOperatorRefresh();}break;
       case'operator-deck-use':void equipOperatorDeck();break;
       case'operator-save':void operate('settings');break;
-      case'operator-message-send':void operate('message');break;
-      case'operator-gift-send':void operate('gift');break;
-      case'operator-event-save':void operate('event');break;
-      case'operator-event-edit':operator.eventDraft=operator.snapshot?.events?.find(item=>item.id===element.dataset.id)||null;operator.error='';operatorModal({preserve:false});documentImpl.querySelector('[data-operator-section="events"]')?.setAttribute('open','');break;
-      case'operator-event-new':operator.eventDraft=null;operator.error='';operatorModal({preserve:false});break;
+      case'operator-tab':void selectOperatorTab(element.dataset.tab);break;
+      case'operator-page-prev':case'operator-page-next':void selectOperatorTab(operator.tab,Math.max(0,operator.page+(action.endsWith('next')?1:-1)));break;
+      case'operator-player-search':operator.query=value('operator-player-search');void selectOperatorTab('player');break;
+      case'operator-player-mail':newContent('message',element.dataset.id);break;
+      case'operator-player-gift':newContent('gift',element.dataset.id);break;
+      case'operator-content-new':newContent(element.dataset.kind);break;
+      case'operator-content-edit':editContent(element.dataset.kind,element.dataset.id);break;
+      case'operator-content-copy':newContent(element.dataset.kind,'all',findContent(element.dataset.kind,element.dataset.id));break;
+      case'operator-content-receipts':void loadReceipts(element.dataset.kind,element.dataset.id);break;
+      case'operator-receipts-prev':case'operator-receipts-next':void loadReceipts(operator.receiptItem.kind,operator.receiptItem.id,Math.max(0,(operator.receipts?.page||0)+(action.endsWith('next')?1:-1)));break;
+      case'operator-receipts-back':operator.receiptItem=null;operator.receipts=null;operatorModal({preserve:false});break;
+      case'operator-editor-cancel':void selectOperatorTab(operator.tab);break;
+      case'operator-editor-step':changeEditor(()=>operator.step=Number(element.dataset.step));break;
+      case'operator-editor-prev':case'operator-editor-next':changeEditor(()=>operator.step=Math.max(0,Math.min(3,operator.step+(action.endsWith('next')?1:-1))));break;
+      case'operator-editor-save':void operate(operator.draft?.kind);break;
+      case'operator-preview-prev':case'operator-preview-next':changeEditor(()=>operator.previewPage=Math.max(0,(operator.previewPage||0)+(action.endsWith('next')?1:-1)));break;
+      case'operator-reward-search':changeEditor(()=>{operator.rewardQuery=value('operator-reward-query');const query=operator.rewardQuery.toLocaleLowerCase('ja');operator.rewardMatches=query?CARDS.filter(card=>card.id.toLowerCase().includes(query)||card.name.toLocaleLowerCase('ja').includes(query)).slice(0,3):[];});break;
+      case'operator-reward-add':changeEditor(()=>{const id=element.dataset.id;if(!operator.draft.deliveryLocked&&getCard(id)&&operator.draft.cards.length<12&&!operator.draft.cards.some(c=>c.cardId===id))operator.draft.cards.push({cardId:id,count:1});});break;
+      case'operator-reward-remove':changeEditor(()=>{if(!operator.draft.deliveryLocked)operator.draft.cards=operator.draft.cards.filter(c=>c.cardId!==element.dataset.id);operator.rewardPage=Math.min(operator.rewardPage,Math.max(0,Math.ceil(operator.draft.cards.length/4)-1));});break;
+      case'operator-reward-prev':case'operator-reward-next':changeEditor(()=>operator.rewardPage=Math.max(0,operator.rewardPage+(action.endsWith('next')?1:-1)));break;
+      case'operator-message-send':case'operator-gift-send':case'operator-event-save':void operate(operator.draft?.kind);break;
       case'operator-refresh':void openOperator();break;
       default:return false;
     }
@@ -287,7 +371,7 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     handleAction,openAccount,openInbox,getOperatorDeck,refreshOperatorDeck,onModalClosed:stopOperatorRefresh,
     onCloudState(){if(kind()==='account')accountModal();},
     touchBrand(){const now=Date.now();brandCount=now-brandAt<1800?brandCount+1:1;brandAt=now;if(brandCount<7)return false;brandCount=0;void openOperator();return true;},
-    clearIdentity(){stopOperatorRefresh();account.link=null;account.devices=[];inbox={messages:[],gifts:[],events:[],busy:false,error:''};operator={snapshot:null,eventDraft:null,busy:false,error:''};acceptOperatorDeck(null);deckRequest=null;pending.clear();},
+    clearIdentity(){stopOperatorRefresh();account.link=null;account.devices=[];inbox=freshInbox();operator=freshOperator();acceptOperatorDeck(null);deckRequest=null;pending.clear();},
   };
 }
 
