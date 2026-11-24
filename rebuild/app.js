@@ -36,7 +36,8 @@ function setPage(p){
  if(page!==p){filter={q:'',type:'',origin:'',rarity:'',pack:'',page:0};shopPage=0}
  page=p;message='';render();
 }
-function art(c){
+function art(c,operatorArt=false){
+ if(operatorArt&&c.id===SECOND_REGALIA_ID&&operatorGrant?.entitled&&operatorGrant.artwork)return "background-image:url('"+operatorGrant.artwork+"');background-position:center;background-size:cover";
  const custom=artOverride(c);if(custom)return "background-image:url('../"+custom+"');background-position:center;background-size:cover";
  if(isPendingArt(c))return 'background:radial-gradient(ellipse at 50% 30%,'+(origin(c.origin)?.color||'#afc2b9')+'33,#0a201e 80%)';
  if(c.artAsset)return "background-image:url('../"+c.artAsset+"');background-position:center;background-size:cover";
@@ -45,13 +46,13 @@ function art(c){
  if(crop)return base+'background-position:'+crop.x*100/(crop.width-crop.size)+'% '+crop.y*100/(crop.height-crop.size)+'%;background-size:'+crop.width*100/crop.size+'% '+crop.height*100/crop.size+'%';
  return base+'background-position:'+((cell%4+.01)*100/3.02)+'% '+((Math.floor(cell/4)+.01)*100/3.02)+'%;background-size:408.163% 408.163%';
 }
-function cardArt(c){
- return '<span class="art-well"><span class="art '+(isPendingArt(c)?'pending-art':'')+'" aria-hidden="true" style="'+art(c)+'">'+(isPendingArt(c)?'<span class="art-placeholder">'+icon(typeIcons[c.type])+'<span>イラスト制作中</span></span>':'')+'</span></span>';
+function cardArt(c,operatorArt=false){
+ return '<span class="art-well"><span class="art '+(isPendingArt(c)?'pending-art':'')+'" aria-hidden="true" style="' +art(c,operatorArt)+'">'+(isPendingArt(c)?'<span class="art-placeholder">'+icon(typeIcons[c.type])+'<span>イラスト制作中</span></span>':'')+'</span></span>';
 }
-function card(c,{action='detail',data='',className='',unit=null,owned=null}={}){
+function card(c,{action='detail',data='',className='',unit=null,owned=null,operatorArt=false}={}){
  if(!c)return '';
  const attrs=action?'data-act="'+action+'" data-id="'+esc(c.id)+'" '+data:'disabled';
- return '<button type="button" class="card '+c.type+' '+c.rarity+' '+className+'" data-origin="'+esc(c.origin)+'" '+attrs+' title="'+esc(c.name)+'"><span class="cardtop"><span class="cost">'+(c.type==='fusion'?'合':c.cost)+'</span><span class="cardname">'+esc(c.name)+'</span></span>'+cardArt(c)+'<span class="cardtop card-kind"><span>'+icon(typeIcons[c.type])+' '+TYPE_LABELS[c.type]+' · '+esc(origin(c.origin)?.name)+'</span><span class="rarity">'+RARITY_LABELS[c.rarity]+'</span></span><span class="effect">'+esc(c.text)+'</span><span class="cardbottom">'+(['beast','fusion'].includes(c.type)?'<b>'+icon('sword')+' '+(unit?.attack??c.attack)+'</b><b>'+icon('shield')+' '+(unit?.hp??c.hp)+'</b>':esc(c.id))+(owned!==null?'<span>所持 '+owned+'</span>':'')+'</span></button>';
+ return '<button type="button" class="card '+c.type+' '+c.rarity+' '+className+'" data-origin="'+esc(c.origin)+'" '+attrs+' title="'+esc(c.name)+'"><span class="cardtop"><span class="cost">'+(c.type==='fusion'?'合':c.cost)+'</span><span class="cardname">'+esc(c.name)+'</span></span>'+cardArt(c,operatorArt)+'<span class="cardtop card-kind"><span>'+icon(typeIcons[c.type])+' '+TYPE_LABELS[c.type]+' · '+esc(origin(c.origin)?.name)+'</span><span class="rarity">'+RARITY_LABELS[c.rarity]+'</span></span><span class="effect">'+esc(c.text)+'</span><span class="cardbottom">'+(['beast','fusion'].includes(c.type)?'<b>'+icon('sword')+' '+(unit?.attack??c.attack)+'</b><b>'+icon('shield')+' '+(unit?.hp??c.hp)+'</b>':esc(c.id))+(owned!==null?'<span>所持 '+owned+'</span>':'')+'</span></button>';
 }
 function onboard(){
  root.innerHTML='<div class="onboard"><form id="onboard" class="panel"><div class="intro"><img src="../assets/icon.svg" alt=""><div><small>THE FIRST CHRONICLE · 新生版</small><h1>BEAST KING</h1><p>最初の契約を結ぶ</p></div></div><label>プレイヤー名<input name="name" type="text" maxlength="32" required autocomplete="nickname" placeholder="1〜16文字"></label><section><h3>プロフィールアイコン</h3><div class="origins">'+ORIGINS.map((o,i)=>'<label><input type="radio" name="origin" value="'+o.id+'" '+(!i?'checked':'')+'><span style="color:'+o.color+'"><img src="../assets/profiles/'+o.id+'.svg" alt="" width="32" height="32"> '+o.name+'</span></label>').join('')+'</div></section><section><h3>最初のスターター</h3><div class="starter-grid">'+STARTERS.map((s,i)=>'<label><input type="radio" name="starter" value="'+s.id+'" '+(!i?'checked':'')+'><span>'+esc(s.name)+'</span><p>'+esc(s.subtitle)+'</p></label>').join('')+'</div></section><p class="muted">名前とアイコンはこの端末で初回のみ設定します。スターター4種類を利用できます。先行公開版の保存は現行版と独立しています。</p><p class="edition-links"><a href="../">最新版へ戻る</a> · <a href="about.html">新生版の紹介</a></p><button type="submit" class="primary">契約してゲームを開始</button><p id="status" role="status"></p></form></div>';
@@ -99,11 +100,11 @@ function playerStrip(p,i){
  const name=i?p.name:profile.name;
  return '<div class="player-strip"><span class="duelist-name">'+esc(name)+'<small>手札 '+p.hand.length+' · 山札 '+p.deck.length+'</small></span><button type="button" class="hp '+(isTarget(i)?'target':'')+'" data-act="core" data-player="'+i+'" aria-label="'+esc(name+'のハートポイント '+p.core)+'">'+icon('heart')+' '+fmt(p.core)+'</button><span class="duel-meters"><span title="結界">'+icon('shield')+fmt(p.shield)+'</span><span title="エーテル">'+icon('energy')+p.energy+'/'+p.maxEnergy+'</span></span>'+act('zone-list','ゾーン','data-player="'+i+'"','zone-button')+'</div>';
 }
-function units(p,i){return '<div class="zones">'+p.field.map(u=>card(getCard(u.cardId),{action:'unit',data:'data-player="'+i+'" data-uid="'+u.uid+'"',unit:u,className:(isTarget(i,u.uid)?'target ':'')+(selection?.uid===u.uid?'selected':'')})).join('')+Array.from({length:Math.max(0,4-p.field.length)},()=>'<div class="slot">'+icon('beast')+'<span>出場ゾーン</span></div>').join('')+'</div>'}
+function units(p,i){return '<div class="zones">'+p.field.map(u=>card(getCard(u.cardId),{action:'unit',data:'data-player="'+i+'" data-uid="'+u.uid+'"',unit:u,operatorArt:i===0&&match?.mode==='kirahara',className:(isTarget(i,u.uid)?'target ':'')+(selection?.uid===u.uid?'selected':'')})).join('')+Array.from({length:Math.max(0,4-p.field.length)},()=>'<div class="slot">'+icon('beast')+'<span>出場ゾーン</span></div>').join('')+'</div>'}
 function battle(){
  const g=match.game,[own,enemy]=g.players,ended=g.winner!==null,playable=g.active===0?getPlayableCards(g):[];
  const result=ended?(g.winner==='draw'?'引き分け':g.winner===0?'勝利！':'敗北'):(g.active===0?'あなたのターン':'CPUのターン');
- return '<div class="arena"><section class="table" data-field="solo" aria-label="古代樹の闘域">'+playerStrip(enemy,1)+units(enemy,1)+'<div class="centerline"><span class="field-name">古代樹の闘域</span><span>TURN '+g.turn+' · '+result+(selection?' · 対象を選択してください':'')+'</span></div>'+units(own,0)+playerStrip(own,0)+'<div class="hand">'+own.hand.map((id,i)=>card(getCard(id),{action:'hand',data:'data-index="'+i+'"',className:playable.includes(i)?'selected':''})).join('')+Array.from({length:Math.max(0,4-own.hand.length)},()=>'<div class="slot">'+icon('cards')+'<span>手札</span></div>').join('')+'</div></section><aside class="panel side"><h3>決闘ログ</h3><div class="log" role="log">'+g.log.slice(-35).reverse().map(l=>'<p><small>T'+l.turn+'</small> '+esc(l.text)+'</p>').join('')+'</div><div class="actions">'+(ended?act('leave','王庭へ戻る','','primary'):act('end-turn','ターン終了',g.active!==0||cpuBusy?'disabled':'','primary')+act('cancel-target','選択を解除',selection?'':'disabled')+act('pause-match','中断して戻る')+act('forfeit','降参'))+'</div></aside></div>';
+ return '<div class="arena"><section class="table" data-field="solo" aria-label="古代樹の闘域">'+playerStrip(enemy,1)+units(enemy,1)+'<div class="centerline"><span class="field-name">古代樹の闘域</span><span>TURN '+g.turn+' · '+result+(selection?' · 対象を選択してください':'')+'</span></div>'+units(own,0)+playerStrip(own,0)+'<div class="hand">'+own.hand.map((id,i)=>card(getCard(id),{action:'hand',operatorArt:match?.mode==='kirahara',data:'data-index="'+i+'"',className:playable.includes(i)?'selected':''})).join('')+Array.from({length:Math.max(0,4-own.hand.length)},()=>'<div class="slot">'+icon('cards')+'<span>手札</span></div>').join('')+'</div></section><aside class="panel side"><h3>決闘ログ</h3><div class="log" role="log">'+g.log.slice(-35).reverse().map(l=>'<p><small>T'+l.turn+'</small> '+esc(l.text)+'</p>').join('')+'</div><div class="actions">'+(ended?act('leave','王庭へ戻る','','primary'):act('end-turn','ターン終了',g.active!==0||cpuBusy?'disabled':'','primary')+act('cancel-target','選択を解除',selection?'':'disabled')+act('pause-match','中断して戻る')+act('forfeit','降参'))+'</div></aside></div>';
 }
 function render(){
  if(!profile){onboard();syncMusic();return}
@@ -177,12 +178,12 @@ async function inspectOperator(code){
  operatorGrant=result.entitled?result:null;
  if(!result.entitled){operatorSelected=false;openDialog('<form id="operator-form"><h2>限定デッキ認証</h2><p>運営用の専用コードを入力してください。</p><input type="password" name="code" autocomplete="off" maxlength="128" required><button class="primary">認証</button>'+act('close','閉じる')+'</form>');return;}
  const royal=getCard(SECOND_REGALIA_ID);
- openDialog('<div class="detail"><div class="preview">'+card(royal,{action:'',owned:2})+'</div><section><h2>𠮷良原デッキ</h2><p>運営アカウントの利用権を確認しました。</p><p>レガリア（通常版）2枚 · メイン32枚＋特殊4枚</p>'+act('operator-select','このデッキを使用','','primary')+act('operator-off','通常デッキに戻す')+act('close','閉じる')+'</section></div>');
+ openDialog('<div class="detail"><div class="preview">'+card(royal,{action:'',owned:2,operatorArt:true})+'</div><section><h2>𠮷良原デッキ</h2><p>運営アカウントの利用権を確認しました。</p><p>レガリア2枚（運営専用イラスト） · メイン32枚＋特殊4枚</p>'+act('operator-select','このデッキを使用','','primary')+act('operator-off','通常デッキに戻す')+act('close','閉じる')+'</section></div>');
  }catch(e){operatorGrant=null;operatorSelected=false;closeDialog();setMessage(e.message)}finally{operatorBusy=false}
 }
-function detail(c,action='',data=''){
+function detail(c,action='',data='',operatorArt=false){
  const own=profile.collection[c.id]||0;
- openDialog('<div class="detail"><div class="preview">'+card(c,{action:'',owned:own})+'</div><section><h2>'+esc(c.name)+'</h2><p>'+TYPE_LABELS[c.type]+' · '+RARITY_LABELS[c.rarity]+' · '+esc(origin(c.origin)?.name)+'</p><p>'+esc(MODEL_LABELS[c.model]||'')+'</p><p>'+esc(c.text)+'</p><p class="muted">'+esc(c.flavor)+'</p>'+(action?act(action,action==='add'?'デッキに追加':'カードを使用',data,'primary'):'')+act('close','閉じる')+'</section></div>');
+ openDialog('<div class="detail"><div class="preview">'+card(c,{action:'',owned:own,operatorArt})+'</div><section><h2>'+esc(c.name)+'</h2><p>'+TYPE_LABELS[c.type]+' · '+RARITY_LABELS[c.rarity]+' · '+esc(origin(c.origin)?.name)+'</p><p>'+esc(MODEL_LABELS[c.model]||'')+'</p><p>'+esc(c.text)+'</p><p class="muted">'+esc(c.flavor)+'</p>'+(action?act(action,action==='add'?'デッキに追加':'カードを使用',data,'primary'):'')+act('close','閉じる')+'</section></div>');
 }
 async function start(level,index=null){
  if(starting||match?.game.winner===null)return;
@@ -308,10 +309,10 @@ document.addEventListener('click',async e=>{
   case 'campaign':await start('normal',idx);break;
   case 'replay':{const v=document.querySelector('#replay').value;if(v!=='')await start('normal',Number(v));break}
   case 'practice':await start(el.dataset.level);break;
-  case 'hand':{const g=match.game,c=getCard(g.players[0].hand[idx]);detail(c,g.active===0&&getPlayableCards(g).includes(idx)?'use':'','data-index="'+idx+'"');break}
+  case 'hand':{const g=match.game,c=getCard(g.players[0].hand[idx]);detail(c,g.active===0&&getPlayableCards(g).includes(idx)?'use':'','data-index="'+idx+'"',match?.mode==='kirahara');break}
   case 'use':use(idx);break;
   case 'core':target(Number(el.dataset.player));break;
-  case 'unit':{const g=match.game,p=Number(el.dataset.player),uid=el.dataset.uid;if(target(p,uid))break;if(p===0&&g.active===0&&canAttack(g,uid)){selection={kind:'attack',uid};render()}else{const u=g.players[p].field.find(x=>x.uid===uid);if(u)detail(getCard(u.cardId))}break}
+  case 'unit':{const g=match.game,p=Number(el.dataset.player),uid=el.dataset.uid;if(target(p,uid))break;if(p===0&&g.active===0&&canAttack(g,uid)){selection={kind:'attack',uid};render()}else{const u=g.players[p].field.find(x=>x.uid===uid);if(u)detail(getCard(u.cardId),'','',p===0&&match?.mode==='kirahara')}break}
   case 'end-turn':if(match.game.active===0&&match.game.winner===null){if(apply(endTurn(match.game)))cpuTurn()}break;
   case 'cancel-target':selection=null;render();break;
   case 'forfeit':if(confirm('降参しますか？ 秘宝報酬はありません。'))leaveMatch();break;

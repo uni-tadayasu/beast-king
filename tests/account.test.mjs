@@ -319,12 +319,12 @@ test('rebuild Regalia redemption requires the registered operator and server-onl
  for(const r of results){
   assert.equal(r.status,200,JSON.stringify(r.data));assert.equal(r.data.entitled,true);
   assert.equal(r.data.deck.main.length,32);assert.equal(r.data.deck.special.length,4);
-  assert.equal(r.data.collection['B1024'],2);assert.equal(JSON.stringify(r.data).includes(secret),false);
+  assert.equal(r.data.collection['B1024'],2);assert.match(r.data.artwork,/^data:image\/svg\+xml;base64,[A-Za-z0-9+/=]+$/);assert.equal(JSON.stringify(r.data).includes(secret),false);
  }
  assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_operator_audit WHERE action='rebuild.regalia.granted'").get().n,1);
  assert.equal((await f.api('GET',route,ordinary.token)).status,404);
  const linked=await f.link(p);f.reconnect();
- assert.equal((await f.api('GET',route,linked.token)).data.collection['B1024'],2);
+ const linkedGrant=(await f.api('GET',route,linked.token)).data;assert.equal(linkedGrant.collection['B1024'],2);assert.equal(linkedGrant.artwork,results[0].data.artwork);
  assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_cloud_saves").get().n,0);
  assert.equal(JSON.stringify(f.sqlite.prepare("SELECT * FROM bk_operator_audit WHERE action='rebuild.regalia.granted'").all()).includes(secret),false);
 });
@@ -383,7 +383,7 @@ test('operator deck code requires the stored role and grants the normal Regalia 
  assert.equal(replay.status,200);assert.equal(replay.data.replayed,true);
  assert.deepEqual(replay.data.save,save);
  const read=await f.api('GET','/api/operator/deck',linked.token);
- assert.equal(read.status,200);assert.equal(read.data.deck.id,deck.id);
+ assert.equal(read.status,200);assert.equal(read.data.deck.id,deck.id);assert.match(deck.artwork,/^data:image\/svg\+xml;base64,[A-Za-z0-9+/=]+$/);assert.equal(read.data.deck.artwork,deck.artwork);assert.equal(replay.data.deck.artwork,deck.artwork);assert.equal((await f.api('GET','/api/operator/deck',ordinary.token)).data.deck,undefined);
  assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_reward_claims WHERE item_id='operator-regalia-v1'").get().n,1);
 });
 

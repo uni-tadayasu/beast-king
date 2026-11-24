@@ -1,3 +1,4 @@
+import {operatorRegaliaArtwork} from './operator-art.js';
 import {KIRAHARA_RECIPE,requiredCards} from '../rebuild/operator-deck.js';
 import {validateRebuildBackup,MAX_REBUILD_BACKUP_BYTES} from '../rebuild/backup.js';
 import {verifyOperatorSnapshot} from '../rebuild/solo-save.js';
@@ -209,20 +210,24 @@ async function dashboard(db,now){
     all(db,players+' HAVING online=1 ORDER BY lastSeenAt DESC,p.id LIMIT 100',now),
     all(db,players+' HAVING lastLoginAt>? ORDER BY lastLoginAt DESC,p.id LIMIT 100',now,cutoff),
     first(db,"SELECT c.claimed_at FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.item_type='gift' AND c.item_id=?",REGALIA_REWARD_ID),
-    first(db,"SELECT c.claimed_at FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.item_type='gift' AND c.item_id=?",OPERATOR_DECK_REWARD_ID)
+    first(db,"SELECT c.claimed_at,c.player_id FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.item_type='gift' AND c.item_id=?",OPERATOR_DECK_REWARD_ID)
   ]);
-  return {ok:true,operator:{stats,recentPlayers,onlinePlayers:onlineRows.map(({online,...row})=>row),recentLogins:recentRows.map(row=>({...row,online:row.online===1})),settings:{notice:status.notice,maintenance:status.maintenance},regalia:{claimedAt:regalia?.claimed_at??null},deck:unlockedOperatorDeck(privateDeck?.claimed_at),audit,messages:items.filter(x=>x.kind==='message').map(announcementPublic),gifts:items.filter(x=>x.kind==='gift').map(announcementPublic),events:events.map(eventPublic)}};
+  return {ok:true,operator:{stats,recentPlayers,onlinePlayers:onlineRows.map(({online,...row})=>row),recentLogins:recentRows.map(row=>({...row,online:row.online===1})),settings:{notice:status.notice,maintenance:status.maintenance},regalia:{claimedAt:regalia?.claimed_at??null},deck:await unlockedOperatorDeck(db,privateDeck?.player_id,privateDeck?.claimed_at),audit,messages:items.filter(x=>x.kind==='message').map(announcementPublic),gifts:items.filter(x=>x.kind==='gift').map(announcementPublic),events:events.map(eventPublic)}};
 }
 async function requireOperator(c,player,{setup=false}={}){
   const row=await first(c.db,'SELECT player_id FROM bk_operator WHERE singleton=1');
   if(row?.player_id===player.id)return;
   c.fail(404,'operator_unavailable','この操作は利用できません。',setup&&!row&&typeof c.env.BK_OPERATOR_BOOTSTRAP==='string'&&c.env.BK_OPERATOR_BOOTSTRAP.length?{setupAvailable:true}:{});
 }
-const unlockedOperatorDeck=claimedAt=>claimedAt==null?null:{...OPERATOR_DECK,unlockedAt:claimedAt};
+async function privateRegaliaArt(db,playerId){
+ const row=await first(db,"SELECT a.id FROM bk_operator_audit a JOIN bk_operator o ON o.player_id=a.player_id WHERE o.singleton=1 AND a.player_id=? AND a.action='operator.activated' ORDER BY a.created_at,a.id LIMIT 1",playerId);
+ return row?operatorRegaliaArtwork(row.id):null;
+}
+const unlockedOperatorDeck=async(db,playerId,claimedAt)=>claimedAt==null?null:{...OPERATOR_DECK,unlockedAt:claimedAt,artwork:await privateRegaliaArt(db,playerId)};
 async function readOperatorDeck(c,player){
   await requireOperator(c,player);
   const row=await first(c.db,"SELECT c.claimed_at FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.player_id=? AND c.item_type='gift' AND c.item_id=?",player.id,OPERATOR_DECK_REWARD_ID);
-  return {ok:true,deck:unlockedOperatorDeck(row?.claimed_at)};
+  return {ok:true,deck:await unlockedOperatorDeck(c.db,player.id,row?.claimed_at)};
 }
 async function activate(c,player){
   const {db,request,env,now,fail,bodyJSON}=c;
@@ -257,7 +262,7 @@ async function claimRegalia(c,player){
   const receipt=async id=>{const row=await first(db,"SELECT result_json FROM bk_reward_claims WHERE player_id=? AND item_type='gift' AND item_id=?",player.id,id);return row?JSON.parse(row.result_json):null;};
   const replay=async()=>{
     const deckClaim=await receipt(OPERATOR_DECK_REWARD_ID);
-    return deckClaim?{ok:true,save:await currentSave(db,player.id),claim:await receipt(REGALIA_REWARD_ID),deckClaim,deck:unlockedOperatorDeck(deckClaim.claimedAt),replayed:true}:null;
+    return deckClaim?{ok:true,save:await currentSave(db,player.id),claim:await receipt(REGALIA_REWARD_ID),deckClaim,deck:await unlockedOperatorDeck(db,player.id,deckClaim.claimedAt),replayed:true}:null;
   };
   const previous=await replay();if(previous)return previous;
   const legacyClaim=await receipt(REGALIA_REWARD_ID);
@@ -296,7 +301,7 @@ async function claimRegalia(c,player){
     const again=await replay();if(again)return again;
     fail(409,'save_conflict','別の端末で保存データが更新されています。最新データを確認してください。',{save:await currentSave(db,player.id)});
   }
-  return {ok:true,save:await currentSave(db,player.id),claim,deckClaim,deck:unlockedOperatorDeck(now),upgraded:!!legacyClaim};
+  return {ok:true,save:await currentSave(db,player.id),claim,deckClaim,deck:await unlockedOperatorDeck(db,player.id,now),upgraded:!!legacyClaim};
 }
 function rewardInput(body,fail,allowEmpty=false){
   const treasure=body.treasure??0,cards=body.cards??[];
@@ -412,7 +417,7 @@ async function rebuildOperatorDeck(c,player){
     granted=await rebuildEntitled(db,player.id);
     if(!granted)noAccess(fail);
   }
-  return {ok:true,entitled:granted,...(granted?{deck:KIRAHARA_RECIPE,collection:requiredCards()}: {})};
+  return {ok:true,entitled:granted,...(granted?{deck:KIRAHARA_RECIPE,collection:requiredCards(),artwork:await privateRegaliaArt(db,player.id)}: {})};
 }
 
 // Rebuild is a separate, non-authoritative solo backup store. Nothing here writes
