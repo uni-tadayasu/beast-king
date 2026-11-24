@@ -1,34 +1,35 @@
-import {splitReadingText} from './reading-pages.js?v=20261124-32';
-import {bindOutsideDismiss} from './overlay-dismiss.js?v=20261124-32';
-import {createExperienceController} from './experience-fx.js?v=20261124-32';
-import {BRAND_ICONS} from './brand-icons.js?v=20261124-32';
-import {CARD_ART_CROPS} from './card-art-layouts.js?v=20261124-32';
-import {CARD_ART_EXPANSIONS} from './card-art-expansion.js?v=20261124-32';
-import {CARD_ART_FIFTH} from './card-art-fifth.js?v=20261124-32';
-import {CARD_ART_OVERRIDES} from './card-art-overrides.js?v=20261124-32';
-import {CARD_ART_USER_OVERRIDES} from './card-art-user.js?v=20261124-32';
-import {PREMIUM_CARD_ART} from './card-art-premium.js?v=20261124-32';
-import {PREMIUM_DECK,PREMIUM_DECK_ID} from './premium-deck.js?v=20261124-32';
-import { CARDS, DECK_MIN, DECK_COPY_LIMIT, ELEMENTS, TYPE_LABELS, RARITY_LABELS, KEYWORD_LABELS, STARTER_DECKS, DECK_PRESETS, getDeckPreset, getCard, validateDeck, validateSpecialDeck, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS, SUBTYPE_LABELS, EXPANSION_DECKS, EXPANSION_FAMILIES, getExpansionDeck } from './catalog.js?v=20261124-32';
-import {createMusicController} from './music.js?v=20261124-32';
-import {createOnlineClient} from './online.js?v=20261124-32';
-import {createCloudSync} from './cloud-sync.js?v=20261124-32';
-import {createAccountUi} from './account-ui.js?v=20261124-32';
-import {setPublicNotice} from './news.js?v=20261124-32';
-import {createPresenceController} from './presence.js?v=20261124-32';
-import {entryView} from './entry.js?v=20261124-32';
-import {soloView} from './mode-views.js?v=20261124-32';
-import {EVENT_DECKS,EVENT_DECK_GROUPS,getEventDeck} from './event-decks.js?v=20261124-32';
-import {createEventProgress,normalizeEventProgress,recordEventResult} from './event-battles.js?v=20261124-32';
-import {eventChallengeView} from './event-views.js?v=20261124-32';
-import {rulebookView} from './rules-view.js?v=20261124-32';
-import {homeDashboard,treasureShop,packOddsView} from './product-views.js?v=20261124-32';
-import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayout} from './viewport.js?v=20261124-32';
-import {battleLogView} from './battle-log.js?v=20261124-32';
-import {handInspectorView} from './hand-inspector.js?v=20261124-32';
-import {CAMPAIGN_BATTLES,createCampaignProgress,normalizeCampaignProgress,getCampaignBattle,isCampaignBattleUnlocked,getNextCampaignBattle,recordCampaignResult} from './campaign.js?v=20261124-32';
-import {PACKS,getPack,PACK_ID,PACK_NAME,PACK_DESCRIPTION,PACK_COST,PACK_SIZE,STARTING_TREASURE,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,PACK_CARD_IDS,createStarterCollection,hasStarterCards,migrateLegacyStarters,normalizeCollection,grantDeckCollection,openPack,getBattleReward,quoteStarterPurchase,purchaseStarter,quoteDeckRecipe} from './shop.js?v=20261124-32';
-import { newGame, playCard, attack, endTurn, runCpuTurn, getLegalTargets, getAttackTargets, canAttack, getPlayableCards, getCardCost, getFusionChoices, getEligibleFusionMaterials, validateFusionSelection, MAX_HEART_POINTS } from './engine.js?v=20261124-32';
+import {splitReadingText} from './reading-pages.js?v=20261125-33';
+import {bindOutsideDismiss} from './overlay-dismiss.js?v=20261125-33';
+import {createSummonScene} from './summon-scene.js?v=20261125-33';
+import {createExperienceController} from './experience-fx.js?v=20261125-33';
+import {BRAND_ICONS} from './brand-icons.js?v=20261125-33';
+import {CARD_ART_CROPS} from './card-art-layouts.js?v=20261125-33';
+import {CARD_ART_EXPANSIONS} from './card-art-expansion.js?v=20261125-33';
+import {CARD_ART_FIFTH} from './card-art-fifth.js?v=20261125-33';
+import {CARD_ART_OVERRIDES} from './card-art-overrides.js?v=20261125-33';
+import {CARD_ART_USER_OVERRIDES} from './card-art-user.js?v=20261125-33';
+import {PREMIUM_CARD_ART} from './card-art-premium.js?v=20261125-33';
+import {PREMIUM_DECK,PREMIUM_DECK_ID} from './premium-deck.js?v=20261125-33';
+import { CARDS, DECK_MIN, DECK_COPY_LIMIT, ELEMENTS, TYPE_LABELS, RARITY_LABELS, KEYWORD_LABELS, STARTER_DECKS, DECK_PRESETS, getDeckPreset, getCard, validateDeck, validateSpecialDeck, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS, SUBTYPE_LABELS, EXPANSION_DECKS, EXPANSION_FAMILIES, getExpansionDeck } from './catalog.js?v=20261125-33';
+import {createMusicController} from './music.js?v=20261125-33';
+import {createOnlineClient} from './online.js?v=20261125-33';
+import {createCloudSync} from './cloud-sync.js?v=20261125-33';
+import {createAccountUi} from './account-ui.js?v=20261125-33';
+import {setPublicNotice} from './news.js?v=20261125-33';
+import {createPresenceController} from './presence.js?v=20261125-33';
+import {entryView} from './entry.js?v=20261125-33';
+import {soloView} from './mode-views.js?v=20261125-33';
+import {EVENT_DECKS,EVENT_DECK_GROUPS,getEventDeck} from './event-decks.js?v=20261125-33';
+import {createEventProgress,normalizeEventProgress,recordEventResult} from './event-battles.js?v=20261125-33';
+import {eventChallengeView} from './event-views.js?v=20261125-33';
+import {rulebookView} from './rules-view.js?v=20261125-33';
+import {homeDashboard,treasureShop,packOddsView} from './product-views.js?v=20261125-33';
+import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayout} from './viewport.js?v=20261125-33';
+import {battleLogView} from './battle-log.js?v=20261125-33';
+import {handInspectorView} from './hand-inspector.js?v=20261125-33';
+import {CAMPAIGN_BATTLES,createCampaignProgress,normalizeCampaignProgress,getCampaignBattle,isCampaignBattleUnlocked,getNextCampaignBattle,recordCampaignResult} from './campaign.js?v=20261125-33';
+import {PACKS,getPack,PACK_ID,PACK_NAME,PACK_DESCRIPTION,PACK_COST,PACK_SIZE,STARTING_TREASURE,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,PACK_CARD_IDS,createStarterCollection,hasStarterCards,migrateLegacyStarters,normalizeCollection,grantDeckCollection,openPack,getBattleReward,quoteStarterPurchase,purchaseStarter,quoteDeckRecipe} from './shop.js?v=20261125-33';
+import { newGame, playCard, attack, endTurn, runCpuTurn, getLegalTargets, getAttackTargets, canAttack, getPlayableCards, getCardCost, getFusionChoices, getEligibleFusionMaterials, validateFusionSelection, MAX_HEART_POINTS } from './engine.js?v=20261125-33';
 
 const $ = (s, r=document) => r.querySelector(s);
 const layoutWidth=()=>window.BeastKingViewport?.get().width||window.innerWidth;
@@ -278,6 +279,7 @@ let titleDefault='ビーストキング｜36枚で戦う無料オンラインカ
 const app=$('#app');
 const modalRoot=$('#modal-root');
 const experience=createExperienceController();
+const summonScene=createSummonScene({document,window,getCard});
 const musicController=createMusicController({onstate:updateMusicControls});
 const onlineClient=createOnlineClient({onUpdate:receiveOnlineUpdate,onError:receiveOnlineError});
 const presenceController=createPresenceController({client:onlineClient});
@@ -316,7 +318,13 @@ const targetHint=c=>c.targetType==='regalia-ace'?'強化する自分のレガリ
 
 function persist(immediate=false){if(!onlineBattle)cpuGame=game;data.game=cpuGame;if(cloudRequested&&!applyingCloud)cloudSync.markDirty();clearTimeout(saveTimer);const write=()=>{saveTimer=null;try{localStorage.setItem(storageKey,JSON.stringify(data));storageAvailable=true;}catch{if(storageAvailable){toast('このブラウザでは保存できません。設定からバックアップを保存してください。',true);storageAvailable=false;}}};if(immediate)write();else saveTimer=setTimeout(write,180);}
 window.addEventListener('pagehide',()=>{if(saveTimer)persist(true);});
-function syncExperience(){window.BeastKingLoading?.busy({key:'online',active:online.busy||online.connecting,label:'対戦サーバーに接続しています'});experience.sync({enabled:data.sound,motion:data.motion});experience.screen(entered?page:'entry');experience.observeBattle(page==='duel'?game:null,onlineBattle?online.match?.id:game);}
+function syncExperience(){
+ window.BeastKingLoading?.busy({key:'online',active:online.busy||online.connecting,label:'対戦サーバーに接続しています'});
+ experience.sync({enabled:data.sound,motion:data.motion});experience.screen(entered?page:'entry');
+ const battle=entered&&page==='duel'?game:null,key=onlineBattle?online.match?.id:game;
+ experience.observeBattle(battle,key);
+ summonScene.sync(battle,{key,motion:data.motion,intensity:experience.getPreferences().intensity,enabled:true});
+}
 function sound(kind='click'){if(kind==='click'||page==='duel'&&['play','attack','turn','win'].includes(kind))return;experience.sound(kind);}
 function toast(text,error=false){if(error)experience.sound('deny');const el=document.createElement('div');el.className='toast'+(error?' error':'');el.textContent=text;$('#toasts').append(el);setTimeout(()=>el.remove(),3800);}
 const KIRAHARA_SLOT='operator-kirahara-v1',REGALIA_ID='B0512';
@@ -373,6 +381,7 @@ function refreshRegaliaImages(){
   const c=getCard(REGALIA_ID),context=node.dataset.regaliaContext;
   node.style.cssText=artStyle(c,context);node.dataset.regaliaStatus=regaliaStatus(c,context);
  }
+ summonScene.refresh?.();
 }
 function operatorDeckChanged(){
  if(promoteLegacyKirahara())persist(true);
@@ -510,7 +519,7 @@ function selectionCard(){if(!game||!selected)return null;if(selected.kind==='pla
 function activeTargets(){if(!selected||!game||game.active!==0||game.winner!==null)return [];if(selected.kind==='attack')return getAttackTargets(game,selected.uid);if(selected.kind==='play'&&selected.targeting)return getLegalTargets(game,selected.index);return [];}
 function isTarget(p,uid,core=false){return activeTargets().some(t=>t.player===p&&(core?t.core===true:t.uid===uid));}
 function duelistMarkup(i){const p=game.players[i];const e=i===1;const shield=p.shield?`<span class="shield-value">結界 ${p.shield}</span>`:'';return `<div class="duelist ${e?'enemy':'my-hud'}"><div class="duelist-avatar">${profileIcon(e?(onlineBattle?online.match.opponent.origin:game.cpuOrigin):data.profileOrigin)}</div><div class="duelist-info"><div class="duelist-name">${esc(onlineBattle?(e?online.match.opponent.name:online.profile?.nickname||'あなた'):(e?(getCampaignBattle(game.campaignBattleId)?.opponentName||`CPU · ${LEVELS[game.difficulty]?.name||'策士'}`):data.playerName||'あなた'))}${onlineBattle&&e?`<span class="online-badge ${online.match.opponent.kind==='bot'?'bot':''}">${online.match.opponent.kind==='bot'?'BOT':'対人'}</span>`:''}</div><div class="core-bar" aria-label="ハートポイント ${fmt(p.core)}/${fmt(MAX_HEART_POINTS)}"><i style="width:${Math.max(0,p.core/MAX_HEART_POINTS*100)}%"></i></div></div><button class="core-button ${isTarget(i,null,true)?'targetable':''}" data-action="core" data-player="${i}" aria-label="${e?'相手':'自分'}のハートポイント ${p.core}${isTarget(i,null,true)?'を対象に選択':''}"><strong>${fmt(p.core)}</strong><small>HP</small></button>${shield}<div class="duelist-extras">${e?`<div class="hand-backs" aria-label="相手の手札 ${p.hand.length}枚">${p.hand.map(()=>'<span class="card-back-mini"></span>').join('')}</div>`:''}<span class="energy" title="エーテル ${p.energy}/${p.maxEnergy}">${icon('energy')}${p.energy}<span style="opacity:.5">/ ${p.maxEnergy}</span></span><span title="山札">${icon('layers')}<span class="duel-count-label">山札</span> ${p.deck.length}</span></div></div>`;}
-function fieldMarkup(i){const p=game.players[i];return `<div class="field-row" aria-label="${i===0?'自分':'相手'}の出場ゾーン">${Array.from({length:4},(_,n)=>{const u=p.field[n];if(!u)return '<div class="field-slot empty" aria-label="空き召喚枠"></div>';const c=getCard(u.cardId),ready=i===0&&game.active===0&&canAttack(game,u.uid),target=isTarget(i,u.uid);return `<div class="field-slot model-${c.model||'defense'} ${c.type==='fusion'?'fusion-slot':''}" data-owner="${i}"><button class="field-unit ${ready?'ready':''} ${selected?.uid===u.uid?'selected':''} ${target?'targetable':''}" data-action="unit" data-player="${i}" data-uid="${esc(u.uid)}" aria-label="${esc(c.name)} ${MODEL_LABELS[c.model]||''} 攻撃力${u.attack} 守備力${u.hp}${ready?' 攻撃可能':''}${target?' 対象に選択':''}">${art(c,i===0?'battle':'public')}<span class="unit-badge ${ready?'':'wait'}" title="${c.type==='fusion'?'合成魔獣 · ':''}${MODEL_LABELS[c.model]||'魔獣'}">${c.type==='fusion'?icon('sword')+icon('shield')+'合成魔獣':MODEL_LABELS[c.model]||'魔獣'}${ready?'<span class="unit-ready"> · 行動可</span>':''}</span>${u.keywords.includes('guard')?`<span class="unit-guard" title="守護">${icon('shield')}</span>`:''}<span class="unit-name">${esc(c.name)}</span><span class="unit-stats"><span title="攻撃力">${icon('sword')}${u.attack}</span><span title="守備力">${icon('shield')}${u.hp}</span></span></button><button type="button" class="field-effect-button" data-action="inspect-field-effect" data-player="${i}" data-uid="${esc(u.uid)}" aria-label="${esc(c.name)}の効果を見る" title="効果を見る">${icon('info')}</button></div>`;}).join('')}</div>`;}
+function fieldMarkup(i){const p=game.players[i];return `<div class="field-row" aria-label="${i===0?'自分':'相手'}の出場ゾーン">${Array.from({length:4},(_,n)=>{const u=p.field[n];if(!u)return '<div class="field-slot empty" aria-label="空き召喚枠"></div>';const c=getCard(u.cardId),ready=i===0&&game.active===0&&canAttack(game,u.uid),target=isTarget(i,u.uid);return `<div class="field-slot model-${c.model||'defense'} ${c.type==='fusion'?'fusion-slot':''}" data-owner="${i}" data-card-id="${esc(c.id)}"><button class="field-unit ${ready?'ready':''} ${selected?.uid===u.uid?'selected':''} ${target?'targetable':''}" data-action="unit" data-player="${i}" data-uid="${esc(u.uid)}" data-card-id="${esc(c.id)}" aria-label="${esc(c.name)} ${MODEL_LABELS[c.model]||''} 攻撃力${u.attack} 守備力${u.hp}${ready?' 攻撃可能':''}${target?' 対象に選択':''}"><span class="summon-card-floor" aria-hidden="true">${art(c,i===0?'battle':'public')}</span><span class="summon-anchor" aria-hidden="true"></span><span class="unit-badge ${ready?'':'wait'}" title="${c.type==='fusion'?'合成魔獣 · ':''}${MODEL_LABELS[c.model]||'魔獣'}">${c.type==='fusion'?icon('sword')+icon('shield')+'合成魔獣':MODEL_LABELS[c.model]||'魔獣'}${ready?'<span class="unit-ready"> · 行動可</span>':''}</span>${u.keywords.includes('guard')?`<span class="unit-guard" title="守護">${icon('shield')}</span>`:''}<span class="unit-name">${esc(c.name)}</span><span class="unit-stats"><span title="攻撃力">${icon('sword')}${u.attack}</span><span title="守備力">${icon('shield')}${u.hp}</span></span></button><button type="button" class="field-effect-button" data-action="inspect-field-effect" data-player="${i}" data-uid="${esc(u.uid)}" aria-label="${esc(c.name)}の効果を見る" title="効果を見る">${icon('info')}</button></div>`;}).join('')}</div>`;}
 function trapsMarkup(i){const p=game.players[i],last=getCard(p.lastMiracle),miracle=last?.type==='miracle'?last:null;return `<div class="arcana-zone-row" aria-label="${i===0?'自分':'相手'}のミラクル発動・ギミック設置ゾーン"><div class="arcana-slot miracle-frame" aria-label="ミラクルは枠より左"><div class="arcana-frame">${miracle?`<button class="arcana-card miracle-card" data-action="inspect-arcana-effect" data-zone="miracle" data-key="${i}:last" data-id="${miracle.id}" aria-label="直前に発動したミラクル ${esc(miracle.name)}">${art(miracle)}<span>${esc(miracle.name)}</span></button>`:`<span class="arcana-placeholder">${icon('spark')}</span>`}</div><small>${miracle?'直前の発動':'ミラクル'}</small></div><div class="gimmick-frames">${Array.from({length:2},(_,n)=>{const t=p.traps[n],c=i===0&&t?getCard(t.cardId):null;return `<div class="arcana-slot gimmick-frame" aria-label="ギミックは枠より右"><div class="arcana-frame">${t?(c?`<button class="arcana-card gimmick-card" data-action="inspect-arcana-effect" data-zone="gimmick" data-key="0:trap:${esc(t.uid)}" data-id="${c.id}" aria-label="設置したギミック ${esc(c.name)}">${art(c)}<span>${esc(c.name)}</span></button>`:`<span class="arcana-card gimmick-card hidden-gimmick" aria-label="相手の伏せたギミック">${icon('trap')}<span>伏せ</span></span>`):`<span class="arcana-placeholder">${icon('trap')}</span>`}</div><small>ギミック</small></div>`;}).join('')}</div></div>`;}
 
 function selectionMessage(){const c=selectionCard();if(game.winner!==null)return {title:game.winner===0?'あなたの勝利':game.winner===1?'対戦終了':'引き分け',text:'結果を確認して、次の対戦へ。',button:'result',label:'対戦結果'};if(game.active===1)return{title:'相手のターン',text:onlineBattle?'相手の操作を待っています。盤面は自動で更新されます。':'CPUが次の一手を考えています。'};if(!c)return{title:'あなたのターン',text:'手札を選んで使うか、場の魔獣を選んで攻撃。行動を終えたらターン終了。'};if(selected.kind==='attack')return{title:c.name,text:'攻撃する相手の魔獣か、相手のハートポイントを選んでください。守護がある場合は守護を優先。'};if(selected.kind==='unit')return{title:c.name,text:'この魔獣は今は攻撃できません。次の自分のターンに行動できます。'};if(selected.targeting)return{title:c.name,text:targetHint(c)};const playable=getPlayableCards(game).includes(selected.index),cost=getCardCost(game,c,0);return{title:c.name,text:playable?c.text:(cost>game.players[0].energy?`エーテルが不足しています（必要 ${cost}／残り ${game.players[0].energy}）。`:c.type==='beast'?'魔獣の場がいっぱいです（最大4体）。':c.type==='gimmick'?'ギミックの場がいっぱいです（最大2枚）。':c.effect.kind==='fusion'?'特殊ゾーンの魔獣と魔獣の素材が必要です。出場ゾーンが満員の場合は出場中の魔獣を素材にしてください。':'このカードを使用できる対象がいません。'),button:'use-card',label:c.type==='beast'?'召喚する':c.effect.kind==='fusion'?'合成を選ぶ':c.type==='miracle'?'発動する':'設置する',disabled:!playable};}
@@ -629,7 +638,7 @@ function settingsModal(){
  const active=key=>settingsTab===key;
  showModal(`<div class="eyebrow">SYSTEM SETTINGS</div><h2>ゲーム設定</h2><div class="settings-tabs" role="tablist" aria-label="設定の種類">${[['sound','音'],['motion','演出'],['account','データ・プロフィール']].map(([key,label])=>`<button role="tab" tabindex="${active(key)?0:-1}" data-action="settings-tab" data-tab="${key}" aria-selected="${active(key)}" aria-controls="settings-${key}">${label}</button>`).join('')}</div>
  <section id="settings-sound" class="settings-section" role="tabpanel" aria-label="音の設定" ${active('sound')?'':'hidden'}><div class="cyber-sound-group"><div class="setting-row"><div>BGM<small>メニュー・バトル・クライマックスで切り替え</small></div><button class="toggle ${data.bgm?'on':''}" data-action="bgm" role="switch" aria-checked="${data.bgm}" aria-label="BGM"><span></span></button></div><div class="setting-volume"><label for="bgm-volume">BGM音量 <output id="bgm-volume-readout">${Math.round(data.bgmVolume*100)}%</output></label><input id="bgm-volume" data-input="bgm-volume" type="range" min="0" max="100" step="1" value="${Math.round(data.bgmVolume*100)}" aria-label="BGM音量" aria-valuetext="${Math.round(data.bgmVolume*100)}%"></div></div><div class="cyber-sound-group"><div class="setting-row"><div>システム・効果音<small>サイバー操作音・カード・バトル・開封</small></div><button class="toggle ${data.sound?'on':''}" data-action="sound" role="switch" aria-checked="${data.sound}" aria-label="効果音"><span></span></button></div>${experience.settingsMarkup()}</div></section>
- <section id="settings-motion" class="settings-section" role="tabpanel" aria-label="演出の設定" ${active('motion')?'':'hidden'}><div class="setting-row"><div>アニメーション<small>端末の「視差効果を減らす」設定にも対応</small></div><button class="toggle ${data.motion?'on':''}" data-action="motion" role="switch" aria-checked="${data.motion}" aria-label="アニメーション"><span></span></button></div><p class="modal-intro">カードの登場、攻撃、回復、合成、開封を光と動きで表現します。開封演出はスキップできます。</p></section>
+ <section id="settings-motion" class="settings-section" role="tabpanel" aria-label="演出の設定" ${active('motion')?'':'hidden'}><div class="setting-row"><div>アニメーション<small>端末の「視差効果を減らす」設定にも対応</small></div><button class="toggle ${data.motion?'on':''}" data-action="motion" role="switch" aria-checked="${data.motion}" aria-label="アニメーション"><span></span></button></div><p class="modal-intro">魔獣は場にいる間、カードの原画を使ってカードの上に立体投影されます。アニメーションをオフにすると、立体表示を残して動きを止めます。開封演出はスキップできます。</p></section>
  <section id="settings-account" class="settings-section" role="tabpanel" aria-label="データとプロフィール" ${active('account')?'':'hidden'}><div class="settings-data-grid"><div class="setting-row"><div class="profile-setting">${profileIcon(data.profileOrigin)}<div>プロフィール<small>${esc(data.playerName||'未設定')} · ${elementMap[data.profileOrigin]?.name||'山'}</small></div></div><button class="btn small" data-action="online-name">変更</button></div><div class="setting-row"><div>端末連携と同期<small>別端末でも続きから</small></div><button class="btn small" data-action="cloud-open"><span data-cloud-status>端末連携</span></button></div><div class="setting-row"><div>お知らせ・プレゼント<small>届いた報酬を確認</small></div><button class="btn small" data-action="inbox-open">受取ボックス</button></div></div><div class="settings-backup"><p class="modal-intro">バックアップに認証情報・連携コードは含みません。</p><div class="modal-actions"><button class="btn small" data-action="export">${icon('download')}バックアップ保存</button><button class="btn small" data-action="import">${icon('upload')}読み込む</button></div></div><input id="backup-input" type="file" accept=".json,application/json" hidden><nav class="settings-links" aria-label="ゲームと保存データの案内"><a class="game-guide-link" href="about.html">ゲーム紹介・ルール</a><a class="game-guide-link" href="rebuild/">先行版の保存データ</a></nav></section>`);
  const intensity=$('[data-experience-intensity]',modalRoot)?.closest('.setting-row');if(intensity)$('#settings-motion',modalRoot).append(intensity);
 }
@@ -854,7 +863,7 @@ function actionHandler(event){if(page==='deck'&&!currentModal&&event.target.clos
 document.addEventListener('click',actionHandler);
 document.addEventListener('submit',event=>{if(event.target.id==='entry-start-form'){event.preventDefault();startEntry();}});
 document.addEventListener('input',event=>{const el=event.target;if(el.id==='entry-player-name')entryNameDraft=el.value;if(el.dataset.input==='bgm-volume'){data.bgmVolume=Math.max(0,Math.min(1,Number(el.value)/100));const out=$('#bgm-volume-readout');if(out)out.textContent=`${Math.round(data.bgmVolume*100)}%`;el.setAttribute('aria-valuetext',`${Math.round(data.bgmVolume*100)}%`);persist();syncMusic();musicController.unlock();}if(el.dataset.input==='inspect-candidate-query'&&currentModal?.kind==='deck-inspect'&&currentModal.mode==='replace'){currentModal.query=el.value;currentModal.candidatePage=1;const result=$('#inspect-candidate-results');if(result)result.innerHTML=inspectCandidateMarkup(currentModal);}if(el.dataset.input==='search'){search.text=el.value;search.page=1;renderResults();}if(el.dataset.input==='deck-name'){workingName=el.value;rememberDraft();}});
-document.addEventListener('change',event=>{const el=event.target,key=el.dataset.change;if(key==='inspect-battle-card'){if(battleEffectZone!=='hand')inspectBattleEffect(battleEffectZone,el.value);return;}if(key==='inspect-slot'&&currentModal?.kind==='deck-inspect'){currentModal.index=Number(el.value);currentModal.mode='single';renderDeckInspector();return;}if(['setId','family','subtype','element','rarity','sort'].includes(key)){search[key]=el.value;search.page=1;renderResults();}if(key==='card-page'){const max=Math.max(1,Math.ceil(filteredCards().length/cardPageLayout(page==='deck').pageSize));search.page=Math.max(1,Math.min(max,Math.floor(Number(el.value)||1)));renderResults();return;}if(key==='deck-page'){deckListPage=Math.max(1,Math.floor(Number(el.value)||1));const list=$('.deck-list');if(list)list.innerHTML=deckList(deckSection==='special');requestAnimationFrame(syncCardViewport);return;}if(key==='deck-bank'){selectBankDeck(el.value);return;}if(key==='entry-starter'&&!entered&&STARTER_DECKS.some(d=>d.id===el.value)){entryStarterDraft=el.value;return;}if(key==='starter'&&el.value){if(registerOwnedStarter(el.value))selectBankDeck(starterSlot(el.value));else toast('未所持のスターターです。',true);}if(key==='cpu-deck')cpuDeckId=el.value;if(el.id==='backup-input')importSave(el.files?.[0]);});
+document.addEventListener('change',event=>{const el=event.target,key=el.dataset.change;if(el.matches?.('[data-experience-intensity]')){syncExperience();return;}if(key==='inspect-battle-card'){if(battleEffectZone!=='hand')inspectBattleEffect(battleEffectZone,el.value);return;}if(key==='inspect-slot'&&currentModal?.kind==='deck-inspect'){currentModal.index=Number(el.value);currentModal.mode='single';renderDeckInspector();return;}if(['setId','family','subtype','element','rarity','sort'].includes(key)){search[key]=el.value;search.page=1;renderResults();}if(key==='card-page'){const max=Math.max(1,Math.ceil(filteredCards().length/cardPageLayout(page==='deck').pageSize));search.page=Math.max(1,Math.min(max,Math.floor(Number(el.value)||1)));renderResults();return;}if(key==='deck-page'){deckListPage=Math.max(1,Math.floor(Number(el.value)||1));const list=$('.deck-list');if(list)list.innerHTML=deckList(deckSection==='special');requestAnimationFrame(syncCardViewport);return;}if(key==='deck-bank'){selectBankDeck(el.value);return;}if(key==='entry-starter'&&!entered&&STARTER_DECKS.some(d=>d.id===el.value)){entryStarterDraft=el.value;return;}if(key==='starter'&&el.value){if(registerOwnedStarter(el.value))selectBankDeck(starterSlot(el.value));else toast('未所持のスターターです。',true);}if(key==='cpu-deck')cpuDeckId=el.value;if(el.id==='backup-input')importSave(el.files?.[0]);});
 bindOutsideDismiss(modalRoot,{getLayer:()=>modalRoot.querySelector('.modal'),onDismiss:closeModal});
 bindOutsideDismiss(document,{
  getLayer:()=>{

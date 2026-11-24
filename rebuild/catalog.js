@@ -1,7 +1,7 @@
-import {getCard as getPublishedCard} from '../catalog.js?v=20261124-32';
+import {getCard as getPublishedCard} from '../catalog.js?v=20261125-33';
 // Independent catalog boundary for the rebuilt game. Legacy main IDs stay intact.
-import {CARDS as LEGACY} from './legacy-catalog.js?v=20261124-32';
-import {ORIGINS as legacy_ORIGINS,ELEMENTS as legacy_ELEMENTS,TYPE_LABELS as legacy_TYPE_LABELS,RARITY_LABELS as legacy_RARITY_LABELS,KEYWORD_LABELS as legacy_KEYWORD_LABELS,MODEL_LABELS as legacy_MODEL_LABELS,SUBTYPE_LABELS as legacy_SUBTYPE_LABELS,MODEL_DESCRIPTIONS as legacy_MODEL_DESCRIPTIONS,POINT_SCALE as legacy_POINT_SCALE,FUSION_MATERIAL_BONUS as legacy_FUSION_MATERIAL_BONUS,DECK_SIZE as legacy_DECK_SIZE,DECK_MIN as legacy_DECK_MIN,DECK_MAX as legacy_DECK_MAX,SPECIAL_DECK_SIZE as legacy_SPECIAL_DECK_SIZE,DECK_COPY_LIMIT as legacy_DECK_COPY_LIMIT,STARTER_DECKS as legacy_STARTER_DECKS,RARITY_ORDER as legacy_RARITY_ORDER,FUSION_CARD_ID as legacy_FUSION_CARD_ID} from './legacy-catalog.js?v=20261124-32';
+import {CARDS as LEGACY} from './legacy-catalog.js?v=20261125-33';
+import {ORIGINS as legacy_ORIGINS,ELEMENTS as legacy_ELEMENTS,TYPE_LABELS as legacy_TYPE_LABELS,RARITY_LABELS as legacy_RARITY_LABELS,KEYWORD_LABELS as legacy_KEYWORD_LABELS,MODEL_LABELS as legacy_MODEL_LABELS,SUBTYPE_LABELS as legacy_SUBTYPE_LABELS,MODEL_DESCRIPTIONS as legacy_MODEL_DESCRIPTIONS,POINT_SCALE as legacy_POINT_SCALE,FUSION_MATERIAL_BONUS as legacy_FUSION_MATERIAL_BONUS,DECK_SIZE as legacy_DECK_SIZE,DECK_MIN as legacy_DECK_MIN,DECK_MAX as legacy_DECK_MAX,SPECIAL_DECK_SIZE as legacy_SPECIAL_DECK_SIZE,DECK_COPY_LIMIT as legacy_DECK_COPY_LIMIT,STARTER_DECKS as legacy_STARTER_DECKS,RARITY_ORDER as legacy_RARITY_ORDER,FUSION_CARD_ID as legacy_FUSION_CARD_ID} from './legacy-catalog.js?v=20261125-33';
 export const ORIGINS=legacy_ORIGINS;
 export const ELEMENTS=legacy_ELEMENTS;
 export const TYPE_LABELS=legacy_TYPE_LABELS;
