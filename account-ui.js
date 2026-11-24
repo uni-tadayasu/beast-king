@@ -1,6 +1,6 @@
-import {CARDS} from './catalog.js?v=20261124-28';
-import {accountSyncView,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js?v=20261124-28';
-import {operatorRewardPageSize} from './operator-paging.js?v=20261124-28';
+import {CARDS} from './catalog.js?v=20261124-29';
+import {accountSyncView,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js?v=20261124-29';
+import {operatorRewardPageSize} from './operator-paging.js?v=20261124-29';
 
 /** Account dialogs use the same server identity as online battles. No role or
  * activation credential is saved in the game data or inferred from the UI. */
@@ -216,7 +216,7 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       render();
       if(kind()==='operator-regalia'){operatorModal({preserve:false});scheduleOperatorRefresh();}
       const converted=result.claim.convertedTreasure||0;
-      toast(sync.phase==='conflict'?'受取はクラウドで確定しました。設定の「端末連携と同期」で保存内容を確認してください。':result.replayed?'𠮷良原デッキは開放済みです。':result.upgraded?'𠮷良原デッキを開放しました。必要なカードもそろいました。':converted?`𠮷良原デッキを開放しました。レガリアの所持上限を超えた分は${converted}秘宝に変わりました。`:'王冠竜 レガリアを2枚受け取り、𠮷良原デッキを開放しました。');
+      toast(sync.phase==='conflict'?'受取はクラウドで確定しました。設定の「端末連携と同期」で保存内容を確認してください。':result.replayed?'プレミアムデッキは開放済みです。':result.upgraded?'プレミアムデッキを開放しました。必要なカードもそろいました。':converted?`プレミアムデッキを開放しました。レガリアの所持上限を超えた分は${converted}秘宝に変わりました。`:'王冠竜 レガリアを2枚受け取り、プレミアムデッキを開放しました。');
     }catch(error){
       if(operator!==owner)return;
       operator.busy=false;
@@ -233,7 +233,7 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       acceptOperatorDeck(result.deck);
       if(!operatorDeck)throw new Error('専用デッキの開放を確認してください。');
       await onEquipOperatorDeck(getOperatorDeck());if(operator!==owner)return;
-      closeModal();toast('𠮷良原デッキを使用します。ソロ・ルーム対戦・ランクマッチで使えます。');
+      closeModal();toast('プレミアムデッキを使用します。ソロ・ルーム対戦・ランクマッチで使えます。');
     }catch(error){
       if(operator!==owner)return;
       if(error?.status===401||error?.status===404)acceptOperatorDeck(null);

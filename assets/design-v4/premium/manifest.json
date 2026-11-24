@@ -1,0 +1,719 @@
+{
+  "schemaVersion": 1,
+  "collection": "王冠竜・レガリア専用プレミアム",
+  "status": "complete",
+  "generationTool": "built-in-imagegen",
+  "generationMode": "one-call-per-asset",
+  "reference": {
+    "path": "assets/design-v2/cards/individual/king.webp",
+    "role": "visual style reference; inspected, not an edit target"
+  },
+  "constraints": {
+    "origin": "king",
+    "rarity": "GGR",
+    "transparentBackground": false,
+    "nativeOutputPreserved": true,
+    "privateArtworkUsed": false
+  },
+  "createdAt": "2026-11-24T10:39:35.687Z",
+  "assets": [
+    {
+      "id": "B2049",
+      "name": "王冠の先導竜アウレリス",
+      "kind": "beast",
+      "theme": "探索・竜の導き",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: AURELIS, a noble scout dragon guiding the way. A lean ivory-and-amber dragon with polished gold crown horns stands on a narrow mossy cliff above an immense emerald river canyon. Its head and one outstretched foreclaw point toward a sunlit route between distant floating rock arches; its partly unfurled wings sweep diagonally behind it. Three-quarter side view with the dragon looking into the distance. Palette: jade green valleys, pale ivory scales, amber-gold armor and fresh morning sunlight. Mood: discovery, clear direction and intelligent confidence. Emphasize the dragon as a guide, not a charging warrior.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/B2049.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "ef16bd8e45c4a60c9878958804f772a08e2e0a17c53f987c24cf34bcce201d44",
+      "bytes": 3444692,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-9ae1aab7-f958-4539-9346-c07076e8768a.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "ef16bd8e45c4a60c9878958804f772a08e2e0a17c53f987c24cf34bcce201d44",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3444692
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:40:20.954Z",
+        "completedAt": "2026-11-24T10:41:05.276Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-9ae1aab7-f958-4539-9346-c07076e8768a.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "B2050",
+      "name": "王冠の祈祷竜セレイア",
+      "kind": "beast",
+      "theme": "回復聖祈",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: SELEIA, a gentle dragon of healing prayer. A pearl-white dragon with rose-gold crown horns kneels at a circular spring in the ruined nave of an open-roof sanctuary. Folded wings cradle its shoulders; the dragon lowers its face toward its two joined foreclaws, where a soft warm light restores tiny flowering vines around the water. Symmetrical frontal three-quarter composition, serene face and reflections in the foreground. Palette: pearl, blush rose, muted lavender and luminous cream, with only restrained gold details. Mood: sacred care, calm and recovery. Use soft diffused dawn rays through old arches.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/B2050.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "1914808f7de7762a4ff72e59556e3f65330cc71a593494d57355a237c70dcdbd",
+      "bytes": 3152238,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-e91d5e11-ac23-46cb-aa20-ce4f49b6f71b.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "1914808f7de7762a4ff72e59556e3f65330cc71a593494d57355a237c70dcdbd",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3152238
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:40:20.955Z",
+        "completedAt": "2026-11-24T10:41:49.688Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-e91d5e11-ac23-46cb-aa20-ce4f49b6f71b.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "B2051",
+      "name": "王冠の近衛竜ヴァルギス",
+      "kind": "beast",
+      "theme": "盾の竜騎士",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: VALGIS, a royal guard dragon knight. A massive deep-navy dragon in thick engraved gold armor plants both hind feet on a rain-dark fortress bridge. One broad armored wing folds forward into a monumental shield wall, deflecting a visible wave of blue-white magical impact; the horned head peers vigilantly over the shield edge. Low camera angle, compact strong silhouette, storm clouds and tall citadel gates behind. Palette: midnight blue scales, steel-blue rain, burnished gold and sharp cold highlights. Mood: resolute protection and immovable strength. The dragon remains visibly reptilian, never a human knight.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/B2051.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "0a714517d6d152c05cda8e873ee84fb6b6511b58fc7cbacb045cc1dbcdc35119",
+      "bytes": 3554204,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-69bb0f75-77ae-4b9e-a80b-63399d58552d.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "0a714517d6d152c05cda8e873ee84fb6b6511b58fc7cbacb045cc1dbcdc35119",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3554204
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:43:00.235Z",
+        "completedAt": "2026-11-24T10:44:55.721Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-69bb0f75-77ae-4b9e-a80b-63399d58552d.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "B2052",
+      "name": "王冠の召導竜エーテリオ",
+      "kind": "beast",
+      "theme": "召喚エーテル",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: ETHERIO, a royal dragon that conducts summoning ether. A slender amethyst-scaled dragon with delicate gold crown horns floats above a many-tiered marble observatory. Both foreclaws orchestrate flowing ribbons of violet and turquoise ether that form one open oval portal beside its body. Tail coils elegantly in an S curve; translucent wing membranes catch starlight. Dynamic side-on airborne composition with deep space between the dragon and portal. Palette: amethyst, turquoise, midnight violet and pale gold. Mood: precise magical mastery, celestial mystery. The portal has pure geometric energy edges without runic writing.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/B2052.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "69ef78516907ca322dc518fcea2f243fe1a986dde5db7efdd3cfdb9be5890d00",
+      "bytes": 3146293,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-e8c06ff2-6426-41ce-8897-98cc2640e4c0.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "69ef78516907ca322dc518fcea2f243fe1a986dde5db7efdd3cfdb9be5890d00",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3146293
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:43:00.235Z",
+        "completedAt": "2026-11-24T10:43:46.661Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-e8c06ff2-6426-41ce-8897-98cc2640e4c0.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "B2053",
+      "name": "王冠の伝令竜ルミナーク",
+      "kind": "beast",
+      "theme": "光の伝令",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: LUMINARC, a swift messenger dragon of light. A sleek silver-and-citrine dragon with streamlined gold crown horns dives diagonally between towering white clouds above a distant sunlit sea. Its long wings sweep back like blades, and a compact luminous orb is protected between its foreclaws, visually conveying a delivered message without any scroll or text. View from slightly above the dragon's head, strong forward motion and wind-shaped cloud trails. Palette: clean azure, bright white, citrine gold and silver. Mood: urgency, hope and confident speed. Keep the face sharply readable and avoid a static frontal pose.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/B2053.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "e16b91fccdbf83505de76b279aa64393ecfd0cf3cf0ed5b84562eedbfe990f48",
+      "bytes": 2795154,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-8823e7bd-9439-454b-8d65-18689545e6be.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "e16b91fccdbf83505de76b279aa64393ecfd0cf3cf0ed5b84562eedbfe990f48",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2795154
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:43:00.235Z",
+        "completedAt": "2026-11-24T10:44:21.363Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-8823e7bd-9439-454b-8d65-18689545e6be.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "B2054",
+      "name": "王冠の再誓竜リヴァリス",
+      "kind": "beast",
+      "theme": "復活の誓い",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: RIVARIS, a dragon renewing a sacred oath after resurrection. A powerful obsidian-and-crimson dragon rises from one knee on an ancient broken marble dais. Its right foreclaw rests over a re-lit golden chest crest while its other claw grips the edge of the dais; repaired seams in the scales glow with subdued red-gold life. A torn dark cloud opens to a single descending beam behind its crown horns. Close low three-quarter view, one wing still folded and one opening, broken chains lying on stone. Palette: wine crimson, charcoal black, old ivory and ember gold. Mood: solemn resolve, renewed life and dignity, no gore.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/B2054.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "bccd9ea805bb4daee3d2684a98f51b074ca1e4fc684c9334c42b7ab336dbadf4",
+      "bytes": 3131413,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-1df48613-4fac-435f-a2fc-bf33eb8a2e65.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "bccd9ea805bb4daee3d2684a98f51b074ca1e4fc684c9334c42b7ab336dbadf4",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3131413
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:45:48.456Z",
+        "completedAt": "2026-11-24T10:47:09.214Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-1df48613-4fac-435f-a2fc-bf33eb8a2e65.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "B2055",
+      "name": "王冠の昂翼竜ソルディア",
+      "kind": "beast",
+      "theme": "戦意・翼の強化",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: SOLDIA, a dragon whose wings intensify royal battle spirit. A copper-and-scarlet dragon leaps upward from a sun-baked mountain terrace, both enormous wings lifted in a powerful V. Layered gold armor plates along the wing spars ignite with coherent orange energy, visibly reinforcing the wings. View from below and slightly behind the shoulders so the wing structure and turned roaring head dominate; distant ridgelines create depth. Palette: copper red, flame orange, warm sandstone and saturated blue sky. Mood: rising courage and explosive uplift. Distinct muscular wing anatomy, natural motion, no abstract rarity effects.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/B2055.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "eb5e48cb8c1003162305be838e21ed63dda954f3113ded1765d77fbd2b68d1ed",
+      "bytes": 3217002,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-c7950e0b-4fc7-4249-babc-2156d0587052.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "eb5e48cb8c1003162305be838e21ed63dda954f3113ded1765d77fbd2b68d1ed",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3217002
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:45:48.456Z",
+        "completedAt": "2026-11-24T10:47:42.467Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-c7950e0b-4fc7-4249-babc-2156d0587052.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "M1025",
+      "name": "王冠竜の招来",
+      "kind": "spell",
+      "theme": "壮大な召喚門",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: The arrival of the crown dragon through a magnificent summoning gate. A colossal circular gateway made of floating gilded stone segments opens above a broad black-marble ceremonial staircase. Through the portal, the head and one foreclaw of an immense royal dragon emerge from concentrated teal light, showing its scale against the architecture. Wide environmental composition looking upward, gate centered high and stairs drawing the eye inward. Palette: dark teal, obsidian, gold and brilliant turquoise-white portal light. Mood: awe and the beginning of an overwhelming arrival. No people, no inscriptions or writing on the gate.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/M1025.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "f387ef027ba2493b323f24fc2d930aa3767686c46905ff9a0a957879141cfcdd",
+      "bytes": 3218442,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-a5954226-f67c-4e50-9c5f-055adbeb1c81.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "f387ef027ba2493b323f24fc2d930aa3767686c46905ff9a0a957879141cfcdd",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3218442
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:45:48.456Z",
+        "completedAt": "2026-11-24T10:46:23.428Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-a5954226-f67c-4e50-9c5f-055adbeb1c81.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "M1026",
+      "name": "王冠竜の神装",
+      "kind": "spell",
+      "theme": "竜用神聖武装",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: Divine armament designed for a royal dragon. In the center of a lofty golden forge-temple, an ornate dragon-shaped breastplate, crown-shaped head armor and a pair of wing guards float together in an elegant exploded arrangement, clearly sized for a huge dragon rather than a human. A white-gold anvil below releases clean shafts of sacred light that assemble the pieces. Close object-focused composition with tactile engraving, articulated joints and pale gemstones; the headpiece is the focal point. Palette: luminous ivory, polished gold, warm bronze and quiet pale-blue shadows. Mood: consecration and impeccable craftsmanship. No dragon body, no human armor silhouette, no writing.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/M1026.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "40305c650715f6bcebdba4be97250485c945bcb26afc91e95e4b7f2588e28699",
+      "bytes": 3217791,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-02b8aee9-45ef-4596-9dfa-6dead2c1dc77.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "40305c650715f6bcebdba4be97250485c945bcb26afc91e95e4b7f2588e28699",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3217791
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:48:04.123Z",
+        "completedAt": "2026-11-24T10:48:45.274Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-02b8aee9-45ef-4596-9dfa-6dead2c1dc77.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "M1027",
+      "name": "王冠竜の帰還",
+      "kind": "spell",
+      "theme": "墓地から輝く竜の蘇生",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: The triumphant resurrection of the crown dragon. A luminous gold-and-ivory dragon surges upward from a cracked monumental tomb in an ancient moonlit dragon necropolis. The lid has split into several hovering stone slabs; tendrils of green life grow from the cracks as a warm body reforms from light into solid scales and wings. Dramatic vertical movement within a square composition, viewed from low inside the ruined chamber toward the opening sky. Palette: emerald life-light, pale gold, cold moonlit stone and midnight blue. Mood: return, vitality and victory over oblivion. Reverent fantasy resurrection without skeleton gore, no inscriptions.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/M1027.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "80b66dd1096143cd511aa86d5d8a21fc148acaedb87c7dd650058ab99c9fe97d",
+      "bytes": 3491946,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-c3c3da8b-377f-428b-9f05-9e4f6d3145d1.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "80b66dd1096143cd511aa86d5d8a21fc148acaedb87c7dd650058ab99c9fe97d",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3491946
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:48:04.123Z",
+        "completedAt": "2026-11-24T10:49:21.945Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-c3c3da8b-377f-428b-9f05-9e4f6d3145d1.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "M1028",
+      "name": "王冠竜の聖域",
+      "kind": "spell",
+      "theme": "黄金の回復結界神域",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: The crown dragon's golden sanctuary of healing. An immense transparent golden protective dome encloses a lush terraced garden of pale stone pools and flowering trees on a floating island. A serene distant royal dragon rests at the center beside the highest pool, small enough for the sanctuary to be the main subject. Wide elevated view across the dome; warm rivers of healing light follow the garden's paths while a quiet storm remains outside. Palette: honey gold, fresh spring green, turquoise water and soft white marble. Mood: restoration, safety and peaceful abundance. Clear magical architecture without runes, no human figures.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/M1028.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "5ee11d533f36035e162a2d9921b4819f3931af5fa3177a1178f63da04f342a6b",
+      "bytes": 3377719,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-baa06816-6338-4258-b421-4470470121c7.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "5ee11d533f36035e162a2d9921b4819f3931af5fa3177a1178f63da04f342a6b",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3377719
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:48:04.123Z",
+        "completedAt": "2026-11-24T10:50:04.720Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-baa06816-6338-4258-b421-4470470121c7.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "M1029",
+      "name": "王冠竜の裁光",
+      "kind": "spell",
+      "theme": "天から降る竜の裁き",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: The crown dragon's judgment descending from the heavens. A gigantic spectral dragon head and unfurled wings take shape inside a break in black storm clouds, directing one intense straight column of white-gold light onto an empty fractured basalt battlefield below. The impact forms a clean circular shockwave and lifted stones, not fire or gore. Highly dramatic upward-to-downward diagonal composition, sky occupies most of the square, ground remains a narrow foreground. Palette: storm charcoal, electric violet, searing white and pale gold. Mood: divine judgment, immense controlled force and awe. No figures being harmed, no writing.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/M1029.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "0186c3e69ec4b4715ae784b67ebcccb6732681c31467ae12f6b8ddf595364396",
+      "bytes": 2788045,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-89577b2d-9b26-41a4-b8b5-2856535f0ba4.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "0186c3e69ec4b4715ae784b67ebcccb6732681c31467ae12f6b8ddf595364396",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2788045
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:50:25.236Z",
+        "completedAt": "2026-11-24T10:51:36.302Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-89577b2d-9b26-41a4-b8b5-2856535f0ba4.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "M1030",
+      "name": "王冠竜の神合",
+      "kind": "spell",
+      "theme": "竜の神聖融合",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: The sacred fusion of royal dragons. Two distinct translucent dragon silhouettes, one warm solar gold and one cool moonlit silver-blue, spiral around each other in a grand double helix above a crystal mountain lake. At their meeting point, a single solid majestic crowned dragon begins to emerge, its face and chest sharp and integrated, wings forming a balanced powerful silhouette. Three-quarter aerial composition with an open ring of clouds emphasizing convergence. Palette: gold, sapphire, violet dusk and white crystal light. Mood: harmonious transformation and unity. The final dragon has anatomically coherent single head and body, no extra duplicate limbs, no writing.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/M1030.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "42baa116fdd768240686a71c0378e4d1aa7f151860986b1fa2a9e856a3f0ac31",
+      "bytes": 3092131,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-9f0a2861-088b-4647-8854-c4fcf7cf7181.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "42baa116fdd768240686a71c0378e4d1aa7f151860986b1fa2a9e856a3f0ac31",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3092131
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:50:25.236Z",
+        "completedAt": "2026-11-24T10:50:58.823Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-9f0a2861-088b-4647-8854-c4fcf7cf7181.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "G1025",
+      "name": "王冠竜の守護陣",
+      "kind": "trap",
+      "theme": "巨大防衛魔法陣",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: A monumental defensive magic formation of the crown dragon. A gigantic upright translucent hexagonal shield, built from concentric golden geometric rings and interlocking scale-like panels, stands across a narrow mountain pass in front of a royal citadel. The luminous profile of a dragon is formed naturally inside the central shield by flowing light, while a dark wave of force breaks and diverts to both sides. Wide ground-level view with strong depth toward the defended city. Palette: cobalt night, bright gold, frosty cyan and dark slate. Mood: absolute shelter and disciplined defensive power. Pure geometry only, absolutely no runes, letters or numbers.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/G1025.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "f82ca8113352998b9caef2c3755447b5680f8cc5ad2823b39aa51c3cbdb105b6",
+      "bytes": 3331830,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-d74f203f-a888-44c9-adf0-5af17014919d.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "f82ca8113352998b9caef2c3755447b5680f8cc5ad2823b39aa51c3cbdb105b6",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3331830
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:50:25.236Z",
+        "completedAt": "2026-11-24T10:52:23.664Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-d74f203f-a888-44c9-adf0-5af17014919d.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "G1026",
+      "name": "王冠竜の戴冠式",
+      "kind": "trap",
+      "theme": "竜の戴冠儀礼",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: The coronation ceremony of a royal dragon. A majestic dark-emerald dragon bows its enormous horned head within a roofless circular palace hall. An intricate living gold crown floats just above its brow, descending through a shaft of warm sunlight. The dragon's folded wings frame the scene like ceremonial robes; carved dragon statues and rose petals on stone create a solemn ritual setting without other living characters. Intimate centered medium-close composition focused on the crown and composed eyes, with architectural symmetry behind. Palette: deep emerald, antique gold, ivory marble and burgundy accents. Mood: rightful sovereignty, dignity and sacred ceremony. No people, no text.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/G1026.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "2a84adb23852d64c54f4f353cbde2db7325aca3ee272fab0a03d085f339f9aa8",
+      "bytes": 3144415,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-c3131b6f-e4b0-4607-896b-d3d0377adfbc.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "2a84adb23852d64c54f4f353cbde2db7325aca3ee272fab0a03d085f339f9aa8",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3144415
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:52:43.030Z",
+        "completedAt": "2026-11-24T10:53:17.371Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-c3131b6f-e4b0-4607-896b-d3d0377adfbc.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "F0513",
+      "name": "神冠竜レガリア・ソル",
+      "kind": "fusion",
+      "theme": "太陽・速攻・火力の神冠竜",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: REGALIA SOL, an ultimate divine crowned sun dragon. A towering, fully embodied gold-and-white dragon with a magnificent solar crown of swept physical horns launches toward the viewer from the edge of the sun's blazing cloud sea. Its armor is beautifully sculpted and exceptionally intricate; huge radiant gold wing membranes sweep backward in a dynamic arrow shape, while a contained sphere of solar fire forms within its open jaws. Extreme heroic low three-quarter angle, aggressive forward momentum, chest and face dominate, clearly readable tail and four limbs. Palette: brilliant solar gold, white-hot cream, molten orange and deep indigo shadows. Mood: supreme speed, divine authority and overwhelming firepower. Beautiful fantasy CG character art, no halo-shaped card decoration or rarity overlay.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/F0513.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "a2e791bb82cd422c362546d1a2ce34f2d3f503e62f93a53a937290fa687e9a6f",
+      "bytes": 3264154,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-b585ec8a-dd41-4b9f-8b0b-ff6a1e7af33b.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "a2e791bb82cd422c362546d1a2ce34f2d3f503e62f93a53a937290fa687e9a6f",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3264154
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:52:43.030Z",
+        "completedAt": "2026-11-24T10:54:00.411Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-b585ec8a-dd41-4b9f-8b0b-ff6a1e7af33b.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    },
+    {
+      "id": "F0514",
+      "name": "永冠竜レガリア・エテルナ",
+      "kind": "fusion",
+      "theme": "永遠・守護・癒やしの神冠竜",
+      "prompt": "Use case: stylized-concept.\nAsset type: original square, full-bleed fantasy card-game illustration, 1024 x 1024 composition.\nStyle/medium: premium Japanese fantasy game CG illustration with convincing three-dimensional metallic armor, finely layered scales, detailed stone and atmospheric depth, with delicate painterly surface texture. Keep a cohesive royal-dragon design language: sculptural gold armor accents, crown-shaped swept horns, powerful dragon anatomy and pale claws. The result must look like an illustration from the same world as an imposing gold-armored dragon in a ruined palace, while having its own distinct scene.\nComposition: one clearly readable central story, strong silhouette, focal subject safely inside the central 80 percent, full-bleed environment, readable as a small card illustration.\nConstraints: artwork only. No text, letters, numbers, symbols resembling writing, logos, watermark, card frame, border, UI, stats, rarity badge, rainbow foil, prismatic finish or generic rarity sparkle overlay. Magic light must belong naturally to the scene. No humans. Do not make a collage or multiple panels. Opaque complete background.\n\nPrimary request: REGALIA ETERNA, an ultimate eternal crowned dragon of protection and healing. A vast pearl-and-silver-blue dragon with exquisitely sculpted pale-gold armor rests serenely above a quiet moonlit ocean and a crystalline island sanctuary. Its enormous wings curve forward in a gentle enclosing arc around the sanctuary, while fine streams of turquoise healing light descend from its foreclaws into the water. Frontal elevated three-quarter view, calm intelligent face, long elegant tail forms one graceful loop, crown-shaped horns evoke timeless sovereignty. Palette: pearl white, silver blue, tranquil turquoise, lavender moonlight and restrained pale gold. Mood: eternity, unconditional guardianship and profound peace. Highly detailed dimensional fantasy game illustration, no people, no writing or rarity overlay.",
+      "status": "complete",
+      "src": "assets/design-v4/premium/F0514.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "d05c68c39992ae9c192f823bb309a74291560e04892db5f631b17b78e3892eba",
+      "bytes": 3278498,
+      "fit": "cover",
+      "position": "center",
+      "provenance": "built-in-imagegen",
+      "nativeOutput": {
+        "path": "/workspace/scratch/9be54a8b6c83/generated_images/exec-09fe7c2e-b14c-4262-867e-d5023c80f7d1.png",
+        "format": "PNG",
+        "mode": "RGB",
+        "sha256": "d05c68c39992ae9c192f823bb309a74291560e04892db5f631b17b78e3892eba",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3278498
+      },
+      "generation": {
+        "startedAt": "2026-11-24T10:52:43.030Z",
+        "completedAt": "2026-11-24T10:54:34.619Z",
+        "outputHint": "Generated images are saved to /workspace/scratch/9be54a8b6c83/generated_images as /workspace/scratch/9be54a8b6c83/generated_images/exec-09fe7c2e-b14c-4262-867e-d5023c80f7d1.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+        "tool": "built-in-imagegen",
+        "transparentBackground": false
+      },
+      "visualReview": {
+        "status": "passed",
+        "checks": [
+          "distinct requested subject and composition",
+          "coherent royal dragon CG style",
+          "no text or card border",
+          "native full-bleed opaque artwork"
+        ]
+      }
+    }
+  ],
+  "completedCount": 17
+}

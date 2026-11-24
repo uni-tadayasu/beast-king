@@ -1,0 +1,461 @@
+{
+  "date": "2026-11-24",
+  "timezone": "Asia/Tokyo",
+  "status": "locally-verified-awaiting-publication-authorization",
+  "codeCommit": "1bda31a848d2e81258f2924b5ac8ddcb8e1b6712",
+  "functionalTests": {
+    "command": "npm test",
+    "total": 388,
+    "passed": 388,
+    "failed": 0,
+    "durationMs": 10183.900846,
+    "logSha256": "f1575cc4c6356db23def2cf24df977431523e1e769d2bafa53b03a07249e7921"
+  },
+  "releaseGate": {
+    "cards": 4608,
+    "uniqueIllustrations": 4608,
+    "atlases": 240,
+    "originalAtlasIllustrations": 2303,
+    "newlyRedrawnIllustrations": 144,
+    "newExpansionIllustrations": 2304,
+    "newExpansionAtlases": 96,
+    "preserved": [
+      "B0512"
+    ],
+    "packs": [
+      1152,
+      1152,
+      1152,
+      1152
+    ],
+    "starters": 4,
+    "battlefields": 3,
+    "illustrationReplacements": 155,
+    "premiumAssets": 5,
+    "allFilesVerified": true
+  },
+  "operatorLayoutQa": {
+    "codeCommit": "b8c6fd50b72427f87f1cc88b31b297b8373ea015",
+    "method": "managed-browser local rendering; simulated touch navigator for portrait fixtures",
+    "viewports": [
+      [
+        1366,
+        768
+      ],
+      [
+        1920,
+        1080
+      ],
+      [
+        1024,
+        600
+      ],
+      [
+        768,
+        1024
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        320,
+        568
+      ],
+      [
+        844,
+        390
+      ],
+      [
+        568,
+        320
+      ]
+    ],
+    "views": [
+      "operator text editor",
+      "operator destination and schedule",
+      "operator rewards",
+      "operator final review",
+      "maintenance",
+      "overview",
+      "player inbox"
+    ],
+    "conditions": 56,
+    "failures": 0,
+    "documentOverflow": 0,
+    "lostOrDuplicatedText": 0,
+    "lostOrDuplicatedRewards": 0,
+    "productionWrites": false,
+    "status": "previously-verified-layout-carried-forward",
+    "note": "The 56 operator/inbox layout conditions are preserved evidence from the prior candidate; the new 400 conditions below were checked separately. Relevant operator/inbox layout code is unchanged apart from import cache identifiers."
+  },
+  "clientBuild": {
+    "files": 455,
+    "expansionAtlases": 96,
+    "sourceToClientDifferences": [
+      "rebuild/index.html",
+      "rebuild/about.html"
+    ],
+    "browserMapMatchesSource": true,
+    "privateFilesExcluded": true,
+    "sourceExpansionManifestSha256": "717c767caa897c12d6fe1f6831c74dff892c397e7476487b4eacefd02f2f1fdc",
+    "sourceToClientDifferencesExplanation": "Compatibility pages only receive the expected social-image cache query update from 20261124-26 to 20261124-28 during configure-seo.",
+    "finalCssIncluded": true
+  },
+  "privateWorkerBuild": {
+    "sourceHash": "a45ee1b5162685a4fb2093a195fd4a45693c16dc654cff0b137c9e294a868ec4",
+    "bytes": 1049270,
+    "operatorArtwork": "private-illustration",
+    "validation": "ESM fetch, isolated exports, 4608 cards, seeded engine turn, redirect, migrations",
+    "migrations": 6,
+    "tables": 23
+  },
+  "browserReview": {
+    "environment": "local managed preview; production API disabled in preview copy only",
+    "screens": [
+      "home with BK03/BK04 featured art",
+      "four pack shop",
+      "BK04 32+4 recipe and ownership requirement",
+      "320x568 portrait virtual landscape home and catalog",
+      "BK04 G1024 search, image and detail",
+      "BK03 M0541 revised image",
+      "32 event opponents, filters and all pages",
+      "all 32 opponent preparations at all 8 viewport sizes",
+      "four home modes with logical height adjustments",
+      "small-screen opponent recipe pagination",
+      "event start, pause, resume, surrender, result and retry"
+    ],
+    "expansionAssetErrorsObserved": 0
+  },
+  "publication": {
+    "performed": false,
+    "reason": "Automatic approval review rejected the exact git push of release source/assets to the public repository because the current user message only said continue and the previous publication was awaiting direct authorization. No alternate transmission, merge or deployment was attempted after rejection.",
+    "remotePullRequestHead": "79141a8af263ff1ff77389537e775898984bc187",
+    "targetRepository": "uni-tadayasu/beast-king",
+    "pullRequest": 4,
+    "targetBranch": "main",
+    "frontend": "https://www.beast-king.com/",
+    "api": "https://beast-king.hisa-0128-1996.chatgpt.site",
+    "latestCandidateGitHubCi": "not-run-push-blocked",
+    "remoteMain": "af77f86d9c47087a893cbc6dc5bf0d7384a65314"
+  },
+  "releaseRevision": "20261124-28",
+  "eventLayoutQa": {
+    "method": "Managed browser running locally prepared actual game UI, simulated touch navigator in portrait fixtures; not physical device certification. Production API disabled only in preview copy.",
+    "totalConditions": 400,
+    "failures": 0,
+    "eventConditions": 378,
+    "homeConditions": 8,
+    "homeWithResumeConditions": 1,
+    "recipeConditions": 5,
+    "resultConditions": 8,
+    "viewports": [
+      [
+        1366,
+        768
+      ],
+      [
+        1920,
+        1080
+      ],
+      [
+        1024,
+        600
+      ],
+      [
+        768,
+        1024
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        320,
+        568
+      ],
+      [
+        844,
+        390
+      ],
+      [
+        568,
+        320
+      ]
+    ],
+    "eventByViewport": [
+      {
+        "physical": [
+          1366,
+          768
+        ],
+        "conditions": 42,
+        "selectedDecks": 32,
+        "failures": 0,
+        "minScale": 1,
+        "maxScale": 1,
+        "minKeyTextPx": 14
+      },
+      {
+        "physical": [
+          1920,
+          1080
+        ],
+        "conditions": 42,
+        "selectedDecks": 32,
+        "failures": 0,
+        "minScale": 1,
+        "maxScale": 1,
+        "minKeyTextPx": 14
+      },
+      {
+        "physical": [
+          1024,
+          600
+        ],
+        "conditions": 44,
+        "selectedDecks": 32,
+        "failures": 0,
+        "minScale": 0.9022,
+        "maxScale": 0.9401,
+        "minKeyTextPx": 11.7286
+      },
+      {
+        "physical": [
+          768,
+          1024
+        ],
+        "conditions": 42,
+        "selectedDecks": 32,
+        "failures": 0,
+        "minScale": 1,
+        "maxScale": 1,
+        "minKeyTextPx": 13
+      },
+      {
+        "physical": [
+          390,
+          844
+        ],
+        "conditions": 52,
+        "selectedDecks": 32,
+        "failures": 0,
+        "minScale": 1,
+        "maxScale": 1,
+        "minKeyTextPx": 14
+      },
+      {
+        "physical": [
+          320,
+          568
+        ],
+        "conditions": 52,
+        "selectedDecks": 32,
+        "failures": 0,
+        "minScale": 0.8979,
+        "maxScale": 0.9112,
+        "minKeyTextPx": 12.5706
+      },
+      {
+        "physical": [
+          844,
+          390
+        ],
+        "conditions": 52,
+        "selectedDecks": 32,
+        "failures": 0,
+        "minScale": 1,
+        "maxScale": 1,
+        "minKeyTextPx": 14
+      },
+      {
+        "physical": [
+          568,
+          320
+        ],
+        "conditions": 52,
+        "selectedDecks": 32,
+        "failures": 0,
+        "minScale": 0.9718,
+        "maxScale": 1,
+        "minKeyTextPx": 13.6052
+      }
+    ],
+    "homeByViewport": [
+      {
+        "physical": [
+          1366,
+          768
+        ],
+        "scale": 0.9032,
+        "documentFits": true,
+        "failures": 0
+      },
+      {
+        "physical": [
+          1920,
+          1080
+        ],
+        "scale": 1,
+        "documentFits": true,
+        "failures": 0
+      },
+      {
+        "physical": [
+          1024,
+          600
+        ],
+        "scale": 1,
+        "documentFits": true,
+        "failures": 0
+      },
+      {
+        "physical": [
+          768,
+          1024
+        ],
+        "scale": 1,
+        "documentFits": true,
+        "failures": 0
+      },
+      {
+        "physical": [
+          390,
+          844
+        ],
+        "scale": 0.9253,
+        "documentFits": true,
+        "failures": 0
+      },
+      {
+        "physical": [
+          320,
+          568
+        ],
+        "scale": 0.8649,
+        "documentFits": true,
+        "failures": 0
+      },
+      {
+        "physical": [
+          844,
+          390
+        ],
+        "scale": 0.9559,
+        "documentFits": true,
+        "failures": 0
+      },
+      {
+        "physical": [
+          568,
+          320
+        ],
+        "scale": 0.9344,
+        "documentFits": true,
+        "failures": 0
+      }
+    ],
+    "homeWithResume": {
+      "physical": [
+        1366,
+        768
+      ],
+      "scale": 0.8928,
+      "failures": 0
+    },
+    "opponentRecipe": {
+      "physical": [
+        320,
+        568
+      ],
+      "pages": 5,
+      "cardKinds": 18,
+      "cards": 36,
+      "lostOrDuplicatedCards": 0,
+      "clippedCards": 0,
+      "scaleByPage": [
+        0.9407,
+        0.9407,
+        0.9407,
+        0.9407,
+        1
+      ]
+    },
+    "eventResult": {
+      "viewports": 8,
+      "failures": 0,
+      "scaleByViewport": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "phoneBodyFontPx": 14,
+      "phoneActionFontPx": 14,
+      "phoneProgressFontPx": 13,
+      "runtimeErrorsObserved": 0
+    },
+    "realUiFlow": [
+      "event selection",
+      "all five opponent recipe pages",
+      "start battle",
+      "end turn",
+      "pause",
+      "home",
+      "event list",
+      "resume turn 3 with 4800 HP",
+      "surrender confirmation",
+      "automatic result dialog",
+      "retry same opponent"
+    ],
+    "productionWrites": false
+  },
+  "operatorDeckBenchmark": {
+    "revision": 3,
+    "opponents": 48,
+    "gamesPerRecipe": 3072,
+    "cpu": "unchanged production hard in both seats",
+    "seats": "swapped for each seed",
+    "maxTurns": 200,
+    "seedBases": [
+      1137278747,
+      2634213025
+    ],
+    "baseline": {
+      "wins": 2003,
+      "losses": 1066,
+      "draws": 0,
+      "unfinished": 3,
+      "winRate": 0.6520182291666666
+    },
+    "candidate": {
+      "wins": 2795,
+      "losses": 261,
+      "draws": 0,
+      "unfinished": 16,
+      "winRate": 0.9098307291666666,
+      "firstWins": 1411,
+      "secondWins": 1384,
+      "gamesWithAceSummoned": 1203,
+      "gamesWithAceAttack": 778
+    },
+    "improvementPercentagePoints": 25.78125,
+    "sourceHashesMatch": "releaseHashes verified for all 9 files in both final JSON records",
+    "limits": "Does not establish 100 wins out of 100, performance against every legal deck, or the same win rate against human opponents. Unfinished games count in denominator but not as wins."
+  },
+  "sourceSha256": {
+    "app.js": "56a04d17e08ba4c83450cd6a437add3dfe4b255bc0bd1126dcb54a45535d3446",
+    "event-decks.js": "315d34dd5d82f056d0a3c3c9982472d11b51d81d9041e15fd2e3f6338952d828",
+    "event-battles.js": "28705528d62b8e4b82096f5fbdb546f14099756d0f34cd5044e6217ea0bc33c7",
+    "event-views.js": "2f8e648a4014d4ef6dc540dffbd4b5fa6e2649da98ea12b218fb75d0f019fbbb",
+    "event-battles.css": "2fcb700182b2a8a865b96ce4283e4f20be7f3a82a2dbb73bdf6af82f28694d70",
+    "operator-deck.js": "bbe40624d416bd92553ea91058501708d6d28a4418fc15778938ebcf79a1171d",
+    "server/account.js": "c1e5a50ee6e5c2ebce0d87105739d524cc0386f6a3e18f69502a8e595ce8fb34",
+    "server/worker.js": "ff8b56f6ed3eb5090c8c0a281f29b518a7ecd93fe7e6c0a5914a84703203f3b2",
+    "scripts/check-public-release.mjs": "79688b2736cb7aa0f3cdbe5dc941432e6fbb256c227559aa7c5f0af044b828f6"
+  }
+}

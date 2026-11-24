@@ -1,12 +1,22 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CARDS, CARD_MAP, STARTER_DECKS, getCardsForSet, FUSION_CARD_ID } from '../catalog.js';
+import { CARDS, CARD_MAP, CARD_SETS, STARTER_DECKS, EXPANSION_DECKS, RARITY_LABELS, getCardsForSet, FUSION_CARD_ID } from '../catalog.js';
+import {PREMIUM_CARD_IDS,PREMIUM_SET_ADDITIONS} from '../premium-cards.js';
+import {PREMIUM_DECK,PREMIUM_DECK_ID} from '../premium-deck.js';
+import {treasureShop,packOddsView} from '../product-views.js';
 import {
-  PACK_ID, PACK_NAME, PACK_DESCRIPTION, PACK_CARD_IDS, PACK_CARD_COUNT,
+  PACKS, PACK_ID, PACK_NAME, PACK_DESCRIPTION, PACK_CARD_IDS, PACK_CARD_COUNT,
   PACK_COST, PACK_SIZE, STARTING_TREASURE, EXTRA_COPY_TREASURE,
   RARITY_ODDS, GUARANTEED_RARITY_ODDS,
-  normalizeCollection, grantDeckCollection, createStarterCollection, hasStarterCards, openPack, getBattleReward, STARTER_PRICE,quoteStarterPurchase,purchaseStarter,
+  normalizeCollection, grantDeckCollection, createStarterCollection, hasStarterCards, quoteDeckRecipe, hasDeckRecipeCards, openPack, getBattleReward, STARTER_PRICE,quoteStarterPurchase,purchaseStarter,
 } from '../shop.js';
+
+const expectedTypes={
+ BK01:{beast:516,fusion:128,miracle:257,gimmick:256},
+ BK02:{beast:513,fusion:130,miracle:257,gimmick:256},
+ BK03:{beast:513,fusion:128,miracle:258,gimmick:257},
+ BK04:{beast:513,fusion:128,miracle:258,gimmick:257},
+};
 
 function seededRandom(seed) {
   let state = seed >>> 0;
@@ -16,9 +26,10 @@ function seededRandom(seed) {
 test('pack prices, guarantees, and advertised percentages are consistent', () => {
   assert.equal(PACK_ID, 'BK01');
   assert.equal(PACK_NAME, '六源の覚醒');
-  assert.ok(PACK_DESCRIPTION.includes('1,152'));
-  assert.equal(PACK_CARD_COUNT, 1152);
-  assert.equal(new Set(PACK_CARD_IDS).size, 1152);
+  assert.ok(PACK_DESCRIPTION.includes('1,157'));
+  assert.ok(PACK_DESCRIPTION.includes('レガリア専用GGR5種追加'));
+  assert.equal(PACK_CARD_COUNT, 1157);
+  assert.equal(new Set(PACK_CARD_IDS).size, 1157);
   assert.equal(PACK_CARD_IDS.filter(id => CARD_MAP.get(id).type === 'fusion').length, 128);
   assert.equal(PACK_COST, 100);
   assert.equal(PACK_SIZE, 12);
@@ -29,6 +40,67 @@ test('pack prices, guarantees, and advertised percentages are consistent', () =>
   assert.equal(GUARANTEED_RARITY_ODDS.N, undefined);
   assert.ok(Math.abs(Object.values(GUARANTEED_RARITY_ODDS).reduce((a, b) => a + b, 0) - 100) < 1e-10);
   assert.ok(Math.abs(GUARANTEED_RARITY_ODDS.R - 25 / 42 * 100) < 1e-10);
+});
+
+test('all four products and odds views show their real pools and additional GGR counts',()=>{
+ assert.equal(PACKS.length,4);
+ for(const pack of PACKS){
+  const cards=getCardsForSet(pack.id),types=expectedTypes[pack.id],expected=Object.values(types).reduce((sum,n)=>sum+n,0);
+  assert.equal(pack.cardCount,expected);
+  assert.equal(CARD_SETS.find(set=>set.id===pack.id).cardCount,expected);
+  assert.deepEqual(pack.typeCounts,types);
+  assert.equal(pack.cardIds.length,cards.length);
+  assert.equal(pack.premiumGgrCount,PREMIUM_SET_ADDITIONS[pack.id]);
+  assert.equal(pack.premiumGgrCount,cards.filter(card=>PREMIUM_CARD_IDS.includes(card.id)&&card.rarity==='GGR').length);
+  assert.equal(pack.cost,100);assert.equal(pack.size,12);
+  const view=packOddsView({packId:pack.id,RARITY_LABELS});
+  for(const text of [expected.toLocaleString('ja-JP'),`通常魔獣${types.beast}枚`,`合成魔獣${types.fusion}枚`,`ミラクル${types.miracle}枚`,`ギミック${types.gimmick}枚`,`レガリア専用GGR${pack.premiumGgrCount}種追加`]){
+   assert.ok(pack.description.includes(text),pack.id+' description '+text);
+   assert.ok(view.includes(text),pack.id+' odds '+text);
+  }
+  assert.ok(!view.includes('1,152'));
+ }
+ assert.equal(PACKS.reduce((sum,pack)=>sum+pack.premiumGgrCount,0),PREMIUM_CARD_IDS.length);
+});
+
+test('every pack exposes the public premium recipe while retaining existing expansion launchers',()=>{
+ for(const pack of PACKS){
+  const html=treasureShop({data:{treasure:100,collection:{}},packId:pack.id,title:()=>'',icon:()=>'',esc:String,fmt:n=>n.toLocaleString('ja-JP'),artStyle:()=>'',collected:0});
+  const launchers=[...html.matchAll(/data-action="expansion-recipe" data-id="([^"]+)"/g)].map(match=>match[1]);
+  const existing=EXPANSION_DECKS.filter(deck=>deck.setId===pack.id).map(deck=>deck.id);
+  assert.deepEqual(launchers,[...existing,PREMIUM_DECK_ID]);
+  assert.ok(html.includes('王冠竜プレミアム構築例'));
+  assert.equal(existing.length,pack.edition>=3?4:0);
+  const grid=html.match(/<div class="recipe-launchers">([\s\S]*?)<\/div>/)?.[1];
+  if(existing.length)assert.equal([...grid.matchAll(/<button /g)].length,4);
+  assert.ok(html.includes('data-action="shop-section" data-section="starters"'));
+ }
+});
+
+test('the premium recipe requires all 36 owned copies and never grants or mutates inventory',()=>{
+ const empty=Object.freeze({}),quote=quoteDeckRecipe(empty,PREMIUM_DECK_ID);
+ assert.deepEqual(quote.deck,PREMIUM_DECK);assert.equal(quote.owned,false);
+ assert.equal(quote.missingCopies,36);assert.equal(quote.missing.length,18);
+ assert.deepEqual(empty,{});assert.equal(hasDeckRecipeCards(empty,PREMIUM_DECK_ID),false);
+ const required={};for(const id of [...PREMIUM_DECK.ids,...PREMIUM_DECK.specialIds])required[id]=(required[id]||0)+1;
+ const owned=Object.freeze(required),before=JSON.stringify(owned);
+ assert.equal(quoteDeckRecipe(owned,PREMIUM_DECK_ID).owned,true);
+ assert.equal(hasDeckRecipeCards(owned,PREMIUM_DECK_ID),true);
+ assert.equal(JSON.stringify(owned),before);
+ for(const id of Object.keys(required)){
+  const partial=Object.freeze({...required,[id]:required[id]-1}),missing=quoteDeckRecipe(partial,PREMIUM_DECK_ID);
+  assert.equal(missing.owned,false);assert.equal(missing.missingCopies,1);
+  assert.deepEqual(missing.missing,[{cardId:id,required:2,owned:1,missing:1}]);
+  assert.equal(partial[id],1);
+ }
+ for(const starter of STARTER_DECKS){
+  const collection=createStarterCollection({},starter.id),snapshot=JSON.stringify(collection);
+  assert.ok(PREMIUM_CARD_IDS.every(id=>!collection[id]));
+  assert.equal(quoteDeckRecipe(collection,PREMIUM_DECK_ID).owned,false);
+  assert.equal(JSON.stringify(collection),snapshot);
+ }
+ assert.equal(quoteDeckRecipe(owned,'operator-kirahara-v1').deck,null);
+ assert.equal(quoteDeckRecipe(owned,'regalia-premium-unknown').owned,false);
 });
 
 test('normalization rejects unknown IDs and invalid counts without mutating input', () => {
@@ -149,7 +221,7 @@ test('each advertised rarity range reaches that rarity in a regular slot', () =>
   }
 });
 
-for(const packId of ['BK01','BK02','BK03','BK04']) test(packId+' draws every one of its 1152 cards including all 128 fusion beasts', () => {
+for(const packId of ['BK01','BK02','BK03','BK04']) test(packId+' reaches its entire expanded pool including every new GGR support card', () => {
   const mainCards = getCardsForSet(packId);
   const reached = new Set();
   const midpoints = {};
@@ -168,14 +240,25 @@ for(const packId of ['BK01','BK02','BK03','BK04']) test(packId+' draws every one
       reached.add(result.pulls[0].cardId);
     }
   }
-  assert.equal(mainCards.length, 1152);
-  assert.equal(mainCards.filter(c => c.type === 'fusion').length, 128);
-  assert.equal(reached.size, 1152);
+  const expected=Object.values(expectedTypes[packId]).reduce((sum,n)=>sum+n,0);
+  assert.equal(mainCards.length, expected);
+  assert.equal(mainCards.filter(c => c.type === 'fusion').length, expectedTypes[packId].fusion);
+  assert.equal(reached.size, expected);
   assert.deepEqual([...reached].sort(), mainCards.map(c=>c.id).sort());
   assert.deepEqual(mainCards.reduce((counts, card) => {
     counts[card.type] = (counts[card.type] || 0) + 1;
     return counts;
-  }, {}), { beast: 512, miracle: 256, gimmick: 256, fusion: 128 });
+  }, {}), expectedTypes[packId]);
+  const added=mainCards.filter(card=>PREMIUM_CARD_IDS.includes(card.id));
+  assert.equal(added.length,PREMIUM_SET_ADDITIONS[packId]);
+  assert.ok(added.every(card=>card.rarity==='GGR'&&reached.has(card.id)));
+  const ggr=mainCards.filter(card=>card.rarity==='GGR');
+  for(const card of added){
+   const rolls=[...Array(22).fill(0),0.99999,(ggr.findIndex(c=>c.id===card.id)+0.5)/ggr.length];
+   const result=openPack({treasure:100,collection:{}},{packId,randomFn:()=>rolls.shift()});
+   assert.equal(result.ok,true);assert.equal(result.pulls[11].cardId,card.id);
+   assert.equal(result.pulls[11].guaranteed,true);
+  }
 });
 
 test('bad or throwing RNG rolls back even when some slots have been drawn', () => {

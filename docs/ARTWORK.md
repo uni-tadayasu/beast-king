@@ -1,10 +1,12 @@
 # BEAST KING — artwork production and provenance
 
-## Current four-pack edition
+## Current four-pack edition — r29
 
-The main catalogue contains 4,608 cards across BK01, BK02, BK03 and BK04, with 1,152 cards in each pack. The original BK01/BK02 illustrations described below remain in use with their reviewed corrections. BK03/BK04 add 2,304 individually directed illustrations in 96 native six-by-four atlases under `assets/design-v3/cards/`. Each generated PNG is inspected before conversion to WebP; the generation records preserve the native dimensions, source and output hashes, exact prompt hash, card order and visual-review state. `card-art-expansion.js` supplies the expansion crops.
+The r29 catalogue contains 4,625 cards across BK01, BK02, BK03 and BK04: 1,157 in BK01 and 1,156 in each of the other packs. Seventeen new Regalia support cards add 17 distinct native illustrations under `assets/design-v4/premium/`, assigned through `card-art-premium.js`. The eight Selva variants share the user's specified original PNG through `card-art-user.js`; this explicit shared-art group makes 4,618 distinct displayed illustrations across 4,625 card assignments. The current card inventory, provenance and validation scope are recorded in [the r29 release record](RELEASE-2026-11-24.md).
 
-The complete `npm run verify:release` gate requires all 4,608 artwork assignments, the 96 expansion atlases and their reviewed records, the original assets and corrections, all four 1,152-card packs, four starter decks, three mode backgrounds, and the premium pack/realm imagery. The `/rebuild/` compatibility edition remains the independent 2,304-card catalogue.
+The original BK01/BK02 illustrations described below remain in use with their reviewed corrections and the Selva override. BK03/BK04 retain 2,304 individually directed illustrations in 96 native six-by-four atlases under `assets/design-v3/cards/`. Each generated PNG is inspected before conversion to WebP; the generation records preserve the native dimensions, source and output hashes, exact prompt hash, card order and visual-review state. `card-art-expansion.js` supplies the expansion crops.
+
+The complete `npm run verify:release` gate requires all 4,625 artwork assignments, the 17 premium illustrations, the unchanged Selva original and its eight-card sharing group, the 96 expansion atlases and their reviewed records, the original assets and corrections, pack counts of 1,157/1,156/1,156/1,156, four starter decks, three mode backgrounds, and the premium pack/realm imagery. The `/rebuild/` compatibility edition remains the independent 2,304-card catalogue and uses the same Selva override.
 
 ## Earlier 2026-11-24 two-pack release
 

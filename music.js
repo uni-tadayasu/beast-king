@@ -1,4 +1,4 @@
-/** Persistent menu, battle and battle-danger music, separate from the render tree.
+/** Persistent menu, battle, event battle and battle-danger music, separate from the render tree.
  * sync({scene, enabled, volume: 0..1, visible}); defaults to ON at 50%.
  * Call unlock() once to attempt autoplay, then on user gestures to retry when
  * browser policy blocks it. unlocked records an attempt, not granted permission.
@@ -8,7 +8,7 @@
 export function createMusicController(options={}) {
   const doc=options.document ?? globalThis.document;
   const win=options.window ?? globalThis.window;
-  const sources={menu:'assets/audio/menu.mp3',battle:'assets/audio/battle.mp3','battle-danger':'assets/audio/battle-danger.mp3',...options.sources};
+  const sources={menu:'assets/audio/menu.mp3',battle:'assets/audio/battle.mp3','battle-event':'assets/audio/battle-event.mp3','battle-danger':'assets/audio/battle-danger.mp3',...options.sources};
   const prefix=options.idPrefix || 'beastking-bgm';
   const onstate=typeof options.onstate==='function'?options.onstate:()=>{};
   const audioFactory=options.createAudio || (()=>doc?.createElement('audio'));
@@ -151,7 +151,7 @@ export function createMusicController(options={}) {
     safelyPause(entry,true);emit();
   }
 
-  for(const scene of ['menu','battle','battle-danger']) {
+  for(const scene of ['menu','battle','battle-event','battle-danger']) {
     const audio=audioFactory(scene,sources[scene]);
     if(!audio || typeof audio.play!=='function' || typeof audio.pause!=='function')throw new TypeError('A playable audio element is required.');
     audio.id=`${prefix}-${scene}`;audio.loop=true;audio.preload='none';audio.autoplay=false;audio.controls=false;audio.hidden=true;

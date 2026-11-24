@@ -32,6 +32,11 @@ html[data-card-art-direction='painted-ink'] :is(.card-art.individual-art,.starte
 html[data-card-art-direction='painted-ink'] :is(.card-art.individual-art,.starter-box-art,.pack-illustration,.art-well>.art):is([data-regalia-context],[style*='king.webp'],[style*='data:image/'])::before {
  filter: none;
 }
+/* User-provided originals keep their colors and linework. The card's separate
+   rarity frame and foil remain in place above the unchanged illustration. */
+html[data-card-art-direction='painted-ink'] :is(.card-art.individual-art,.starter-box-art,.pack-illustration,.art-well>.art)[style*='assets/user-art/']::before {
+ filter: none;
+}
 @media (forced-colors: active) {
  html[data-card-art-direction='painted-ink'] :is(.card-art.individual-art,.starter-box-art,.pack-illustration,.art-well>.art)::before { filter: none; }
 }

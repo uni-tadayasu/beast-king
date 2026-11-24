@@ -36,7 +36,7 @@ async function decks(body,db,playerId){
   const main=validateDeck(body.deck),special=validateSpecialDeck(body.special);
   if(!main.valid||!special.valid)problem(400,'invalid_deck',[...main.errors,...special.errors].join('／'));
   let deckSlotId=null;
-  if(body.deckSlotId===KIRAHARA_SLOT){const entitled=await first(db,"SELECT 1 AS allowed FROM bk_operator o JOIN bk_reward_claims c ON c.player_id=o.player_id WHERE o.singleton=1 AND o.player_id=? AND c.item_type='gift' AND c.item_id IN ('operator-kirahara-deck-v1','operator-kirahara-deck-v2','operator-kirahara-deck-v3') LIMIT 1",playerId);if(entitled)deckSlotId=KIRAHARA_SLOT;}
+  if(body.deckSlotId===KIRAHARA_SLOT){const entitled=await first(db,"SELECT 1 AS allowed FROM bk_operator o JOIN bk_reward_claims c ON c.player_id=o.player_id WHERE o.singleton=1 AND o.player_id=? AND c.item_type='gift' AND c.item_id IN ('operator-kirahara-deck-v1','operator-kirahara-deck-v2','operator-kirahara-deck-v3','operator-kirahara-deck-v4') LIMIT 1",playerId);if(entitled)deckSlotId=KIRAHARA_SLOT;}
   return {deck:[...body.deck],special:[...body.special],deckSlotId};
 }
 const storedDeck=selected=>JSON.stringify(selected.deckSlotId?{ids:selected.deck,deckSlotId:selected.deckSlotId}:selected.deck);
@@ -425,7 +425,7 @@ export function createOnlineWorker({now=()=>Date.now()}={}){
       if(path==='/health'||path==='/api/health'){
         if(method!=='GET')problem(405,'method_not_allowed','この操作は利用できません。');
         await first(db,'SELECT id FROM bk_profiles LIMIT 1');
-        return respond({ok:true,service:'beast-king-online',serverTime:time,contentRevision:'20261124-28'});
+        return respond({ok:true,service:'beast-king-online',serverTime:time,contentRevision:'20261124-29'});
       }
       if(path==='/api/profile'){
         if(!['GET','POST'].includes(method))problem(405,'method_not_allowed','この操作は利用できません。');

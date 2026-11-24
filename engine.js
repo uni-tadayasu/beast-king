@@ -1,4 +1,6 @@
-import { getCard, STARTER_DECKS, DECK_PRESETS, EXPANSION_DECKS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, DECK_COPY_LIMIT, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js?v=20261124-28';
+import { getCard, STARTER_DECKS, DECK_PRESETS, EXPANSION_DECKS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, DECK_COPY_LIMIT, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js?v=20261124-29';
+import {REGALIA_CARD_ID,PREMIUM_EFFECT_KINDS} from './premium-cards.js?v=20261124-29';
+import {PREMIUM_DECK} from './premium-deck.js?v=20261124-29';
 
 export const MAX_HEART_POINTS = 5000;
 // Internal .core and MAX_CORE remain compatible with saved games and callers.
@@ -12,6 +14,21 @@ const label = p => p.name || 'プレイヤー';
 const ok = events => ({ok:true, events});
 const fail = error => ({ok:false, error, events:[]});
 const isAttackOnlyBeast = card => card?.type==='beast' && card.model==='attack';
+const isRegaliaCard=card=>card?.id===REGALIA_CARD_ID||card?.family==='regalia';
+const isRegaliaAce=card=>card?.id===REGALIA_CARD_ID||card?.type==='fusion'&&card.family==='regalia';
+const regaliaField=player=>player.field.filter(unit=>unit.hp>0&&isRegaliaAce(getCard(unit.cardId)));
+const PREMIUM_KINDS=new Set(PREMIUM_EFFECT_KINDS);
+
+/** Printed costs stay immutable. Only the public Conduit card reduces the
+ * cost of its owner's Regalia; both seats use the same legality and payment. */
+export function getCardCost(state,cardOrId,who=state?.active){
+ const card=getCard(typeof cardOrId==='string'?cardOrId:cardOrId?.id);
+ if(!card)return Infinity;
+ if(card.id!==REGALIA_CARD_ID)return card.cost;
+ const reduction=(state?.players?.[who]?.field||[]).filter(unit=>unit.hp>0&&getCard(unit.cardId)?.effect.kind==='regalia_conduit')
+  .reduce((total,unit)=>total+getCard(unit.cardId).effect.value,0);
+ return Math.max(2,card.cost-reduction);
+}
 
 function seedNumber(value) {
   if (typeof value === 'number' && Number.isFinite(value)) return (value >>> 0) || 0x6d2b79f5;
@@ -122,7 +139,7 @@ function restoreDefense(state, who, value, events, source) {
 }
 const EXPANSION_KINDS=new Set(['legacy_rally','legacy_mend','legacy_recall','legacy_aegis','legacy_bless','legacy_bond','orbit_rally','orbit_aegis','orbit_focus','orbit_pulse','echo_bolt','echo_aegis','echo_recall','echo_chorus','vow_rally','vow_aegis','vow_focus','vow_bolt','forge_rally','forge_aegis','forge_bolt','forge_restore']);
 const EXPANSION_DAMAGE=new Set(['legacy_bond','orbit_pulse','echo_bolt','vow_bolt','forge_bolt']);
-const matchesFamily=(card,family)=>family==='legacy'?['BK01','BK02'].includes(card?.setId):card?.setId==='BK04'&&card.family===family;
+const matchesFamily=(card,family)=>family==='regalia'?isRegaliaCard(card):family==='regalia-ace'?isRegaliaAce(card):family==='legacy'?['BK01','BK02'].includes(card?.setId):card?.setId==='BK04'&&card.family===family;
 const familyField=(player,family)=>player.field.filter(unit=>unit.hp>0&&matchesFamily(getCard(unit.cardId),family));
 const orbitCount=player=>Math.min(3,new Set(familyField(player,'orbit').map(unit=>getCard(unit.cardId).origin)).size);
 function echoCount(player,card,excludeCurrent=true){
@@ -138,6 +155,48 @@ function expansionDamage(player,card,resolving=true){
  if(kind==='vow_bolt')return player.core>200?value+100:0;
  if(kind==='forge_bolt')return value+(forgeIndex(player)>=0?200:0);
  return value;
+}
+function premiumEffect(state,who,card,target,events){
+ const {kind,value}=card.effect;if(!PREMIUM_KINDS.has(kind))return false;
+ const player=state.players[who],enemy=1-who,royals=regaliaField(player);
+ const text=message=>emit(state,events,`「${card.name}」：${message}`,'info');
+ const shield=amount=>{player.shield+=amount;emit(state,events,`「${card.name}」：結界${amount}を付与（合計${player.shield}）。`,'shield');};
+ const boost=(units,amount)=>{
+  for(const unit of units){unit.attack+=amount;unit.hp+=amount;unit.maxHp+=amount;}
+  emit(state,events,`「${card.name}」：対象${units.length}体の攻撃力・現在守備力・最大守備力を${amount}上昇。`,'buff');
+ };
+ const retrieve=(zone,predicate)=>{
+  if(player.hand.length>=RULES.hand){text('手札が4枚のため、カードを加えなかった。');return false;}
+  const index=player[zone].findIndex(id=>predicate(getCard(id)));
+  if(index<0){text(`${zone==='deck'?'山札':'お墓'}に対象のカードがない。`);return false;}
+  const [id]=player[zone].splice(index,1);player.hand.push(id);
+  text(`${zone==='deck'?'山札から公開した':'お墓の'}「${getCard(id).name}」1枚を手札へ加えた。`);return true;
+ };
+ const king=c=>c?.id===REGALIA_CARD_ID;
+ const sweep=amount=>{for(const unit of state.players[enemy].field)damageUnit(state,unit,amount,events,card.name);};
+ if(kind==='regalia_sovereign'){sweep(value);healCore(state,who,1500,events,card.name);}
+ else if(kind==='regalia_search')retrieve('deck',king);
+ else if(kind==='regalia_seek_support')retrieve('deck',c=>c?.type==='miracle'&&c.family==='regalia');
+ else if(kind==='regalia_prayer')healCore(state,who,value*(royals.length?2:1),events,card.name);
+ else if(kind==='regalia_guard')shield(value);
+ else if(kind==='regalia_conduit')text(`この魔獣が場にいる間、王冠竜レガリアの必要エーテルを${value}軽減（下限2）。`);
+ else if(kind==='regalia_recall')retrieve(player.grave.includes(REGALIA_CARD_ID)?'grave':'deck',king);
+ else if(kind==='regalia_rally')boost(royals,value);
+ else if(kind==='regalia_armament')boost(royals.filter(unit=>unit.uid===target?.uid),value);
+ else if(kind==='regalia_revive'||kind==='regalia_advent'){
+  const zone=kind==='regalia_revive'?'grave':player.hand.includes(REGALIA_CARD_ID)?'hand':'deck';
+  const index=player[zone].indexOf(REGALIA_CARD_ID),zoneLabel={grave:'お墓',hand:'手札',deck:'山札'}[zone];
+  if(index<0||player.field.length>=RULES.field){text(`${zoneLabel}に王冠竜レガリアがいないか、場が4体のため召喚できない。`);return true;}
+  const [id]=player[zone].splice(index,1),revived=getCard(id);
+  player.field.push(makeUnit(state,revived,who));
+  emit(state,events,`${label(player)}が「${card.name}」で${zoneLabel}の「${revived.name}」を${zone==='deck'?'公開して':''}召喚！`,'summon');
+  summonEffect(state,revived,events);
+ }else if(kind==='regalia_sanctuary'){healCore(state,who,value,events,card.name);if(royals.length)shield(600);}
+ else if(kind==='regalia_judgment'){sweep(value);if(royals.length)damageCore(state,enemy,value,events,card.name);}
+ else if(kind==='regalia_coronation'){if(royals.length)boost(royals,value);else retrieve('deck',king);}
+ else if(kind==='regalia_dawn'){sweep(value);healCore(state,who,value,events,card.name);}
+ else if(kind==='regalia_eternity'){healCore(state,who,value,events,card.name);shield(value);retrieve('grave',king);}
+ return true;
 }
 /** All expansion references stay on public zones. No random hidden-card search,
  * generated tokens, recursive triggers or extra saved counters. */
@@ -204,7 +263,7 @@ function activateStartTraps(state, who, events) {
     player.traps = player.traps.filter(t=>t.uid!==trap.uid);
     player.grave.push(trap.cardId);
     emit(state, events, `${label(player)}のギミック「${card.name}」が発動！`, 'gimmick');
-    if(expansionEffect(state,who,card,undefined,events)){checkWinner(state,events);continue;}
+    if(premiumEffect(state,who,card,undefined,events)||expansionEffect(state,who,card,undefined,events)){cleanup(state,events,card.name);checkWinner(state,events);continue;}
     if (card.effect.kind === 'spring') {
       for (const unit of player.field) {unit.attack+=card.effect.value;unit.hp+=card.effect.value;unit.maxHp+=card.effect.value;}
       emit(state, events, `「${card.name}」：${player.field.length?`${label(player)}の場の魔獣${player.field.length}体すべての攻撃力・現在守備力・最大守備力が${card.effect.value}上昇。`:'場に対象の魔獣がいないため、能力の変化は0。'}`, 'buff');
@@ -234,7 +293,7 @@ function beginTurn(state, events) {
 
 function defaultSpecialDeck(ids) {
   const signature=[...ids].sort().join('|');
-  const preset=[...DECK_PRESETS,...EXPANSION_DECKS].find(d=>[...d.ids].sort().join('|')===signature) || STARTER_DECKS[0];
+  const preset=[...DECK_PRESETS,...EXPANSION_DECKS,PREMIUM_DECK].find(d=>[...d.ids].sort().join('|')===signature) || STARTER_DECKS[0];
   return preset.specialIds;
 }
 
@@ -266,6 +325,11 @@ function validHandCard(state, handIndex) {
   if (!validState(state) || state.winner !== null || !Number.isInteger(handIndex)) return null;
   return getCard(state.players[state.active].hand[handIndex]) || null;
 }
+function makeUnit(state,card,owner,bonus=0){
+ return {uid:`u${state.nextUid++}`,cardId:card.id,attack:card.attack+bonus,hp:card.hp+bonus,maxHp:card.hp+bonus,ready:card.keywords.includes('rush'),keywords:[...card.keywords],owner};
+}
+const acceptsFusionCard=(spell,card)=>!spell.fusionFamily||matchesFamily(card,spell.fusionFamily);
+const acceptsFusionMaterial=(spell,card,material)=>[spell.materialFamily,card?.materialFamily].filter(Boolean).every(family=>matchesFamily(getCard(material.cardId),family));
 export function getFusionMaterials(state, who=state?.active) {
   if (!validState(state) || ![0,1].includes(who)) return [];
   const player=state.players[who], materials=[];
@@ -281,16 +345,34 @@ export function getFusionMaterials(state, who=state?.active) {
   return materials;
 }
 
+export function getFusionChoices(state,handIndex,who=state?.active){
+ if(!validState(state)||![0,1].includes(who)||!Number.isInteger(handIndex))return [];
+ const player=state.players[who],spell=getCard(player.hand[handIndex]);
+ if(spell?.type!=='miracle'||spell.effect.kind!=='fusion')return [];
+ return (player.special||[]).flatMap((id,index)=>{
+  const card=getCard(id);return card?.type==='fusion'&&acceptsFusionCard(spell,card)?[{id,index}]:[];
+ });
+}
+export function getEligibleFusionMaterials(state,handIndex,specialIndex,who=state?.active){
+ const choice=getFusionChoices(state,handIndex,who).find(value=>value.index===specialIndex);
+ if(!choice)return [];
+ const spell=getCard(state.players[who].hand[handIndex]),card=getCard(choice.id);
+ return getFusionMaterials(state,who).filter(material=>acceptsFusionMaterial(spell,card,material));
+}
+
 export function validateFusionSelection(state, handIndex, selection) {
   const errors=[];
   if (!validState(state)) return {valid:false,errors:['対戦データを確認できません。']};
   if (state.winner!==null) return {valid:false,errors:['対戦は終了しています。']};
   const player=state.players[state.active], spell=validHandCard(state,handIndex);
   if (!spell || spell.type!=='miracle' || spell.effect.kind!=='fusion') return {valid:false,errors:['手札の「合成」を選んでください。']};
-  if (player.energy<spell.cost) errors.push(`エーテルが足りません。必要：${spell.cost}。`);
+  const cost=getCardCost(state,spell);
+  if (player.energy<cost) errors.push(`エーテルが足りません。必要：${cost}。`);
   if (!selection || typeof selection!=='object' || Array.isArray(selection)) return {valid:false,errors:[...errors,'特殊ゾーンの合成魔獣と素材を選んでください。']};
   if (selection.player!==undefined && selection.player!==state.active) errors.push('相手のカードは合成に使用できません。');
   if (!Number.isInteger(selection.specialIndex) || selection.specialIndex<0 || getCard(player.special?.[selection.specialIndex])?.type!=='fusion') errors.push('特殊ゾーンから召喚する合成魔獣を選んでください。');
+  const fusion=getCard(player.special?.[selection.specialIndex]);
+  if(fusion&&!acceptsFusionCard(spell,fusion))errors.push('この合成はレガリア専用合成魔獣だけを召喚できます。');
   if (!Array.isArray(selection.materials) || !selection.materials.length) return {valid:false,errors:[...errors,'合成素材の魔獣を1枚以上選んでください。']};
   const available=getFusionMaterials(state), unique=new Set(), fieldUids=new Set();
   let fieldMaterials=0;
@@ -306,6 +388,7 @@ export function validateFusionSelection(state, handIndex, selection) {
     if (!source || (material.cardId!==undefined && material.cardId!==source.cardId) || (material.uid!==undefined && material.uid!==source.uid)) {
       errors.push('選んだ素材は使用できません。自分の手持ち・出場ゾーン・お墓ゾーンの魔獣（合成魔獣も可）を選んでください。');continue;
     }
+    if(!acceptsFusionMaterial(spell,fusion,source))errors.push('この合成の素材は王冠竜レガリアかレガリア専用魔獣だけです。');
     if (material.zone==='field') {
       if (fieldUids.has(source.uid)) errors.push('同じ1体の魔獣を重ねて素材にはできません。');
       fieldUids.add(source.uid);fieldMaterials++;
@@ -316,10 +399,12 @@ export function validateFusionSelection(state, handIndex, selection) {
 }
 
 function hasLegalFusion(state, handIndex) {
-  const player=state.players[state.active];
-  if (!(player.special||[]).some(id=>getCard(id)?.type==='fusion')) return false;
-  const materials=getFusionMaterials(state);
-  return materials.length>0 && (player.field.length<RULES.field || materials.some(m=>m.zone==='field'));
+  const player=state.players[state.active],spell=getCard(player.hand[handIndex]);
+  return (player.special||[]).some(id=>{
+    const card=getCard(id);if(card?.type!=='fusion'||!acceptsFusionCard(spell,card))return false;
+    const materials=getFusionMaterials(state).filter(material=>acceptsFusionMaterial(spell,card,material));
+    return materials.length>0 && (player.field.length<RULES.field || materials.some(m=>m.zone==='field'));
+  });
 }
 
 function resolveFusion(state, handIndex, selection) {
@@ -334,7 +419,7 @@ function resolveFusion(state, handIndex, selection) {
   const graveIndices=new Set(materials.filter(m=>m.zone==='grave').map(m=>m.index));
   // Validate against original physical references first, then remove every zone
   // simultaneously. Removing the spell never shifts a selected hand material.
-  player.energy-=spell.cost;
+  player.energy-=getCardCost(state,spell);
   player.hand=player.hand.filter((_,i)=>!handIndices.has(i));
   player.field=player.field.filter((_,i)=>!fieldIndices.has(i));
   player.grave=player.grave.filter((_,i)=>!graveIndices.has(i));
@@ -344,8 +429,8 @@ function resolveFusion(state, handIndex, selection) {
   player.lastMiracle=spell.id;
   player.special.splice(selection.specialIndex,1);
   const bonus=(materials.length-1)*FUSION_MATERIAL_BONUS, events=[];
-  player.field.push({uid:`u${state.nextUid++}`,cardId:card.id,attack:card.attack+bonus,hp:card.hp+bonus,maxHp:card.hp+bonus,ready:card.keywords.includes('rush'),keywords:[...card.keywords],owner:state.active,fusionMaterialCount:materials.length});
-  emit(state,events,`${label(player)}が「合成」を発動。素材の魔獣${materials.length}枚を異世界ゾーンへ送った。`,'miracle');
+  player.field.push({...makeUnit(state,card,state.active,bonus),fusionMaterialCount:materials.length});
+  emit(state,events,`${label(player)}が「${spell.name}」を発動。素材の魔獣${materials.length}枚を異世界ゾーンへ送った。`,'miracle');
   emit(state,events,`${label(player)}が特殊ゾーンから「${card.name}」を合成召喚！ 素材${materials.length}枚、攻撃力${card.attack+bonus}・守備力${card.hp+bonus}（素材効果 +${bonus}）。`,'fusion');
   summonEffect(state,card,events);
   cleanup(state,events,spell.name);checkWinner(state,events);
@@ -370,15 +455,23 @@ export function getPlayableCards(state) {
   const player=state.players[state.active];
   return player.hand.flatMap((id,i)=>{
     const card=getCard(id);
-    if (!card || card.type==='fusion' || card.cost>player.energy || (card.effect.kind==='fusion' && !hasLegalFusion(state,i)) || (card.type==='beast' && player.field.length>=RULES.field) || (card.type==='gimmick' && player.traps.length>=RULES.traps) || (needsTarget(card) && !getLegalTargets(state,i).length)) return [];
+    if (!card || card.type==='fusion' || getCardCost(state,card)>player.energy || (card.effect.kind==='fusion' && !hasLegalFusion(state,i)) || (card.type==='beast' && player.field.length>=RULES.field) || (card.type==='gimmick' && player.traps.length>=RULES.traps) || (needsTarget(card) && !getLegalTargets(state,i).length)) return [];
     return [i];
   });
 }
 function summonEffect(state, card, events) {
   const own=state.active, enemy=1-own, player=state.players[own];
   const {kind,value=0}=card.effect;
+  if(isRegaliaAce(card)){
+    const unit=player.field.at(-1),guards=player.field.filter(guard=>guard.hp>0&&getCard(guard.cardId)?.effect.kind==='regalia_guard');
+    const protection=guards.reduce((total,guard)=>total+getCard(guard.cardId).effect.value,0);
+    if(protection&&unit?.cardId===card.id){
+      unit.hp+=protection;unit.maxHp+=protection;
+      emit(state,events,`「${card.name}」：王冠の近衛竜${guards.length}体の召喚保護で現在守備力・最大守備力を${protection}上昇。`,'buff');
+    }
+  }
   if (kind!=='none') emit(state,events,`${label(player)}の「${card.name}」の召喚時効果が発動。`,'info');
-  if(expansionEffect(state,own,card,undefined,events))return;
+  if(premiumEffect(state,own,card,undefined,events)||expansionEffect(state,own,card,undefined,events))return;
   if (kind==='draw') draw(state,own,value,events,false,card.name);
   else if (kind==='heal') healCore(state,own,value,events,card.name);
   else if (kind==='damage_core') damageCore(state,enemy,value,events,card.name);
@@ -393,7 +486,7 @@ function summonEffect(state, card, events) {
 function miracleEffect(state, card, target, events) {
   const own=state.active, enemy=1-own, player=state.players[own];
   const {kind,value=0}=card.effect;
-  if(expansionEffect(state,own,card,target,events))return;
+  if(premiumEffect(state,own,card,target,events)||expansionEffect(state,own,card,target,events))return;
   if (kind==='damage_enemy') {
     if (target.core) damageCore(state,enemy,value,events,card.name);
     else damageUnit(state,state.players[enemy].field.find(u=>u.uid===target.uid),value,events,card.name);
@@ -424,15 +517,16 @@ export function playCard(state, handIndex, target) {
   if (!card) return fail('手札のカードを選んでください。');
   if (card.type==='fusion') return fail('合成魔獣は特殊ゾーンから「合成」で召喚してください。');
   if (card.type==='miracle' && card.effect.kind==='fusion') return resolveFusion(state,handIndex,target);
-  if (player.energy<card.cost) return fail(`エーテルが足りません。必要：${card.cost}。`);
+  const cost=getCardCost(state,card);
+  if (player.energy<cost) return fail(`エーテルが足りません。必要：${cost}。`);
   if (card.type==='beast' && player.field.length>=RULES.field) return fail('魔獣の場は4体までです。');
   if (card.type==='gimmick' && player.traps.length>=RULES.traps) return fail('ギミックは2枚まで設置できます。');
-  if (needsTarget(card) && !getLegalTargets(state,handIndex).some(t=>targetMatches(t,target))) return fail(card.effect.kind==='buff'?'強化する味方の魔獣を選んでください。':'ダメージを与える相手の魔獣かハートポイントを選んでください。');
+  if (needsTarget(card) && !getLegalTargets(state,handIndex).some(t=>targetMatches(t,target))) return fail(card.effect.kind==='buff'?'強化する味方の魔獣を選んでください。':card.targetType==='regalia-ace'?'強化するレガリアか専用合成魔獣を選んでください。':'ダメージを与える相手の魔獣かハートポイントを選んでください。');
   const events=[];
-  player.energy-=card.cost;
+  player.energy-=cost;
   player.hand.splice(handIndex,1);
   if (card.type==='beast') {
-    player.field.push({uid:`u${state.nextUid++}`,cardId:card.id,attack:card.attack,hp:card.hp,maxHp:card.hp,ready:card.keywords.includes('rush'),keywords:[...card.keywords],owner:state.active});
+    player.field.push(makeUnit(state,card,state.active));
     emit(state,events,`${label(player)}が「${card.name}」を召喚！`,'summon');
     summonEffect(state,card,events);
   } else if (card.type==='miracle') {
@@ -476,6 +570,14 @@ export function attack(state, attackerUid, target) {
   let attackPower=unit.attack;
   for (const trap of [...defender.traps]) {
     const card=getCard(trap.cardId);
+    if(card.effect.kind==='regalia_barrier'&&regaliaField(defender).length){
+      defender.traps=defender.traps.filter(t=>t.uid!==trap.uid);defender.grave.push(trap.cardId);
+      emit(state,events,`${label(defender)}のギミック「${card.name}」が発動！`,'gimmick');
+      damageUnit(state,unit,card.effect.value,events,card.name);defender.shield+=card.effect.value;
+      emit(state,events,`「${card.name}」：結界${card.effect.value}を付与（合計${defender.shield}）。`,'shield');
+      if(unit.hp<=0){cleanup(state,events,card.name);emit(state,events,`「${card.name}」：攻撃した魔獣が消滅し、攻撃は止められた。`,'cancel');return ok(events);}
+      continue;
+    }
     const eligible=card.effect.kind.startsWith('family_')&&familyField(defender,card.family).length>0;
     const ambush=card.effect.kind==='ambush'||eligible&&card.effect.kind==='family_ambush';
     const barrier=card.effect.kind==='barrier'||eligible&&card.effect.kind==='family_barrier';
@@ -543,8 +645,19 @@ export function endTurn(state) {
 }
 
 function chooseFusionSelection(state,handIndex,difficulty) {
-  const player=state.players[state.active], available=getFusionMaterials(state);
-  const specials=(player.special||[]).map((id,i)=>({card:getCard(id),i})).filter(v=>v.card?.type==='fusion');
+  const player=state.players[state.active],spell=getCard(player.hand[handIndex]),allMaterials=getFusionMaterials(state);
+  const specials=(player.special||[]).map((id,i)=>({card:getCard(id),i})).filter(v=>{
+    if(v.card?.type!=='fusion'||!acceptsFusionCard(spell,v.card))return false;
+    const materials=allMaterials.filter(m=>acceptsFusionMaterial(spell,v.card,m));
+    return materials.length&&(player.field.length<RULES.field||materials.some(m=>m.zone==='field'));
+  });
+  if (difficulty!=='easy') specials.sort((a,b)=>{
+    const score=c=>battleUnits(c.attack)*1.1+battleUnits(c.hp)*0.65+(c.keywords.includes('rush')?4:0)+(c.keywords.includes('guard') && player.core<MAX_HEART_POINTS*.5?4:0)+(c.effect.kind==='damage_core'?battleUnits(c.effect.value):0);
+    return score(b.card)-score(a.card);
+  });
+  let available=allMaterials.filter(material=>specials[0]&&acceptsFusionMaterial(spell,specials[0].card,material));
+  const supportMaterials=available.filter(material=>material.cardId!==REGALIA_CARD_ID);
+  if(specials[0]?.card.family==='regalia'&&supportMaterials.length&&(player.field.length<RULES.field||supportMaterials.some(m=>m.zone==='field')))available=supportMaterials;
   if (!available.length || !specials.length) return undefined;
   const graves=available.filter(m=>m.zone==='grave');
   const hands=available.filter(m=>m.zone==='hand').sort((a,b)=>getCard(a.cardId).cost-getCard(b.cardId).cost);
@@ -562,10 +675,6 @@ function chooseFusionSelection(state,handIndex,difficulty) {
     const cheap=hands.find(m=>getCard(m.cardId).cost<=2 && !materials.includes(m));
     if (cheap) materials.push(cheap);
   }
-  if (difficulty!=='easy') specials.sort((a,b)=>{
-    const score=c=>battleUnits(c.attack)*1.1+battleUnits(c.hp)*0.65+(c.keywords.includes('rush')?4:0)+(c.keywords.includes('guard') && player.core<MAX_HEART_POINTS*.5?4:0)+(c.effect.kind==='damage_core'?battleUnits(c.effect.value):0);
-    return score(b.card)-score(a.card);
-  });
   const selection={specialIndex:specials[0].i,materials};
   return validateFusionSelection(state,handIndex,selection).valid?selection:undefined;
 }
@@ -641,6 +750,32 @@ function cardScore(state, index, difficulty) {
     if(card.type==='gimmick')score-=1.5;
   }
   if(kind==='family_ambush'||kind==='family_barrier')score+=familyField(player,card.family).length?2+points*.6:-2;
+  if(PREMIUM_KINDS.has(kind)){
+    const royals=regaliaField(player),body=card.type==='beast',kingInHand=player.hand.includes(REGALIA_CARD_ID);
+    const kingInDeck=player.deck.includes(REGALIA_CARD_ID),kingInGrave=player.grave.includes(REGALIA_CARD_ID);
+    const missing=MAX_CORE-player.core;
+    if(kind==='regalia_sovereign')score+=enemy.field.reduce((sum,unit)=>sum+battleUnits(Math.min(unit.hp,value))*.75,0)+battleUnits(Math.min(missing,1500))*.7;
+    else if(kind==='regalia_search'||kind==='regalia_recall'){
+      const useful=(kind==='regalia_recall'&&kingInGrave)||kingInDeck;
+      score+=useful?(kingInHand?1:royals.length?4:12):-2;if(!body&&!useful)score=-2;
+    }else if(kind==='regalia_seek_support')score+=player.deck.some(id=>getCard(id)?.type==='miracle'&&getCard(id).family==='regalia')?5:0;
+    else if(kind==='regalia_conduit')score+=kingInHand?18:kingInDeck?8:0;
+    else if(kind==='regalia_prayer')score+=battleUnits(Math.min(missing,value*(royals.length?2:1)))*(critical?1.6:.7);
+    else if(kind==='regalia_guard')score+=points*.5+(kingInHand?3:0);
+    else if(kind==='regalia_rally'||kind==='regalia_armament')score+=royals.length*points*1.5;
+    else if(kind==='regalia_revive'||kind==='regalia_advent')score=(kind==='regalia_revive'?kingInGrave:kingInHand||kingInDeck)&&player.field.length<RULES.field?60:-2;
+    else if(kind==='regalia_sanctuary')score+=battleUnits(Math.min(missing,value))*(critical?1.6:.7)+(royals.length?3:0);
+    else if(kind==='regalia_judgment'){
+      score+=enemy.field.reduce((sum,unit)=>sum+battleUnits(Math.min(unit.hp,value))*.75+(unit.hp<=value?2:0),0)+(royals.length?points*.85:0);
+      if(royals.length&&enemy.core+enemy.shield<=value)score+=1000;
+      if(!enemy.field.length&&!royals.length)score=-2;
+    }else if(kind==='regalia_barrier')score+=royals.length?2+points*.9:-2;
+    else if(kind==='regalia_coronation')score+=royals.length*points*1.5+(!royals.length&&kingInDeck&&!kingInHand?8:0);
+    if(kind==='regalia_sanctuary'&&!missing&&!royals.length)score=-2;
+    // Keep a slot for a known incoming Regalia rather than fill the board
+    // with its support creatures. This uses only the acting player's cards.
+    if(body&&card.id!==REGALIA_CARD_ID&&player.field.length>=RULES.field-1&&!royals.length&&(kingInHand||kingInDeck))score-=100;
+  }
   if (difficulty==='easy') score+=random(state)*8;
   if (difficulty==='normal') score+=random(state)*1.2;
   return score;
@@ -702,7 +837,7 @@ function cpuPlayCards(state,difficulty,events) {
       const recyclable=player.hand.length===RULES.hand?scored.filter(({i})=>{
         const card=getCard(player.hand[i]);
         return ['heal','renew','sweep','spring','fountain'].includes(card.effect.kind)
-          ||card.type==='miracle'&&EXPANSION_KINDS.has(card.effect.kind);
+          ||card.type==='miracle'&&(EXPANSION_KINDS.has(card.effect.kind)||PREMIUM_KINDS.has(card.effect.kind));
       }).sort((a,b)=>getCard(player.hand[a.i]).cost-getCard(player.hand[b.i]).cost||a.i-b.i):[];
       if(!recyclable.length)break;
       selected=recyclable[0].i;

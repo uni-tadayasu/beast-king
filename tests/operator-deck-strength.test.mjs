@@ -6,10 +6,10 @@ import {runBalanceBenchmark} from '../scripts/balance-benchmark.mjs';
 import {EVENT_DECKS} from '../event-decks.js';
 import {compareOperatorDeck,OPERATOR_HOLDOUT_SEED} from '../scripts/operator-deck-benchmark.mjs';
 
-test('the four-set operator recipe improves strength without restoring the old automatic-win exploit',async()=>{
+test('the public premium recipe is strong while the old automatic-win exploit stays fixed',async()=>{
  assert.equal(validateDeck(OPERATOR_DECK.ids).valid,true);
  assert.equal(validateSpecialDeck(OPERATOR_DECK.specialIds).valid,true);
- assert.equal(OPERATOR_DECK.revision,3);
+ assert.equal(OPERATOR_DECK.revision,4);
  assert.equal(OPERATOR_DECK.ids.filter(id=>id==='B0512').length,2);
  assert.ok(OPERATOR_DECK.ids.filter(id=>getCard(id).cost<=2).length>=10);
  assert.deepEqual([...new Set([...OPERATOR_DECK.ids,...OPERATOR_DECK.specialIds].map(id=>getCard(id).setId))].sort(),['BK01','BK02','BK03','BK04']);
@@ -32,7 +32,7 @@ test('the four-set operator recipe improves strength without restoring the old a
  const rates=Object.keys(results[0].starters).map(id=>results.reduce((n,r)=>n+r.starters[id].wins,0)/results.reduce((n,r)=>n+r.starters[id].games,0));
  assert.ok(Math.max(...rates)-Math.min(...rates)<=.3,`aggregate starter spread ${rates.join(', ')}`);
  assert.ok(rates.every(rate=>rate>=.3&&rate<=.7),`aggregate starter range ${rates.join(', ')}`);
- console.log('Operator revision 3 / unchanged public balance benchmark',JSON.stringify({aggregateStarterRates:rates,batches:results.map(r=>({seed:r.methodology.seed,games:r.methodology.totalGames,firstWins:r.overall.firstPlayerWins,operator:r.probes[operatorId].winRate,legacyExploit:r.probes['legacy-exploit'].winRate,starterRates:Object.values(r.starters).map(s=>s.winRate),unfinished:r.overall.unfinished}))}));
+ console.log('Public premium recipe revision 4 / current catalog benchmark',JSON.stringify({aggregateStarterRates:rates,batches:results.map(r=>({seed:r.methodology.seed,games:r.methodology.totalGames,firstWins:r.overall.firstPlayerWins,operator:r.probes[operatorId].winRate,legacyExploit:r.probes['legacy-exploit'].winRate,starterRates:Object.values(r.starters).map(s=>s.winRate),unfinished:r.overall.unfinished}))}));
 });
 
 test('operator recipe performs across all event opponents and reports unresolved games honestly',()=>{

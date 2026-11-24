@@ -1,4 +1,6 @@
-import { CARD_SETS, CARD_MAP, STARTER_DECKS, getCardsForSet, getExpansionDeck } from './catalog.js?v=20261124-28';
+import { CARD_SETS, CARD_MAP, STARTER_DECKS, getCardsForSet, getExpansionDeck } from './catalog.js?v=20261124-29';
+import { PREMIUM_CARD_IDS } from './premium-cards.js?v=20261124-29';
+import { PREMIUM_DECK, PREMIUM_DECK_ID } from './premium-deck.js?v=20261124-29';
 
 // Pure economy rules shared by the browser and an authoritative server.
 // A server should inject its own secure random function into openPack.
@@ -11,12 +13,19 @@ export const RARITY_ODDS = Object.freeze({ N: 58, R: 25, KR: 10, KKR: 5, GR: 1.5
 export const BATTLE_REWARDS = Object.freeze({ win: 60, loss: 20, draw: 30, forfeit: 0 });
 
 // All expansions have separate complete pools; existing aliases select BK01.
-export const PACKS = Object.freeze(CARD_SETS.map(set => Object.freeze({
-  ...set,
-  description: `${set.theme?set.theme+' ':''}通常魔獣512枚・合成魔獣128枚・ミラクル256枚・ギミック256枚、全1,152枚を収録した${set.editionLabel}パック。12枚入り、1枚はレア以上確定。`,
-  cardIds: Object.freeze(getCardsForSet(set.id).map(card => card.id)),
-  cost: PACK_COST, size: PACK_SIZE,
-})));
+const premiumCardIds = new Set(PREMIUM_CARD_IDS);
+export const PACKS = Object.freeze(CARD_SETS.map(set => {
+  const cards = getCardsForSet(set.id);
+  const typeCounts = Object.freeze(Object.fromEntries(['beast','fusion','miracle','gimmick'].map(type => [type,cards.filter(card => card.type === type).length])));
+  const typeSummary = `通常魔獣${typeCounts.beast}枚・合成魔獣${typeCounts.fusion}枚・ミラクル${typeCounts.miracle}枚・ギミック${typeCounts.gimmick}枚`;
+  const premiumGgrCount = cards.filter(card => premiumCardIds.has(card.id) && card.rarity === 'GGR').length;
+  return Object.freeze({
+    ...set, cardCount: cards.length, typeCounts, typeSummary, premiumGgrCount,
+    description: `${set.theme?set.theme+' ':''}${typeSummary}、全${cards.length.toLocaleString('ja-JP')}枚。レガリア専用GGR${premiumGgrCount}種追加。12枚入り、1枚はレア以上確定。`,
+    cardIds: Object.freeze(cards.map(card => card.id)),
+    cost: PACK_COST, size: PACK_SIZE,
+  });
+}));
 const packsById = new Map(PACKS.map(pack => [pack.id, pack]));
 export const getPack = id => packsById.get(id);
 export const PACK_ID = PACKS[0].id;
@@ -75,7 +84,7 @@ export function hasStarterCards(collection,starterId){
  return Object.entries(required).every(([id,n])=>Number.isInteger(collection?.[id])&&collection[id]>=n);
 }
 export function quoteDeckRecipe(collection,id){
- const deck=getExpansionDeck(id);
+ const deck=getExpansionDeck(id)||(id===PREMIUM_DECK_ID?PREMIUM_DECK:null);
  if(!deck)return {deck:null,owned:false,missing:[],missingCopies:0};
  const required=new Map();for(const cardId of [...deck.ids,...deck.specialIds])required.set(cardId,(required.get(cardId)||0)+1);
  const missing=[];

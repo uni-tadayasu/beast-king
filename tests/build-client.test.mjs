@@ -47,6 +47,27 @@ test('a missing browser module fails without replacing the last good package',as
  assert.equal(await readFile(join(directory,'app.js'),'utf8'),before);
 });
 
+test('a fresh browser entry rejects stale module, page, and manifest cache queries before replacing output',async t=>{
+ const {root,write,page}=await fixture(t);
+ await write('index.html',page.replace('src="app.js"','src="app.js?v=20261124-29"'));
+ await write('app.js',"import {cards} from './catalog.js?v=20261124-29'; export const total=cards.length;");
+ const {directory}=await buildClient(root),before=await readFile(join(directory,'app.js'),'utf8');
+ for(const [path,valid,stale] of [
+  ['app.js',before,before.replace('20261124-29','20261124-28')],
+  ['about.html',page,page.replace('src="app.js"','src="app.js?v=20261124-28"')],
+  ['rebuild/profile.js','export const saved=true;',"import '../catalog.js?v=20261124-26';"],
+  ['manifest.webmanifest','{"icons":[]}','{"icons":[{"src":"assets/icon.svg?v=20261124-28"}]}'],
+ ]){
+  await write(path,stale);
+  await assert.rejects(buildClient(root),/Mixed browser cache revisions/);
+  assert.equal(await readFile(join(directory,'app.js'),'utf8'),before);
+  await write(path,valid);
+ }
+ // Asset hashes are independently versioned and do not share release numbers.
+ await write('manifest.webmanifest','{"icons":[{"src":"assets/icon.svg?v=acf789012345"}]}');
+ await buildClient(root);
+});
+
 test('an asset symlink cannot copy private data into the browser package',async t=>{
  const {root}=await fixture(t);
  await symlink(join(root,'.env'),join(root,'assets/leak.svg'));

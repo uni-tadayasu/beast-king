@@ -41,10 +41,10 @@ function fakeContext() {
   return ctx;
 }
 
-test('three persistent DOM audio elements are configured without eagerly loading or autoplaying',()=>{
+test('four persistent DOM audio elements are configured without eagerly loading or autoplaying',()=>{
   const {controller,doc,audios}=setup();
-  assert.equal(doc.children.length,3);
-  assert.deepEqual(Object.keys(audios),['menu','battle','battle-danger']);
+  assert.equal(doc.children.length,4);
+  assert.deepEqual(Object.keys(audios),['menu','battle','battle-event','battle-danger']);
   for(const [scene,audio] of Object.entries(audios)) {
     assert.equal(audio.id,`beastking-bgm-${scene}`);assert.equal(audio.attributes.get('data-scene'),scene);
     assert.equal(audio.loop,true);assert.equal(audio.preload,'none');assert.equal(audio.hidden,true);assert.equal(audio.autoplay,false);
@@ -62,7 +62,7 @@ test('unlock starts current scene; repeated renders preserve position and do not
   assert.equal(audios.menu.playCalls,1);assert.equal(audios.menu.currentTime,27.5);assert.equal(states.length,before);
 });
 
-test('danger, regular battle and menu switch exclusively and remember all three positions',async()=>{
+test('danger, event battle, regular battle and menu switch exclusively and remember all four positions',async()=>{
   const {controller,audios,states}=setup();
   for(const audio of Object.values(audios)){
     const original=audio.play.bind(audio);
@@ -70,11 +70,15 @@ test('danger, regular battle and menu switch exclusively and remember all three 
   }
   controller.unlock();await flush();audios.menu.currentTime=19;
   controller.sync({scene:'battle'});await flush();audios.battle.currentTime=42;
+  controller.sync({scene:'battle-event'});await flush();audios['battle-event'].currentTime=31;
+  for(let i=0;i<5;i++)controller.sync({scene:'battle-event'});
+  assert.equal(audios['battle-event'].playCalls,1);assert.equal(audios['battle-event'].currentTime,31);
   controller.sync({scene:'battle-danger',volume:.37});await flush();audios['battle-danger'].currentTime=13;
   assert.equal(controller.getState().scene,'battle-danger');assert.equal(states.at(-1).scene,'battle-danger');assert.equal(states.at(-1).playing,true);
   for(let i=0;i<5;i++)controller.sync({scene:'battle-danger'});
   assert.equal(audios['battle-danger'].playCalls,1);assert.equal(audios['battle-danger'].currentTime,13);
-  controller.sync({scene:'menu'});await flush();assert.equal(audios['battle-danger'].paused,true);assert.equal(audios.menu.currentTime,19);
+  controller.sync({scene:'battle-event'});await flush();assert.equal(audios['battle-danger'].paused,true);assert.equal(audios['battle-event'].currentTime,31);
+  controller.sync({scene:'menu'});await flush();assert.equal(audios['battle-event'].paused,true);assert.equal(audios.menu.currentTime,19);
   controller.sync({scene:'battle'});await flush();assert.equal(audios.battle.currentTime,42);
   controller.sync({scene:'battle-danger'});await flush();assert.equal(audios['battle-danger'].currentTime,13);
   for(const audio of Object.values(audios))assert.equal(audio.volume,.37);
@@ -91,7 +95,7 @@ test('disabled audio stays stopped even after unlock; volume zero is muted witho
 });
 
 test('autoplay rejection is handled and retried only on a fresh gesture or meaningful configuration change',async()=>{
-  for(const scene of ['menu','battle','battle-danger']){
+  for(const scene of ['menu','battle','battle-event','battle-danger']){
     const {controller,audios}=setup(),audio=audios[scene];controller.sync({scene});audio.plans.push('reject');controller.unlock();await flush();
     assert.equal(controller.getState().blocked,true);assert.equal(controller.getState().status,'blocked');assert.equal(audio.paused,true);
     controller.sync({scene,enabled:true,volume:.5,visible:true});controller.sync({volume:.4});await flush();assert.equal(audio.playCalls,1);
@@ -107,11 +111,15 @@ test('synchronous play errors and asynchronous unsupported errors do not escape'
 });
 
 test('rapid switches cannot revive an inactive track from a late play fulfillment or rejection',async()=>{
-  const {controller,audios}=setup();audios.menu.plans.push('pending');audios.battle.plans.push('pending');controller.unlock();
-  controller.sync({scene:'battle'});controller.sync({scene:'battle-danger'});await flush();assert.equal(audios['battle-danger'].paused,false);
+  const {controller,audios}=setup();audios.menu.plans.push('pending');audios.battle.plans.push('pending');audios['battle-event'].plans.push('pending');controller.unlock();
+  controller.sync({scene:'battle'});controller.sync({scene:'battle-event'});controller.sync({scene:'battle-danger'});await flush();assert.equal(audios['battle-danger'].paused,false);
   audios.menu.requests[0].resolve();await flush();assert.equal(audios.menu.paused,true);assert.equal(audios['battle-danger'].paused,false);assert.equal(controller.getState().scene,'battle-danger');
   const error=new Error('stale');error.name='NotAllowedError';audios.battle.requests[0].reject(error);await flush();
   assert.equal(controller.getState().playing,true);assert.equal(controller.getState().blocked,false);
+  audios['battle-event'].requests[0].resolve();assert.equal(audios['battle-event'].paused,true,'a late event playing notification is stopped immediately');await flush();
+  assert.equal(audios['battle-danger'].paused,false);assert.equal(controller.getState().scene,'battle-danger');assert.equal(controller.getState().playing,true);
+  audios['battle-event'].plans.push('pending');controller.sync({scene:'battle-event'});controller.sync({scene:'battle-danger'});
+  audios['battle-event'].requests[1].reject(error);await flush();assert.equal(controller.getState().playing,true);assert.equal(controller.getState().blocked,false);assert.equal(audios['battle-danger'].paused,false);
   controller.sync({scene:'menu'});audios['battle-danger'].plans.push('pending');controller.sync({scene:'battle-danger'});controller.sync({scene:'battle'});
   audios['battle-danger'].requests[0].resolve();await flush();assert.equal(audios['battle-danger'].paused,true);assert.equal(audios.menu.paused,true);assert.equal(audios.battle.paused,false);assert.equal(controller.getState().scene,'battle');
 });
@@ -126,14 +134,14 @@ test('queued pause events from rapid scene switches cannot mark the current play
   const {controller,audios}=setup(),events=[];
   for(const audio of Object.values(audios))audio.pause=()=>{audio.pauseCalls++;if(!audio.paused)events.push(audio);audio.paused=true;};
   controller.unlock();await flush();
-  for(const scene of ['battle','battle-danger','menu','battle-danger','battle','menu'])controller.sync({scene});
+  for(const scene of ['battle','battle-event','battle-danger','battle-event','menu','battle-danger','battle','menu'])controller.sync({scene});
   await flush();assert.equal(controller.getState().playing,true);
   for(const audio of events)audio.dispatchEvent(new Event('pause'));
   assert.equal(controller.getState().playing,true);assert.equal(controller.getState().status,'playing');
 });
 
 test('disabled and hidden states win over a pending playback request',async()=>{
-  for(const scene of ['menu','battle','battle-danger'])for(const change of [{enabled:false},{visible:false}]) {
+  for(const scene of ['menu','battle','battle-event','battle-danger'])for(const change of [{enabled:false},{visible:false}]) {
     const {controller,audios}=setup();controller.sync({scene});audios[scene].plans.push('pending');controller.unlock();controller.sync(change);
     audios[scene].requests[0].resolve();await flush();assert.equal(controller.getState().playing,false);
     for(const audio of Object.values(audios))assert.equal(audio.paused,true);
@@ -141,12 +149,14 @@ test('disabled and hidden states win over a pending playback request',async()=>{
 });
 
 test('document visibility and page lifecycle pause and resume with positions retained',async()=>{
-  const {controller,audios,doc,win}=setup(),audio=audios['battle-danger'];controller.sync({scene:'battle-danger'});controller.unlock();await flush();audio.currentTime=51;
-  doc.visibility(true);assert.equal(audio.paused,true);assert.equal(controller.getState().status,'hidden');
-  controller.sync({visible:false});doc.visibility(false);await flush();assert.equal(audio.paused,false);assert.equal(audio.currentTime,51);
-  win.dispatchEvent(new Event('pagehide'));assert.equal(audio.paused,true);
-  win.dispatchEvent(new Event('pageshow'));await flush();assert.equal(audio.paused,false);assert.equal(audio.currentTime,51);assert.equal(controller.getState().scene,'battle-danger');
-  assert.equal(audios.menu.playCalls,0);assert.equal(audios.battle.playCalls,0);
+  for(const scene of ['battle-event','battle-danger']) {
+    const {controller,audios,doc,win}=setup(),audio=audios[scene];controller.sync({scene});controller.unlock();await flush();audio.currentTime=51;
+    doc.visibility(true);assert.equal(audio.paused,true);assert.equal(controller.getState().status,'hidden');
+    controller.sync({visible:false});doc.visibility(false);await flush();assert.equal(audio.paused,false);assert.equal(audio.currentTime,51);
+    win.dispatchEvent(new Event('pagehide'));assert.equal(audio.paused,true);
+    win.dispatchEvent(new Event('pageshow'));await flush();assert.equal(audio.paused,false);assert.equal(audio.currentTime,51);assert.equal(controller.getState().scene,scene);
+    for(const other of Object.values(audios))if(other!==audio)assert.equal(other.playCalls,0);
+  }
 });
 
 test('visibility resume rejection waits for the next gesture rather than repeatedly trying',async()=>{
@@ -160,11 +170,11 @@ test('Web Audio gain handles volume separately from element.volume and is create
   const context=fakeContext();let factories=0;
   const {controller,audios}=setup({audioContextFactory:()=>{factories++;return context;}});
   controller.sync({volume:.5});assert.equal(factories,0);controller.unlock();await flush();
-  assert.equal(factories,1);assert.equal(context.sources.length,3);assert.equal(context.gain.gain.value,.5);assert.equal(audios.menu.volume,1);
+  assert.equal(factories,1);assert.equal(context.sources.length,4);assert.equal(context.gain.gain.value,.5);assert.equal(audios.menu.volume,1);
   assert.equal(audios.menu.attributes.get('data-bgm-volume'),'.5'.replace(/^\./,'0.'));
   assert.equal(controller.getState().gainMode,'web-audio');assert.equal(controller.getState().playing,true);
   controller.sync({volume:.2});assert.equal(context.gain.gain.value,.2);assert.equal(audios.menu.playCalls,1);
-  controller.sync({scene:'battle'});controller.sync({scene:'battle-danger'});await flush();assert.equal(context.sources.length,3);assert.equal(factories,1);
+  controller.sync({scene:'battle'});controller.sync({scene:'battle-event'});controller.sync({scene:'battle-danger'});await flush();assert.equal(context.sources.length,4);assert.equal(factories,1);
   assert.equal(controller.getState().gainMode,'web-audio');assert.equal(audios['battle-danger'].volume,1);assert.equal(context.gain.gain.value,.2);
   controller.sync({volume:0});for(const audio of Object.values(audios))assert.equal(audio.muted,true);
 });

@@ -1,8 +1,9 @@
 /** Pure, strict validation of the complete BK03/BK04 native-illustration release. */
 import assert from 'node:assert/strict';
+import {PREMIUM_CARD_IDS} from '../premium-cards.js';
 
 export function validateExpansionArtManifest(manifest,cards,browser){
- const expansion=cards.filter(c=>['BK03','BK04'].includes(c.setId));
+ const expansion=cards.filter(c=>!PREMIUM_CARD_IDS.includes(c.id)&&['BK03','BK04'].includes(c.setId));
  assert.equal(expansion.length,2304,'Exactly 2,304 new catalogue cards must have their own illustration.');
  assert.equal(manifest.total,2304);assert.equal(manifest.complete,true);assert.equal(manifest.method,'built-in-imagegen');
  assert.equal(manifest.columns,6);assert.equal(manifest.rows,4);

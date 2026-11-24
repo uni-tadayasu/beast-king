@@ -151,7 +151,7 @@ try{
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
   // Long scheduled operator content is rendered locally; never sent to live players.
-  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261124-28');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
+  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261124-29');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
   // Real native news dialog, not a synthetic layout. Every notice must
   // appear exactly once, fully within the viewport and outside the controls.
   await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);
@@ -203,7 +203,7 @@ try{
   const panes=await evaluate(`(()=>{const frame=layoutRect(document.querySelector('.bk-native-pane')),left=layoutRect(document.querySelector('.transfer-source')),right=layoutRect(document.querySelector('.deck-panel'));return {left:left.toJSON(),right:right.toJSON(),frame:frame.toJSON(),scrollHeight:document.querySelector('.bk-native-pane').scrollHeight,clientHeight:document.querySelector('.bk-native-pane').clientHeight,overflow:getComputedStyle(document.querySelector('.bk-native-pane')).overflowY}})()`);
   assert.ok(Math.abs(panes.left.width-panes.right.width)<=2&&panes.left.width>0&&panes.right.width>0&&panes.left.right<=panes.right.left+2,width+'x'+height+' separate left and right panes '+JSON.stringify(panes));
   assert.ok(panes.left.top>=panes.frame.top-2&&panes.right.top>=panes.frame.top-2&&panes.left.bottom<=panes.frame.bottom+3&&panes.right.bottom<=panes.frame.bottom+3&&['hidden','clip'].includes(panes.overflow),width+'x'+height+' both panes within the content frame '+JSON.stringify(panes));
-  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),4608);
+  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),4625);
   const cardGeometry=await evaluate(`(()=>{const failures=[];for(const [grid,selector] of [['.transfer-source .cards-grid','.transfer-card'],['.deck-image-grid','.deck-image-slot']]){const container=document.querySelector(grid);if(!container){failures.push(grid);continue}const bounds=layoutRect(container);for(const tile of container.querySelectorAll(selector)){const r=layoutRect(tile),parts=[...tile.children].map(e=>layoutRect(e));if(r.left<bounds.left-2||r.right>bounds.right+2||r.top<bounds.top-2||r.bottom>bounds.bottom+2||parts.some((p,i)=>i>0&&p.top<parts[i-1].bottom-2))failures.push({grid,id:tile.dataset.transferId,tile:r.toJSON(),bounds:bounds.toJSON()});}}return failures})()`);
   assert.deepEqual(cardGeometry,[],width+'x'+height+' card art, counts, buttons and grid bounds');
   const symmetric=await evaluate(`(()=>{const q=s=>layoutRect(document.querySelector(s)),a=q('.transfer-source .cards-grid'),b=q('.deck-image-grid'),c=q('.transfer-card>.game-card'),d=q('.deck-image-slot>.game-card'),p=q('.deck-list-pagination'),l=q('#card-results>.pagination'),foot=q('.deck-panel-foot');return {a:a.toJSON(),b:b.toJSON(),c:c.toJSON(),d:d.toJSON(),p:p.toJSON(),l:l.toJSON(),foot:foot.toJSON()}})()`);
@@ -212,7 +212,7 @@ try{
   // Exercise the operator status/actions in the visible settings tab without
   // accessing a live account. Hidden card-mode rows cannot prove their fit.
   await click('[data-bk-screen-tab=settings]');await delay(120);
-  await evaluate(`(()=>{const head=document.querySelector('.deck-panel-head'),row=document.createElement('div');row.className='operator-deck-preset';row.dataset.layoutFixture='true';row.innerHTML='<span>運営構築 · 開放済み</span><button class="text-button" data-action="operator-deck-use">𠮷良原デッキを使う</button><small class="operator-art-auto">専用イラストを自動適用</small><small class="operator-art-status">専用イラスト未受信</small><button class="text-button" data-action="operator-art-refresh">再取得</button>';head.append(row);return true})()`);
+  await evaluate(`(()=>{const head=document.querySelector('.deck-panel-head'),row=document.createElement('div');row.className='operator-deck-preset';row.dataset.layoutFixture='true';row.innerHTML='<span>運営構築 · 開放済み</span><button class="text-button" data-action="operator-deck-use">プレミアムデッキを使う</button><small class="operator-art-auto">専用イラストを自動適用</small><small class="operator-art-status">専用イラスト未受信</small><button class="text-button" data-action="operator-art-refresh">再取得</button>';head.append(row);return true})()`);
   await delay(180);
   await check(width+'x'+height+' visible operator deck settings',['.deck-panel>.workshop-tools>*','[data-layout-fixture]>*']);
   const operatorSettingsFit=await evaluate(`(()=>{const row=document.querySelector('[data-layout-fixture]'),frame=layoutRect(document.querySelector('.bk-native-pane')),bounds=layoutRect(row),nodes=[row,...row.children],inside=(r,b)=>r.left>=b.left-2&&r.right<=b.right+2&&r.top>=b.top-2&&r.bottom<=b.bottom+2;return {mode:document.querySelector('.dual-workshop').dataset.bkWorkshopMode,visible:nodes.every(e=>{const r=layoutRect(e);return r.width>0&&r.height>0}),inside:nodes.every(e=>inside(layoutRect(e),frame)),contained:[...row.children].every(e=>inside(layoutRect(e),bounds))}})()`);
@@ -221,10 +221,10 @@ try{
   await click('[data-bk-screen-tab=filter]');await delay(120);await click('[data-action=deck-advanced-filters]');await delay(200);await check(width+'x'+height+' expanded deck filters',['.transfer-source>.transfer-heading,.transfer-source>.deck-source-tools,.transfer-source>.filter-bar,.transfer-source>#card-results','.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','.filters-secondary>select']);
   await click('[data-action=deck-advanced-filters]');await delay(120);await click('[data-bk-screen-tab=cards]');await delay(160);
   await click('[data-action=deck-filter-scope][data-scope=owned]');
-  const ownedTotal=await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)');assert.ok(ownedTotal>0&&ownedTotal<4608);
+  const ownedTotal=await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)');assert.ok(ownedTotal>0&&ownedTotal<4625);
   assert.equal(await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent'),'32/32');
   await click('[data-action=deck-filter-scope][data-scope=all]');
-  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),4608);
+  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),4625);
   assert.equal(await evaluate('document.querySelector("[data-action=deck-filter-scope][data-scope=all]").getAttribute("aria-pressed")'),'true');
   const transferId=await evaluate('document.querySelector(".deck-image-slot [data-action=deck-return-slot]").dataset.id');
   const before=await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent');

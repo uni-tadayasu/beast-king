@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {CARDS,STARTER_DECKS,getCardsForSet} from '../catalog.js';
+import {PREMIUM_CARD_IDS} from '../premium-cards.js';
 import {validateCardArtManifest} from './validate-card-art.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
@@ -25,7 +26,7 @@ for(const item of production.atlases){
 const king=await readFile(resolve(root,directory+'king.webp'));
 sources.set(directory+'king.webp',sha(king));
 const inset=.012,crops={},keys=new Set();
-const cards=CARDS.filter(card=>['BK01','BK02'].includes(card.setId)).map(card=>{
+const cards=CARDS.filter(card=>!PREMIUM_CARD_IDS.includes(card.id)&&['BK01','BK02'].includes(card.setId)).map(card=>{
  const n=Number(card.id.slice(1))-1,protectedKing=card.id==='B0512';
  const src=directory+(protectedKing?'king':card.type+'-'+String(Math.floor(n/16)+1).padStart(2,'0'))+'.webp';
  const column=protectedKing?0:n%4,row=protectedKing?0:Math.floor(n%16/4);

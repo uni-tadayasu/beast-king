@@ -454,7 +454,7 @@ test('operator deck code requires the stored role and grants the normal Regalia 
  const granted=await f.api('POST',route,operator.token,{code:f.env.BK_OPERATOR_REGALIA_CODE,revision:1});
  assert.equal(granted.status,200,JSON.stringify(granted.data));
  const {save,deck}=granted.data;
- assert.equal(save.data.collection.B0512,2);assert.equal(deck.name,'𠮷良原デッキ');
+ assert.equal(save.data.collection.B0512,2);assert.equal(deck.name,'プレミアムデッキ');
  assert.equal(deck.ids.length,32);assert.equal(deck.specialIds.length,4);
  const all=[...deck.ids,...deck.specialIds];
  assert.equal(all.filter(id=>id==='B0512').length,2);
@@ -500,7 +500,7 @@ function seedOperatorDeckReceipt(f,p,id,{pair=true}={}){
  if(pair){const key='operator-regalia-v1';insert.run(p.id,key,JSON.stringify({id:key,treasure:0,cards:[{cardId:'B0512',count:2}],convertedTreasure:0,claimedAt}),claimedAt);}
 }
 
-for(const legacyId of ['operator-kirahara-deck-v1','operator-kirahara-deck-v2'])test(`${legacyId} upgrades without a code, preserves artwork and grants only missing cards once across linked devices`,async t=>{
+for(const legacyId of ['operator-kirahara-deck-v1','operator-kirahara-deck-v2','operator-kirahara-deck-v3'])test(`${legacyId} upgrades without a code, preserves artwork and grants only missing cards once across linked devices`,async t=>{
  const f=fixture(t),operator=await f.operator(),ordinary=await f.profile('一般'),path='/api/operator/regalia/claim';
  const data=saveData(operator),starterCards=new Set([...data.deckIds,...data.specialIds]);
  data.collection.B0512=2;data.treasure=777;
@@ -523,7 +523,7 @@ for(const legacyId of ['operator-kirahara-deck-v1','operator-kirahara-deck-v2'])
  assert.deepEqual(upgraded.save.data.collection,expected);assert.equal(upgraded.save.data.collection[unrelated],3);
  const missing=Object.entries(OPERATOR_DECK_REQUIRED).filter(([id,n])=>(saved.data.save.data.collection[id]||0)<n).map(([cardId,n])=>({cardId,count:n-(saved.data.save.data.collection[cardId]||0)}));
  assert.deepEqual(upgraded.deckClaim.cards,missing);assert.equal(upgraded.deckClaim.recipeRevision,OPERATOR_DECK.revision);
- assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_reward_claims WHERE item_id='operator-kirahara-deck-v3'").get().n,1);
+ assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_reward_claims WHERE item_id='operator-kirahara-deck-v4'").get().n,1);
  assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_reward_claims WHERE item_id=?').get(legacyId).n,1);
  assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_reward_claims WHERE item_id='operator-regalia-v1'").get().n,1);
  assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_operator_audit WHERE action='operator.deck_unlocked'").get().n,1);
@@ -554,7 +554,7 @@ test('recipe upgrades require the current stored role and an old entitlement and
  f.env.DB.batch=async statements=>{if(!revoked&&statements.some(s=>s.sql.startsWith('UPDATE bk_cloud_saves')&&s.sql.includes('bk_reward_claims'))){revoked=true;f.sqlite.prepare('DELETE FROM bk_operator WHERE player_id=?').run(operator.id);}return batch(statements);};
  const result=await f.api('POST',path,operator.token,{upgrade:true,revision:1});assert.equal(result.status,404);assert.equal(revoked,true);
  assert.deepEqual((await f.api('GET','/api/cloud-save',operator.token)).data.save,saved.data.save);
- assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_reward_claims WHERE item_id='operator-kirahara-deck-v3'").get().n,0);
+ assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_reward_claims WHERE item_id='operator-kirahara-deck-v4'").get().n,0);
 });
 
 test('legacy entitled operators recover private artwork; match slot metadata is viewer-only',async t=>{
