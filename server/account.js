@@ -110,6 +110,20 @@ export function validateCloudData(raw,player,fail){
   check(plain(raw.campaignProgress)&&Array.isArray(raw.campaignProgress.results)&&raw.campaignProgress.results.length<=1000&&Array.isArray(raw.campaignProgress.clearedBattleIds)&&raw.campaignProgress.clearedBattleIds.length<=20,fail,'invalid_save');
   const data={version:6,playerName:name,profileOrigin:raw.profileOrigin,campaignProgress:normalizeCampaignProgress(raw.campaignProgress),bgm:raw.bgm,bgmVolume:raw.bgmVolume,sound:raw.sound,motion:raw.motion,treasure:raw.treasure,collection,rewardedMatches:[...new Set(raw.rewardedMatches)],lastPack:null,deckName:raw.deckName,deckIds:[...raw.deckIds],specialIds:[...raw.specialIds],starter:getDeckPreset(raw.starter)?raw.starter:'',draft:null,stats:{played:raw.stats.played,won:raw.stats.won,drawn:raw.stats.drawn},game:cpuSave(raw.game,fail)};
   if(raw.draft!=null){check(plain(raw.draft)&&text(raw.draft.name,28),fail,'invalid_save');const ids=cardIds(raw.draft.ids,['beast','miracle','gimmick'],32,fail),specialIds=cardIds(raw.draft.specialIds,['fusion'],4,fail);check([...ids,...specialIds].every(id=>[...ids,...specialIds].filter(x=>x===id).length<=DECK_COPY_LIMIT),fail,'invalid_save',`編集中のデッキも同じカードは${DECK_COPY_LIMIT}枚までです。`);data.draft={name:raw.draft.name,ids,specialIds};}
+  if(raw.deckLibrary!==undefined){
+    const validId=id=>typeof id==='string'&&/^(?:starter-(?:star-crown|azure-memory|crimson-pulse|sky-promise)|custom-[a-z0-9-]{1,60}|operator-kirahara-v1)$/.test(id);
+    check(Array.isArray(raw.deckLibrary)&&raw.deckLibrary.length>=1&&raw.deckLibrary.length<=16&&new Set(raw.deckLibrary.map(d=>d?.id)).size===raw.deckLibrary.length,fail,'invalid_save','保存デッキの一覧を確認してください。');
+    data.deckLibrary=raw.deckLibrary.map(d=>{
+      check(plain(d)&&validId(d.id)&&text(d.name,28,{empty:false})&&validateDeck(d.ids).valid&&validateSpecialDeck(d.specialIds).valid,fail,'invalid_save','保存デッキを確認してください。');
+      const cards=[...d.ids,...d.specialIds];check(cards.every(id=>cards.filter(x=>x===id).length<=(collection[id]||0)),fail,'invalid_save','保存デッキの所持枚数が不足しています。');
+      const out={id:d.id,name:d.name,ids:[...d.ids],specialIds:[...d.specialIds]};
+      if(d.draft!=null){check(plain(d.draft)&&text(d.draft.name,28),fail,'invalid_save');const ids=cardIds(d.draft.ids,['beast','miracle','gimmick'],32,fail),specialIds=cardIds(d.draft.specialIds,['fusion'],4,fail);const pool=[...ids,...specialIds];check(pool.every(id=>pool.filter(x=>x===id).length<=DECK_COPY_LIMIT),fail,'invalid_save');out.draft={name:d.draft.name,ids,specialIds};}
+      return out;
+    });
+    const active=data.deckLibrary.find(d=>d.id===raw.activeDeckId),editing=data.deckLibrary.find(d=>d.id===raw.editingDeckId);
+    check(!!active&&!!editing&&active.name===data.deckName&&active.ids.join('|')===data.deckIds.join('|')&&active.specialIds.join('|')===data.specialIds.join('|'),fail,'invalid_save','使用中のデッキを確認してください。');
+    data.activeDeckId=active.id;data.editingDeckId=editing.id;
+  }
   if(raw.lastPack!=null){
     check(plain(raw.lastPack)&&Array.isArray(raw.lastPack.pulls)&&raw.lastPack.pulls.length===12&&integer(raw.lastPack.bonusTreasure,0,100_000),fail,'invalid_save');
     const packId=raw.lastPack.packId===undefined?PACK_ID:raw.lastPack.packId,pack=getPack(packId);

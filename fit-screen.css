@@ -1,0 +1,128 @@
+/* One-screen mode: CSS reflow first, bounded fit second. No page scrollbars.
+   The JS fitter uses a logical canvas, never changes browser zoom or saved data. */
+html.bk-fit,html.bk-fit body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
+html.bk-fit body{height:100dvh}
+html.bk-fit #app{position:relative;min-width:0;min-height:0;overflow:hidden}
+html.bk-fit body:not(.has-profile):has(#app){display:flex;flex-direction:column}
+html.bk-fit body:not(.has-profile)>#app{flex:1 1 0;height:auto}
+html.bk-fit body>#news-root{flex:none}
+html.bk-fit .bk-fit-frame{position:relative!important;flex:1 1 0!important;min-width:0!important;min-height:0!important;width:100%;height:auto;overflow:hidden!important}
+html.bk-fit .bk-fit-frame>.bk-fit-target{position:absolute!important;inset:0 auto auto 0!important;flex:none!important;margin:0!important;min-width:0!important;max-width:none!important;min-height:0!important;max-height:none!important;overflow:visible!important;transform-origin:top left!important}
+html.bk-fit .bk-fit-target.royal-shell{height:auto!important;display:flex!important}
+html.bk-fit .bk-fit-target .royal-shell,html.bk-fit .bk-fit-target .app-body{min-height:0!important;height:auto!important;max-height:none!important;overflow:visible!important}
+html.bk-fit .royal-shell>.app-body{flex:1 0 auto!important}
+html.bk-fit .royal-shell .page{flex:1 0 auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;padding:9px 16px!important}
+html.bk-fit .product-home,html.bk-fit .deck-workshop,html.bk-fit .product-shop,html.bk-fit .solo-mode,html.bk-fit .mode-lobby,html.bk-fit .rulebook,html.bk-fit .solo-campaign-sheet{height:auto!important;min-height:0!important;max-height:none!important}
+html.bk-fit #card-results{min-height:0!important;height:auto!important;flex:none!important}
+html.bk-fit #card-results .cards-grid{min-height:0!important;height:auto!important;flex:none!important;overflow:visible!important;grid-auto-rows:auto;align-content:start}
+html.bk-fit .deck-workshop .deck-editor{min-height:0!important;height:auto!important;align-items:start}
+html.bk-fit .deck-workshop .deck-panel{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important}
+html.bk-fit .deck-workshop .deck-list{height:auto!important;min-height:0!important;max-height:none!important;flex:none!important;overflow:visible!important}
+html.bk-fit .deck-workshop .deck-visible-rows{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important}
+html.bk-fit .rulebook-sheet,html.bk-fit .rulebook-spread{height:auto!important;max-height:none!important;overflow:visible!important}
+html.bk-fit .home-command .home-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+html.bk-fit .home-command .home-shortcuts>button{min-width:0;min-height:38px;padding:6px;justify-content:center}
+html.bk-fit .home-command .home-shortcuts>button small{display:none}
+html.bk-fit .product-home>.home-showcase{padding:12px;grid-template-rows:auto}
+html.bk-fit .product-home>.home-showcase .home-intro h1{font-size:clamp(24px,2.5vw,38px);margin:5px 0}
+html.bk-fit .product-home>.home-showcase .home-intro p{margin:5px 0}
+html.bk-fit .product-home .home-card-fan .game-card{max-width:128px}
+html.bk-fit .home-deckbox{padding:10px}
+html.bk-fit .home-deckbox h2{font-size:17px;margin:4px 0}
+html.bk-fit .home-deck-count{margin:4px 0}
+html.bk-fit .home-record{padding:3px}
+html.bk-fit .filter-bar,html.bk-fit .deck-workshop .filter-bar{gap:4px;padding:5px;margin:0 0 6px}
+html.bk-fit .filter-bar .tab{min-height:28px;padding:4px 2px}
+html.bk-fit .filters-secondary select{min-height:28px!important;font-size:11px}
+html.bk-fit .deck-workshop .deck-panel-head{padding:8px}
+html.bk-fit .deck-workshop .deck-panel-foot{padding:8px}
+html.bk-fit .deck-workshop .deck-row{min-height:34px}
+html.bk-fit .deck-inspector-launch{margin:0 0 6px;gap:5px}
+html.bk-fit .deck-inspector-launch>.btn{min-height:32px;font-size:11px}
+html.bk-fit .deck-inspector-launch>span{display:none}
+.deck-bank-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:5px 9px;border:1px solid #bda0c94d;background:#1d2037;padding:6px 9px;border-radius:6px;margin:0 0 7px;flex:none;min-width:0}
+.deck-bank-toolbar>label{display:flex;align-items:center;gap:6px;flex:1 1 225px;min-width:0}
+.deck-bank-toolbar>label strong{font-size:11px;white-space:nowrap}
+.deck-bank-toolbar select{flex:1;min-width:0;min-height:32px;padding:5px 8px}
+.deck-bank-actions{display:flex;flex-wrap:wrap;gap:5px}
+.deck-bank-actions>.btn{font-size:11px;min-height:32px;padding:4px 8px}
+.deck-bank-toolbar>p{font-size:10px;line-height:1.4;overflow-wrap:anywhere}
+html.bk-fit .deck-workshop .deck-panel-foot>div{gap:4px;flex-wrap:wrap}
+html.bk-fit .deck-workshop .deck-panel-foot>div>.btn{min-height:30px;font-size:10px;padding:5px}
+html.bk-fit .deck-workshop .deck-panel-foot .text-button{font-size:10px}
+html.bk-fit .deck-workshop-summary{display:none}
+html.bk-fit .bk-fit-target.duel-shell{height:auto!important;max-height:none!important;overflow:visible!important}
+html.bk-fit .duel-shell .duel-layout{height:auto!important;min-height:0!important;overflow:visible!important;flex:1 0 auto}
+html.bk-fit .duel-shell .arena{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;align-content:start}
+html.bk-fit .duel-shell .duel-sidebar{height:auto!important;max-height:none!important;overflow:visible!important}
+html.bk-fit .duel-shell .duel-sidebar .battle-log-panel{display:none}
+html.bk-fit .duel-shell .duel-sidebar .duel-help{min-height:0}
+html.bk-fit .duel-shell .field-row>.field-slot{width:min(100%,clamp(46px,calc((100dvh - 230px)*.23),112px))!important}
+html.bk-fit .duel-shell .hand-cards>.hand-card{width:min(100%,clamp(48px,calc((100dvh - 230px)*.22),106px))!important}
+html.bk-fit .duel-shell .hand-section{min-height:0!important;height:auto!important}
+html.bk-fit .bk-fit-target .hand-inspector[data-open=true],html.bk-fit .bk-fit-target .battle-log-drawer:not([hidden]){position:fixed!important}
+html.bk-fit .bk-fit-modal{position:absolute!important;max-height:none!important;min-height:0!important;overflow:visible!important;margin:0!important;transform-origin:top left!important}
+html.bk-fit .bk-fit-modal .detail-info,html.bk-fit .bk-fit-modal .modal-actions{max-height:none!important;overflow:visible!important}
+html.bk-fit .bk-fit-modal .detail-layout>.game-card{max-width:185px}
+html.bk-fit .bk-fit-modal .inspect-gallery,html.bk-fit .bk-fit-modal .inspect-candidates{grid-template-columns:repeat(auto-fit,minmax(min(100%,115px),1fr))}
+html.bk-fit .bk-fit-modal .inspect-gallery article,html.bk-fit .bk-fit-modal .inspect-candidates article{padding:5px;gap:4px}
+html.bk-fit .bk-fit-modal .inspect-gallery .game-card,html.bk-fit .bk-fit-modal .inspect-candidates .game-card{max-width:145px;align-self:center}
+html.bk-fit .bk-fit-modal .inspect-muted{margin:4px 0}
+html.bk-fit .bk-fit-modal .inspect-toolbar{padding:5px 0;margin-bottom:5px}
+html.bk-fit .bk-fit-modal .inspect-slot-nav{margin:5px 0 8px}
+html.bk-fit .bk-fit-modal .inspect-pagination{margin:5px 0}
+html.bk-fit .bk-fit-modal .inspect-confirm{padding:6px;margin:4px 0;gap:4px}
+html.bk-fit .bk-fit-modal .modal-close{height:32px;min-height:32px;margin:0 0 4px auto}
+html.bk-fit .bk-fit-modal .pack-result-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+html.bk-fit .bk-fit-modal .pack-pull>.game-card{max-width:130px}
+html.bk-fit .bk-fit-modal .pack-pull-status{font-size:10px;white-space:normal}
+html.bk-fit .bk-fit-modal .account-device-list,html.bk-fit .bk-fit-modal .operator-list{max-height:none;overflow:visible}
+html.bk-fit .bk-fit-pager{display:flex;justify-content:center;align-items:center;gap:8px;padding:6px;margin:0;flex:none}
+.bk-fit-pager button{min-height:32px;padding:5px 10px;border:1px solid #b49ac677;border-radius:5px;background:#24223b;color:#f1e4cc;cursor:pointer}
+.bk-fit-pager button:disabled{opacity:.4}
+html.bk-fit .bk-fit-article{overflow:hidden!important;position:relative;flex:1 1 0;min-height:0}
+html.bk-fit .bk-fit-article>.bk-fit-target{position:absolute!important;inset:0 auto auto 0;min-height:0!important;max-height:none!important;overflow:visible!important;transform-origin:top left}
+html.bk-fit body.bk-about{display:flex;flex-direction:column}
+html.bk-fit body.bk-about>header,html.bk-fit body.bk-about>footer{flex:none}
+html.bk-fit body.bk-about .about-hero,html.bk-fit body.bk-about .hero{min-height:0!important;padding:18px 0!important}
+html.bk-fit body.bk-about .about-section{padding:10px 0!important;margin:0!important}
+html.bk-fit .bk-fit-target.shell{height:auto!important;grid-template-rows:auto auto auto auto!important;overflow:visible!important}
+html.bk-fit .bk-fit-target.shell>main{overflow:visible!important;min-height:0!important;height:auto!important}
+html.bk-fit .bk-fit-target.shell .deck-rows,html.bk-fit .bk-fit-target.shell .side .log{max-height:none!important;overflow:visible!important}
+@media(max-width:800px){
+ html.bk-fit .royal-shell .page{padding:6px 10px!important}
+ html.bk-fit .has-profile .site-header{min-height:40px;padding:5px 8px}
+ html.bk-fit .has-profile .site-copyright{display:none}
+ html.bk-fit .has-profile .navigation-dock{margin:3px auto;gap:3px}
+ html.bk-fit .has-profile .dock-link{min-height:34px;padding:3px;font-size:10px}
+ html.bk-fit .product-home{grid-template-rows:auto auto auto auto;gap:6px}
+ html.bk-fit .product-home>.home-showcase{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto;padding:8px}
+ html.bk-fit .product-home .home-intro,html.bk-fit .product-home .home-card-fan{grid-row:1}
+ html.bk-fit .product-home .home-card-fan .game-card{max-width:80px}
+ html.bk-fit .product-home>.home-command{display:grid;grid-template-columns:minmax(0,1fr);gap:5px}
+ html.bk-fit .product-home .home-command .home-deckbox{grid-row:auto}
+ html.bk-fit .home-command .home-deckbox .home-deck-top,html.bk-fit .home-command .home-deckbox>p{display:none}
+ html.bk-fit .home-command .home-deckbox>.btn{margin:5px 0;min-height:32px}
+ html.bk-fit .product-home .home-originbar{padding:6px}
+ html.bk-fit .deck-workshop .deck-editor{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,250px);gap:8px}
+ html.bk-fit .deck-workshop .deck-editor>section{order:0}
+ html.bk-fit .deck-workshop .deck-panel{order:1}
+ html.bk-fit #card-results .cards-grid{grid-template-columns:repeat(var(--card-columns),minmax(0,var(--card-tile-width)))!important;gap:8px}
+ html.bk-fit .deck-workshop .deck-panel-head>input,html.bk-fit .deck-workshop .deck-panel-head>select{min-height:28px}
+ html.bk-fit .deck-workshop .deck-panel-head>label{margin:0;font-size:10px}
+ html.bk-fit .deck-bank-toolbar>label{flex:1 1 180px}
+ html.bk-fit .duel-shell .duel-top{gap:4px}
+ html.bk-fit .duel-shell .mobile-action{min-height:34px;padding:4px}
+ html.bk-fit .bk-fit-modal .pack-result-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-height:500px) and (orientation:landscape){
+ html.bk-fit .site-header{padding:3px 8px!important}
+ html.bk-fit .site-copyright{display:none!important}
+ html.bk-fit .has-profile .dock-link{min-height:30px}
+ html.bk-fit .product-home>.home-showcase{padding:5px 10px}
+ html.bk-fit .product-home .home-card-fan .game-card{max-width:68px}
+ html.bk-fit .product-home>.home-command{gap:4px}
+ html.bk-fit .deck-workshop .deck-panel-head{padding:4px}
+ html.bk-fit .deck-workshop .deck-panel-foot{padding:4px}
+ html.bk-fit .duel-shell .arena{grid-template-rows:auto auto auto auto auto auto!important}
+}

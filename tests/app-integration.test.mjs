@@ -21,7 +21,7 @@ import {calculateCardLayout} from '../viewport.js';
 const appSource = readFileSync(new URL('../app.js', import.meta.url), 'utf8').replace(/^import\s+[^;]+;\s*$/gm, '');
 const expose = `
 globalThis.__appIntegration = {
-  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, inspectOptions, replaceInspectedCard, removeInspectedCard,
+  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
   get workingDeck(){return workingDeck}, get data(){return data}, get game(){return game}, get cpuGame(){return cpuGame},
@@ -337,4 +337,19 @@ test('optional physical-card editor preserves the grouped editor and validates a
  assert.equal(app.removeInspectedCard('main',0,first),true);
  assert.equal(app.workingDeck.length,31);
  assert.deepEqual([...app.workingDeck],before.slice(1));
+});
+
+test('deck library keeps starter edits, active deck and drafts independent',()=>{
+ const {app}=boot();const first=catalog.STARTER_DECKS[0],second=catalog.STARTER_DECKS[1];
+ assert.equal(app.data.deckLibrary.length,4);
+ assert.equal(app.loadBankEntry('starter-'+second.id),true);
+ assert.deepEqual([...app.workingDeck],[...second.ids]);assert.deepEqual([...app.data.deckIds],[...first.ids]);
+ const before=[...app.workingDeck],candidate=app.inspectOptions('main',0)[0];assert.ok(candidate);
+ assert.equal(app.replaceInspectedCard('main',0,before[0],candidate.id),true);
+ assert.equal(app.loadBankEntry('starter-'+first.id),true);assert.deepEqual([...app.workingDeck],[...first.ids]);
+ assert.equal(app.loadBankEntry('starter-'+second.id),true);assert.equal(app.workingDeck[0],candidate.id);
+ assert.equal(app.saveDeck(false),true);assert.deepEqual([...app.data.deckIds],[...first.ids]);
+ const restored=app.restoreData(plain(app.data));assert.equal(restored.deckLibrary.find(d=>d.id==='starter-'+second.id).ids[0],candidate.id);
+ assert.equal(app.saveDeck(true),true);assert.equal(app.data.activeDeckId,'starter-'+second.id);
+ assert.equal(app.createBankDeck(),true);assert.equal(app.data.deckLibrary.length,5);
 });

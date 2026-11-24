@@ -398,3 +398,13 @@ test('operator deck claim rejects an outdated save revision without losing newer
  assert.equal(saved.data.treasure,777);assert.equal(saved.data.collection.B1023,1);assert.equal(saved.data.collection.B0512,undefined);
  assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_reward_claims').get().n,0);
 });
+
+test('multiple named decks survive cloud validation and device restoration independently',async t=>{
+ const f=fixture(t),p=await f.profile(),data=saveData(p);
+ data.deckLibrary=STARTER_DECKS.map(d=>({id:'starter-'+d.id,name:d.name,ids:[...d.ids],specialIds:[...d.specialIds]}));
+ data.activeDeckId=data.deckLibrary[0].id;data.editingDeckId=data.deckLibrary[1].id;
+ data.deckLibrary[1].draft={name:'編集途中',ids:data.deckLibrary[1].ids.slice(1),specialIds:data.deckLibrary[1].specialIds};
+ const saved=await f.save(p,data);assert.equal(saved.status,200,JSON.stringify(saved.data));assert.equal(saved.data.save.data.deckLibrary.length,4);assert.equal(saved.data.save.data.editingDeckId,data.editingDeckId);assert.equal(saved.data.save.data.deckLibrary[1].draft.ids.length,31);
+ const linked=await f.link(p),restored=await f.api('GET','/api/cloud-save',linked.token);assert.deepEqual(restored.data.save.data.deckLibrary,saved.data.save.data.deckLibrary);
+ const bad=structuredClone(data);bad.deckLibrary[1].ids=Array(32).fill('B0001');assert.equal((await f.save(p,bad,1)).status,400);
+});
