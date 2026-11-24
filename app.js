@@ -157,7 +157,7 @@ let lobbyMode='all';
 let soloSection='campaign',campaignMapPage=null;
 let shopSection='boosters',selectedPackId='BK02';
 let rulebookSection='basics';
-let deckSection='main',deckListPage=1,deckRowCount=0,deckFilterScope='all',deckListMode='images';
+let deckSection='main',deckListPage=1,deckFilterScope='all';
 let deckTapMode=false,deckTapPending=null,deckPointer=null,deckSuppressClickUntil=0;
 let deckAdvancedFilters=false;
 let cardLayout=null,deckImageCount=0,deckImageLayout=null;
@@ -295,19 +295,12 @@ function cardResults(edit=false){
  }).join(''):'<div class="empty-state"><h3>カードが見つかりません</h3><p>検索語や絞り込み条件を変更してください。</p><button class="text-button" data-action="reset-filters">絞り込みをリセット</button></div>'}</div><div class="pagination"><button class="btn small" data-action="prev-page" ${search.page<=1?'disabled':''}>前のページ</button><label class="page-jump" aria-label="カード一覧のページ"><input type="number" min="1" max="${pages}" value="${search.page}" data-change="card-page" aria-label="カード一覧のページ番号"><span>/ ${pages}</span></label><button class="btn small" data-action="next-page" ${search.page>=pages?'disabled':''}>次のページ</button></div>`;
 }
 function collectionView(){return `${title('CARD ARCHIVE','カード図鑑','可能性は、2,304枚。お気に入りの一枚を見つけよう。','ALL 2,304')}<div class="rarity-guide" aria-label="6段階のレア度">${Object.entries(RARITY_LABELS).map(([code,name])=>`<span class="rarity-label rarity-${code}">${name}</span>`).join('')}</div><p class="catalog-guide">第一弾・第二弾を各1,152枚収録。好きなカードを両弾から組み合わせてデッキを作れます。</p>${filters()}<div id="card-results">${cardResults()}</div>`;}
-function deckRowsPerPage(){return deckRowCount||Math.max(1,Math.min(6,Math.floor(((window.innerHeight||720)-430)/39)));}
 function deckList(special=false){
- const deck=special?workingSpecial:workingDeck,limit=special?4:32;
- if(deckListMode==='images'){
+ const deck=special?workingSpecial:workingDeck;
   // One tile per physical copy, with a direct remove button and independent paging.
   const h=window.innerHeight||720,w=window.innerWidth||1280,size=deckImageCount||(h<=600?2:w<=560?2:4),pages=Math.max(1,Math.ceil(deck.length/size));
   deckListPage=Math.max(1,Math.min(deckListPage,pages));const offset=(deckListPage-1)*size;
-  return `<div class="deck-image-grid" data-total="${deck.length}" style="--deck-image-columns:${deckImageLayout?.columns||2};--deck-image-width:${deckImageLayout?.cardWidth||94}px">${deck.slice(offset,offset+size).map((id,n)=>{const c=getCard(id),index=offset+n;return `<article class="deck-image-slot" data-card-transfer="deck" data-transfer-id="${id}" data-deck-slot="${index}">${cardMarkup(c,{action:'detail',artContext:'editor',classes:'workshop-face'})}<div class="deck-slot-count"><span>${index+1} / ${deck.length}</span></div><button class="btn small" data-action="deck-return-slot" data-index="${index}" data-id="${id}" aria-label="${esc(c.name)}をこのデッキから外す">− 戻す</button></article>`;}).join('')||'<p class="deck-hint">左の所持カードから追加してください。</p>'}</div>${deckListPager(pages,deck.length+'枚')}`;
- }
- const all=[...new Set(deck)].map(getCard).sort((a,b)=>a.cost-b.cost||a.index-b.index),size=deckRowsPerPage();
- const pages=Math.max(1,Math.ceil(all.length/size));deckListPage=Math.max(1,Math.min(deckListPage,pages));
- const rows=all.slice((deckListPage-1)*size,deckListPage*size);
- return `<div class="deck-visible-rows">${rows.length?rows.map(c=>{const qty=deck.filter(id=>id===c.id).length;return `<div class="deck-row" data-card-transfer="deck" data-transfer-id="${c.id}"><span class="mini-cost ${special?'fusion-mini':''}">${special?'合':c.cost}</span><button class="row-name" data-action="detail" data-id="${c.id}" data-art-context="editor" title="${esc(c.name)}"><span class="deck-row-art" aria-hidden="true" ${c.id===REGALIA_ID?`data-regalia-context="editor" data-regalia-status="${regaliaStatus(c,'editor')}"`:''} style="${artStyle(c,'editor')}"></span><span>${esc(c.name)}</span></button><button class="qty-btn" data-action="deck-remove" data-id="${c.id}" aria-label="${esc(c.name)}を1枚戻す">−</button><span class="qty">${qty}</span><button class="qty-btn" data-action="deck-add" data-id="${c.id}" aria-label="${esc(c.name)}を1枚追加" ${qty>=deckCopyCapacity(c.id)||deck.length>=limit?'disabled':''}>+</button></div>`;}).join(''):`<p class="deck-hint">${special?'合成魔獣を4枚選び、特殊デッキに登録します。':'左の所持カードから「＋追加」を押してください。'}</p>`}</div>${deckListPager(pages,all.length+'種類')}`;
+  return `<div class="deck-image-grid" data-total="${deck.length}" style="--deck-image-columns:${deckImageLayout?.columns||2};--deck-image-width:${deckImageLayout?.cardWidth||94}px">${deck.slice(offset,offset+size).map((id,n)=>{const c=getCard(id),index=offset+n;return `<article class="deck-image-slot" data-card-transfer="deck" data-transfer-id="${id}" data-deck-slot="${index}">${cardMarkup(c,{action:'detail',artContext:'editor',classes:'workshop-face'})}<div class="deck-slot-count"><span>${index+1} / ${deck.length}枚</span></div><button class="btn small" data-action="deck-return-slot" data-index="${index}" data-id="${id}" aria-label="${esc(c.name)}をこのデッキから外す">− 戻す</button></article>`;}).join('')||'<p class="deck-hint">左の所持カードから追加してください。</p>'}</div>${deckListPager(pages,deck.length+'枚')}`;
 }
 function deckListPager(pages,description){
  return `<div class="deck-list-pagination"><button class="icon-btn" data-action="deck-list-prev" aria-label="デッキの前のページ" ${deckListPage<=1?'disabled':''}>${icon('chevron-left')}</button><label class="page-jump deck-page-jump"><input type="number" min="1" max="${pages}" value="${deckListPage}" data-change="deck-page" aria-label="編集中デッキのページ番号"><span>/ ${pages}<small>${description}</small></span></label><button class="icon-btn" data-action="deck-list-next" aria-label="デッキの次のページ" ${deckListPage>=pages?'disabled':''}>${icon('chevron-right')}</button></div>`;
@@ -380,7 +373,7 @@ function equipOperatorDeck(deck){
   const next=deckRecord(entry.id,deck.name,deck.ids,deck.specialIds);next.recipeRevision=revision;data.deckLibrary=data.deckLibrary.map(d=>d.id===entry.id?next:d);entry=next;
  }
  setActiveBankDeck(entry);loadBankEntry(entry.id,{persistNow:false});
- deckSection='main';deckListPage=1;deckRowCount=0;persist(true);navigate('deck');
+ deckSection='main';deckListPage=1;persist(true);navigate('deck');
 }
 function operatorDeckPanel(){
  const deck=accountUi?.getOperatorDeck?.();
@@ -388,7 +381,7 @@ function operatorDeckPanel(){
 }
 function deckPanel(){
  const cnt=counts(workingDeck),normal=validateDeck(workingDeck),special=validateSpecialDeck(workingSpecial),valid=normal.valid&&special.valid&&!missingOwnedCards([...workingDeck,...workingSpecial]).length,isSpecial=deckSection==='special';
- return `<aside class="deck-panel" data-transfer-drop="deck" aria-label="編集中のデッキ"><div class="transfer-heading"><strong>② マイデッキ編集</strong><small>通常32枚・特殊4枚</small></div>${deckBankToolbar()}<div class="deck-panel-head"><label for="deck-name">デッキ名</label><input id="deck-name" data-input="deck-name" value="${esc(workingName)}" maxlength="28" aria-label="デッキ名"><select data-change="starter" aria-label="スターターデッキを選択"><option value="">スターターのデッキを選択</option>${STARTER_DECKS.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join('')}</select>${operatorDeckPanel()}<div class="deck-total"><strong class="${valid?'status-good':''}">${workingDeck.length+workingSpecial.length}<span> / 36枚</span></strong><span>通常 ${workingDeck.length}/32 · 特殊 ${workingSpecial.length}/4</span></div><p class="deck-composition">魔獣 ${cnt.beast} · ミラクル ${cnt.miracle} · ギミック ${cnt.gimmick}</p></div><div class="deck-zone-tabs" aria-label="編成中のゾーン"><button data-action="deck-section" data-section="main" class="${isSpecial?'':'active'}" aria-pressed="${!isSpecial}">通常 <b>${workingDeck.length}/32</b></button><button data-action="deck-section" data-section="special" class="${isSpecial?'active':''}" aria-pressed="${isSpecial}">${icon('fusion')}特殊 <b>${workingSpecial.length}/4</b></button></div><div class="deck-display-tabs" role="group" aria-label="編成デッキの表示方法"><button class="btn small ${deckListMode==='list'?'primary':''}" data-action="deck-list-mode" data-mode="list" aria-pressed="${deckListMode==='list'}">詳細一覧</button><button class="btn small ${deckListMode==='images'?'primary':''}" data-action="deck-list-mode" data-mode="images" aria-pressed="${deckListMode==='images'}">カード画像</button><button class="btn small" data-action="deck-inspect-open" title="1枚ずつ確認・編集">1枚ずつ</button><button class="btn small" data-action="deck-inspect-gallery" title="編成カードの画像一覧">全画像</button></div><div class="deck-list">${deckList(isSpecial)}</div><div class="deck-panel-foot"><p class="deck-hint">${valid?'通常32枚＋特殊4枚。保存して次の対戦へ。':esc([...normal.errors,...special.errors,...missingOwnedCards([...workingDeck,...workingSpecial])][0])}</p><div><button class="btn primary" data-action="deck-save" ${!valid?'disabled':''}>${icon('check')}保存して使用</button><button class="btn small" data-action="deck-save-only" ${!valid?'disabled':''}>保存のみ</button><button class="text-button" data-action="deck-clear">すべて外す</button></div></div></aside>`;
+ return `<aside class="deck-panel" data-transfer-drop="deck" aria-label="編集中のデッキ"><div class="transfer-heading"><strong>② マイデッキ編集</strong><small>画像形式 · 通常32 / 特殊4</small></div>${deckBankToolbar()}<div class="deck-panel-head"><label for="deck-name">デッキ名</label><input id="deck-name" data-input="deck-name" value="${esc(workingName)}" maxlength="28" aria-label="デッキ名"><select data-change="starter" aria-label="スターターデッキを選択"><option value="">スターターのデッキを選択</option>${STARTER_DECKS.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join('')}</select>${operatorDeckPanel()}<div class="deck-total"><strong class="${valid?'status-good':''}">${workingDeck.length+workingSpecial.length}<span> / 36枚</span></strong><span>通常 ${workingDeck.length}/32 · 特殊 ${workingSpecial.length}/4</span></div><p class="deck-composition">魔獣 ${cnt.beast} · ミラクル ${cnt.miracle} · ギミック ${cnt.gimmick}</p></div><div class="deck-zone-tabs" aria-label="編成中のゾーン"><button data-action="deck-section" data-section="main" class="${isSpecial?'':'active'}" aria-pressed="${!isSpecial}">通常 <b>${workingDeck.length}/32</b></button><button data-action="deck-section" data-section="special" class="${isSpecial?'active':''}" aria-pressed="${isSpecial}">${icon('fusion')}特殊 <b>${workingSpecial.length}/4</b></button></div><div class="deck-display-tabs" role="group" aria-label="編成カードの詳細操作"><button class="btn small" data-action="deck-inspect-open" title="1枚ずつ確認・編集">1枚ずつ</button><button class="btn small" data-action="deck-inspect-gallery" title="編成カードの画像一覧">画像ギャラリー</button></div><div class="deck-list">${deckList(isSpecial)}</div><div class="deck-panel-foot"><p class="deck-hint">${valid?'通常32枚＋特殊4枚。保存して次の対戦へ。':esc([...normal.errors,...special.errors,...missingOwnedCards([...workingDeck,...workingSpecial])][0])}</p><div><button class="btn primary" data-action="deck-save" ${!valid?'disabled':''}>${icon('check')}保存して使用</button><button class="btn small" data-action="deck-save-only" ${!valid?'disabled':''}>保存のみ</button><button class="text-button" data-action="deck-clear">すべて外す</button></div></div></aside>`;
 }
 function deckView(){
  const owned=CARDS.filter(c=>availableCopies(c.id)>0).length;
@@ -428,16 +421,15 @@ window.addEventListener('bk-fit-card-metrics',event=>{
  const before=cardLayout;cardLayout={...layout,page};
  if(!before||before.page!==page||before.pageSize!==layout.pageSize||before.cardWidth!==layout.cardWidth||before.columns!==layout.columns)result.innerHTML=cardResults(edit);
  if(edit){
-  const rows=Math.max(1,Math.min(16,Math.floor(Math.max(0,m.deckHeight||0)/(window.innerWidth<=560?39:44))));
   const imageLayout=calculateWorkshopTileLayout({width:m.deckWidth||160,height:m.deckHeight||160,compact});
   const images=imageLayout.pageSize;
   const changedImages=!deckImageLayout||deckImageLayout.cardWidth!==imageLayout.cardWidth||deckImageLayout.columns!==imageLayout.columns;
-  if(rows!==deckRowCount||images!==deckImageCount||changedImages){deckRowCount=rows;deckImageCount=images;deckImageLayout=imageLayout;const list=$('.deck-list');if(list)list.innerHTML=deckList(deckSection==='special');}
+  if(images!==deckImageCount||changedImages){deckImageCount=images;deckImageLayout=imageLayout;const list=$('.deck-list');if(list)list.innerHTML=deckList(deckSection==='special');}
   if(deckTapPending)showTapSelection();
  }
 });
 let viewportResize;
-window.addEventListener('resize',()=>{clearTimeout(viewportResize);viewportResize=setTimeout(()=>{cardLayout=null;deckRowCount=0;deckImageCount=0;deckImageLayout=null;if(['collection','deck'].includes(page)&&entered)render();else syncCardViewport();},120);});
+window.addEventListener('resize',()=>{clearTimeout(viewportResize);viewportResize=setTimeout(()=>{cardLayout=null;deckImageCount=0;deckImageLayout=null;if(['collection','deck'].includes(page)&&entered)render();else syncCardViewport();},120);});
 function navigate(next){
  if(page==='deck')deckSearch=search;else if(page==='collection')collectionSearch=search;
  if(next==='deck')search=deckSearch;else if(next==='collection')search=collectionSearch;
@@ -515,7 +507,7 @@ function transferCard(source,target){
  }
  return false;
 }
-const transferHandle='[data-card-transfer] .game-card,[data-card-transfer] .row-name';
+const transferHandle='[data-card-transfer] .game-card';
 function readTransferSource(el){
  const card=el?.closest?.('[data-card-transfer]');if(!card)return null;
  return {side:card.dataset.cardTransfer,id:card.dataset.transferId,index:card.dataset.deckSlot===undefined?null:Number(card.dataset.deckSlot),section:deckSection,bank:data.editingDeckId};
@@ -607,7 +599,6 @@ function actionHandler(event){if(page==='deck'&&!currentModal&&event.target.clos
  case'deck-tap-mode':deckTapMode=!deckTapMode;deckTapPending=null;render();break;
  case'deck-advanced-filters':deckAdvancedFilters=!deckAdvancedFilters;render();break;
  case'deck-filter-scope':if(['owned','all','deck'].includes(el.dataset.scope)){deckFilterScope=el.dataset.scope;search.page=1;render();}break;
- case'deck-list-mode':deckListMode=el.dataset.mode==='images'?'images':'list';deckListPage=1;render();break;
  case'deck-return-slot':{const i=Number(el.dataset.index);if(removeInspectedCard(deckSection,i,id)){render();toast('1枚を編成から外しました。');}break;}
  case'deck-list-prev':deckListPage--;render();break;
  case'deck-list-next':deckListPage++;render();break;

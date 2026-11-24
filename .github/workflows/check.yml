@@ -28,12 +28,14 @@ jobs:
       - name: Package public browser files
         run: npm run build:client
       - name: Check application syntax
-        run: node --check app.js
+        id: syntax
+        run: node --check app.js && node --check scripts/chrome-smoke-launch.mjs
 
       - name: Test preserved saves in the packaged game with Chrome
         run: node scripts/rebuild-browser-smoke.mjs dist/client
 
       - name: Test responsive layouts in the main game with Chrome
+        if: ${{ !cancelled() && steps.syntax.outcome == 'success' }}
         run: node scripts/layout-browser-smoke.mjs dist/client
 
       - name: Verify public delivery (read only, independent of build)

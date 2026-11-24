@@ -727,3 +727,88 @@ html.bk-fit .bk-native-screen .dual-workshop .workshop-face .card-bottom .card-e
 html.bk-fit .bk-native-screen .dual-workshop .operator-deck-preset{display:flex;flex-wrap:wrap;align-items:center;gap:3px 7px;min-width:0;max-width:100%;height:auto;padding:3px}
 html.bk-fit .bk-native-screen .dual-workshop .operator-deck-preset>*{min-width:0;max-width:100%;white-space:normal;line-height:1.3}
 html.bk-fit .bk-native-screen .dual-workshop .operator-deck-preset .text-button{font-size:10px;min-height:24px;padding:3px;position:static}
+
+/* Final editor: permanently symmetric image grids. Controls occupy explicit
+   rows rather than the same grid cell as a card. Earlier list-only layout
+   styles are intentionally not used by this workspace. */
+html.bk-fit .bk-native-screen .dual-workshop>.transfer-workspace{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ grid-template-rows:minmax(0,1fr);width:100%;min-width:0;gap:8px!important
+}
+html.bk-fit .bk-native-screen .dual-workshop .transfer-source,
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel{
+ min-width:0!important;min-height:0!important;width:100%!important;box-sizing:border-box;
+ padding:6px;gap:5px;flex-wrap:nowrap
+}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-toolbar{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto;align-items:center;gap:4px;
+}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-toolbar>label{
+ min-width:0!important;width:100%;max-width:100%;margin:0;
+}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-actions{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));min-width:0;gap:3px;width:100%;
+}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-toolbar>p{grid-column:1/-1;min-width:0;margin:0}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-toolbar select,
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head>input{
+ width:100%;min-width:0!important;max-width:100%;min-height:29px;box-sizing:border-box
+}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-actions>.btn{
+ min-width:0!important;width:100%;padding:4px 2px;line-height:1.2;white-space:normal;overflow-wrap:anywhere;
+}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head{
+ display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto auto;gap:3px 5px;align-items:center;
+}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head>label{grid-column:1;grid-row:1}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head>input{grid-column:2;grid-row:1;margin:0}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head>.operator-deck-preset{grid-column:1/-1;grid-row:2;margin:0}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head .deck-composition{grid-column:1/-1;grid-row:3;margin:0}
+html.bk-fit .bk-native-screen .dual-workshop .deck-display-tabs{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;min-width:0;flex:none;
+}
+html.bk-fit .bk-native-screen .dual-workshop .deck-display-tabs>.btn{
+ position:static;min-width:0!important;width:100%;min-height:28px;line-height:1.2;white-space:normal;
+}
+html.bk-fit .bk-native-screen .dual-workshop .deck-source-tools{
+ grid-template-columns:repeat(3,minmax(0,1fr));gap:3px
+}
+html.bk-fit .bk-native-screen .dual-workshop .deck-scope-tabs{grid-column:1/-1}
+html.bk-fit .bk-native-screen .dual-workshop .deck-source-tools>.btn,
+html.bk-fit .bk-native-screen .dual-workshop .deck-source-tools>.text-button{
+ position:static;min-width:0!important;max-width:100%;width:100%;height:auto;line-height:1.2;overflow-wrap:anywhere
+}
+html.bk-fit .bk-native-screen .dual-workshop #card-results .transfer-card,
+html.bk-fit .bk-native-screen .dual-workshop .deck-image-slot{
+ grid-template-rows:auto 20px 28px;row-gap:3px;min-width:0;align-content:start;align-self:start;justify-self:stretch;
+}
+html.bk-fit .bk-native-screen .dual-workshop .transfer-actions>.btn,
+html.bk-fit .bk-native-screen .dual-workshop .deck-image-slot>.btn{
+ white-space:normal;overflow-wrap:anywhere;font-size:clamp(8px,.75vw,12px)
+}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-foot>div{min-width:0;grid-template-columns:repeat(3,minmax(0,1fr))}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-foot>div>*{position:static;min-width:0!important;max-width:100%;width:100%;grid-column:auto;white-space:normal;overflow-wrap:anywhere}
+html.bk-fit .bk-native-screen .dual-workshop .operator-deck-preset{
+ display:flex;flex-wrap:wrap;position:static;align-items:center;gap:3px 5px;min-width:0;max-width:100%;height:auto;
+}
+html.bk-fit .bk-native-screen .dual-workshop .operator-deck-preset>.text-button{position:static;white-space:normal;min-width:0;line-height:1.2}
+@media(min-width:1000px){
+ html.bk-fit .bk-native-screen .dual-workshop .deck-source-tools{grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr))}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-scope-tabs{grid-column:1}
+}
+@media(max-width:650px){
+ html.bk-fit .bk-native-screen .dual-workshop>.transfer-workspace{gap:4px!important}
+ html.bk-fit .bk-native-screen .dual-workshop .transfer-source,html.bk-fit .bk-native-screen .dual-workshop .deck-panel{padding:3px;gap:3px}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-bank-toolbar{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head{grid-template-columns:minmax(0,1fr)}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head>input{grid-column:1}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-foot>div{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-foot .text-button{grid-column:1/-1}
+}
+@media(max-height:570px) and (orientation:landscape){
+ html.bk-fit .bk-native-screen .dual-workshop .transfer-source,html.bk-fit .bk-native-screen .dual-workshop .deck-panel{padding:3px;gap:3px}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-source-tools{grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr))}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-scope-tabs{grid-column:1}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head{grid-template-columns:minmax(0,1fr)}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head>input{grid-column:1}
+}

@@ -5,16 +5,13 @@
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
 import {createReadStream} from 'node:fs';
-import {mkdtemp,readFile,rm,stat} from 'node:fs/promises';
-import {tmpdir} from 'node:os';
-import {join,resolve,sep,extname} from 'node:path';
+import {stat} from 'node:fs/promises';
+import {resolve,sep,extname} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {spawn,spawnSync} from 'node:child_process';
+import {launchSmokeChrome,stopSmokeChrome} from './chrome-smoke-launch.mjs';
 import {setTimeout as delay} from 'node:timers/promises';
 assert.ok(process.argv.length<=3,'Usage: node scripts/rebuild-browser-smoke.mjs [public-directory]');
 const root=process.argv[2]?resolve(process.argv[2]):fileURLToPath(new URL('../',import.meta.url));
-const chrome=[process.env.CHROME_BIN,'google-chrome','google-chrome-stable','chromium','chromium-browser'].filter(Boolean).find(bin=>spawnSync(bin,['--version'],{stdio:'ignore',timeout:5000}).status===0);
-assert.ok(chrome,'Chrome/Chromium must be installed for the smoke test');
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.mp3':'audio/mpeg'};
 const server=createServer(async(req,res)=>{
  try{
@@ -25,7 +22,7 @@ const server=createServer(async(req,res)=>{
   res.setHeader('Content-Length',info.size);createReadStream(path).on('error',()=>res.destroy()).pipe(res);
  }catch{res.writeHead(404);res.end('Not found')}
 });
-let proc,ws,profileDir;const pending=new Map(),exceptions=[];let sequence=0;
+let browser,ws;const pending=new Map(),exceptions=[];let sequence=0;
 async function until(fn,label,ms=8000){
  const end=Date.now()+ms;
  while(Date.now()<end){try{const result=await fn();if(result)return result}catch{}await delay(100)}
@@ -59,12 +56,7 @@ const saved='JSON.parse(localStorage.getItem("beast-king-rebuild-v1"))';
 try{
  await new Promise((res,rej)=>{server.once('error',rej);server.listen(0,'127.0.0.1',res)});
  const url='http://127.0.0.1:'+server.address().port+'/rebuild/';
- profileDir=await mkdtemp(join(tmpdir(),'bk-browser-'));
- proc=spawn(chrome,['--headless=new','--no-sandbox','--disable-dev-shm-usage','--disable-background-networking','--no-first-run','--no-default-browser-check','--mute-audio','--remote-debugging-port=0','--user-data-dir='+profileDir,'about:blank'],{stdio:'ignore'});
- const debug=await until(async()=>{if(proc.exitCode!==null)throw Error('Browser exited');return (await readFile(join(profileDir,'DevToolsActivePort'),'utf8')).split('\n')[0]},'DevTools port',15000);
- const target=await until(async()=>{const list=await (await fetch('http://127.0.0.1:'+debug+'/json/list')).json();return list.find(x=>x.type==='page')},'browser page');
- ws=new WebSocket(target.webSocketDebuggerUrl);
- await new Promise((resolve,reject)=>{ws.addEventListener('open',resolve,{once:true});ws.addEventListener('error',reject,{once:true})});
+ browser=await launchSmokeChrome();ws=browser.ws;
  ws.addEventListener('message',event=>{
   const m=JSON.parse(event.data);
   if(m.id){const p=pending.get(m.id);if(!p)return;pending.delete(m.id);clearTimeout(p.timer);if(m.error)p.reject(Error(m.error.message));else p.resolve(m.result);return}
@@ -72,6 +64,7 @@ try{
   if(m.method==='Page.javascriptDialogOpening')void send('Page.handleJavaScriptDialog',{accept:true}).catch(()=>{});
  });
  await send('Runtime.enable');await send('Page.enable');await send('Page.bringToFront');await viewport(1280,720);
+ await send('Network.enable');await send('Network.setBlockedURLs',{urls:['*chatgpt.site/*']});
  await send('Page.navigate',{url});await waitElement('#onboard');
  assert.equal(await evaluate('document.querySelectorAll("input[name=starter]").length'),4);
  assert.equal(await evaluate('document.querySelectorAll(".origins img").length'),7);
@@ -116,9 +109,7 @@ try{
  assert.deepEqual(exceptions,[],'No uncaught browser errors');
  console.log('Browser smoke passed: four starters, normal Regalia artwork, both packs, deck, CPU duel, reload/resume, BGM settings, 3 viewports');
 }finally{
- try{ws?.close()}catch{}
  for(const p of pending.values())clearTimeout(p.timer);
- if(proc&&proc.exitCode===null){proc.kill('SIGTERM');await Promise.race([new Promise(r=>proc.once('exit',r)),delay(3000)]);if(proc.exitCode===null)proc.kill('SIGKILL')}
  server.close();server.closeAllConnections();
- if(profileDir)await rm(profileDir,{recursive:true,force:true,maxRetries:5,retryDelay:150});
+ await stopSmokeChrome(browser);
 }

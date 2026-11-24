@@ -5,16 +5,13 @@
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
 import {createReadStream} from 'node:fs';
-import {mkdtemp,readFile,rm,stat} from 'node:fs/promises';
-import {tmpdir} from 'node:os';
-import {join,resolve,sep,extname} from 'node:path';
+import {stat} from 'node:fs/promises';
+import {resolve,sep,extname} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {spawn,spawnSync} from 'node:child_process';
+import {launchSmokeChrome,stopSmokeChrome} from './chrome-smoke-launch.mjs';
 import {setTimeout as delay} from 'node:timers/promises';
 assert.ok(process.argv.length<=3,'Usage: node scripts/layout-browser-smoke.mjs [public-directory]');
 const root=process.argv[2]?resolve(process.argv[2]):fileURLToPath(new URL('../',import.meta.url));
-const chrome=[process.env.CHROME_BIN,'google-chrome','google-chrome-stable','chromium','chromium-browser'].filter(Boolean).find(bin=>spawnSync(bin,['--version'],{stdio:'ignore',timeout:5000}).status===0);
-assert.ok(chrome,'Chrome/Chromium must be installed for the smoke test');
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.mp3':'audio/mpeg'};
 const server=createServer(async(req,res)=>{
  try{
@@ -25,7 +22,7 @@ const server=createServer(async(req,res)=>{
   res.setHeader('Content-Length',info.size);createReadStream(path).on('error',()=>res.destroy()).pipe(res);
  }catch{res.writeHead(404);res.end('Not found')}
 });
-let proc,ws,profileDir;const pending=new Map(),exceptions=[];let sequence=0;
+let browser,ws;const pending=new Map(),exceptions=[];let sequence=0;
 async function until(fn,label,ms=8000){
  const end=Date.now()+ms;
  while(Date.now()<end){try{const result=await fn();if(result)return result}catch{}await delay(100)}
@@ -58,12 +55,7 @@ async function assertFits(){
 try{
  await new Promise((res,rej)=>{server.once('error',rej);server.listen(0,'127.0.0.1',res)});
  const url='http://127.0.0.1:'+server.address().port+'/';
- profileDir=await mkdtemp(join(tmpdir(),'bk-browser-'));
- proc=spawn(chrome,['--headless=new','--no-sandbox','--disable-dev-shm-usage','--disable-background-networking','--no-first-run','--no-default-browser-check','--mute-audio','--remote-debugging-port=0','--user-data-dir='+profileDir,'about:blank'],{stdio:'ignore'});
- const debug=await until(async()=>{if(proc.exitCode!==null)throw Error('Browser exited');return (await readFile(join(profileDir,'DevToolsActivePort'),'utf8')).split('\n')[0]},'DevTools port',15000);
- const target=await until(async()=>{const list=await (await fetch('http://127.0.0.1:'+debug+'/json/list')).json();return list.find(x=>x.type==='page')},'browser page');
- ws=new WebSocket(target.webSocketDebuggerUrl);
- await new Promise((resolve,reject)=>{ws.addEventListener('open',resolve,{once:true});ws.addEventListener('error',reject,{once:true})});
+ browser=await launchSmokeChrome();ws=browser.ws;
  ws.addEventListener('message',event=>{
   const m=JSON.parse(event.data);
   if(m.id){const p=pending.get(m.id);if(!p)return;pending.delete(m.id);clearTimeout(p.timer);if(m.error)p.reject(Error(m.error.message));else p.resolve(m.result);return}
@@ -88,7 +80,7 @@ try{
  const general=['.navigation-dock>.dock-link','.site-controls>button'];
  for(const [width,height] of [[1920,1080],[1366,768],[1024,600],[768,1024],[390,844],[320,568],[844,390]]){
   await viewport(width,height);
-  for(const [page,selectors] of [['home',['.home-mode-rail>.home-mode','.home-card-fan>.game-card']],['deck',['.deck-panel-head,.deck-zone-tabs,.deck-list,.deck-panel-foot','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination','.transfer-card>.transfer-counts,.transfer-card>.transfer-actions']],['collection',['.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination']],['shop',['.product-section-tabs>button']],['rules',['.rulebook-tabs>button']]]){
+  for(const [page,selectors] of [['home',['.home-mode-rail>.home-mode','.home-card-fan>.game-card']],['deck',['.deck-panel>.transfer-heading,.deck-panel>.deck-bank-toolbar,.deck-panel-head,.deck-zone-tabs,.deck-display-tabs,.deck-list,.deck-panel-foot','.transfer-source>.transfer-heading,.transfer-source>.deck-source-tools,.transfer-source>.filter-bar,.transfer-source>#card-results','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination','.transfer-card>.transfer-counts,.transfer-card>.transfer-actions','.deck-bank-actions>.btn','.deck-display-tabs>.btn','.deck-scope-tabs>.btn','.deck-source-tools>.deck-scope-tabs,.deck-source-tools>.btn,.deck-source-tools>.text-button']],['collection',['.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination']],['shop',['.product-section-tabs>button']],['rules',['.rulebook-tabs>button']]]){
    await click('.navigation-dock [data-nav='+page+']');await waitElement('main[data-page='+page+']');await waitElement('.bk-native-pane>.bk-fit-pane[data-fit-scale]');await delay(200);
    if(page==='home'){const modeVisibility=await evaluate('(()=>{const p=document.querySelector(".home-page").getBoundingClientRect();return [...document.querySelectorAll(".home-mode-rail>.home-mode")].map(e=>{const r=e.getBoundingClientRect();return r.top>=p.top-2&&r.bottom<=p.bottom+2&&r.left>=p.left-2&&r.right<=p.right+2})})()');assert.deepEqual(modeVisibility,[true,true,true],width+'x'+height+' all three mode controls fully visible');}
    // Card ownership/action pairs are tested per card, not between distinct tiles.
@@ -103,6 +95,8 @@ try{
   assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),2304);
   const cardGeometry=await evaluate(`(()=>{const failures=[];for(const [grid,selector] of [['.transfer-source .cards-grid','.transfer-card'],['.deck-image-grid','.deck-image-slot']]){const container=document.querySelector(grid);if(!container){failures.push(grid);continue}const bounds=container.getBoundingClientRect();for(const tile of container.querySelectorAll(selector)){const r=tile.getBoundingClientRect(),parts=[...tile.children].map(e=>e.getBoundingClientRect());if(r.left<bounds.left-2||r.right>bounds.right+2||r.top<bounds.top-2||r.bottom>bounds.bottom+2||parts.some((p,i)=>i>0&&p.top<parts[i-1].bottom-2))failures.push({grid,id:tile.dataset.transferId,tile:r.toJSON(),bounds:bounds.toJSON()});}}return failures})()`);
   assert.deepEqual(cardGeometry,[],width+'x'+height+' card art, counts, buttons and grid bounds');
+  await click('[data-action=deck-advanced-filters]');await delay(200);await check(width+'x'+height+' expanded deck filters',['.transfer-source>.transfer-heading,.transfer-source>.deck-source-tools,.transfer-source>.filter-bar,.transfer-source>#card-results','.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','.filters-secondary>select']);
+  await click('[data-action=deck-advanced-filters]');await delay(160);
   await click('[data-action=deck-filter-scope][data-scope=owned]');
   const ownedTotal=await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)');assert.ok(ownedTotal>0&&ownedTotal<2304);
   assert.equal(await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent'),'32/32');
@@ -118,7 +112,7 @@ try{
   await click('.transfer-add[data-id='+transferId+']');
   assert.equal(await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent'),before);
   await evaluate('(()=>{const e=document.querySelector("#card-search");e.value="";e.dispatchEvent(new Event("input",{bubbles:true}));return true})()');
-  assert.equal(await evaluate('Number(document.querySelector(".deck-image-grid").dataset.total)'),32);await click('[data-action=deck-list-mode][data-mode=list]');await click('[data-action=deck-list-mode][data-mode=images]');
+  assert.equal(await evaluate('Number(document.querySelector(".deck-image-grid").dataset.total)'),32);assert.equal(await evaluate('document.querySelectorAll(".deck-visible-rows,[data-action=deck-list-mode]").length'),0);
   await click('[data-action=deck-inspect-open]');await waitElement('.deck-inspector .inspect-slot-nav');assert.ok((await evaluate('document.querySelector(".inspect-slot-nav strong").textContent')).includes('1 / 32'));await click('[data-action=deck-inspect-next]');assert.ok((await evaluate('document.querySelector(".inspect-slot-nav strong").textContent')).includes('2 / 32'));await click('[data-action=deck-inspect-all]');assert.equal(await evaluate('Number(document.querySelector(".inspect-gallery").dataset.total)'),32);await click('[data-action=deck-inspect-zone][data-section=special]');assert.equal(await evaluate('Number(document.querySelector(".inspect-gallery").dataset.total)'),4);await click('.modal-close');assert.ok(await evaluate('Boolean(document.querySelector(".deck-image-slot [data-action=deck-return-slot]"))'));
   await click('.navigation-dock [data-nav=home]');await click('[data-action=solo-mode]');await waitElement('.solo-mode');await check(width+'x'+height+' solo',general);
   await click('[data-action=solo-section][data-section=practice]');await check(width+'x'+height+' practice',['.solo-level-grid>.solo-level']);
@@ -138,9 +132,7 @@ try{
  assert.deepEqual(exceptions,[],'No uncaught browser errors');
  console.log('Layout smoke passed: root home, deck, collection, shop, rules, solo, practice, room, rank, details, battle, about; seven viewports');
 }finally{
- try{ws?.close()}catch{}
  for(const p of pending.values())clearTimeout(p.timer);
- if(proc&&proc.exitCode===null){proc.kill('SIGTERM');await Promise.race([new Promise(r=>proc.once('exit',r)),delay(3000)]);if(proc.exitCode===null)proc.kill('SIGKILL')}
  server.close();server.closeAllConnections();
- if(profileDir)await rm(profileDir,{recursive:true,force:true,maxRetries:5,retryDelay:150});
+ await stopSmokeChrome(browser);
 }
