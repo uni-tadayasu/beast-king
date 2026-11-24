@@ -515,6 +515,8 @@ html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=tr
 html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] .dual-workshop[data-bk-workshop-mode=cards] :is(.transfer-source,.deck-panel){padding:3px!important;gap:3px!important}
 html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] .dual-workshop[data-bk-workshop-mode=cards] :is(#card-results,.deck-list){padding:0!important;gap:3px!important}
 html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] .dual-workshop[data-bk-workshop-mode=cards] :is(.cards-grid,.deck-image-grid){padding:3px!important}
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] .dual-workshop #card-results>.cards-grid,
+html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] .dual-workshop .deck-list>.deck-image-grid{padding:0!important}
 html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] .dual-workshop #card-results .transfer-card,
 html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] .dual-workshop .deck-image-slot{display:grid!important;grid-template-columns:minmax(0,auto) minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr) 32px!important;gap:4px 7px!important;padding:0!important;align-items:center;align-content:stretch}
 html[data-ui-theme="cyber"].bk-fit.bk-landscape-canvas body[data-layout-short=true] #card-results .transfer-card>.game-card,
