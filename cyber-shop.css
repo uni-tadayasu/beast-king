@@ -1,0 +1,128 @@
+/* Shop panes share the existing controls and content. The image budget uses
+   the real orientation viewport, never the fitter's expanding logical canvas. */
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop{
+ --cyber-pack-height:clamp(64px,calc(var(--app-viewport-height,100dvh) - 270px),380px);
+ min-height:0!important;gap:10px;
+}
+@container beast-viewport (max-height:350px){
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-side>article>:is(h3,p){display:none}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-side>article{padding:6px;gap:4px}
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-display{
+ min-height:0!important;height:auto!important;padding:8px;min-width:0;overflow:hidden;display:grid;place-items:center;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-foil{
+ width:calc(var(--cyber-pack-height) * 2 / 3)!important;height:var(--cyber-pack-height)!important;
+ max-width:100%!important;max-height:380px!important;min-height:0!important;aspect-ratio:2/3;
+ padding:0!important;transform:none!important;margin:0;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-cover-art{
+ width:100%;height:100%;object-fit:contain;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-display::before{
+ width:90%;height:90%;max-width:320px;max-height:320px;box-shadow:none;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .shop-stage{
+ display:grid!important;grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr)!important;
+ min-height:0!important;height:auto!important;max-height:none!important;padding:18px 24px;gap:20px;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-offer{
+ min-width:0;max-width:none;align-self:center;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-offer>p{
+ max-width:none;font-size:1rem;line-height:1.55;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-balance{
+ margin:10px 0;padding:6px 10px;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-balance>span{
+ font-size:.875rem;gap:16px;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-collection{
+ margin-top:10px;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .shop-side{
+ min-width:0;min-height:0;
+}
+
+/* Compact view: one task at a time, without copied purchase controls. */
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop:is([data-bk-shop-mode=pack],[data-bk-shop-mode=recipes],[data-bk-shop-mode=details])>.page-title{
+ display:none!important;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop:is([data-bk-shop-mode=pack],[data-bk-shop-mode=recipes],[data-bk-shop-mode=details])>.booster-layout{
+ display:block!important;grid-template-columns:minmax(0,1fr)!important;min-height:0;flex:1 0 auto;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-stage,
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop:is([data-bk-shop-mode=pack],[data-bk-shop-mode=details]) .shop-side{
+ display:none!important;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=pack] .pack-offer>:is(p,.pack-collection,[data-action=pack-odds]){
+ display:none!important;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .pack-display,
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .pack-offer>:is(.pack-balance,.pack-buy,.pack-edition-seal,.pack-reading){
+ display:none!important;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .shop-stage{
+ grid-template-columns:minmax(0,1fr)!important;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .pack-offer{
+ display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:10px 24px;align-items:start;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .pack-offer>h2{
+ grid-column:1/-1;margin:0;font-size:1.5rem;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .pack-offer>p:not([class]){
+ grid-column:1;grid-row:2/5;margin:0;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .pack-offer>:is(.pack-assurance,.pack-collection,[data-action=pack-odds]){
+ grid-column:2;margin:0;font-size:.875rem!important;line-height:1.5;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-side{
+ display:grid!important;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)!important;gap:14px;align-items:stretch;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-side>article{
+ min-height:0;min-width:0;padding:16px;gap:9px;flex:none;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-side>article>:is(span,h3,p){
+ margin:0;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .recipe-launchers{
+ margin:0;gap:8px;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .last-pack-link{
+ grid-column:1/-1;min-height:36px;font-size:.875rem;
+}
+
+@container beast-viewport (max-height:540px){
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop{gap:4px}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .product-section-tabs{gap:5px;margin:0}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop>.bk-screen-tabs{margin:0}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .product-section-tabs>button{min-height:34px;padding:3px 6px;gap:4px}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .product-section-tabs>button>span{font-size:0;line-height:1.3}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .product-section-tabs>button em{font-size:.875rem!important;line-height:1.3}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .product-section-tabs .pack-tab-number{font-size:1rem}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop>.bk-screen-tabs>button{min-height:32px;padding:4px 8px;font-size:.875rem!important;line-height:1.3}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .shop-stage{padding:10px 14px;gap:14px;grid-template-columns:minmax(80px,.6fr) minmax(0,1.4fr)!important}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-display{padding:0}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-offer>h2{font-size:1.5rem;line-height:1.25;margin:4px 0 8px}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=pack] .pack-balance{display:none!important}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-edition-seal{font-size:.875rem}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop .pack-buy{min-height:38px!important;height:auto;padding:8px 12px;max-width:none;font-size:1rem!important;line-height:1.35}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .shop-stage{grid-template-columns:minmax(0,1fr)!important;padding:10px 12px}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .pack-offer{gap:7px 16px;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .pack-offer>h2{display:none}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .pack-offer>p:not([class]){grid-row:1/4;font-size:.875rem;line-height:1.45}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .pack-collection i{margin-top:5px}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=details] .pack-offer>[data-action=pack-odds]{min-height:30px;padding:3px 0}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-side{gap:6px}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-side>article{padding:8px;gap:4px}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-side>article>span{display:none}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-side h3{font-size:1rem;line-height:1.35}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-side p{font-size:.875rem;line-height:1.4}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .recipe-launchers{gap:5px}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .recipe-launchers>button{min-height:38px;padding:5px 6px}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .recipe-launchers strong{font-size:.875rem;line-height:1.3}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-side :is(.btn,.text-button){font-size:.875rem!important;min-height:32px;margin:0;line-height:1.35}
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .last-pack-link{min-height:32px;height:32px}
+}

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import { webcrypto } from 'node:crypto';
+import {splitReadingText} from '../reading-pages.js';
 import {BRAND_ICONS} from '../brand-icons.js';
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
 import {CARD_ART_EXPANSIONS} from '../card-art-expansion.js';
@@ -29,9 +30,9 @@ import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayou
 const appSource = readFileSync(new URL('../app.js', import.meta.url), 'utf8').replace(/^import\s+[^;]+;\s*$/gm, '');
 const expose = `
 globalThis.__appIntegration = {
-  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, resultModal, showEventRecipe, currentMusicScene, inspectHand, inspectBattleEffect, inspectFieldEffect, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase, loadStarterFromShop, registerOwnedStarter, expansionRecipeModal, loadExpansionRecipe, needsTarget, targetHint, selectionMessage, selectionPanel, useSelected, openFusion, renderFusion,
+  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, resultModal, showEventRecipe, currentMusicScene, inspectHand, inspectBattleEffect, inspectFieldEffect, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, bankDeletionPlan, requestBankDeckDelete, confirmBankDeckDelete, deckBankToolbar, equipOperatorDeck, starterPurchaseModal, confirmStarterPurchase, loadStarterFromShop, registerOwnedStarter, expansionRecipeModal, loadExpansionRecipe, needsTarget, targetHint, selectionMessage, selectionPanel, useSelected, openFusion, renderFusion,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
-  purchasePack, packResultModal, closeModal,
+  purchasePack, packResultModal, closeModal, actionHandler,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
   get workingDeck(){return workingDeck}, get data(){return data}, get game(){return game}, get cpuGame(){return cpuGame},
   get online(){return online}, get onlineBattle(){return onlineBattle}, get page(){return page},
@@ -105,7 +106,8 @@ function boot({ hooks = {}, stored = {} } = {}) {
     sendAction: async () => ({ ok: true }),
   };
   const context = vm.createContext({
-    ...catalog, ...engine, ...shop, ...campaign, ...product, ...eventDecks, ...eventBattles, eventChallengeView, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS, CARD_ART_OVERRIDES, CARD_ART_EXPANSIONS, CARD_ART_USER_OVERRIDES, PREMIUM_CARD_ART, PREMIUM_DECK, PREMIUM_DECK_ID,
+    ...catalog, ...engine, ...shop, ...campaign, ...product, ...eventDecks, ...eventBattles, eventChallengeView, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, splitReadingText, BRAND_ICONS, CARD_ART_CROPS, CARD_ART_OVERRIDES, CARD_ART_EXPANSIONS, CARD_ART_USER_OVERRIDES, PREMIUM_CARD_ART, PREMIUM_DECK, PREMIUM_DECK_ID,
+    getCard: hooks.getCard || catalog.getCard,
     createOnlineClient: options => { callbacks = options; return client; },
     createCloudSync: () => ({ getState: () => ({phase:'synced',revision:1,dirty:false}), start: async () => ({phase:'synced',revision:1,dirty:false}), markDirty() {}, flush: async () => ({revision:1}), refresh: async () => ({revision:1}) }),
     createAccountUi: () => ({getOperatorDeck:()=>hooks.operatorDeck||null,onCloudState() {},handleAction:()=>false,touchBrand:()=>false,clearIdentity(){},onModalClosed(){}}),
@@ -118,7 +120,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
       revealCards(container,pulls) { fxCalls.push({method:'revealCards',pulls:plain(pulls)}); },
     }),
     entryView: () => '<main>Entry</main>', document, localStorage, crypto: webcrypto,
-    window: { addEventListener() {}, removeEventListener() {}, scrollTo() {} },
+    window: { innerWidth: hooks.viewport?.width, innerHeight: hooks.viewport?.height, addEventListener() {}, removeEventListener() {}, scrollTo() {} },
     location: { hash: '' }, history: { replaceState() {} }, navigator: {},
     setTimeout(callback, delay) { const id = ++timerId; scheduled.set(id, { callback, delay }); return id; },
     clearTimeout(id) { scheduled.delete(id); }, setInterval: () => ++timerId, clearInterval() {},
@@ -350,7 +352,7 @@ test('environment battles keep owned decks, persist their identity, resume and r
 test('environment recipes expose the public card detail action and reject forged saved battle identity',()=>{
  const {app,nodes}=boot(),deck=eventDecks.EVENT_DECKS[0];
  app.showEventRecipe(deck.id,0);let html=nodes.get('#modal-root').innerHTML;
- assert.equal([...html.matchAll(/class="event-recipe-card"/g)].length,8);assert.match(html,/data-action="detail"[^>]*data-art-context="public"/);
+ assert.equal([...html.matchAll(/class="event-recipe-card"/g)].length,6);assert.match(html,/data-action="detail"[^>]*data-art-context="public"/);
  app.showEventRecipe(deck.id,2);html=nodes.get('#modal-root').innerHTML;assert.match(html,/3 \/ 3/);
  const state=cpuGame();state.eventBattleId='unknown';state.eventMatchId='saved-event';assert.equal(app.validSavedGame(state),false);
  state.eventBattleId=deck.id;state.eventMatchId='';assert.equal(app.validSavedGame(state),false);
@@ -443,6 +445,94 @@ test('deck library keeps starter edits, active deck and drafts independent',()=>
  assert.equal(app.createBankDeck(),true);assert.equal(app.data.deckLibrary.length,5);
 });
 
+test('saved deck deletion requires a matching confirmation and never consumes owned cards',()=>{
+ const {app,nodes,storage}=boot();app.setState({page:'deck'});
+ const inventory=plain(app.data.collection),active=app.data.activeDeckId;
+ assert.equal(app.createBankDeck(),true);const id=app.data.editingDeckId;
+ const before=plain(app.data);
+ assert.equal(app.confirmBankDeckDelete(id),false,'No deletion without a reviewed dialog');
+ assert.equal(app.requestBankDeckDelete(id),true);
+ assert.match(nodes.get('#modal-root').innerHTML,/マイデッキ 1/);
+ assert.match(nodes.get('#modal-root').innerHTML,/所持カード・秘宝・戦績は減りません/);
+ assert.match(nodes.get('#modal-root').innerHTML,/confirm-deck-bank-delete/);
+ app.closeModal();assert.equal(app.confirmBankDeckDelete(id),false);
+ assert.deepEqual(plain(app.data),before,'Cancel preserves every save field');
+ assert.equal(app.requestBankDeckDelete(id),true);
+ assert.equal(app.confirmBankDeckDelete('custom-some-other-deck'),false);
+ assert.equal(app.confirmBankDeckDelete(id),true);
+ assert.equal(app.data.deckLibrary.some(d=>d.id===id),false);
+ assert.equal(app.data.editingDeckId,active);assert.equal(app.data.activeDeckId,active);
+ assert.deepEqual(plain(app.data.collection),inventory);
+ const restored=app.restoreData(JSON.parse(storage.get('beast-king-v6')));
+ assert.equal(restored.deckLibrary.some(d=>d.id===id),false,'Deletion survives reopening');
+ assert.deepEqual(plain(restored.collection),inventory);
+});
+
+test('deleting an active deck with an empty draft selects another saved deck and preserves a paused battle',()=>{
+ const {app,nodes}=boot();const battle=cpuGame(195);
+ app.setState({page:'deck',game:battle,cpuGame:battle});
+ const original=app.data.activeDeckId,inventory=plain(app.data.collection),battleBefore=plain(battle),treasure=app.data.treasure;
+ assert.equal(app.createBankDeck(),true);assert.equal(app.saveDeck(true),true);
+ const id=app.data.activeDeckId,record=app.data.deckLibrary.find(d=>d.id===id);
+ record.draft={name:'間違えた空のデッキ',ids:[],specialIds:[]};app.loadBankEntry(id);
+ assert.equal(app.workingDeck.length,0);assert.equal(app.data.deckIds.length,32,'Saved battle deck remains complete while its draft is empty');
+ assert.equal(app.requestBankDeckDelete(id),true);
+ assert.match(nodes.get('#modal-root').innerHTML,/編集中の内容/);
+ assert.match(nodes.get('#modal-root').innerHTML,/中断中の対戦はそのまま再開/);
+ assert.equal(app.confirmBankDeckDelete(id),true);
+ assert.equal(app.data.activeDeckId,original);assert.equal(app.data.editingDeckId,original);
+ assert.equal(app.workingDeck.length,32);assert.equal(app.data.draft,null);
+ assert.equal(catalog.validateDeck(app.data.deckIds).valid,true);
+ assert.equal(catalog.validateSpecialDeck(app.data.specialIds).valid,true);
+ assert.deepEqual(plain(app.data.collection),inventory);assert.equal(app.data.treasure,treasure);
+ assert.deepEqual(plain(app.game),battleBefore);assert.deepEqual(plain(app.cpuGame),battleBefore);
+ assert.equal(app.requestBankDeckDelete(original),false,'The last usable deck is retained');
+ assert.match(app.deckBankToolbar(),/deck-bank-delete[^>]*disabled/);
+ assert.match(app.deckBankToolbar(),/最後のデッキは削除できません/);
+});
+
+test('deleted starter slots stay deleted through restore and can be explicitly loaded again without granting cards',()=>{
+ const {app}=boot();app.setState({page:'deck'});
+ const original=app.data.activeDeckId,inventory=plain(app.data.collection),starter=catalog.STARTER_DECKS[0];
+ app.createBankDeck();app.saveDeck(true);const active=app.data.activeDeckId;
+ app.loadBankEntry(original);assert.equal(app.requestBankDeckDelete(original),true);
+ assert.equal(app.confirmBankDeckDelete(original),true);
+ const next=app.restoreData(plain(app.data));
+ assert.equal(next.deckLibrary.some(d=>d.id===original),false);
+ assert.deepEqual(plain(next.deletedStarterDeckIds),[original]);assert.equal(next.activeDeckId,active);
+ assert.deepEqual(plain(next.collection),inventory);
+ app.setState({data:next});assert.equal(app.loadStarterFromShop(starter.id),true);
+ assert.equal(app.data.deckLibrary.some(d=>d.id===original),true);
+ assert.deepEqual(plain(app.data.deletedStarterDeckIds),[]);
+ assert.deepEqual(plain(app.data.collection),inventory);
+ assert.equal(app.data.activeDeckId,active,'Explicit reload edits the starter without replacing the active deck');
+});
+
+test('deck deletion rechecks changed records and excludes an unauthorized operator deck from fallback',()=>{
+ const {app}=boot();app.setState({page:'deck'});app.createBankDeck();
+ const id=app.data.editingDeckId;assert.equal(app.requestBankDeckDelete(id),true);
+ app.data.deckLibrary.find(d=>d.id===id).name='別端末で変えた名前';
+ assert.equal(app.confirmBankDeckDelete(id),false,'A stale confirmation cannot delete changed content');
+ assert.equal(app.data.deckLibrary.some(d=>d.id===id),true);
+ assert.equal(app.currentModal.kind,'deck-delete');
+ assert.equal(app.confirmBankDeckDelete(id),true,'The updated dialog can be confirmed');
+ const last=app.data.activeDeckId,first=catalog.STARTER_DECKS[0];
+ app.data.deckLibrary.push({id:'operator-kirahara-v1',name:'運営構築',ids:[...first.ids],specialIds:[...first.specialIds],recipeRevision:4});
+ assert.equal(app.bankDeletionPlan(last).ok,false,'A hidden operator entry is not a usable fallback');
+ assert.equal(app.requestBankDeckDelete('operator-kirahara-v1'),false,'An unauthorized entry cannot be deleted through a fabricated action');
+});
+
+test('deleting an authorized operator preset removes only the local deck entry and reequipping does not grant inventory',()=>{
+ const starter=catalog.STARTER_DECKS[0],grant={id:'operator-kirahara-v1',name:'運営構築',ids:[...starter.ids],specialIds:[...starter.specialIds],revision:4};
+ const {app}=boot({hooks:{operatorDeck:grant}});app.setState({page:'deck'});
+ const inventory=plain(app.data.collection),treasure=app.data.treasure;
+ app.equipOperatorDeck(grant);assert.equal(app.data.activeDeckId,grant.id);
+ assert.equal(app.requestBankDeckDelete(grant.id),true);assert.equal(app.confirmBankDeckDelete(grant.id),true);
+ assert.equal(app.data.deckLibrary.some(d=>d.id===grant.id),false);
+ app.equipOperatorDeck(grant);assert.equal(app.data.deckLibrary.filter(d=>d.id===grant.id).length,1);
+ assert.deepEqual(plain(app.data.collection),inventory);assert.equal(app.data.treasure,treasure);
+});
+
 test('returning a card to the shared pool does not change inventory or a different saved deck',()=>{
  const {app}=boot();const first=catalog.STARTER_DECKS[0],second=catalog.STARTER_DECKS[1];
  app.data.collection=shop.createStarterCollection(app.data.collection,second.id);app.initializeDeckBank(app.data);
@@ -459,7 +549,7 @@ test('physical card layout uses the measured free canvas, including transfer con
  for(const edit of [false,true])for(const [width,height] of [[1800,650],[970,380],[540,260],[330,180]]){
   const layout=calculateFittedCardLayout({width,height,edit,compact:width<800});
   assert.ok(layout.pageSize===layout.columns*layout.rows&&layout.cardWidth>0);
-  const gap=width<800?8:14,caption=edit?76:28;
+  const gap=width<800?8:14,caption=edit?84:36;
   if(height>=260){
    assert.ok(layout.columns*layout.cardWidth+(layout.columns-1)*gap<=width);
    assert.ok(layout.rows*(layout.cardWidth*520/360+caption)+(layout.rows-1)*gap<=height);
@@ -506,6 +596,77 @@ test('Regalia artwork is scoped to the authenticated deck instance and the click
  hooks.operatorDeck={...grant,artwork:raster};
  assert.ok(app.artStyle(regalia,'battle').includes(raster));assert.ok(app.artStyle(regalia,'battle').includes('background-size:contain'));assert.ok(!app.artStyle(regalia,'public').includes(raster));
  assert.ok(!JSON.stringify(data).includes(privateArt));assert.ok(!JSON.stringify(data).includes(raster));
+});
+
+function clickAction(app,dataset){
+ const button={dataset,disabled:false};
+ app.actionHandler({target:{closest:selector=>selector==='[data-action]'?button:null},preventDefault(){}});
+}
+function readingPage(html){
+ const match=html.match(/<p class="detail-effect" data-reading-page="(\d+)" data-reading-pages="(\d+)">([\s\S]*?)<\/p>/);
+ assert.ok(match,'The current effect page must be rendered');
+ const entities={'&amp;':'&','&lt;':'<','&gt;':'>','&quot;':'"','&#39;':"'"};
+ return {index:Number(match[1]),count:Number(match[2]),text:match[3].replace(/&(?:amp|lt|gt|quot|#39);/g,value=>entities[value])};
+}
+
+test('small-screen card detail pages preserve complete effects and add only missing keyword explanations',()=>{
+ const original=catalog.getCard('B0512');
+ const incomplete={...original,text:'試験用のカード効果。守護：相手は守護を持つ魔獣を先に攻撃する。'};
+ for(const card of [original,incomplete]){
+  const {app,nodes}=boot({hooks:{viewport:{width:844,height:340},getCard:id=>id===card.id?card:catalog.getCard(id)}});
+  app.cardDetails(card.id);
+  const count=readingPage(nodes.get('#modal-root').innerHTML).count;
+  assert.ok(count>1,'The full effect must be reachable on a short viewport');
+  const texts=[];
+  for(let index=0;index<count;index++){
+   clickAction(app,{action:'detail-page',id:card.id,page:String(index)});
+   const current=readingPage(nodes.get('#modal-root').innerHTML);
+   assert.equal(current.index,index);
+   assert.equal(current.count,count);
+   assert.ok(Array.from(current.text).length<=60);
+   texts.push(current.text);
+  }
+  const text=texts.join('');
+  for(const label of ['守護','速攻','吸収'])assert.equal(text.split(label+'：').length-1,1,`${label} must be explained once`);
+  if(card===original)assert.equal(text,card.text,'Existing card text must survive pagination exactly');
+  else{
+   assert.ok(text.startsWith(card.text+'\n'),'Existing wording must be preserved before supplemental explanations');
+   assert.match(text,/速攻：召喚したターンから攻撃できる。/);
+   assert.match(text,/吸収：[^。]*実際に減らした分[^。]*回復する。/);
+  }
+ }
+});
+
+test('recipe return survives effect pagination and information tabs without leaking into ordinary card details',()=>{
+ const {app,nodes}=boot({hooks:{viewport:{width:844,height:340}}});
+ app.setState({page:'shop',entered:true});
+ assert.equal(app.expansionRecipeModal(PREMIUM_DECK_ID,3),true);
+ const source=nodes.get('#modal-root').innerHTML.match(/data-action="recipe-card-detail" data-id="([^"]+)" data-recipe="([^"]+)" data-recipe-page="([^"]+)"/);
+ assert.ok(source);
+ const [,id,recipe,recipePage]=source;
+ clickAction(app,{action:'recipe-card-detail',id,recipe,recipePage});
+ assert.ok(readingPage(nodes.get('#modal-root').innerHTML).count>1);
+ for(const target of ['1','info','0']){
+  clickAction(app,{action:'detail-page',id,page:target});
+  assert.deepEqual(plain(app.currentModal.recipeReturn),{id:recipe,page:3});
+  assert.equal(app.currentModal.textPage,target==='info'?'info':Number(target));
+  assert.match(nodes.get('#modal-root').innerHTML,/data-action="recipe-return"/);
+  if(target==='info'){
+   const card=catalog.getCard(id),element=catalog.ELEMENTS.find(item=>item.id===card.element);
+   assert.ok(nodes.get('#modal-root').innerHTML.includes(`<span class="tag">${element.name}</span>`));
+   assert.ok(nodes.get('#modal-root').innerHTML.includes(`<span class="tag">${card.rarity} · ${catalog.RARITY_LABELS[card.rarity]}</span>`));
+  }
+ }
+ const back=nodes.get('#modal-root').innerHTML.match(/data-action="recipe-return" data-id="([^"]+)" data-recipe-page="([^"]+)"/);
+ assert.ok(back);
+ clickAction(app,{action:'recipe-return',id:back[1],recipePage:back[2]});
+ assert.equal(app.currentModal.kind,'expansion-recipe');
+ assert.equal(app.currentModal.id,recipe);
+ assert.equal(app.currentModal.recipePage,3);
+ clickAction(app,{action:'recipe-card-detail',id,recipe,recipePage});
+ clickAction(app,{action:'detail',id});
+ assert.equal(app.currentModal.recipeReturn,null);
+ assert.doesNotMatch(nodes.get('#modal-root').innerHTML,/data-action="recipe-return"/);
 });
 
 test('dual workshop displays a complete left catalogue and an independent right deck',()=>{
@@ -558,8 +719,9 @@ test('50/50 editor card geometry includes the entire action footer',()=>{
  for(const [width,height] of [[890,510],[540,340],[180,220],[130,145],[1200,750]]){
   const layout=calculateWorkshopTileLayout({width,height,compact:width<300});
   assert.ok(layout.pageSize>=1&&layout.cardWidth>=1);
-  assert.ok(layout.columns*layout.cardWidth+(layout.columns-1)*6<=width-10);
-  assert.ok(layout.rows*(layout.cardWidth*520/360+58)+(layout.rows-1)*6<=height-9);
+  assert.ok(layout.columns*layout.tileWidth+(layout.columns-1)*6<=width-10);
+  assert.ok(layout.cardWidth<=layout.tileWidth);
+  assert.ok(layout.rows*(layout.cardWidth*520/360+64)+(layout.rows-1)*6<=height-9);
  }
 });
 

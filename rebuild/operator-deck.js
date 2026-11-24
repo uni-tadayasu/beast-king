@@ -1,6 +1,6 @@
 // Server-side integration blueprint only. Not imported by the public UI.
 // Never use a local storage flag or client-supplied password to grant this recipe.
-import {CARDS,getCard,validateDeck,validateSpecialDeck,SECOND_REGALIA_ID} from './catalog.js?v=20261124-29';
+import {CARDS,getCard,validateDeck,validateSpecialDeck,SECOND_REGALIA_ID} from './catalog.js?v=20261124-30';
 const pick=(pack,type,predicate,n,score)=>CARDS.filter(c=>c.pack===pack&&c.type===type&&predicate(c))
  .sort((a,b)=>score(b)-score(a)||a.id.localeCompare(b.id)).slice(0,n).map(c=>c.id);
 const two=id=>[id,id];

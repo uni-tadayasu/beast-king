@@ -1,6 +1,6 @@
-import { CARD_SETS, CARD_MAP, STARTER_DECKS, getCardsForSet, getExpansionDeck } from './catalog.js?v=20261124-29';
-import { PREMIUM_CARD_IDS } from './premium-cards.js?v=20261124-29';
-import { PREMIUM_DECK, PREMIUM_DECK_ID } from './premium-deck.js?v=20261124-29';
+import { CARD_SETS, CARD_MAP, STARTER_DECKS, getCardsForSet, getExpansionDeck } from './catalog.js?v=20261124-30';
+import { PREMIUM_CARD_IDS } from './premium-cards.js?v=20261124-30';
+import { PREMIUM_DECK, PREMIUM_DECK_ID } from './premium-deck.js?v=20261124-30';
 
 // Pure economy rules shared by the browser and an authoritative server.
 // A server should inject its own secure random function into openPack.
