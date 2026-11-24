@@ -337,3 +337,35 @@ body.about-page{overflow:auto;min-width:0}
 .about-page img{max-width:100%;height:auto}
 .about-page table{display:block;max-width:100%;overflow:auto}
 @media(prefers-reduced-motion:reduce){.product-home .home-card-fan .game-card,.product-home .home-mode{transition:none}}
+
+/* Explicit tracks override the older always-visible desktop inspector grid. */
+.duel-shell .duel-layout:has(>.hand-inspector){grid-template-columns:minmax(0,1fr) minmax(185px,220px)}
+.duel-shell .duel-layout:has(>.hand-inspector)>.arena{grid-column:1;grid-row:1}
+.duel-shell .duel-layout:has(>.hand-inspector)>.duel-sidebar{grid-column:2;grid-row:1}
+.duel-shell .duel-top-actions .hand-effects-trigger,.duel-shell .duel-top-actions .battle-log-trigger{display:inline-flex;align-items:center;justify-content:center}
+.duel-shell .duel-top-actions .hand-effects-trigger>span,.duel-shell .duel-top-actions .battle-log-trigger>span{display:inline}
+.duel-shell .arena{grid-template-rows:auto minmax(min-content,1fr) auto minmax(min-content,1fr) auto minmax(min-content,1fr)}
+.duel-shell .field-row>.field-slot{height:auto;max-height:none;aspect-ratio:360/520;width:min(100%,clamp(65px,calc((100dvh - 290px)*.24),112px))}
+.duel-shell .hand-cards>.hand-card{max-height:none;width:min(100%,clamp(75px,calc((100dvh - 290px)*.23),106px))}
+.duel-shell .arena>.hand-section{height:auto;min-height:0}
+@media(min-width:1550px) and (min-height:720px){
+ .duel-shell .duel-layout:has(>.hand-inspector[data-open=true]){grid-template-columns:250px minmax(0,1fr) 220px}
+ .duel-shell .duel-layout:has(>.hand-inspector[data-open=true])>.arena{grid-column:2}
+ .duel-shell .duel-layout:has(>.hand-inspector[data-open=true])>.duel-sidebar{grid-column:3}
+ .duel-shell .duel-layout:has(>.hand-inspector[data-open=true])>.hand-inspector{grid-column:1;grid-row:1}
+}
+@media(max-width:1149px),(max-height:679px){
+ .duel-shell .duel-layout:has(>.hand-inspector){grid-template-columns:minmax(0,1fr)}
+ .duel-shell .duel-layout:has(>.hand-inspector)>.arena{grid-column:1}
+ .duel-shell .duel-layout:has(>.hand-inspector)>.duel-sidebar{display:none}
+ .duel-shell .duel-top-actions .hand-effects-trigger>span,.duel-shell .duel-top-actions .battle-log-trigger>span{display:inline}
+}
+@media(max-width:650px){
+ .duel-shell .field-row>.field-slot{width:min(100%,86px)}
+ .duel-shell .hand-cards>.hand-card{width:min(100%,100px)}
+ .duel-shell .duel-top-actions>button{font-size:10px}
+}
+@media(max-height:540px) and (min-width:651px){
+ .duel-shell .field-row>.field-slot{width:min(100%,65px)}
+ .duel-shell .hand-cards>.hand-card{width:min(100%,75px)}
+}
