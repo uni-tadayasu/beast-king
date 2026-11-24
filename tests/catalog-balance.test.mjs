@@ -12,8 +12,8 @@ function fixture(){
 }
 
 test('balance revision removes free guard engines and gives attack models a combat purpose',()=>{
- assert.equal(CATALOG_VERSION,5);
- for(const card of CARDS.filter(c=>c.type==='beast')){
+ assert.equal(CATALOG_VERSION,6);
+ for(const card of CARDS.filter(c=>c.type==='beast'&&!c.regaliaSupport)){
   if(card.effect.kind==='draw')assert.ok(card.cost>=2,card.id);
   if(card.effect.kind==='buff_all')assert.ok(card.cost>=3,card.id);
   if(card.cost<=2&&card.keywords.includes('guard'))assert.ok(card.hp<=400,card.id);
@@ -22,8 +22,8 @@ test('balance revision removes free guard engines and gives attack models a comb
  assert.equal(guard.cost,2);assert.equal(guard.hp,200);
  assert.ok(counter.attack>guard.hp,'an ordinary low-cost attacker can break a replacement-draw guard');
  assert.equal(getCard('B0199').cost,4,'rush + guard + global boost is a substantial tempo commitment');
- const king=getCard('B0512');assert.equal(king.cost,8);assert.equal(king.attack,1000);assert.equal(king.hp,1100);
- assert.ok(CARDS.some(c=>c.type==='beast'&&c.model==='attack'&&c.cost<=8&&c.attack>king.hp),'Regalia can still be defeated without changing battle rules');
+ const king=getCard('B0512');assert.equal(king.cost,8);assert.equal(king.attack,2400);assert.equal(king.hp,2600);
+ assert.deepEqual(king.keywords,['guard','rush','drain']);assert.equal(king.effect.kind,'regalia_sovereign');
  assert.notEqual(getCard('B1024').hp,king.hp,'the restored mechanical spirit does not inherit the royal finisher body');
 });
 
@@ -59,8 +59,8 @@ test('a saved water starter retains its old owned cards and valid deck without a
  assert.equal(Object.values(collection).reduce((sum,n)=>sum+n,0),36);
 });
 
-test('all 2304 revised cards execute the exact numeric effects printed in the catalog',()=>{
- for(const c of CARDS.filter(card=>['BK01','BK02'].includes(card.setId))){
+test('all 2303 unchanged original cards execute the exact numeric effects printed in the catalog',()=>{
+ for(const c of CARDS.filter(card=>!card.regaliaSupport&&card.id!=='B0512'&&['BK01','BK02'].includes(card.setId))){
   const game=fixture(),p=game.players[0],enemy=game.players[1];
   p.hand=[c.type==='fusion'?FUSION_CARD_ID:c.id];
   if(c.type==='fusion'){

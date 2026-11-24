@@ -40,11 +40,18 @@ export async function buildClient(sourceRoot=scriptRoot){
  await collect(root,'','root');
  for(const name of ['index.html','about.html','app.js','catalog.js','CNAME','robots.txt','sitemap.xml','manifest.webmanifest','rebuild/index.html'])assert(files.has(name),'Missing public entry: '+name);
 
+ // A fresh entry must not pull rules or UI from an older browser cache. Keep
+ // dated release queries aligned while allowing content-addressed art hashes.
+ const entry=await readFile(files.get('index.html'),'utf8');
+ const cacheRevision=entry.match(/<script\b[^>]*\bsrc\s*=\s*['"](?:\.\/)?app\.js\?v=(\d{8}-\d+)['"]/i)?.[1];
+
  // Fail before replacing the last output if an import or linked asset is lost.
  const localUrl=(owner,value)=>{
   if(!value||value.startsWith('#')||/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(value)||value.includes('${'))return;
   const url=new URL(value,'https://package.invalid/'+owner);
   if(url.origin!=='https://package.invalid')return;
+  const revision=url.searchParams.get('v');
+  if(cacheRevision&&/^\d{8}-\d+$/.test(revision||''))assert.equal(revision,cacheRevision,'Mixed browser cache revisions: '+owner+' -> '+value+' (entry '+cacheRevision+')');
   let path=decodeURIComponent(url.pathname).slice(1);
   if(path.endsWith('/')||!path)path+='index.html';
   assert(files.has(path),'Missing browser dependency: '+owner+' -> '+value);

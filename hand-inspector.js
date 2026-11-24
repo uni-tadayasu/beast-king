@@ -39,7 +39,7 @@ function referenceEntries(game,zone,getCard){
   return out;
 }
 
-export function handInspectorView({ game, selected, esc = defaultEscape, icon, getCard, elementMap = {}, TYPE_LABELS = {}, MODEL_LABELS = {}, open = false } = {}) {
+export function handInspectorView({ game, selected, esc = defaultEscape, icon, getCard, getCardCost, elementMap = {}, TYPE_LABELS = {}, MODEL_LABELS = {}, open = false } = {}) {
   const escape = typeof esc === 'function' ? esc : defaultEscape;
   const glyph = name => typeof icon === 'function' ? icon(name) : '';
   const zone=selected?.kind==='reference'&&ZONES.some(([id])=>id===selected.zone)?selected.zone:'hand';
@@ -55,7 +55,8 @@ export function handInspectorView({ game, selected, esc = defaultEscape, icon, g
   const referencePicker=entries.length?`<label class="battle-effect-picker"><span>確認するカード · ${entries.length}枚</span><select data-change="inspect-battle-card" aria-label="効果を確認するカード">${entries.map(e=>`<option value="${escape(e.key)}"${entry?.key===e.key?' selected':''}>${escape(e.label+'｜'+e.card.name)}</option>`).join('')}</select></label>`:'';
   const emptyLabels={field:'召喚中の魔獣はいません',gimmick:'確認できるギミックはありません',miracle:'発動済みのミラクルはありません'};
   const number = value => Number.isFinite(value) ? value.toLocaleString('ja-JP') : '—';
-  const choices = cards.map((c, index) => `<button type="button" class="hand-inspector-choice${index === selectedIndex ? ' active' : ''}" data-action="hand" data-index="${index}" data-hand-inspection="true" aria-pressed="${index === selectedIndex}" aria-controls="hand-effects-scroll" aria-label="${escape(`手札${index + 1}、${c?.name || 'カード'}の効果を見る`)}"${!c ? ' disabled' : ''}><span class="hand-inspector-number">${index + 1}</span><span class="hand-inspector-choice-cost">${glyph('energy')}<span>${number(c?.cost)}</span></span></button>`).join('');
+  const cost = c => zone==='hand'&&c&&typeof getCardCost==='function'?getCardCost(game,c,0):c?.cost;
+  const choices = cards.map((c, index) => `<button type="button" class="hand-inspector-choice${index === selectedIndex ? ' active' : ''}" data-action="hand" data-index="${index}" data-hand-inspection="true" aria-pressed="${index === selectedIndex}" aria-controls="hand-effects-scroll" aria-label="${escape(`手札${index + 1}、${c?.name || 'カード'}の効果を見る`)}"${!c ? ' disabled' : ''}><span class="hand-inspector-number">${index + 1}</span><span class="hand-inspector-choice-cost">${glyph('energy')}<span>${number(cost(c))}</span></span></button>`).join('');
   let content;
   if (card) {
     const origin = elementMap?.[card.element] || {};
@@ -70,7 +71,7 @@ export function handInspectorView({ game, selected, esc = defaultEscape, icon, g
       <h3>${escape(card.name || 'カード')}</h3>
       <div class="hand-inspector-meta"><span class="hand-inspector-origin" style="--hand-origin:${originColour}">${originId ? `<img src="assets/profiles/${originId}.svg" alt="" width="24" height="24">` : ''}<span>${escape(origin.name || card.element || 'オリジン未設定')}</span></span><span class="hand-inspector-type">${glyph(typeIcon)}${escape(type)}</span></div>
       ${model ? `<p class="hand-inspector-model">${escape(model)}</p>` : ''}
-      <dl class="hand-inspector-stats${beast ? ' has-combat' : ''}"><div><dt>${glyph('energy')}コスト</dt><dd>${number(card.cost)}</dd></div>${beast ? `<div><dt>${glyph('sword')}攻撃力</dt><dd>${number(currentUnit?.attack??card.attack)}</dd></div><div><dt>${glyph('shield')}守備力</dt><dd>${number(currentUnit?.hp??card.hp)}</dd></div>` : ''}</dl>
+      <dl class="hand-inspector-stats${beast ? ' has-combat' : ''}"><div><dt>${glyph('energy')}コスト</dt><dd>${number(cost(card))}</dd></div>${beast ? `<div><dt>${glyph('sword')}攻撃力</dt><dd>${number(currentUnit?.attack??card.attack)}</dd></div><div><dt>${glyph('shield')}守備力</dt><dd>${number(currentUnit?.hp??card.hp)}</dd></div>` : ''}</dl>
       <section class="hand-inspector-effect" aria-labelledby="hand-effect-title"><h4 id="hand-effect-title">カード効果</h4><p>${escape(card.text || 'このカードには追加の効果がありません。')}</p></section>
     </article>`;
   } else {

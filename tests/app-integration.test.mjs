@@ -7,6 +7,9 @@ import {BRAND_ICONS} from '../brand-icons.js';
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
 import {CARD_ART_EXPANSIONS} from '../card-art-expansion.js';
 import {CARD_ART_OVERRIDES} from '../card-art-overrides.js';
+import {CARD_ART_USER_OVERRIDES} from '../card-art-user.js';
+import {PREMIUM_CARD_ART} from '../card-art-premium.js';
+import {PREMIUM_DECK,PREMIUM_DECK_ID} from '../premium-deck.js';
 import * as catalog from '../catalog.js';
 import * as engine from '../engine.js';
 import * as shop from '../shop.js';
@@ -26,7 +29,7 @@ import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayou
 const appSource = readFileSync(new URL('../app.js', import.meta.url), 'utf8').replace(/^import\s+[^;]+;\s*$/gm, '');
 const expose = `
 globalThis.__appIntegration = {
-  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, resultModal, showEventRecipe, currentMusicScene, inspectHand, inspectBattleEffect, inspectFieldEffect, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase, loadStarterFromShop, registerOwnedStarter, expansionRecipeModal, loadExpansionRecipe, needsTarget, targetHint,
+  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, resultModal, showEventRecipe, currentMusicScene, inspectHand, inspectBattleEffect, inspectFieldEffect, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase, loadStarterFromShop, registerOwnedStarter, expansionRecipeModal, loadExpansionRecipe, needsTarget, targetHint, selectionMessage, selectionPanel, useSelected, openFusion, renderFusion,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
   purchasePack, packResultModal, closeModal,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
@@ -39,6 +42,7 @@ globalThis.__appIntegration = {
     if('cpuGame' in values)cpuGame=values.cpuGame;
     if('page' in values)page=values.page;
     if('entered' in values)entered=values.entered;
+    if('selected' in values)selected=values.selected;
     if('onlineBattle' in values)onlineBattle=values.onlineBattle;
     if(values.online)Object.assign(online,values.online);
   }
@@ -101,7 +105,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     sendAction: async () => ({ ok: true }),
   };
   const context = vm.createContext({
-    ...catalog, ...engine, ...shop, ...campaign, ...product, ...eventDecks, ...eventBattles, eventChallengeView, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS, CARD_ART_OVERRIDES, CARD_ART_EXPANSIONS,
+    ...catalog, ...engine, ...shop, ...campaign, ...product, ...eventDecks, ...eventBattles, eventChallengeView, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS, CARD_ART_OVERRIDES, CARD_ART_EXPANSIONS, CARD_ART_USER_OVERRIDES, PREMIUM_CARD_ART, PREMIUM_DECK, PREMIUM_DECK_ID,
     createOnlineClient: options => { callbacks = options; return client; },
     createCloudSync: () => ({ getState: () => ({phase:'synced',revision:1,dirty:false}), start: async () => ({phase:'synced',revision:1,dirty:false}), markDirty() {}, flush: async () => ({revision:1}), refresh: async () => ({revision:1}) }),
     createAccountUi: () => ({getOperatorDeck:()=>hooks.operatorDeck||null,onCloudState() {},handleAction:()=>false,touchBrand:()=>false,clearIdentity(){},onModalClosed(){}}),
@@ -306,6 +310,25 @@ test('battle BGM switches at 2500 HP for either player and returns after both re
  app.setState({page:'duel',entered:false});assert.equal(app.currentMusicScene(),'menu');
 });
 
+test('event BGM shares the half-heart climax threshold and restores its own track after healing or resume',()=>{
+ const {app,storage}=boot(),deck=eventDecks.EVENT_DECKS[0];
+ app.data.playerName='BGM確認';app.setState({entered:true});app.startGame(null,deck.id);
+ const state=app.game;assert.equal(app.currentMusicScene(),'battle-event');
+ state.players[0].shield=state.players[1].shield=10000;
+ for(const [self,opponent,expected] of [[5000,5000,'battle-event'],[2501,2501,'battle-event'],[2500,5000,'battle-danger'],[5000,2500,'battle-danger'],[2499,2501,'battle-danger'],[2501,2499,'battle-danger'],[2500,2500,'battle-danger'],[2600,2600,'battle-event']]){
+  state.players[0].core=self;state.players[1].core=opponent;
+  assert.equal(app.currentMusicScene(),expected,`event hearts ${self}/${opponent}, shields do not change the threshold`);
+ }
+ state.players[0].core=2500;app.persist(true);
+ const restored=app.restoreData(JSON.parse(storage.get('beast-king-v6'))).game;
+ assert.equal(restored.eventBattleId,deck.id);app.setState({game:restored,cpuGame:restored});
+ assert.equal(app.currentMusicScene(),'battle-danger','resuming an event preserves the low-heart track');
+ restored.players[0].core=2501;assert.equal(app.currentMusicScene(),'battle-event','healing restores the event track');
+ app.setState({onlineBattle:true});assert.equal(app.currentMusicScene(),'battle','online battles keep their existing track');
+ for(const page of ['events','home']){app.setState({page});assert.equal(app.currentMusicScene(),'menu');}
+ app.setState({page:'duel',entered:false});assert.equal(app.currentMusicScene(),'menu');
+});
+
 test('environment battles keep owned decks, persist their identity, resume and record results only once',()=>{
  const {app,storage,nodes}=boot(),deck=eventDecks.getEventDeck('event-mixed-royal');
  app.data.playerName='挑戦者';app.setState({entered:true});
@@ -487,7 +510,7 @@ test('Regalia artwork is scoped to the authenticated deck instance and the click
 
 test('dual workshop displays a complete left catalogue and an independent right deck',()=>{
  const {app}=boot();app.setState({page:'deck',entered:true});
- assert.equal(app.filteredCards().length,4608);
+ assert.equal(app.filteredCards().length,catalog.CARDS.length);
  const view=app.deckView();assert.ok(view.indexOf('data-transfer-drop="pool"')<view.indexOf('data-transfer-drop="deck"'));
  assert.ok(view.includes('data-scope="all"')&&view.includes('data-scope="owned"'));
  assert.ok(view.includes('id="deck-bank-select"')&&view.includes('data-action="deck-save"'));
@@ -495,7 +518,7 @@ test('dual workshop displays a complete left catalogue and an independent right 
  assert.ok(!view.includes('deck-visible-rows')&&!view.includes('data-action="deck-list-mode"'));
  assert.ok(view.indexOf('class="deck-panel-foot"')<view.indexOf('class="deck-list"'));
  const id=app.workingDeck[0],collection=plain(app.data.collection);
- assert.equal(app.editDeck(id,false),true);assert.equal(app.filteredCards().length,4608);
+ assert.equal(app.editDeck(id,false),true);assert.equal(app.filteredCards().length,catalog.CARDS.length);
  assert.deepEqual(plain(app.data.collection),collection);
 });
 
@@ -638,4 +661,54 @@ test('a presentation failure still displays awarded cards and insufficient treas
  assert.equal(app.packOpening,false);assert.equal(app.currentModal,null);
  assert.deepEqual(plain(app.data),before);
  assert.equal(fxCalls.filter(call=>call.method==='openPack').length,1);
+});
+
+
+test('battle cards and action guidance use the current public Regalia cost reduction',()=>{
+ const {app}=boot(),game=cpuGame(),p=game.players[0],regalia=catalog.getCard('B0512');
+ p.hand=['B0512'];p.energy=4;p.field=[{uid:'conduit-1',cardId:'B2052',hp:600,maxHp:600,attack:400,keywords:[],owner:0}];
+ app.setState({game,entered:true,page:'duel',selected:{kind:'play',index:0,targeting:false}});
+ assert.match(app.selectionMessage().text,/必要 5／残り 4/);
+ assert.equal(app.selectionMessage().disabled,true);
+ assert.match(app.cardMarkup(regalia,{action:'hand'}),/cost-gem[^>]*>5<\/span>/);
+ assert.match(app.selectionPanel(),/エーテル 5/);
+ p.field.push({...p.field[0],uid:'conduit-2'});p.energy=2;
+ assert.equal(app.selectionMessage().disabled,false);
+ assert.match(app.cardMarkup(regalia,{action:'hand'}),/cost-gem[^>]*>2<\/span>/);
+ assert.match(app.cardMarkup(regalia),/cost-gem[^>]*>8<\/span>/,'catalog details keep the printed cost');
+ p.field=[];
+ assert.match(app.selectionMessage().text,/必要 8／残り 2/);
+ assert.equal(regalia.cost,8);
+});
+
+test('premium fusion UI offers only matching summon targets and materials at its actual cost',()=>{
+ const {app,nodes}=boot(),game=cpuGame();
+ game.players[0].hand=['M1030','B0001','B2049'];game.players[0].energy=2;
+ game.players[0].special=['F0001','F0513'];game.players[0].field=[];game.players[0].grave=[];
+ app.setState({game,entered:true,page:'duel'});app.openFusion(0);
+ assert.equal(app.currentModal.specialIndex,1);
+ const html=nodes.get('#modal-root').innerHTML;
+ assert.match(html,/王冠竜の神合[^<]*エーテル2/);
+ assert.ok(html.includes(catalog.getCard('F0513').name));
+ assert.ok(html.includes(catalog.getCard('B2049').name));
+ assert.ok(!html.includes(catalog.getCard('F0001').name));
+ assert.ok(!html.includes(catalog.getCard('B0001').name));
+ assert.match(app.targetHint(catalog.getCard('M1026')),/自分のレガリア/);
+});
+
+test('any player can inspect and load the same all-GGR premium recipe only after collecting it',()=>{
+ const {app,nodes}=boot(),data=app.baseData();app.setState({data,entered:true,page:'shop'});
+ const before=plain(data.collection);app.expansionRecipeModal(PREMIUM_DECK_ID);
+ assert.match(nodes.get('#modal-root').innerHTML,/ALL PACKS/);
+ assert.match(nodes.get('#modal-root').innerHTML,/全18種類・ギラギラレア/);
+ app.loadExpansionRecipe(PREMIUM_DECK_ID);assert.deepEqual(plain(data.collection),before);
+ assert.notEqual(data.deckIds.join('|'),PREMIUM_DECK.ids.join('|'));
+ for(const id of [...PREMIUM_DECK.ids,...PREMIUM_DECK.specialIds])data.collection[id]=2;
+ app.loadExpansionRecipe(PREMIUM_DECK_ID);
+ assert.deepEqual(plain(app.workingDeck),[...PREMIUM_DECK.ids]);
+ app.saveDeck();
+ assert.deepEqual(plain(data.deckIds),[...PREMIUM_DECK.ids]);
+ assert.deepEqual(plain(data.specialIds),[...PREMIUM_DECK.specialIds]);
+ assert.ok(data.activeDeckId.startsWith('custom-'));
+ for(const id of [...data.deckIds,...data.specialIds])assert.equal(catalog.getCard(id).rarity,'GGR');
 });

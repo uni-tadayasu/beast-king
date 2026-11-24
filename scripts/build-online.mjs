@@ -188,5 +188,5 @@ if(!args.has('--check-schema')){
   for(const entry of await readdir(resolve(root,'drizzle'),{recursive:true})){
     const source=resolve(root,'drizzle',entry);if((await stat(source)).isFile())await write('dist/.openai/drizzle/'+entry,await readFile(source,'utf8'));
   }
-  console.log(JSON.stringify({worker:'dist/server/index.js',...result,validation:'ESM fetch, isolated exports, 4608 cards, seeded engine turn, redirect, migrations',frontend:'preserved'},null,2));
+  console.log(JSON.stringify({worker:'dist/server/index.js',...result,validation:'ESM fetch, isolated exports, 4625 cards, seeded engine turn, redirect, migrations',frontend:'preserved'},null,2));
 }

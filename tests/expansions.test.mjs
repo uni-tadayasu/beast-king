@@ -6,8 +6,9 @@ import {CARDS as HISTORICAL,getCard as getHistoricalCard} from '../rebuild/catal
 import {PACKS,quoteDeckRecipe,grantDeckCollection,hasDeckRecipeCards} from '../shop.js';
 import {newGame,playCard,getLegalTargets,getPlayableCards,attack,endTurn,runAutomatedTurn} from '../engine.js';
 import {treasureShop} from '../product-views.js';
+import {PREMIUM_DECK_ID} from '../premium-deck.js';
 
-const newer=CARDS.filter(c=>['BK03','BK04'].includes(c.setId));
+const newer=CARDS.filter(c=>!c.regaliaSupport&&['BK03','BK04'].includes(c.setId));
 const find=(kind,type='miracle',family)=>newer.find(c=>c.type===type&&c.effect.kind===kind&&(!family||c.family===family));
 const beast=family=>newer.find(c=>c.type==='beast'&&c.family===family&&c.cost<=4);
 const unit=(card,owner,index=0)=>({uid:'fixture-'+owner+'-'+index,cardId:card.id,attack:card.attack,hp:card.hp,maxHp:card.hp,owner,ready:true,keywords:[]});
@@ -20,13 +21,13 @@ function fixture(family='legacy'){
 }
 const physicalCount=game=>game.players.reduce((sum,p)=>sum+['deck','hand','grave','banished','field','traps','special'].reduce((n,zone)=>n+p[zone].length,0),0);
 
-test('BK03/BK04 add 2304 distinct cards while the complete historical catalog is unchanged',()=>{
- assert.equal(CARDS.length,4608);assert.equal(new Set(CARDS.map(c=>c.name)).size,4608);
- assert.equal(createHash('sha256').update(JSON.stringify(CARDS.slice(0,2304))).digest('hex'),'293f5f3e0a5f5e6ba95f49fa1cf33b2a75150ba850b1571611f9bf5e068d655a');
+test('BK03/BK04 retain their 2304 base cards and only the authorized original Regalia changes',()=>{
+ assert.equal(CARDS.length,4625);assert.equal(new Set(CARDS.map(c=>c.name)).size,4625);
+ assert.equal(createHash('sha256').update(JSON.stringify(CARDS.slice(0,2304).filter(c=>c.id!=='B0512'))).digest('hex'),'9b8c051f0fd224f25eaa237ff378e5a3d5f94169c32cf5d441f8f343b5f5f802');
  assert.equal(HISTORICAL.length,2304);assert.equal(getHistoricalCard('B1025'),undefined);
  assert.deepEqual(CARD_SETS.map(s=>s.id),['BK01','BK02','BK03','BK04']);
  for(const setId of ['BK03','BK04']){
-  const cards=getCardsForSet(setId);assert.equal(cards.length,1152);
+  const cards=getCardsForSet(setId).filter(c=>!c.regaliaSupport);assert.equal(cards.length,1152);
   for(const [type,count] of [['beast',512],['fusion',128],['miracle',256],['gimmick',256]]){
    const group=cards.filter(c=>c.type===type);assert.equal(group.length,count);
    assert.deepEqual(new Set(group.map(c=>c.rarity)),new Set(['N','R','KR','KKR','GR','GGR']));
@@ -55,12 +56,12 @@ test('all eight recipes are legal, collection-gated, and cannot mint or silently
  assert.equal(hasDeckRecipeCards({},'missing-recipe'),false);
 });
 
-test('shop selections purchase the selected pool and expose only that expansion’s four recipe routes',()=>{
+test('shop selections expose the selected expansion recipes and the public premium recipe',()=>{
  for(const pack of PACKS){
   const html=treasureShop({data:{treasure:100,collection:{}},packId:pack.id,title:()=>'',icon:()=>'',esc:String,fmt:String,artStyle:()=>'',collected:0});
   assert.match(html,new RegExp('class="btn primary pack-buy" data-action="pack-open" data-pack="'+pack.id+'"'));
   const recipeIds=[...html.matchAll(/data-action="expansion-recipe" data-id="([^"]+)"/g)].map(match=>match[1]);
-  assert.deepEqual(recipeIds,EXPANSION_DECKS.filter(deck=>deck.setId===pack.id).map(deck=>deck.id));
+  assert.deepEqual(recipeIds,[...EXPANSION_DECKS.filter(deck=>deck.setId===pack.id).map(deck=>deck.id),PREMIUM_DECK_ID]);
   assert.equal((html.match(/class="active" aria-pressed="true"/g)||[]).length,1);
   assert.ok(!html.includes('undefined')&&!html.includes('NaN'));
  }

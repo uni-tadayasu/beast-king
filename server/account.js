@@ -17,8 +17,8 @@ const ORIGIN_IDS=new Set(ORIGINS.map(x=>x.id)),TOKEN=/^[A-Za-z0-9_-]{43}$/;
 const IDENTIFIER=/^[A-Za-z0-9_-]{8,100}$/;
 const identifier=value=>typeof value==='string'&&IDENTIFIER.test(value);
 const LINK_LIFE=600_000,MAX_SAVE_BYTES=1_000_000;
-const REGALIA_REWARD_ID='operator-regalia-v1',REGALIA_CARD_ID='B0512',OPERATOR_DECK_REWARD_ID='operator-kirahara-deck-v3';
-const OPERATOR_DECK_REWARD_IDS=Object.freeze([OPERATOR_DECK_REWARD_ID,'operator-kirahara-deck-v2','operator-kirahara-deck-v1']);
+const REGALIA_REWARD_ID='operator-regalia-v1',REGALIA_CARD_ID='B0512',OPERATOR_DECK_REWARD_ID='operator-kirahara-deck-v4';
+const OPERATOR_DECK_REWARD_IDS=Object.freeze([OPERATOR_DECK_REWARD_ID,'operator-kirahara-deck-v3','operator-kirahara-deck-v2','operator-kirahara-deck-v1']);
 const statement=(db,sql,...args)=>db.prepare(sql).bind(...args);
 const first=(db,sql,...args)=>statement(db,sql,...args).first();
 const all=async(db,sql,...args)=>(await statement(db,sql,...args).all()).results;
@@ -227,7 +227,7 @@ async function dashboard(db,now){
     all(db,players+' HAVING online=1 ORDER BY lastSeenAt DESC,p.id LIMIT 100',now),
     all(db,players+' HAVING lastLoginAt>? ORDER BY lastLoginAt DESC,p.id LIMIT 100',now,cutoff),
     first(db,"SELECT c.claimed_at FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.item_type='gift' AND c.item_id=?",REGALIA_REWARD_ID),
-    first(db,"SELECT c.claimed_at,c.player_id,c.item_id FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.item_type='gift' AND c.item_id IN (?,?,?) ORDER BY (c.item_id=?) DESC,c.claimed_at DESC LIMIT 1",...OPERATOR_DECK_REWARD_IDS,OPERATOR_DECK_REWARD_ID)
+    first(db,"SELECT c.claimed_at,c.player_id,c.item_id FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.item_type='gift' AND c.item_id IN (?,?,?,?) ORDER BY (c.item_id=?) DESC,c.claimed_at DESC LIMIT 1",...OPERATOR_DECK_REWARD_IDS,OPERATOR_DECK_REWARD_ID)
   ]);
   return {ok:true,operator:{...content,stats:{...stats,totalNotices:content.contentTotals.notice},recentPlayers,onlinePlayers:onlineRows.map(({online,...row})=>row),recentLogins:recentRows.map(row=>({...row,online:row.online===1})),regalia:{claimedAt:regalia?.claimed_at??null},deck:await unlockedOperatorDeck(db,privateDeck?.player_id,privateDeck?.claimed_at,!!privateDeck&&privateDeck.item_id!==OPERATOR_DECK_REWARD_ID)}};
 }
@@ -250,13 +250,13 @@ async function privateRegaliaArt(db,playerId){
 const unlockedOperatorDeck=async(db,playerId,claimedAt,upgradeRequired=false)=>claimedAt==null?null:{...OPERATOR_DECK,unlockedAt:claimedAt,upgradeRequired,artwork:await privateRegaliaArt(db,playerId)};
 async function readOperatorDeck(c,player){
   await requireOperator(c,player);
-  const row=await first(c.db,"SELECT c.claimed_at,c.item_id FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.player_id=? AND c.item_type='gift' AND c.item_id IN (?,?,?) ORDER BY (c.item_id=?) DESC,c.claimed_at DESC LIMIT 1",player.id,...OPERATOR_DECK_REWARD_IDS,OPERATOR_DECK_REWARD_ID);
+  const row=await first(c.db,"SELECT c.claimed_at,c.item_id FROM bk_reward_claims c JOIN bk_operator o ON o.player_id=c.player_id WHERE o.singleton=1 AND c.player_id=? AND c.item_type='gift' AND c.item_id IN (?,?,?,?) ORDER BY (c.item_id=?) DESC,c.claimed_at DESC LIMIT 1",player.id,...OPERATOR_DECK_REWARD_IDS,OPERATOR_DECK_REWARD_ID);
   return {ok:true,deck:await unlockedOperatorDeck(c.db,player.id,row?.claimed_at,!!row&&row.item_id!==OPERATOR_DECK_REWARD_ID)};
 }
 async function replacePrivateRegaliaArtwork(c,player){
  const {db,request,now,fail,bodyJSON}=c;
  await requireOperator(c,player);
- const entitled=await first(db,"SELECT 1 AS allowed FROM bk_reward_claims WHERE player_id=? AND item_type='gift' AND item_id IN (?,?,?) LIMIT 1",player.id,...OPERATOR_DECK_REWARD_IDS);
+ const entitled=await first(db,"SELECT 1 AS allowed FROM bk_reward_claims WHERE player_id=? AND item_type='gift' AND item_id IN (?,?,?,?) LIMIT 1",player.id,...OPERATOR_DECK_REWARD_IDS);
  if(!entitled)noAccess(fail);
  const body=await bodyJSON(request,740000),artwork=body?.artwork;
  check(isRegaliaRasterArtwork(artwork),fail,'invalid_artwork','540KB以下の静止WebP画像を選んでください。');
@@ -293,7 +293,7 @@ async function claimRegalia(c,player){
   const matches=await equalSecret(candidate,configured||'unconfigured-regalia-reward');
   const receipt=async id=>{const row=await first(db,"SELECT result_json FROM bk_reward_claims WHERE player_id=? AND item_type='gift' AND item_id=?",player.id,id);return row?JSON.parse(row.result_json):null;};
   const upgrade=body.upgrade===true;
-  const priorDeck=await first(db,"SELECT item_id,claimed_at FROM bk_reward_claims WHERE player_id=? AND item_type='gift' AND item_id IN (?,?,?) ORDER BY (item_id=?) DESC LIMIT 1",player.id,...OPERATOR_DECK_REWARD_IDS,OPERATOR_DECK_REWARD_ID);
+  const priorDeck=await first(db,"SELECT item_id,claimed_at FROM bk_reward_claims WHERE player_id=? AND item_type='gift' AND item_id IN (?,?,?,?) ORDER BY (item_id=?) DESC LIMIT 1",player.id,...OPERATOR_DECK_REWARD_IDS,OPERATOR_DECK_REWARD_ID);
   if(upgrade){if(!priorDeck)noAccess(fail);}else if(!configured||!candidate||!matches)noAccess(fail);
   check(integer(body.revision),fail,'invalid_revision');
   const replay=async()=>{

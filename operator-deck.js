@@ -1,9 +1,10 @@
+import {PREMIUM_DECK} from './premium-deck.js';
 // A recipe is not an entitlement. Only the authenticated server reward ledger
 // unlocks this preset; the four public starter choices remain unchanged.
 const pairs=ids=>Object.freeze(ids.flatMap(id=>[id,id]));
 
 export const OPERATOR_DECK_ID='operator-kirahara-v1';
-export const OPERATOR_DECK=Object.freeze({
+export const LEGACY_OPERATOR_DECK_V3=Object.freeze({
   id:OPERATOR_DECK_ID,revision:3,
   name:'𠮷良原デッキ',
   subtitle:'四弾統合・王冠竜を支える守護と再生',
@@ -15,6 +16,8 @@ export const OPERATOR_DECK=Object.freeze({
   ]),
   specialIds:pairs(['F0408','F0385']),
 });
+
+export const OPERATOR_DECK=Object.freeze({...PREMIUM_DECK,id:OPERATOR_DECK_ID,revision:4,name:'プレミアムデッキ',description:PREMIUM_DECK.description+' 運営は完成構築として開放できます。全カードは既存4パックから同じ性能で入手できます。'});
 
 export const OPERATOR_DECK_REQUIRED=Object.freeze(Object.fromEntries(
   [...OPERATOR_DECK.ids,...OPERATOR_DECK.specialIds].reduce((counts,id)=>counts.set(id,(counts.get(id)||0)+1),new Map()),

@@ -1,19 +1,26 @@
 {
   "date": "2026-11-24",
   "timezone": "Asia/Tokyo",
-  "status": "locally-verified-awaiting-publication-authorization",
-  "codeCommit": "1bda31a848d2e81258f2924b5ac8ddcb8e1b6712",
+  "releaseRevision": "20261124-29",
+  "status": "verified-authorized-ready-for-publication",
+  "verifiedAt": "2026-11-24T11:11:30.055756+00:00",
+  "baseGitHubCommit": "4b2bf4519bc9d4a1f595be7e74d7b7ce5648ec20",
   "functionalTests": {
     "command": "npm test",
-    "total": 388,
-    "passed": 388,
+    "total": 418,
+    "passed": 418,
     "failed": 0,
-    "durationMs": 10183.900846,
-    "logSha256": "f1575cc4c6356db23def2cf24df977431523e1e769d2bafa53b03a07249e7921"
+    "durationMs": 11052.106819,
+    "logSha256": "e33e69cc8ffc869070effbe8b3b1c401776bec8cb1ddc1d084276a75a702e5e6"
   },
   "releaseGate": {
-    "cards": 4608,
-    "uniqueIllustrations": 4608,
+    "cards": 4625,
+    "uniqueIllustrations": 4618,
+    "explicitSharedArtwork": {
+      "selva": 8
+    },
+    "newPremiumIllustrations": 17,
+    "premiumDeckGgrTypes": 18,
     "atlases": 240,
     "originalAtlasIllustrations": 2303,
     "newlyRedrawnIllustrations": 144,
@@ -23,10 +30,10 @@
       "B0512"
     ],
     "packs": [
-      1152,
-      1152,
-      1152,
-      1152
+      1157,
+      1156,
+      1156,
+      1156
     ],
     "starters": 4,
     "battlefields": 3,
@@ -34,25 +41,42 @@
     "premiumAssets": 5,
     "allFilesVerified": true
   },
-  "operatorLayoutQa": {
-    "codeCommit": "b8c6fd50b72427f87f1cc88b31b297b8373ea015",
-    "method": "managed-browser local rendering; simulated touch navigator for portrait fixtures",
+  "clientBuild": {
+    "files": 478,
+    "canonical": "https://www.beast-king.com/",
+    "datedCacheRevision": "20261124-29",
+    "missingDependencies": 0,
+    "mixedCacheRevisions": 0,
+    "privateFilesExcluded": true
+  },
+  "workerBuild": {
+    "status": "passed",
+    "cards": 4625,
+    "migrations": 6,
+    "tables": 23,
+    "privateProductionArtwork": "private-illustration",
+    "bytes": 1072526,
+    "sourceHash": "1f397abe682e4d04871c421ef045d823576468409e2fd4dba5f3e25a4d6c09cb",
+    "validation": "ESM fetch, isolated exports, 4625 cards, seeded engine turn, redirect, migrations"
+  },
+  "browserReview": {
+    "environment": "managed local preview of current dist/client; production API disabled only in preview copy",
+    "status": "passed-for-listed-screens",
+    "screensVerified": [
+      "home:4625 cards and strengthened Regalia",
+      "BK04 shop:1156 cards and public premium recipe",
+      "premium recipe:18 GGR kinds,32+4 cards,ownership requirement",
+      "premium B2049:rendered illustration,GGR frame and effect",
+      "premium recipe:390x844 and320x568,5 pages,all18 kinds,no missing or duplicate cards,no controls outside modal",
+      "premium recipe:768x1024,3 pages,all18 kinds,no missing or duplicate cards,no controls outside modal",
+      "event challenge starts with both HP5000 and event BGM selected"
+    ],
+    "deviceLimitation": "Managed browser with simulated touch for portrait sizes; physical mobile devices not tested. Repository responsive CI will run after upload.",
+    "productionWrites": false,
     "viewports": [
       [
         1366,
         768
-      ],
-      [
-        1920,
-        1080
-      ],
-      [
-        1024,
-        600
-      ],
-      [
-        768,
-        1024
       ],
       [
         390,
@@ -63,399 +87,124 @@
         568
       ],
       [
-        844,
-        390
-      ],
-      [
-        568,
-        320
+        768,
+        1024
       ]
-    ],
-    "views": [
-      "operator text editor",
-      "operator destination and schedule",
-      "operator rewards",
-      "operator final review",
-      "maintenance",
-      "overview",
-      "player inbox"
-    ],
-    "conditions": 56,
-    "failures": 0,
-    "documentOverflow": 0,
-    "lostOrDuplicatedText": 0,
-    "lostOrDuplicatedRewards": 0,
-    "productionWrites": false,
-    "status": "previously-verified-layout-carried-forward",
-    "note": "The 56 operator/inbox layout conditions are preserved evidence from the prior candidate; the new 400 conditions below were checked separately. Relevant operator/inbox layout code is unchanged apart from import cache identifiers."
+    ]
   },
-  "clientBuild": {
-    "files": 455,
-    "expansionAtlases": 96,
-    "sourceToClientDifferences": [
-      "rebuild/index.html",
-      "rebuild/about.html"
-    ],
-    "browserMapMatchesSource": true,
-    "privateFilesExcluded": true,
-    "sourceExpansionManifestSha256": "717c767caa897c12d6fe1f6831c74dff892c397e7476487b4eacefd02f2f1fdc",
-    "sourceToClientDifferencesExplanation": "Compatibility pages only receive the expected social-image cache query update from 20261124-26 to 20261124-28 during configure-seo.",
-    "finalCssIncluded": true
+  "premiumDeckBenchmark": {
+    "recipeRevision": 4,
+    "opponents": 48,
+    "games": 3072,
+    "wins": 2970,
+    "losses": 102,
+    "draws": 0,
+    "unfinished": 0,
+    "winRate": 0.966796875,
+    "method": "Production hard CPU in both seats; seats swapped; two independent seed groups; existing saved benchmark",
+    "currentAudit": "Stored card and recipe snapshots match current definitions; no duplicate 3072-game rerun in this turn",
+    "limits": "Does not establish 100 wins out of 100 or a human-opponent win rate",
+    "record": "premium-deck-benchmark-v1.json"
   },
-  "privateWorkerBuild": {
-    "sourceHash": "a45ee1b5162685a4fb2093a195fd4a45693c16dc654cff0b137c9e294a868ec4",
-    "bytes": 1049270,
-    "operatorArtwork": "private-illustration",
-    "validation": "ESM fetch, isolated exports, 4608 cards, seeded engine turn, redirect, migrations",
-    "migrations": 6,
-    "tables": 23
+  "media": {
+    "eventMusicSha256": "999c21d7bb4d7e58c088eeaf3e2fe7dc065b7bf10dcf07bb3c905e5ab221fb81",
+    "selvaSha256": "4dc15129aedbccf18d4d8d89d512a72b8645cbf3f13283c2ab01bcd3bbf943a6",
+    "eventThresholdHp": 2500,
+    "selvaCardCount": 8,
+    "newPremiumIllustrations": 17
   },
-  "browserReview": {
-    "environment": "local managed preview; production API disabled in preview copy only",
-    "screens": [
-      "home with BK03/BK04 featured art",
-      "four pack shop",
-      "BK04 32+4 recipe and ownership requirement",
-      "320x568 portrait virtual landscape home and catalog",
-      "BK04 G1024 search, image and detail",
-      "BK03 M0541 revised image",
-      "32 event opponents, filters and all pages",
-      "all 32 opponent preparations at all 8 viewport sizes",
-      "four home modes with logical height adjustments",
-      "small-screen opponent recipe pagination",
-      "event start, pause, resume, surrender, result and retry"
-    ],
-    "expansionAssetErrorsObserved": 0
+  "sourceSha256": {
+    "404.html": "169e0b98e7ba88afb5289a0e69639e2bb2e6defa13b4039e93709282cc5c3c58",
+    "about.html": "cf4a4293771066b1620ce4d02a2962fca97a6e208b23a175570e19cb7e865852",
+    "account-ui.js": "155600bc95227bb645860ebeaad8658f5cf8129f0f46cb66458c7e16cf71cf27",
+    "account-views.js": "f948b95b59c5b0fd37b601f850c14f0f67c11a1f086e79c566f99b75c7a4c795",
+    "additional-set-data.js": "ae581c2fd7400414efe209497bf92dcc8b3684055925598a5cf6f60e42154b98",
+    "app.js": "a6fa4c0896a6d07ee4243c33156d44e2db46275c1810116cc3051fee5332e0d8",
+    "card-art-direction.css": "8a76a653a4c335ea2c6f3028a54202d7a6660ad769f57e43ddacf75f2aee8584",
+    "card-art-premium.js": "f45f08cac624e4a011d189b40f5bca58e7ebd1bb102ec3d22d97725a0ef517d6",
+    "card-art-user.js": "b084c4ad4f75806b4073948649053dab04bd3258179001502411afc3e1a7b702",
+    "catalog.js": "89831896cd99f63e24715df19224067ca694767f29d3b1d9f92a5bf66fd41eaf",
+    "engine.js": "ec851a5de88f980cb9f0501e1834775e5f11d56a5c57429d97bdcf098a0f04dc",
+    "entry.js": "8b6bb9c9bba83c4322bf1a1355a4d387679db9bf19b0581777b4c9861e420c67",
+    "event-battles.js": "a76b634932844b6218a1a27983c4d55f6b2ec2b7a143d4a286db6e507afd0e5a",
+    "event-decks.js": "2a905d16f2f991c57f60609b22b969d8f069768ee3197f51eb270a88bb781a13",
+    "event-views.js": "c2f824421ddb8b7692357df9b934babf1d5c3409d113083d6d3b4a91069c925b",
+    "expansion-recipes.js": "3f1e1d7c31297b996c0c23f0cc3a4efd7dab82f0e1c8d1f5c9e323c88239931d",
+    "experience-static.js": "13d625db4a42b72e8f55e9f3205f5ab8c289f624029030741b94e21abb9251d7",
+    "hand-inspector.js": "daf3ff098dde3ff7802757e0c412fbc2ee9dbec8c60fb88a4f4ea43014171d18",
+    "index.html": "d059c3fcc049ce450a37f3d10ea4a00b0629e92015edbe3d1e2ab3e3c9370bee",
+    "manifest.webmanifest": "002828c3f4d22c370aa6bb9b5c5ccd7af099a92732093d9ea3efeab86bec49ee",
+    "mode-views.js": "7e5a120794ad3ae69b89afa834da3d2c909197e98dfd77036054a110d716f411",
+    "music.js": "cc8ecfdcb8836c43dad654341795f957f3fbdc655c5dd95ee59fa4b6a46acb73",
+    "news.js": "cbff8c83f04d3868e93fcb18efa0be79c75884e3a15fd749cd72bdcd9222351a",
+    "operator-console.js": "d9ed26d8ce31db3a5f0791f0975b4c28886ac205674b175a6e6fd24117a384d9",
+    "operator-deck.js": "a2c58762ae7ea8281a09021decdb1c7fc69b1e760c260108a22c9412bc327a9a",
+    "premium-cards.js": "6a896dfabf3e9bd6a319af94e9e73ba2cd57bf9b33aa15e0006841754dbcc1f6",
+    "premium-deck.js": "3b21b16b5495c39ddc41a42191332866df55a3d8924b6d8542b3ecb93ddc2274",
+    "product-views.js": "28541c195129cc197ab5cf61776640ae200f8510fb28e08119c843266cd1f999",
+    "rebuild/about.html": "35c126edab98516a062c1c0076dbc7970695b85383bc8a4bed53065173731150",
+    "rebuild/app.js": "be4d11d3917ccd0a93e840a64a434cd52cab41383588cd217654653d30e6f9fa",
+    "rebuild/backup.js": "f8be1da5fc6e398f46847e4a2dfade89d55484c668b7836f9472700e630aa2c8",
+    "rebuild/catalog.js": "2a824fffc8f8e5b824f833903e83fd1b676a9a342ff54e9f02a7eac8300681f4",
+    "rebuild/cloud-client.js": "997f84246afc0aa7a0ecee4c751debe8e123099f048ed223b153dbccaf984baa",
+    "rebuild/engine.js": "38d218962e2ec234a9d3154cb2aacc2f2ee4767c5d7d785a10ee38e1f6e1875a",
+    "rebuild/index.html": "39da6b83be0eb3ca9414d59f6e7461a72118b9709fe1ddde2eba185eeafbe416",
+    "rebuild/manifest.webmanifest": "b4a700e23012a7f5bca50606e078326f42d12ba77d336aea6f5c8d7b8fc56ad2",
+    "rebuild/operator-client.js": "1758eacac33365a12b4de3fb4ef6b2b386fc7464ab7e66e29c25aad767d8a887",
+    "rebuild/operator-deck.js": "da994ad9aeb0441b1fb3255085a0fd0a7c59fc3e88097c7681c8017797a1f6fd",
+    "rebuild/profile.js": "f78a4111c37a5525a9a7c00b0ccad83a5dae9870bb2984ab02c2ddd8e06fbe04",
+    "rebuild/shop.js": "81f868f7b13fea3bdcd386dfe5b731e6fcbba2b291b805ed0584b95e2949c9a0",
+    "rebuild/solo-save.js": "492547ffad5cf31c1e5a09543c54179cacc85147646fcc4b6f6dc5ed3e2ad509",
+    "rules-view.js": "0cca32144d1e0fca32c8cfc0b90d922473361d257d3112307541ff297c721710",
+    "scripts/build-client.mjs": "cbfae9a6a593c9541501faf9b54eaa7d888b9223960ff230725270e15d4bf8bf",
+    "scripts/build-online.mjs": "f01fdcf332a8ee247bf453928609d4da6bd33b64bf046b31ba683dc84d510f74",
+    "scripts/check-public-release.mjs": "21326b9588e3f4e3d0b7f124bb913f4eafd9e5517bab7b467bbe768ff0432097",
+    "scripts/configure-seo.mjs": "f066e7420f22f5b787ca9042b0153aad7dec37e01bf48384efbb20863beedbfe",
+    "scripts/layout-browser-smoke.mjs": "4e3699710c24697c604984ce64cb14105177505d4bb59e2564fdb52f1039fafa",
+    "scripts/refresh-art-manifest.mjs": "d92a4373c06100dda1cd0867be731ff1d1ae7d74607c000aba1c65323263cce7",
+    "scripts/validate-card-art.mjs": "13588639e35f138aa74adc1d53ef100e2877ab738247bb64f4f53a3a013d7f45",
+    "scripts/validate-expansion-art.mjs": "ec04dfb540851054f3b294b1b7108cda68df2bcbf6428ec2c6ea72a8fb2d1d4f",
+    "scripts/verify-release.mjs": "74626a86ec5e301447ca77c3088d649f939c38bb5efa5cf864b679178917f98c",
+    "server/account.js": "ea66055603456777777a36c27cf0fc70dde451c2d03dcc4ce13246e1ccdcee87",
+    "server/worker.js": "b6d7c2689a572f7a0416b46dcd354868d5d2ef9d436d066fe7ca50c017fc836a",
+    "shop.js": "13cbae35858856ee7ae2c2310eaede1fe93ab0fc695f93bad39cbcb5d1ea5759",
+    "tests/account.test.mjs": "67dd67a9a01077bc7d69ff078ed3090794f09550e93b03d39d097e76abc0eeef",
+    "tests/app-integration.test.mjs": "b3a0a7c8025105fc3485631dca7e399de082690298bea6c0f7c066b7f8ef5a50",
+    "tests/build-client.test.mjs": "24df7af86bf4ef03e18eb75982566d5ae54f0066c33a3c9f5a2adca21d77186b",
+    "tests/catalog-balance.test.mjs": "ea48ef43c7ecec6495d403e6707d7a9c958f424ac7449fe491cec66917cc09ba",
+    "tests/catalog.test.mjs": "8dd86fd8209cfe6c54fcfe72414030aa24139a4bbcb3828f53991aeec73f0e70",
+    "tests/expansions.test.mjs": "890924e4bbe4d3e7d819b8acc33c00cd4feae2d6ec779aef8d95fd558c1f3b04",
+    "tests/music.test.mjs": "59338e7c39364d020311ba25ebb65e3dd99efebb5eeae3a06fbd965bb9827de1",
+    "tests/operator-deck-strength.test.mjs": "52d57ddf3d5252c9ad70ba106c332e6efde9e4340a06386f2cd7b632b35945b9",
+    "tests/premium.test.mjs": "292096bee0b4b51fd3f5279bf2a15ec9516a36100fc42716e2c2f351fe281637",
+    "tests/shop.test.mjs": "d0e2029f0938f7dc22b5b86f9760fca7be469562642153a7c4e6a6b277adbbfc",
+    "tests/user-card-art.test.mjs": "a3e0e24515918dc17178cfceff9bcbc4ba0ab5f268b9d797cecea177d5ecfa6c"
   },
   "publication": {
     "performed": false,
-    "reason": "Automatic approval review rejected the exact git push of release source/assets to the public repository because the current user message only said continue and the previous publication was awaiting direct authorization. No alternate transmission, merge or deployment was attempted after rejection.",
-    "remotePullRequestHead": "79141a8af263ff1ff77389537e775898984bc187",
+    "status": "authorized-pending-publication",
     "targetRepository": "uni-tadayasu/beast-king",
-    "pullRequest": 4,
     "targetBranch": "main",
     "frontend": "https://www.beast-king.com/",
     "api": "https://beast-king.hisa-0128-1996.chatgpt.site",
-    "latestCandidateGitHubCi": "not-run-push-blocked",
-    "remoteMain": "af77f86d9c47087a893cbc6dc5bf0d7384a65314"
-  },
-  "releaseRevision": "20261124-28",
-  "eventLayoutQa": {
-    "method": "Managed browser running locally prepared actual game UI, simulated touch navigator in portrait fixtures; not physical device certification. Production API disabled only in preview copy.",
-    "totalConditions": 400,
-    "failures": 0,
-    "eventConditions": 378,
-    "homeConditions": 8,
-    "homeWithResumeConditions": 1,
-    "recipeConditions": 5,
-    "resultConditions": 8,
-    "viewports": [
-      [
-        1366,
-        768
-      ],
-      [
-        1920,
-        1080
-      ],
-      [
-        1024,
-        600
-      ],
-      [
-        768,
-        1024
-      ],
-      [
-        390,
-        844
-      ],
-      [
-        320,
-        568
-      ],
-      [
-        844,
-        390
-      ],
-      [
-        568,
-        320
-      ]
-    ],
-    "eventByViewport": [
+    "confirmedRemoteMain": "4b2bf4519bc9d4a1f595be7e74d7b7ce5648ec20",
+    "sitesVersionBeforeRelease": 11,
+    "authorization": {
+      "userMessage": "公開して",
+      "scope": "Publish the verified r29 payload to uni-tadayasu/beast-king, merge to main after validation, and deploy the existing www.beast-king.com frontend and Sites API.",
+      "status": "explicit-user-authorization-received"
+    },
+    "finalResultReference": "Related pull request publication record; publication success is not asserted by this pre-publication snapshot.",
+    "automaticApprovalReviewHistory": [
       {
-        "physical": [
-          1366,
-          768
-        ],
-        "conditions": 42,
-        "selectedDecks": 32,
-        "failures": 0,
-        "minScale": 1,
-        "maxScale": 1,
-        "minKeyTextPx": 14
-      },
-      {
-        "physical": [
-          1920,
-          1080
-        ],
-        "conditions": 42,
-        "selectedDecks": 32,
-        "failures": 0,
-        "minScale": 1,
-        "maxScale": 1,
-        "minKeyTextPx": 14
-      },
-      {
-        "physical": [
-          1024,
-          600
-        ],
-        "conditions": 44,
-        "selectedDecks": 32,
-        "failures": 0,
-        "minScale": 0.9022,
-        "maxScale": 0.9401,
-        "minKeyTextPx": 11.7286
-      },
-      {
-        "physical": [
-          768,
-          1024
-        ],
-        "conditions": 42,
-        "selectedDecks": 32,
-        "failures": 0,
-        "minScale": 1,
-        "maxScale": 1,
-        "minKeyTextPx": 13
-      },
-      {
-        "physical": [
-          390,
-          844
-        ],
-        "conditions": 52,
-        "selectedDecks": 32,
-        "failures": 0,
-        "minScale": 1,
-        "maxScale": 1,
-        "minKeyTextPx": 14
-      },
-      {
-        "physical": [
-          320,
-          568
-        ],
-        "conditions": 52,
-        "selectedDecks": 32,
-        "failures": 0,
-        "minScale": 0.8979,
-        "maxScale": 0.9112,
-        "minKeyTextPx": 12.5706
-      },
-      {
-        "physical": [
-          844,
-          390
-        ],
-        "conditions": 52,
-        "selectedDecks": 32,
-        "failures": 0,
-        "minScale": 1,
-        "maxScale": 1,
-        "minKeyTextPx": 14
-      },
-      {
-        "physical": [
-          568,
-          320
-        ],
-        "conditions": 52,
-        "selectedDecks": 32,
-        "failures": 0,
-        "minScale": 0.9718,
-        "maxScale": 1,
-        "minKeyTextPx": 13.6052
+        "status": "prior-rejection-before-explicit-user-authorization",
+        "action": "Push release 20261124-29 source and assets to uni-tadayasu/beast-king release/20261124-29-premium",
+        "reason": "The automatic reviewer did not consider the available current user text explicit authorization to export this release payload to the public GitHub repository/branch, including after prior publication instructions were retrieved.",
+        "alternateTransmissionAttemptedAfterFinalRejection": false,
+        "thenRequiredNextStep": "Obtain explicit approval for this r29 payload, the GitHub repository/main and the existing production Site API before any further upload or deployment."
       }
-    ],
-    "homeByViewport": [
-      {
-        "physical": [
-          1366,
-          768
-        ],
-        "scale": 0.9032,
-        "documentFits": true,
-        "failures": 0
-      },
-      {
-        "physical": [
-          1920,
-          1080
-        ],
-        "scale": 1,
-        "documentFits": true,
-        "failures": 0
-      },
-      {
-        "physical": [
-          1024,
-          600
-        ],
-        "scale": 1,
-        "documentFits": true,
-        "failures": 0
-      },
-      {
-        "physical": [
-          768,
-          1024
-        ],
-        "scale": 1,
-        "documentFits": true,
-        "failures": 0
-      },
-      {
-        "physical": [
-          390,
-          844
-        ],
-        "scale": 0.9253,
-        "documentFits": true,
-        "failures": 0
-      },
-      {
-        "physical": [
-          320,
-          568
-        ],
-        "scale": 0.8649,
-        "documentFits": true,
-        "failures": 0
-      },
-      {
-        "physical": [
-          844,
-          390
-        ],
-        "scale": 0.9559,
-        "documentFits": true,
-        "failures": 0
-      },
-      {
-        "physical": [
-          568,
-          320
-        ],
-        "scale": 0.9344,
-        "documentFits": true,
-        "failures": 0
-      }
-    ],
-    "homeWithResume": {
-      "physical": [
-        1366,
-        768
-      ],
-      "scale": 0.8928,
-      "failures": 0
-    },
-    "opponentRecipe": {
-      "physical": [
-        320,
-        568
-      ],
-      "pages": 5,
-      "cardKinds": 18,
-      "cards": 36,
-      "lostOrDuplicatedCards": 0,
-      "clippedCards": 0,
-      "scaleByPage": [
-        0.9407,
-        0.9407,
-        0.9407,
-        0.9407,
-        1
-      ]
-    },
-    "eventResult": {
-      "viewports": 8,
-      "failures": 0,
-      "scaleByViewport": [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1
-      ],
-      "phoneBodyFontPx": 14,
-      "phoneActionFontPx": 14,
-      "phoneProgressFontPx": 13,
-      "runtimeErrorsObserved": 0
-    },
-    "realUiFlow": [
-      "event selection",
-      "all five opponent recipe pages",
-      "start battle",
-      "end turn",
-      "pause",
-      "home",
-      "event list",
-      "resume turn 3 with 4800 HP",
-      "surrender confirmation",
-      "automatic result dialog",
-      "retry same opponent"
-    ],
-    "productionWrites": false
+    ]
   },
-  "operatorDeckBenchmark": {
-    "revision": 3,
-    "opponents": 48,
-    "gamesPerRecipe": 3072,
-    "cpu": "unchanged production hard in both seats",
-    "seats": "swapped for each seed",
-    "maxTurns": 200,
-    "seedBases": [
-      1137278747,
-      2634213025
-    ],
-    "baseline": {
-      "wins": 2003,
-      "losses": 1066,
-      "draws": 0,
-      "unfinished": 3,
-      "winRate": 0.6520182291666666
-    },
-    "candidate": {
-      "wins": 2795,
-      "losses": 261,
-      "draws": 0,
-      "unfinished": 16,
-      "winRate": 0.9098307291666666,
-      "firstWins": 1411,
-      "secondWins": 1384,
-      "gamesWithAceSummoned": 1203,
-      "gamesWithAceAttack": 778
-    },
-    "improvementPercentagePoints": 25.78125,
-    "sourceHashesMatch": "releaseHashes verified for all 9 files in both final JSON records",
-    "limits": "Does not establish 100 wins out of 100, performance against every legal deck, or the same win rate against human opponents. Unfinished games count in denominator but not as wins."
-  },
-  "sourceSha256": {
-    "app.js": "56a04d17e08ba4c83450cd6a437add3dfe4b255bc0bd1126dcb54a45535d3446",
-    "event-decks.js": "315d34dd5d82f056d0a3c3c9982472d11b51d81d9041e15fd2e3f6338952d828",
-    "event-battles.js": "28705528d62b8e4b82096f5fbdb546f14099756d0f34cd5044e6217ea0bc33c7",
-    "event-views.js": "2f8e648a4014d4ef6dc540dffbd4b5fa6e2649da98ea12b218fb75d0f019fbbb",
-    "event-battles.css": "2fcb700182b2a8a865b96ce4283e4f20be7f3a82a2dbb73bdf6af82f28694d70",
-    "operator-deck.js": "bbe40624d416bd92553ea91058501708d6d28a4418fc15778938ebcf79a1171d",
-    "server/account.js": "c1e5a50ee6e5c2ebce0d87105739d524cc0386f6a3e18f69502a8e595ce8fb34",
-    "server/worker.js": "ff8b56f6ed3eb5090c8c0a281f29b518a7ecd93fe7e6c0a5914a84703203f3b2",
-    "scripts/check-public-release.mjs": "79688b2736cb7aa0f3cdbe5dc941432e6fbb256c227559aa7c5f0af044b828f6"
-  }
+  "previousReleaseRecord": "archive/release-validation-r28.json",
+  "recordScope": "Pre-publication validation snapshot. Final publication results are recorded in the related pull request publication record."
 }
