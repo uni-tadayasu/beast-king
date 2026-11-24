@@ -6,11 +6,11 @@
 import {
   SECOND_SET_CLANS, secondBeastDefinition, secondMiracleDefinition,
   secondGimmickDefinition, secondFusionDefinition,
-} from './second-set-data.js?v=20261124-26';
-import {balanceCreature, balancedMiracleStats, balancedGimmickStats} from './catalog-balance.js?v=20261124-26';
+} from './second-set-data.js?v=20261124-28';
+import {balanceCreature, balancedMiracleStats, balancedGimmickStats} from './catalog-balance.js?v=20261124-28';
 
-import {ADDITIONAL_CARD_SETS,makeAdditionalCards,EXPANSION_FAMILIES as ADDITIONAL_FAMILIES,EXPANSION_EFFECT_KINDS as ADDITIONAL_EFFECT_KINDS} from './additional-set-data.js?v=20261124-26';
-import {makeExpansionRecipes} from './expansion-recipes.js?v=20261124-26';
+import {ADDITIONAL_CARD_SETS,makeAdditionalCards,EXPANSION_FAMILIES as ADDITIONAL_FAMILIES,EXPANSION_EFFECT_KINDS as ADDITIONAL_EFFECT_KINDS} from './additional-set-data.js?v=20261124-28';
+import {makeExpansionRecipes} from './expansion-recipes.js?v=20261124-28';
 export const EXPANSION_FAMILIES=ADDITIONAL_FAMILIES;
 export const EXPANSION_EFFECT_KINDS=ADDITIONAL_EFFECT_KINDS;
 

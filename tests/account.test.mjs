@@ -6,7 +6,9 @@ import {createOnlineWorker} from '../server/worker.js';
 import {CARDS,STARTER_DECKS,getCard} from '../catalog.js';
 import {newGame,endTurn} from '../engine.js';
 import {createStarterCollection} from '../shop.js';
-import {createCampaignProgress} from '../campaign.js';
+import {createCampaignProgress,CAMPAIGN_BATTLES} from '../campaign.js';
+import {OPERATOR_DECK,OPERATOR_DECK_REQUIRED} from '../operator-deck.js';
+import {EVENT_BATTLES,createEventProgress,normalizeEventProgress} from '../event-battles.js';
 import {initialProfile,STARTERS,purchase} from '../rebuild/profile.js';
 
 const BASE='https://beast-king.hisa-0128-1996.chatgpt.site';
@@ -112,6 +114,43 @@ test('cloud saves preserve validated CPU and campaign data while stripping crede
   const saved=created.data.save.data;assert.equal(saved.game.players[0].deck.length,28);assert.equal(saved.game.seed,data.game.seed);assert.equal(saved.game.statsRecorded,false);assert.equal(saved.game.log[0].turn,1);
   for(const key of ['token','rating','admin','online'])assert.equal(saved[key],undefined);assert.equal(JSON.stringify(saved).includes('must-not-persist'),false);assert.equal(saved.game.role,undefined);
   const linked=await f.link(p),restored=await f.api('GET','/api/cloud-save',linked.token);assert.deepEqual(restored.data.save,created.data.save);assert.equal(restored.data.profile.nickname,'別端末の名前');
+});
+
+test('event battle saves and bounded progress survive linked-device resumes without granting rewards or operator access',async t=>{
+ const f=fixture(t),p=await f.profile('環境戦の旅人'),data=saveData(p),event=EVENT_BATTLES[0],other=EVENT_BATTLES[1];
+ data.game=newGame({cpuDeck:event.ids,cpuSpecialDeck:event.specialIds,seed:31891,difficulty:'hard'});
+ data.game.eventBattleId=event.id;data.game.eventMatchId='event-cloud-resume-1';data.game.operator=true;
+ data.eventProgress={...createEventProgress(),clearedDeckIds:[event.id,event.id,'unknown-event'],operator:true,results:[
+  {deckId:event.id,matchId:'event-cloud-won-1',result:'win',token:'must-not-persist'},
+  {deckId:other.id,matchId:'event-cloud-won-1',result:'win'},
+  {deckId:other.id,matchId:'event-cloud-loss-1',result:'loss'},
+  {deckId:'unknown-event',matchId:'event-cloud-won-2',result:'win'},
+  {deckId:other.id,matchId:'',result:'win'},
+ ]};
+ const saved=await f.save(p,data);assert.equal(saved.status,200,JSON.stringify(saved.data));
+ assert.deepEqual(saved.data.save.data.eventProgress,normalizeEventProgress(data.eventProgress));
+ assert.deepEqual(saved.data.save.data.eventProgress.clearedDeckIds,[event.id]);assert.equal(saved.data.save.data.eventProgress.results.length,2);
+ assert.equal(saved.data.save.data.game.eventBattleId,event.id);assert.equal(saved.data.save.data.game.eventMatchId,'event-cloud-resume-1');
+ assert.equal(saved.data.save.data.game.operator,undefined);assert.ok(!JSON.stringify(saved.data.save).includes('must-not-persist'));
+ assert.equal(saved.data.save.data.treasure,data.treasure);assert.deepEqual(saved.data.save.data.collection,data.collection);
+ const linked=await f.link(p);f.reconnect();const restored=await f.api('GET','/api/cloud-save',linked.token);assert.deepEqual(restored.data.save,saved.data.save);
+ const resumed=restored.data.save.data;assert.equal(endTurn(resumed.game).ok,true);
+ const continued=await f.save({token:linked.token},resumed,1);assert.equal(continued.status,200,JSON.stringify(continued.data));assert.equal(continued.data.save.data.game.eventMatchId,'event-cloud-resume-1');
+ assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_reward_claims').get().n,0);assert.equal((await f.api('GET','/api/operator/deck',p.token)).status,404);
+});
+
+test('unknown event opponents, ambiguous battle modes and oversized progress cannot replace a valid cloud save',async t=>{
+ const f=fixture(t),p=await f.profile(),data=saveData(p),event=EVENT_BATTLES[0];
+ data.game=newGame({cpuDeck:event.ids,cpuSpecialDeck:event.specialIds,seed:53181});data.game.eventBattleId=event.id;data.game.eventMatchId='event-valid-match';
+ data.eventProgress=createEventProgress();const saved=await f.save(p,data);assert.equal(saved.status,200);
+ const invalid=[];
+ let next=structuredClone(data);next.game.eventBattleId='missing-environment-deck';invalid.push(next);
+ next=structuredClone(data);next.game.eventMatchId='';invalid.push(next);
+ next=structuredClone(data);next.game.campaignBattleId=CAMPAIGN_BATTLES[0].id;next.game.campaignMatchId='campaign-event-collision';invalid.push(next);
+ next=structuredClone(data);next.eventProgress.results=Array.from({length:201},(_,i)=>({deckId:event.id,matchId:'event-many-'+i,result:'win'}));invalid.push(next);
+ next=structuredClone(data);next.eventProgress.clearedDeckIds=Array(EVENT_BATTLES.length+1).fill(event.id);invalid.push(next);
+ for(const bad of invalid){const result=await f.save(p,bad,1);assert.equal(result.status,400,JSON.stringify(result.data));assert.equal(result.data.code,'invalid_save');}
+ assert.deepEqual((await f.api('GET','/api/cloud-save',p.token)).data.save,saved.data.save);
 });
 
 test('cloud CPU saves retain the opening policy across linked-device resumes before and after its plateau',async t=>{
@@ -419,8 +458,8 @@ test('operator deck code requires the stored role and grants the normal Regalia 
  assert.equal(deck.ids.length,32);assert.equal(deck.specialIds.length,4);
  const all=[...deck.ids,...deck.specialIds];
  assert.equal(all.filter(id=>id==='B0512').length,2);
- assert.equal(all.filter(id=>getCard(id).setId==='BK01').length,22);
- assert.equal(all.filter(id=>getCard(id).setId==='BK02').length,14);
+ assert.deepEqual(deck.ids,OPERATOR_DECK.ids);assert.deepEqual(deck.specialIds,OPERATOR_DECK.specialIds);
+ assert.equal(deck.revision,OPERATOR_DECK.revision);
  assert.ok(all.every(id=>save.data.collection[id]>=all.filter(x=>x===id).length));
  const linked=await f.link(operator);
  const replay=await f.api('POST',route,linked.token,{code:f.env.BK_OPERATOR_REGALIA_CODE,revision:1});
@@ -454,16 +493,68 @@ test('multiple named decks survive cloud validation and device restoration indep
  const bad=structuredClone(data);bad.deckLibrary[1].ids=Array(32).fill('B0001');assert.equal((await f.save(p,bad,1)).status,400);
 });
 
-test('an already entitled operator can upgrade the recipe once without losing existing inventory',async t=>{
- const f=fixture(t),operator=await f.operator(),ordinary=await f.profile('一般');f.env.BK_OPERATOR_REGALIA_CODE='fixture-regalia-upgrade';
- await f.save(operator);const path='/api/operator/regalia/claim';
- const first=await f.api('POST',path,operator.token,{code:f.env.BK_OPERATOR_REGALIA_CODE,revision:1});assert.equal(first.status,200);
- f.sqlite.prepare("UPDATE bk_reward_claims SET item_id='operator-kirahara-deck-v1' WHERE item_id='operator-kirahara-deck-v2'").run();
- const deck=await f.api('GET','/api/operator/deck',operator.token);assert.equal(deck.data.deck.upgradeRequired,true);
+function seedOperatorDeckReceipt(f,p,id,{pair=true}={}){
+ const claimedAt=f.now()-1000;
+ const insert=f.sqlite.prepare("INSERT INTO bk_reward_claims (player_id,item_type,item_id,result_json,save_revision,claimed_at) VALUES (?,'gift',?,?,1,?)");
+ insert.run(p.id,id,JSON.stringify({id,deckId:OPERATOR_DECK.id,cards:[],claimedAt}),claimedAt);
+ if(pair){const key='operator-regalia-v1';insert.run(p.id,key,JSON.stringify({id:key,treasure:0,cards:[{cardId:'B0512',count:2}],convertedTreasure:0,claimedAt}),claimedAt);}
+}
+
+for(const legacyId of ['operator-kirahara-deck-v1','operator-kirahara-deck-v2'])test(`${legacyId} upgrades without a code, preserves artwork and grants only missing cards once across linked devices`,async t=>{
+ const f=fixture(t),operator=await f.operator(),ordinary=await f.profile('一般'),path='/api/operator/regalia/claim';
+ const data=saveData(operator),starterCards=new Set([...data.deckIds,...data.specialIds]);
+ data.collection.B0512=2;data.treasure=777;
+ const extras=Object.keys(OPERATOR_DECK_REQUIRED).filter(id=>id!=='B0512'&&!starterCards.has(id));
+ assert.ok(extras.length>=2);data.collection[extras[0]]=3;data.collection[extras[1]]=1;
+ const unrelated=CARDS.find(c=>!OPERATOR_DECK_REQUIRED[c.id]&&!starterCards.has(c.id)).id;data.collection[unrelated]=3;
+ const saved=await f.save(operator,data);assert.equal(saved.status,200);seedOperatorDeckReceipt(f,operator,legacyId);
+ const old=await f.api('GET','/api/operator/deck',operator.token);assert.equal(old.data.deck.upgradeRequired,true);
+ assert.equal((await f.api('GET','/api/operator',operator.token)).data.operator.deck.upgradeRequired,true);
+ const image='data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAUAAEAdQ2v7Xo7SBiOh/AAA=';
+ assert.equal((await f.api('POST','/api/operator/artwork',operator.token,{artwork:image})).status,200);
  assert.equal((await f.api('POST',path,ordinary.token,{upgrade:true,revision:0})).status,404);
- const next=await f.api('POST',path,operator.token,{upgrade:true,revision:first.data.save.revision});assert.equal(next.status,200,JSON.stringify(next.data));assert.equal(next.data.deck.revision,2);assert.equal(next.data.deck.upgradeRequired,false);
- assert.equal(next.data.save.data.collection.B0512,2);
- const replay=await f.api('POST',path,operator.token,{upgrade:true,revision:first.data.save.revision});assert.equal(replay.status,200);assert.equal(replay.data.replayed,true);assert.deepEqual(replay.data.save,next.data.save);
+ const linked=await f.link(operator);
+ const results=await Promise.all([operator.token,linked.token].map(token=>f.api('POST',path,token,{upgrade:true,revision:1})));
+ assert.ok(results.every(r=>r.status===200),JSON.stringify(results));assert.equal(results.filter(r=>r.data.replayed).length,1);
+ const upgraded=results.find(r=>!r.data.replayed).data;
+ assert.equal(upgraded.deck.revision,OPERATOR_DECK.revision);assert.equal(upgraded.deck.upgradeRequired,false);assert.equal(upgraded.deck.artwork,image);
+ assert.equal(upgraded.save.revision,2);assert.equal(upgraded.save.data.treasure,777);assert.equal(upgraded.save.data.collection.B0512,2);
+ const expected={...saved.data.save.data.collection};for(const [id,n] of Object.entries(OPERATOR_DECK_REQUIRED))expected[id]=Math.max(expected[id]||0,n);
+ assert.deepEqual(upgraded.save.data.collection,expected);assert.equal(upgraded.save.data.collection[unrelated],3);
+ const missing=Object.entries(OPERATOR_DECK_REQUIRED).filter(([id,n])=>(saved.data.save.data.collection[id]||0)<n).map(([cardId,n])=>({cardId,count:n-(saved.data.save.data.collection[cardId]||0)}));
+ assert.deepEqual(upgraded.deckClaim.cards,missing);assert.equal(upgraded.deckClaim.recipeRevision,OPERATOR_DECK.revision);
+ assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_reward_claims WHERE item_id='operator-kirahara-deck-v3'").get().n,1);
+ assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_reward_claims WHERE item_id=?').get(legacyId).n,1);
+ assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_reward_claims WHERE item_id='operator-regalia-v1'").get().n,1);
+ assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_operator_audit WHERE action='operator.deck_unlocked'").get().n,1);
+ assert.equal((await f.api('GET','/api/operator',operator.token)).data.operator.deck.upgradeRequired,false);
+ const edited=structuredClone(upgraded.save.data);delete edited.collection[extras[1]];edited.treasure=999;
+ const later=await f.save(operator,edited,2);assert.equal(later.status,200,JSON.stringify(later.data));
+ const replay=await f.api('POST',path,linked.token,{upgrade:true,revision:1});assert.equal(replay.status,200);assert.equal(replay.data.replayed,true);
+ assert.deepEqual(replay.data.save,later.data.save);assert.equal(replay.data.save.data.collection[extras[1]],undefined);assert.equal(replay.data.deck.artwork,image);
+});
+
+test('a legacy deck receipt without the original pair ledger still upgrades without duplicate Regalia or treasure',async t=>{
+ const f=fixture(t),operator=await f.operator(),data=saveData(operator);data.collection.B0512=3;data.treasure=777;
+ await f.save(operator,data);seedOperatorDeckReceipt(f,operator,'operator-kirahara-deck-v2',{pair:false});
+ const result=await f.api('POST','/api/operator/regalia/claim',operator.token,{upgrade:true,revision:1});assert.equal(result.status,200,JSON.stringify(result.data));
+ assert.equal(result.data.save.data.collection.B0512,3);assert.equal(result.data.save.data.treasure,777);assert.deepEqual(result.data.claim.cards,[]);assert.equal(result.data.claim.convertedTreasure,0);
+ assert.equal((await f.api('POST','/api/operator/regalia/claim',operator.token,{upgrade:true,revision:1})).data.replayed,true);
+});
+
+test('recipe upgrades require the current stored role and an old entitlement and cannot commit after role revocation',async t=>{
+ const f=fixture(t),operator=await f.operator(),ordinary=await f.profile('一般'),path='/api/operator/regalia/claim';
+ const saved=await f.save(operator);await f.save(ordinary);
+ assert.equal((await f.api('POST',path,operator.token,{upgrade:true,revision:1})).status,404);
+ seedOperatorDeckReceipt(f,ordinary,'operator-kirahara-deck-v2');
+ assert.equal((await f.api('POST',path,ordinary.token,{upgrade:true,revision:1})).status,404);
+ assert.equal((await f.api('GET','/api/operator/deck',ordinary.token)).status,404);
+ seedOperatorDeckReceipt(f,operator,'operator-kirahara-deck-v2');
+ const batch=f.env.DB.batch.bind(f.env.DB);let revoked=false;
+ f.env.DB.batch=async statements=>{if(!revoked&&statements.some(s=>s.sql.startsWith('UPDATE bk_cloud_saves')&&s.sql.includes('bk_reward_claims'))){revoked=true;f.sqlite.prepare('DELETE FROM bk_operator WHERE player_id=?').run(operator.id);}return batch(statements);};
+ const result=await f.api('POST',path,operator.token,{upgrade:true,revision:1});assert.equal(result.status,404);assert.equal(revoked,true);
+ assert.deepEqual((await f.api('GET','/api/cloud-save',operator.token)).data.save,saved.data.save);
+ assert.equal(f.sqlite.prepare("SELECT count(*) AS n FROM bk_reward_claims WHERE item_id='operator-kirahara-deck-v3'").get().n,0);
 });
 
 test('legacy entitled operators recover private artwork; match slot metadata is viewer-only',async t=>{
@@ -537,6 +628,23 @@ test('draft and scheduled mail stay private until server time, then retain per-a
  const history=(await f.api('GET','/api/inbox',a.token)).data;assert.equal(history.messages[0].phase,'ended');assert.equal(history.counts.unread,0);
  const receipts=await f.api('GET',`/api/operator/records?kind=reads&itemId=${id}&itemType=message`,op.token);assert.equal(receipts.data.total,1);assert.equal(receipts.data.items[0].id,a.id);
  assert.equal((await f.api('GET','/api/operator/records?kind=message',a.token)).status,404);
+});
+
+test('mail expires at its exact end time for unread recipients while preserving existing read history',async t=>{
+ const f=fixture(t),op=await f.operator(),read=await f.profile('既読の王'),unread=await f.profile('未読の王');
+ const expiry=f.now()+1000;
+ const id=(await f.send(op,'messages',{title:'期間限定のメール',body:'終了時刻までの案内',target:'all',status:'published',expiresAt:expiry})).data.createdId;
+ assert.equal((await f.api('GET','/api/inbox?kind=message',unread.token)).data.counts.unread,1);
+ f.advance(999);
+ const firstRead=await f.api('POST',`/api/inbox/${id}/read`,read.token,{});assert.equal(firstRead.status,200);
+ f.advance(1);
+ const unreadInbox=(await f.api('GET','/api/inbox?kind=message',unread.token)).data;
+ assert.equal(unreadInbox.messages.length,0);assert.equal(unreadInbox.counts.unread,0);assert.equal(unreadInbox.pagination.total,0);
+ assert.equal((await f.api('POST',`/api/inbox/${id}/read`,unread.token,{})).status,404);
+ const history=(await f.api('GET','/api/inbox?kind=message',read.token)).data;
+ assert.equal(history.messages[0].id,id);assert.equal(history.messages[0].phase,'expired');assert.equal(history.counts.unread,0);
+ assert.equal((await f.api('POST',`/api/inbox/${id}/read`,read.token,{})).data.readAt,firstRead.data.readAt);
+ assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_inbox_reads WHERE item_id=?').get(id).n,1);
 });
 
 test('scheduled gifts accept catalog-driven rewards, reconcile receipts, and lock rewards and targets after publication',async t=>{

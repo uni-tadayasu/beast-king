@@ -227,3 +227,32 @@ body[data-layout-short=true] .op-pagination .op-button{min-height:23px;padding:3
  .op-regalia>.op-button{margin-top:4px;padding:4px 6px;min-height:23px;font-size:9px}
 }
 body[data-layout-short=true][data-layout-width=small] .op-reward-reader>.op-rewards{grid-template-columns:minmax(0,1fr)}
+
+/* Search every matching card through bounded result pages. */
+.op-reward-results{flex:1;align-content:start}
+.op-reward-results+.op-pagination{height:28px;min-height:24px;flex:none;margin-top:4px}
+body[data-layout-short=true] .op-reward-results+.op-pagination{height:24px;margin-top:2px}
+
+/* Use the landscape canvas height, including phones held upright. Keep native
+   input text readable while giving forms and overview panels enough room. */
+body[data-layout-tight=true] #modal-root .modal.operator-fullscreen>.operator-view.op-console{grid-template-rows:36px minmax(0,1fr) 16px;gap:4px}
+body[data-layout-tight=true] .op-editor{grid-template-rows:26px 24px minmax(0,1fr) 28px;gap:4px}
+body[data-layout-tight=true] .op-steps .op-button{padding:2px 4px}
+body[data-layout-tight=true] .op-editor-footer{padding-top:2px}
+body[data-layout-tight=true] .op-editor-footer>.op-button{min-height:24px;padding:3px 6px}
+body[data-layout-tight=true] .op-editor .op-schedule .op-field{display:flex;flex-direction:column;align-items:stretch;gap:1px}
+body[data-layout-tight=true] .op-overview{grid-template-rows:44px 44px minmax(0,1fr);gap:5px}
+body[data-layout-tight=true] .op-overview-hero{padding:4px 8px;gap:8px}
+body[data-layout-tight=true] .op-overview-hero h3{font-size:18px;line-height:1.2}
+body[data-layout-tight=true] .op-overview-hero p{display:none}
+body[data-layout-tight=true] .op-crest{width:32px;height:32px}
+body[data-layout-tight=true] .op-metrics>div{padding:4px 6px}
+body[data-layout-tight=true] .op-metrics b{font-size:22px}
+body[data-layout-tight=true] .op-metrics small{font-size:8px}
+body[data-layout-tight=true] .op-overview-columns{gap:7px}
+body[data-layout-tight=true] .op-overview-columns>.op-surface{padding:5px 7px}
+body[data-layout-tight=true] .op-overview-columns>.op-surface>.op-eyebrow{display:none}
+body[data-layout-tight=true] .op-overview-columns h4{font-size:11px;line-height:1.3;margin:0 0 4px}
+body[data-layout-tight=true] .op-overview-columns p{font-size:9px;line-height:1.3;padding:0;margin:0}
+body[data-layout-tight=true] .op-overview-columns .op-scheduled-row:nth-of-type(n+2){display:none}
+body[data-layout-tight=true] .op-regalia>.op-button{margin-top:4px;padding:4px 6px;min-height:23px;font-size:9px}

@@ -1,0 +1,994 @@
+{
+  "id": "bk03-atlas-33",
+  "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+  "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+  "sourceSha256": "5c8bfb1cde093828401d10ca20617b654842e59f56ed3db694f57e377eadca39",
+  "nativeMaster": "exec-2363780b-7525-4ee3-8b12-846e88567764.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "f2422fa009d7beaef83b0d61ae5a9c539cf92890d20b0e4dc739a12b6081a537",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "M0529",
+    "M0561",
+    "M0593",
+    "M0625",
+    "M0657",
+    "M0689",
+    "M0721",
+    "M0753",
+    "M0530",
+    "M0562",
+    "M0594",
+    "M0626",
+    "M0658",
+    "M0690",
+    "M0722",
+    "M0754",
+    "M0531",
+    "M0563",
+    "M0595",
+    "M0627",
+    "M0659",
+    "M0691",
+    "M0723",
+    "M0755"
+  ],
+  "cards": [
+    {
+      "id": "M0529",
+      "name": "星継・導標の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in a coral garden of floating golden terraces; close dynamic view with the entire main silhouette inside the tile; two intersecting arcs of light. Tiny ivory star-antlered stag figures establish scale and story",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 16,
+        "role": 0,
+        "tier": 2,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "42b564c0b5722ab2e821fe8a934b8502ec93ef47bb039262cbe1f70a7f788713",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0561",
+      "name": "潮継・導標の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in a violet moonlit grove with giant flowering roots; wide cinematic view with the creature large in the foreground; two intersecting arcs of light. Tiny sleek turquoise river fox with flowing multiple tails figures establish scale and story",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 16,
+        "role": 0,
+        "tier": 2,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "b5acd5d3156cc2a3d70759a5a9fd99e6523bfdbf1d03ef50a3f918bb50452b0d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0593",
+      "name": "火継・導標の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in a shattered crystal canyon crossed by a silver stream; low three-quarter view; two intersecting arcs of light. Tiny coral-maned red wolf with ember-patterned coat figures establish scale and story",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 16,
+        "role": 0,
+        "tier": 2,
+        "angle": "low three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "e6bdf42fa1ae6bf4c25183fb2800d07c88bf1b9c9c6c44641cd3d9fe932350ff",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0625",
+      "name": "風継・導標の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in a vast cloud citadel seen from a hanging bridge; side view with the face turned toward the viewer; two intersecting arcs of light. Tiny white winged horse with long windblown mane figures establish scale and story",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 16,
+        "role": 0,
+        "tier": 2,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "cabd99206e26c7ac61d08a1c94f44ed7619a24d74452c825c82a834d5dae9480",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0657",
+      "name": "花継・導標の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in sunken library arches lit by luminous fish; dramatic elevated three-quarter view; two intersecting arcs of light. Tiny elegant flower crane with layered petal plumage figures establish scale and story",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 16,
+        "role": 0,
+        "tier": 2,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "9267d126f4707897110e0b1159e517812219b7fe86d70c7028f97712a1b6e875",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0689",
+      "name": "樹継・導標の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in a copper and jade forge carved into living stone; front three-quarter view; two intersecting arcs of light. Tiny powerful moss bear with living branch armor figures establish scale and story",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 16,
+        "role": 0,
+        "tier": 2,
+        "angle": "front three-quarter view",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "4e44d5456e963e4d705a67332ceef2b24b30993f379b04ae6b179b7d0f98e555",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0721",
+      "name": "晶継・導標の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in a ruined ivory observatory above an ocean of stars; full-body diagonal action view; two intersecting arcs of light. Tiny massive crystal rhinoceros with faceted stone armor figures establish scale and story",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 16,
+        "role": 0,
+        "tier": 2,
+        "angle": "full-body diagonal action view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "057356b555d0321c23f965ccc939bfb8d801926f691132e0ae33302c8158d025",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0753",
+      "name": "月継・導標の閃光",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a towering river of crystal lightning splitting a sanctuary, happening in turquoise cascades through an ancestral sanctuary; rear three-quarter view with visible expressive face; two intersecting arcs of light. Tiny silver panther with flowing moon markings figures establish scale and story",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 16,
+        "role": 0,
+        "tier": 2,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "784d37c43abbe4c53fcb742fc983c97047241d7bfca37a40f9d276fd77c4e02a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0530",
+      "name": "星継・導標の結束",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a radiant ancestral tree suddenly blooming above ceremonial stairs, happening in a vast cloud citadel seen from a hanging bridge; wide cinematic view with the creature large in the foreground; two intersecting arcs of light. Tiny ivory star-antlered stag figures establish scale and story",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "b2d92277820846f01f68e283790f9334cac9a9f48c734fa3f31cf18ed5a8f930",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0562",
+      "name": "潮継・導標の結束",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a radiant ancestral tree suddenly blooming above ceremonial stairs, happening in sunken library arches lit by luminous fish; low three-quarter view; two intersecting arcs of light. Tiny sleek turquoise river fox with flowing multiple tails figures establish scale and story",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "low three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "7b4fe7baa13d5330f11d46babbf4c1eef4770b527b1dac4d96dd2b58378d655d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0594",
+      "name": "火継・導標の結束",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a radiant ancestral tree suddenly blooming above ceremonial stairs, happening in a copper and jade forge carved into living stone; side view with the face turned toward the viewer; two intersecting arcs of light. Tiny coral-maned red wolf with ember-patterned coat figures establish scale and story",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "779716ccbc918b61baad500e210a5445c52532c43a13cb7295e58e75d8621c33",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0626",
+      "name": "風継・導標の結束",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a radiant ancestral tree suddenly blooming above ceremonial stairs, happening in a ruined ivory observatory above an ocean of stars; dramatic elevated three-quarter view; two intersecting arcs of light. Tiny white winged horse with long windblown mane figures establish scale and story",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "e1c78d2ebd54bccfe0d97223732b357dfc28633d89da03390176321ba716626f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0658",
+      "name": "花継・導標の結束",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a radiant ancestral tree suddenly blooming above ceremonial stairs, happening in turquoise cascades through an ancestral sanctuary; front three-quarter view; two intersecting arcs of light. Tiny elegant flower crane with layered petal plumage figures establish scale and story",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "front three-quarter view",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "02848d2ed96ca83e547d95bb077eb624ae5627ed3efb9565eac85fe544cbf7c3",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0690",
+      "name": "樹継・導標の結束",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a radiant ancestral tree suddenly blooming above ceremonial stairs, happening in a coral garden of floating golden terraces; full-body diagonal action view; two intersecting arcs of light. Tiny powerful moss bear with living branch armor figures establish scale and story",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "full-body diagonal action view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "7bccc12256b134abf31f61a44b1d5fcfd1941c205605e7cf833a6c2707a0fd86",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0722",
+      "name": "晶継・導標の結束",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a radiant ancestral tree suddenly blooming above ceremonial stairs, happening in a violet moonlit grove with giant flowering roots; rear three-quarter view with visible expressive face; two intersecting arcs of light. Tiny massive crystal rhinoceros with faceted stone armor figures establish scale and story",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "234a66043bcc13ed9fe2b9bba05370cf0f45b722a7556f24b107428470605ca1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0754",
+      "name": "月継・導標の結束",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a radiant ancestral tree suddenly blooming above ceremonial stairs, happening in a shattered crystal canyon crossed by a silver stream; close dynamic view with the entire main silhouette inside the tile; two intersecting arcs of light. Tiny silver panther with flowing moon markings figures establish scale and story",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "e4f7dfe7860c5b9b24be48df10c507595375498a275b28a2f3a9ec0e73000002",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0531",
+      "name": "星継・導標の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a ruined ivory observatory above an ocean of stars; low three-quarter view; two intersecting arcs of light. Tiny ivory star-antlered stag figures establish scale and story",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "low three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "f348ba2682e77586316398e21d5d368ff7de74872d3555c162746e19f165b54d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0563",
+      "name": "潮継・導標の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in turquoise cascades through an ancestral sanctuary; side view with the face turned toward the viewer; two intersecting arcs of light. Tiny sleek turquoise river fox with flowing multiple tails figures establish scale and story",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "dd7abf6395524027399980e1c6b6cd9be6c010cf48dda838395703c0f619f807",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0595",
+      "name": "火継・導標の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a coral garden of floating golden terraces; dramatic elevated three-quarter view; two intersecting arcs of light. Tiny coral-maned red wolf with ember-patterned coat figures establish scale and story",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "3450f2154fcf831f48e21653839bc06fe2f673b17feda6fde0fad040340e73c9",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0627",
+      "name": "風継・導標の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a violet moonlit grove with giant flowering roots; front three-quarter view; two intersecting arcs of light. Tiny white winged horse with long windblown mane figures establish scale and story",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "front three-quarter view",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "9a0706af3d8ff4969e117a3ad02319993ebba911c54fb17eeaac405949ae7880",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0659",
+      "name": "花継・導標の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a shattered crystal canyon crossed by a silver stream; full-body diagonal action view; two intersecting arcs of light. Tiny elegant flower crane with layered petal plumage figures establish scale and story",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "full-body diagonal action view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "b87bf58d83f6fe338e2a963ac2a25753228bddd4094cca6ca1475a86138d4f9f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0691",
+      "name": "樹継・導標の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a vast cloud citadel seen from a hanging bridge; rear three-quarter view with visible expressive face; two intersecting arcs of light. Tiny powerful moss bear with living branch armor figures establish scale and story",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "96ea46c52e35fa175a37b02ff98d8c9f629de3e23dfa3dee2dc0d06480fe4863",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0723",
+      "name": "晶継・導標の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in sunken library arches lit by luminous fish; close dynamic view with the entire main silhouette inside the tile; two intersecting arcs of light. Tiny massive crystal rhinoceros with faceted stone armor figures establish scale and story",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "7ff6038c99cc691a54ebee50c10a7b93f3e0be23b38a809d9c23eb78ffb63f5b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0755",
+      "name": "月継・導標の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a copper and jade forge carved into living stone; wide cinematic view with the creature large in the foreground; two intersecting arcs of light. Tiny silver panther with flowing moon markings figures establish scale and story",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-33.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "ba14972253efbf6b290b790dd4bef0bb1f89abac04c19f805af87439d3d86100",
+      "cellSha256": "e74285cbf6e0ab25fabb17c5dcc84e62707a2e239cdf93fb05ebb4878f4e3bd0",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

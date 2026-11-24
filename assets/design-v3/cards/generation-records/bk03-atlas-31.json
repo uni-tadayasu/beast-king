@@ -1,0 +1,994 @@
+{
+  "id": "bk03-atlas-31",
+  "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+  "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+  "sourceSha256": "eca023b1b90d1beee34f631df068b3c0f896e6ee71f84b93f0678a8df07164bc",
+  "nativeMaster": "exec-b342ee5a-c2eb-45cb-b236-4d54a6c71448.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "213d604646a3642c7599fced9d13c5b9a16fed0f6979f8ee95e45318f2af28f8",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "M0523",
+    "M0555",
+    "M0587",
+    "M0619",
+    "M0651",
+    "M0683",
+    "M0715",
+    "M0747",
+    "M0524",
+    "M0556",
+    "M0588",
+    "M0620",
+    "M0652",
+    "M0684",
+    "M0716",
+    "M0748",
+    "M0525",
+    "M0557",
+    "M0589",
+    "M0621",
+    "M0653",
+    "M0685",
+    "M0717",
+    "M0749"
+  ],
+  "cards": [
+    {
+      "id": "M0523",
+      "name": "星継・旅路の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a copper and jade forge carved into living stone; rear three-quarter view with visible expressive face; an upward spiral. Tiny ivory star-antlered stag figures establish scale and story",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 10,
+        "role": 2,
+        "tier": 1,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "344660f015a9fec2a42f6bac4d1121ab7186478e05b7258e8dde47efbad05513",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0555",
+      "name": "潮継・旅路の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a ruined ivory observatory above an ocean of stars; close dynamic view with the entire main silhouette inside the tile; an upward spiral. Tiny sleek turquoise river fox with flowing multiple tails figures establish scale and story",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 10,
+        "role": 2,
+        "tier": 1,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "5e2d9aafbb75dd992f6e18225a917c0218ac36a7c70ebb8b0f75a06779c40ea9",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0587",
+      "name": "火継・旅路の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in turquoise cascades through an ancestral sanctuary; wide cinematic view with the creature large in the foreground; an upward spiral. Tiny coral-maned red wolf with ember-patterned coat figures establish scale and story",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 10,
+        "role": 2,
+        "tier": 1,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "24310b25d561c93b3140a8ebac5e96f4d6f96f4f991f5a2b1343481b62b5e92a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0619",
+      "name": "風継・旅路の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a coral garden of floating golden terraces; low three-quarter view; an upward spiral. Tiny white winged horse with long windblown mane figures establish scale and story",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 10,
+        "role": 2,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "9c8cef44c34136a65a27756a99ad0ed5bf39146f0013ca11d474a022cde7bd5d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0651",
+      "name": "花継・旅路の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a violet moonlit grove with giant flowering roots; side view with the face turned toward the viewer; an upward spiral. Tiny elegant flower crane with layered petal plumage figures establish scale and story",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 10,
+        "role": 2,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "669b3eb4e07169c30f0bd670afa0db6946b982248a5177dcedda553cd0cd1c3a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0683",
+      "name": "樹継・旅路の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a shattered crystal canyon crossed by a silver stream; dramatic elevated three-quarter view; an upward spiral. Tiny powerful moss bear with living branch armor figures establish scale and story",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 10,
+        "role": 2,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "5ee7c02357111bbee69a1605c52025e1d0ac03fffe43b0be0ea6b7d982157ab2",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0715",
+      "name": "晶継・旅路の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in a vast cloud citadel seen from a hanging bridge; front three-quarter view; an upward spiral. Tiny massive crystal rhinoceros with faceted stone armor figures establish scale and story",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 10,
+        "role": 2,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "f0bc607c3b4dfd4ddd0ff4fa8e6b10e70d72ae6aba1b7bb1a95e1e9c7b554269",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0747",
+      "name": "月継・旅路の返歌",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "an open floating codex releasing living animal-shaped memories, happening in sunken library arches lit by luminous fish; full-body diagonal action view; an upward spiral. Tiny silver panther with flowing moon markings figures establish scale and story",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 10,
+        "role": 2,
+        "tier": 1,
+        "angle": "full-body diagonal action view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "prowling low along a narrow ancient causeway",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "dde8a6e4a03d09792023a372b3358069d7feb37d7f4d5c72f9c8924b5611ee8b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0524",
+      "name": "星継・旅路の天幕",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a dimensional light doorway unfolding within a ruined cathedral, happening in a coral garden of floating golden terraces; close dynamic view with the entire main silhouette inside the tile; an upward spiral. Tiny ivory star-antlered stag figures establish scale and story",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "cfc5d483f00a38aed40f8fd854ca1ccc920055ee50974295d0940cce28f9a62f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0556",
+      "name": "潮継・旅路の天幕",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a dimensional light doorway unfolding within a ruined cathedral, happening in a violet moonlit grove with giant flowering roots; wide cinematic view with the creature large in the foreground; an upward spiral. Tiny sleek turquoise river fox with flowing multiple tails figures establish scale and story",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "56ff5eee68024ce32b3c97e32cf2e75fde7820f2f373db716071e0cf0fdfe38c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0588",
+      "name": "火継・旅路の天幕",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a dimensional light doorway unfolding within a ruined cathedral, happening in a shattered crystal canyon crossed by a silver stream; low three-quarter view; an upward spiral. Tiny coral-maned red wolf with ember-patterned coat figures establish scale and story",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "98d87e797747ab9783419d682d6701780120f7d507e1445ad87f434341125158",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0620",
+      "name": "風継・旅路の天幕",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a dimensional light doorway unfolding within a ruined cathedral, happening in a vast cloud citadel seen from a hanging bridge; side view with the face turned toward the viewer; an upward spiral. Tiny white winged horse with long windblown mane figures establish scale and story",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "dda79726428aa963a51c0e0560b9a0e876ad43380782e478a384b5f76b749fa2",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0652",
+      "name": "花継・旅路の天幕",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a dimensional light doorway unfolding within a ruined cathedral, happening in sunken library arches lit by luminous fish; dramatic elevated three-quarter view; an upward spiral. Tiny elegant flower crane with layered petal plumage figures establish scale and story",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "8db2e7528d577eb4158274fe3bcef275391deacebd8fc4e0a52282222c865701",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0684",
+      "name": "樹継・旅路の天幕",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a dimensional light doorway unfolding within a ruined cathedral, happening in a copper and jade forge carved into living stone; front three-quarter view; an upward spiral. Tiny powerful moss bear with living branch armor figures establish scale and story",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "f89a77caaddbce20cd7706d8a5a33a9d6b28b68ae4e285fe66a57a32880672cb",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0716",
+      "name": "晶継・旅路の天幕",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a dimensional light doorway unfolding within a ruined cathedral, happening in a ruined ivory observatory above an ocean of stars; full-body diagonal action view; an upward spiral. Tiny massive crystal rhinoceros with faceted stone armor figures establish scale and story",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "full-body diagonal action view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "e7762dd3feeacb7c31b6c745f56e277cd8f6d7f73e9159970d907c6074e789ff",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0748",
+      "name": "月継・旅路の天幕",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a dimensional light doorway unfolding within a ruined cathedral, happening in turquoise cascades through an ancestral sanctuary; rear three-quarter view with visible expressive face; an upward spiral. Tiny silver panther with flowing moon markings figures establish scale and story",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 11,
+        "role": 3,
+        "tier": 1,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "sweeping diagonally across the frame",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "15d3f8b5aca042e5863908ba947f9104d40f2756ec0f88f0cf20bdbd8997dbda",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0525",
+      "name": "星継・旅路の銘文",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "several falling stars converging into a great luminous tide, happening in a vast cloud citadel seen from a hanging bridge; wide cinematic view with the creature large in the foreground; an upward spiral. Tiny ivory star-antlered stag figures establish scale and story",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "875d78daef8c06761952064916bc484e3a22c8ed581fe92a002753d138c2a4f0",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0557",
+      "name": "潮継・旅路の銘文",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "several falling stars converging into a great luminous tide, happening in sunken library arches lit by luminous fish; low three-quarter view; an upward spiral. Tiny sleek turquoise river fox with flowing multiple tails figures establish scale and story",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "low three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "8af3aeff9113f3c3ac8e74cc5fbdd0e0dfcefb47f37db1209cb1df6e6c9f78c6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0589",
+      "name": "火継・旅路の銘文",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "several falling stars converging into a great luminous tide, happening in a copper and jade forge carved into living stone; side view with the face turned toward the viewer; an upward spiral. Tiny coral-maned red wolf with ember-patterned coat figures establish scale and story",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "5a191cec786a590ddb947420d5cee45543eea990ea3ef7d50a6e629447946c5a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0621",
+      "name": "風継・旅路の銘文",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "several falling stars converging into a great luminous tide, happening in a ruined ivory observatory above an ocean of stars; dramatic elevated three-quarter view; an upward spiral. Tiny white winged horse with long windblown mane figures establish scale and story",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "578fd8d3546e1d9542db7d165c2cc344302fa77e3e52399605b95f2c2b32d66f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0653",
+      "name": "花継・旅路の銘文",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "several falling stars converging into a great luminous tide, happening in turquoise cascades through an ancestral sanctuary; front three-quarter view; an upward spiral. Tiny elegant flower crane with layered petal plumage figures establish scale and story",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "front three-quarter view",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "7ae97fd9f2ea33cf66d3896efe2759cf079869cccb16060a3ce9d758b4990c4f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0685",
+      "name": "樹継・旅路の銘文",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "several falling stars converging into a great luminous tide, happening in a coral garden of floating golden terraces; full-body diagonal action view; an upward spiral. Tiny powerful moss bear with living branch armor figures establish scale and story",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "full-body diagonal action view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "cff7249669e0dc970313a37506c1199fc618aebe85e31be7931b297aa8e0d0c6",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0717",
+      "name": "晶継・旅路の銘文",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "several falling stars converging into a great luminous tide, happening in a violet moonlit grove with giant flowering roots; rear three-quarter view with visible expressive face; an upward spiral. Tiny massive crystal rhinoceros with faceted stone armor figures establish scale and story",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "f68a0732112a8fa1a0a4af31c7c92adfb494210d0804932224622f15068dab2f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "M0749",
+      "name": "月継・旅路の銘文",
+      "setId": "BK03",
+      "type": "miracle",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "several falling stars converging into a great luminous tide, happening in a shattered crystal canyon crossed by a silver stream; close dynamic view with the entire main silhouette inside the tile; an upward spiral. Tiny silver panther with flowing moon markings figures establish scale and story",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 12,
+        "role": 4,
+        "tier": 1,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-31.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "18ebd853a4105b92efe77966171f12082726ef743ddbc9447ea63dd25b8ca17d",
+      "cellSha256": "ea8c6b6ab9e1fbf34a7c9b8ffe01bd18878d7c01c5f95edc18ec271bf77980dd",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

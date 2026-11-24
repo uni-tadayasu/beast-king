@@ -1,5 +1,6 @@
-import {STARTER_DECKS,getDeckPreset,getCard,ELEMENTS,CARDS,EXPANSION_DECKS,EXPANSION_FAMILIES} from './catalog.js?v=20261124-26';
-import {PACKS,getPack,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,STARTER_PRICE,quoteStarterPurchase,hasStarterCards} from './shop.js?v=20261124-26';
+import {EVENT_DECKS} from './event-decks.js?v=20261124-28';
+import {STARTER_DECKS,getDeckPreset,getCard,ELEMENTS,CARDS,EXPANSION_DECKS,EXPANSION_FAMILIES} from './catalog.js?v=20261124-28';
+import {PACKS,getPack,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,STARTER_PRICE,quoteStarterPurchase,hasStarterCards} from './shop.js?v=20261124-28';
 
 export function homeDashboard({data,game,icon,esc,fmt,cardMarkup,counts}={}) {
   const expansion=getPack('BK04'),stat=counts(data.deckIds),preset=getDeckPreset(data.starter);
@@ -7,7 +8,7 @@ export function homeDashboard({data,game,icon,esc,fmt,cardMarkup,counts}={}) {
   const originId=preset?.element||(data.deckIds.includes('B0512')?'king':Object.keys(originCounts).sort((a,b)=>originCounts[b]-originCounts[a])[0]);
   const origin=ELEMENTS.find(e=>e.id===originId)||ELEMENTS[0];
   return `<div class="product-home">
-      <div class="home-mode-rail" role="group" aria-label="対戦モードを選択">${[['solo','sword','SOLO CHRONICLE','ソロモード','全10章・20の試練'],['multi','users','FRIEND MATCH','ルーム対戦','合言葉でつながる決闘'],['rank','crown','RANKED MATCH','ランクマッチ','磨いた戦略で王座へ']].map(([id,ic,en,jp,caption])=>`<button class="home-mode home-mode-${id}" data-action="${id}-mode"><i>${icon(ic)}</i><span><small>${en}</small><strong>${jp}</strong><em>${caption}</em></span></button>`).join('')}</div>
+      <div class="home-mode-rail" role="group" aria-label="対戦モードを選択">${[['solo','sword','SOLO CHRONICLE','ソロモード','全10章・20の試練'],['multi','users','FRIEND MATCH','ルーム対戦','合言葉でつながる決闘'],['rank','crown','RANKED MATCH','ランクマッチ','磨いた戦略で王座へ'],['event','trophy','CROWN CHALLENGERS','イベント戦',EVENT_DECKS.length+'種の環境デッキに挑戦']].map(([id,ic,en,jp,caption])=>`<button class="home-mode home-mode-${id}" data-action="${id}-mode"><i>${icon(ic)}</i><span><small>${en}</small><strong>${jp}</strong><em>${caption}</em></span></button>`).join('')}</div>
     <section class="home-showcase" aria-labelledby="court-title">
       <div class="home-scenery" aria-hidden="true"></div>
       <div class="home-intro"><p class="court-kicker"><span aria-hidden="true">✦</span> THE SOVEREIGN REALMS <span aria-hidden="true">✦</span></p><h1 id="court-title">その一手に、<br><em>王の意志を。</em></h1><p>ようこそ、${esc(data.playerName)}。<br>七つの源と、君だけの36枚。</p><div class="home-edition"><span>NEW EXPANSIONS</span><strong>継承の共鳴 × 星界の創世</strong></div></div>

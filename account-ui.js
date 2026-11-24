@@ -1,6 +1,6 @@
-import {CARDS} from './catalog.js?v=20261124-26';
-import {accountSyncView,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js?v=20261124-26';
-import {operatorRewardPageSize} from './operator-paging.js?v=20261124-26';
+import {CARDS} from './catalog.js?v=20261124-28';
+import {accountSyncView,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js?v=20261124-28';
+import {operatorRewardPageSize} from './operator-paging.js?v=20261124-28';
 
 /** Account dialogs use the same server identity as online battles. No role or
  * activation credential is saved in the game data or inferred from the UI. */
@@ -8,8 +8,8 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   const byId=id=>documentImpl.getElementById(id);
   const value=id=>byId(id)?.value?.trim()||'';
   let account={link:null,devices:[],busy:false,error:''};
-  const freshInbox=()=>({messages:[],gifts:[],events:[],tab:'gift',page:0,selected:null,bodyPage:0,counts:{},busy:false,error:''});
-  const freshOperator=()=>({snapshot:null,tab:'overview',records:null,page:0,query:'',draft:null,step:0,rewardPage:0,rewardMatches:[],busy:false,error:''});
+  const freshInbox=()=>({messages:[],gifts:[],events:[],tab:'gift',page:0,selected:null,bodyPage:0,counts:{},request:0,busy:false,error:''});
+  const freshOperator=()=>({snapshot:null,tab:'overview',records:null,page:0,query:'',draft:null,step:0,rewardPage:0,rewardMatchPage:0,rewardMatches:[],busy:false,error:''});
   let inbox=freshInbox(),operator=freshOperator();
   let operatorDeck=null,operatorDeckOwner=null,deckRequest=null;
   let brandCount=0,brandAt=0,operatorTimer=null;
@@ -110,16 +110,18 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
     await accountAction(async()=>{await client.revokeSession(id);await loadDevices();toast('選んだ端末の連携を解除しました。');});
   }
   async function loadInbox(){
-    const owner=inbox,tab=inbox.tab,page=inbox.page;
+    const owner=inbox,tab=inbox.tab,page=inbox.page,request=inbox.request;
     const [letters,events]=await Promise.all([client.getInbox({kind:tab==='event'?'gift':tab,page:tab==='event'?0:page,pageSize:4}),client.getEvents({page:tab==='event'?page:0,pageSize:4})]);
-    if(inbox!==owner)return;
+    if(inbox!==owner||inbox.tab!==tab||inbox.page!==page||inbox.request!==request)return;
     Object.assign(inbox,{messages:letters.messages||[],gifts:letters.gifts||[],events:events.events||[],counts:letters.counts||{},pagination:letters.pagination,eventPagination:events.pagination});
   }
   async function openInbox(){
-    const owner=inbox;inbox.busy=true;inbox.error='';inboxModal();
-    try{await ensureReady();if(inbox===owner)await loadInbox();}
-    catch(error){if(inbox===owner)inbox.error=safeError(error);}
-    finally{if(inbox===owner){inbox.busy=false;if(kind()==='inbox')inboxModal();}}
+    const owner=inbox,request=++inbox.request,tab=inbox.tab,page=inbox.page;
+    const current=()=>inbox===owner&&inbox.request===request&&inbox.tab===tab&&inbox.page===page;
+    inbox.busy=true;inbox.error='';inboxModal();
+    try{await ensureReady();if(current())await loadInbox();}
+    catch(error){if(current())inbox.error=safeError(error);}
+    finally{if(current()){inbox.busy=false;if(kind()==='inbox')inboxModal();}}
   }
   async function openInboxItem(id){
     if(inbox.busy)return;const owner=inbox;
@@ -273,12 +275,12 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
   }
   function newContent(type,target='all',source=null){
     const now=operator.snapshot?.serverTime||Date.now();
-    operator.tab=type;operator.step=0;operator.previewPage=0;operator.rewardPage=0;operator.rewardMatches=[];operator.rewardQuery='';operator.error='';operator.receiptItem=null;
+    operator.tab=type;operator.step=0;operator.previewPage=0;operator.rewardPage=0;operator.rewardMatchPage=0;operator.rewardMatches=[];operator.rewardQuery='';operator.error='';operator.receiptItem=null;
     operator.draft={kind:type,title:'',body:'',status:'draft',target,treasure:0,cards:[],publishAt:null,startAt:type==='event'?now:null,endAt:type==='event'?now+86400000:null,expiresAt:null,priority:0,...(source?structuredClone(source):{})};
     if(source){delete operator.draft.id;operator.draft.revision=0;operator.draft.status='draft';operator.draft.deliveryLocked=false;operator.draft.publishAt=null;operator.draft.startAt=type==='event'?now:null;operator.draft.endAt=type==='event'?now+86400000:null;operator.draft.expiresAt=null;}
     operatorModal({preserve:false});
   }
-  function editContent(type,id){const row=findContent(type,id);if(!row)return;operator.tab=type;operator.draft={...structuredClone(row),kind:type};operator.step=0;operator.previewPage=0;operator.rewardPage=0;operator.rewardMatches=[];operator.error='';operatorModal({preserve:false});}
+  function editContent(type,id){const row=findContent(type,id);if(!row)return;operator.tab=type;operator.draft={...structuredClone(row),kind:type};operator.step=0;operator.previewPage=0;operator.rewardPage=0;operator.rewardMatchPage=0;operator.rewardMatches=[];operator.error='';operatorModal({preserve:false});}
   async function loadReceipts(type,id,page=0){
     const item=findContent(type,id)||operator.receiptItem;if(!item||operator.busy)return;
     const owner=operator;operator.busy=true;operator.receiptItem={...item,kind:type};operator.receiptDetailId=null;operator.draft=null;operatorModal({preserve:false});
@@ -344,8 +346,8 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       case'cloud-conflict-local-confirm':accountModal(false);void accountAction(async()=>{await cloud.keepLocal();toast('この端末のデータをクラウドへ保存しました。');});break;
       case'cloud-revoke-session':void revokeSession(element.dataset.sessionId||element.dataset.id);break;
       case'inbox-open':case'inbox-refresh':void openInbox();break;
-      case'inbox-tab':inbox.tab=element.dataset.tab;inbox.page=0;inbox.selected=null;void openInbox();break;
-      case'inbox-page-prev':case'inbox-page-next':inbox.page=Math.max(0,inbox.page+(action.endsWith('next')?1:-1));void openInbox();break;
+      case'inbox-tab':if(inbox.busy)break;inbox.tab=element.dataset.tab;inbox.page=0;inbox.selected=null;void openInbox();break;
+      case'inbox-page-prev':case'inbox-page-next':if(inbox.busy)break;inbox.page=Math.max(0,inbox.page+(action.endsWith('next')?1:-1));void openInbox();break;
       case'inbox-item-open':void openInboxItem(element.dataset.id);break;
       case'inbox-item-back':inbox.selected=null;inboxModal();break;
       case'inbox-body-prev':case'inbox-body-next':inbox.bodyPage=Math.max(0,inbox.bodyPage+(action.endsWith('next')?1:-1));inboxModal();break;
@@ -376,10 +378,11 @@ export function createAccountUi({client,cloud,ensureReady,isBattleActive,showMod
       case'operator-editor-prev':case'operator-editor-next':changeEditor(()=>operator.step=Math.max(0,Math.min(3,operator.step+(action.endsWith('next')?1:-1))));break;
       case'operator-editor-save':void operate(operator.draft?.kind);break;
       case'operator-preview-prev':case'operator-preview-next':changeEditor(()=>operator.previewPage=Math.max(0,(operator.previewPage||0)+(action.endsWith('next')?1:-1)));break;
-      case'operator-reward-search':changeEditor(()=>{operator.rewardQuery=value('operator-reward-query');const query=operator.rewardQuery.toLocaleLowerCase('ja');operator.rewardMatches=query?CARDS.filter(card=>card.id.toLowerCase().includes(query)||card.name.toLocaleLowerCase('ja').includes(query)).slice(0,3):[];});break;
+      case'operator-reward-search':changeEditor(()=>{operator.rewardQuery=value('operator-reward-query').trim();const query=operator.rewardQuery.toLocaleLowerCase('ja');operator.rewardMatches=query?CARDS.filter(card=>card.id.toLowerCase().includes(query)||card.name.toLocaleLowerCase('ja').includes(query)):[];operator.rewardMatchPage=0;});break;
+      case'operator-reward-match-prev':case'operator-reward-match-next':changeEditor(()=>{const size=operatorRewardPageSize()<4?1:3,last=Math.max(0,Math.ceil(operator.rewardMatches.length/size)-1),current=Math.min(operator.rewardMatchPage||0,last);operator.rewardMatchPage=Math.max(0,Math.min(last,current+(action.endsWith('next')?1:-1)));});break;
       case'operator-reward-add':changeEditor(()=>{const id=element.dataset.id;if(!operator.draft.deliveryLocked&&getCard(id)&&operator.draft.cards.length<12&&!operator.draft.cards.some(c=>c.cardId===id))operator.draft.cards.push({cardId:id,count:1});});break;
       case'operator-reward-remove':changeEditor(()=>{if(!operator.draft.deliveryLocked)operator.draft.cards=operator.draft.cards.filter(c=>c.cardId!==element.dataset.id);operator.rewardPage=Math.min(operator.rewardPage,Math.max(0,Math.ceil(operator.draft.cards.length/operatorRewardPageSize())-1));});break;
-      case'operator-reward-prev':case'operator-reward-next':changeEditor(()=>operator.rewardPage=Math.max(0,operator.rewardPage+(action.endsWith('next')?1:-1)));break;
+      case'operator-reward-prev':case'operator-reward-next':changeEditor(()=>{const last=Math.max(0,Math.ceil(operator.draft.cards.length/operatorRewardPageSize())-1),current=Math.min(operator.rewardPage,last);operator.rewardPage=Math.max(0,Math.min(last,current+(action.endsWith('next')?1:-1)));});break;
       case'operator-message-send':case'operator-gift-send':case'operator-event-save':void operate(operator.draft?.kind);break;
       case'operator-refresh':void openOperator();break;
       default:return false;

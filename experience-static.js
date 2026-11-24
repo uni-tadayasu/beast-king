@@ -1,5 +1,5 @@
 /** Public guide pages share the same local feedback preferences as the game. */
-import {createExperienceController} from './experience-fx.js?v=20261124-26';
+import {createExperienceController} from './experience-fx.js?v=20261124-28';
 
 const start = () => {
   // Interactive applications own one controller bound to their saved settings.

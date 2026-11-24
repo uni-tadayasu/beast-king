@@ -1,8 +1,16 @@
-# BEAST KING — current artwork production
+# BEAST KING — artwork production and provenance
 
-## 2026-11-24 two-pack release
+## Current four-pack edition
 
-The published catalogue contains 2,304 card identities: 1,152 in BK01 and 1,152 in BK02. Card artwork uses 144 independently generated four-by-four atlases and the preserved, user-approved `king.webp` illustration for B0512 (王冠竜 レガリア). The catalogue assigns each displayed card a different atlas cell; B0512 uses its standalone illustration. The corresponding unused atlas cell is never assigned to another card.
+The main catalogue contains 4,608 cards across BK01, BK02, BK03 and BK04, with 1,152 cards in each pack. The original BK01/BK02 illustrations described below remain in use with their reviewed corrections. BK03/BK04 add 2,304 individually directed illustrations in 96 native six-by-four atlases under `assets/design-v3/cards/`. Each generated PNG is inspected before conversion to WebP; the generation records preserve the native dimensions, source and output hashes, exact prompt hash, card order and visual-review state. `card-art-expansion.js` supplies the expansion crops.
+
+The complete `npm run verify:release` gate requires all 4,608 artwork assignments, the 96 expansion atlases and their reviewed records, the original assets and corrections, all four 1,152-card packs, four starter decks, three mode backgrounds, and the premium pack/realm imagery. The `/rebuild/` compatibility edition remains the independent 2,304-card catalogue.
+
+## Earlier 2026-11-24 two-pack release
+
+This section records the BK01/BK02 artwork release before BK03/BK04. Its counts and social-preview description refer to that release, not the current four-pack catalogue.
+
+That release contained 2,304 card identities: 1,152 in BK01 and 1,152 in BK02. Card artwork uses 144 independently generated four-by-four atlases and the preserved, user-approved `king.webp` illustration for B0512 (王冠竜 レガリア). The catalogue assigns each displayed card a different atlas cell; B0512 uses its standalone illustration. The corresponding unused atlas cell is never assigned to another card.
 
 | Type | Cards across both packs | Atlas files |
 | --- | ---: | ---: |
@@ -19,11 +27,11 @@ Production WebP files preserve their generated dimensions. Encoding uses quality
 
 ### Release verification
 
-`npm run verify:release` checks all 144 WebP files, their SHA-256 hashes and native dimensions, all 2,304 unique artwork assignments, the matching browser crops, both 1,152-card packs, all four starter decks, and the three distinct mode backgrounds. A missing original or an unregistered artwork prevents the release check from passing. `npm run build:client` validates the browser asset references in the static package.
+The two-pack release verification checked all 144 WebP files, their SHA-256 hashes and native dimensions, all 2,304 unique artwork assignments, the matching browser crops, both 1,152-card packs, all four starter decks, and the three distinct mode backgrounds. A missing original or an unregistered artwork prevents the release check from passing. `npm run build:client` validates the browser asset references in the static package.
 
 ### UI, modes and visual effects
 
-The current brand files are in `assets/design-v2/brand/`; the 1,200 × 630 social preview displays the 2,304-card release. The solo, room and ranked modes use separate backgrounds in `assets/design-v2/backgrounds/`. The shared rarity renderer adds two to eleven decorative layers in the artwork window, with the highest rarity using foil, glints, dust, prism, comet, orbit, shards, halo, constellation, rays and crown layers. Effects pause outside the viewport, in hidden tabs and when reduced motion is selected. Card text and battle information remain separate from the decorative layers.
+The two-pack brand files are in `assets/design-v2/brand/`; that release’s 1,200 × 630 social preview displays the 2,304-card inventory. The solo, room and ranked modes use separate backgrounds in `assets/design-v2/backgrounds/`. The shared rarity renderer adds two to eleven decorative layers in the artwork window, with the highest rarity using foil, glints, dust, prism, comet, orbit, shards, halo, constellation, rays and crown layers. Effects pause outside the viewport, in hidden tabs and when reduced motion is selected. Card text and battle information remain separate from the decorative layers.
 
 The initial artwork and music record below is retained as historical provenance. It describes the earlier release and is not the current card inventory.
 

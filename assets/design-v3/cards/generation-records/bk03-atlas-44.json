@@ -1,0 +1,994 @@
+{
+  "id": "bk03-atlas-44",
+  "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+  "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+  "sourceSha256": "e6bc7818b38b84d3f4f5444d54399b334e1187df1a70232e4e62e1d462ce7db2",
+  "nativeMaster": "exec-bd9aa16d-1c2a-4396-b553-16fea1c1087b.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "1ad50277c63fec7004ccf2d5d09149e84db2459751e2231485cc607898e867b7",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "G0530",
+    "G0562",
+    "G0594",
+    "G0626",
+    "G0658",
+    "G0690",
+    "G0722",
+    "G0754",
+    "G0531",
+    "G0563",
+    "G0595",
+    "G0627",
+    "G0659",
+    "G0691",
+    "G0723",
+    "G0755",
+    "G0532",
+    "G0564",
+    "G0596",
+    "G0628",
+    "G0660",
+    "G0692",
+    "G0724",
+    "G0756"
+  ],
+  "cards": [
+    {
+      "id": "G0530",
+      "name": "星継・遠境の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in a vast cloud citadel seen from a hanging bridge; wide cinematic view with the creature large in the foreground; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "bb969410e99b5dd8572499cf56d43f2aae67532cb9e8ed8a6074d75de60ba611",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0562",
+      "name": "潮継・遠境の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in sunken library arches lit by luminous fish; low three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "low three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "ede54ace63f3d364bb8c020e996b8c7ae23f9097b196602ae2874a8e6bd3ed76",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0594",
+      "name": "火継・遠境の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in a copper and jade forge carved into living stone; side view with the face turned toward the viewer; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "4c1078ad7143d07994dcd68be201a86759ee49e5f93735daa80fd5803bffc688",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0626",
+      "name": "風継・遠境の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in a ruined ivory observatory above an ocean of stars; dramatic elevated three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "6cb7e0787610ac532dffec5a7ff0c5ec2b5693c2bcb78fc05376bc60b47bd284",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0658",
+      "name": "花継・遠境の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in turquoise cascades through an ancestral sanctuary; front three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "front three-quarter view",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "a07647aa9faa36a6beff9a7a393d3ecd8da7f98d1caa701f96709c138169c137",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0690",
+      "name": "樹継・遠境の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in a coral garden of floating golden terraces; full-body diagonal action view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "full-body diagonal action view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "6a0cf8bf2b5ec7e5b68b9f9b9dba314dbe11d4f9f8116cab7c6428ddb8b78287",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0722",
+      "name": "晶継・遠境の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in a violet moonlit grove with giant flowering roots; rear three-quarter view with visible expressive face; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "ca1ba24a1d14ab190ddd33bf7df3a7b443e3f08e0ef03ca6e5134f69310fefda",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0754",
+      "name": "月継・遠境の反照門",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a monumental mirror doorway with thick gold hinges and flowing reflective light, physically constructed in a shattered crystal canyon crossed by a silver stream; close dynamic view with the entire main silhouette inside the tile; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 17,
+        "role": 1,
+        "tier": 2,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "de7c4a7b0e68b161a5e97655060be965e79e03ea3698a77d4402752b7069837c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0531",
+      "name": "星継・遠境の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in a ruined ivory observatory above an ocean of stars; low three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "low three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "da075f6fb54786f8b4c446e57929223bc326e6d7f3d74bb4c222c92fdad02068",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0563",
+      "name": "潮継・遠境の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in turquoise cascades through an ancestral sanctuary; side view with the face turned toward the viewer; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "dee44c8028758608afbc8a7ee87ec13c364b574fab975deaf9bf8ea7bdcd419b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0595",
+      "name": "火継・遠境の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in a coral garden of floating golden terraces; dramatic elevated three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "c712ddff397a43a29e09db069e6602275f8276d16fdcfcc802358179b8b35614",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0627",
+      "name": "風継・遠境の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in a violet moonlit grove with giant flowering roots; front three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "front three-quarter view",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "cb1c9e5129f2a70f3a547370047bad66c1cc20c5801cf91a872de59a81cfb0bb",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0659",
+      "name": "花継・遠境の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in a shattered crystal canyon crossed by a silver stream; full-body diagonal action view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "full-body diagonal action view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "2578f991ddfc41e3badb7f1a3a89d0115fd673bc1aededba7082b16abb3ccd4d",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0691",
+      "name": "樹継・遠境の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "flower",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in a vast cloud citadel seen from a hanging bridge; rear three-quarter view with visible expressive face; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "fb9a25c6a3398930dbf3f383e1f1a69022ae2a2fff76f302bfcb07f1b757b306",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0723",
+      "name": "晶継・遠境の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "mountain",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in sunken library arches lit by luminous fish; close dynamic view with the entire main silhouette inside the tile; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "be265324d301ed5474894a95580acc57bdf72ff358a07be7c375b8577119cb6c",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0755",
+      "name": "月継・遠境の共鳴旗",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "seed",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in a copper and jade forge carved into living stone; wide cinematic view with the creature large in the foreground; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 18,
+        "role": 2,
+        "tier": 2,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "b8417226e4803ef28b04e381684279af669db589f742ba8e5c1b96ea1bc2c172",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0532",
+      "name": "星継・遠境の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a violet moonlit grove with giant flowering roots; side view with the face turned toward the viewer; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, starlit azure",
+      "composition": {
+        "group": 0,
+        "local": 19,
+        "role": 3,
+        "tier": 2,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "28b1585bad0868a0d7b11c11232defe124fc11efa1b2ae5c934f3e186052aff7",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0564",
+      "name": "潮継・遠境の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a shattered crystal canyon crossed by a silver stream; dramatic elevated three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, turquoise and sapphire",
+      "composition": {
+        "group": 1,
+        "local": 19,
+        "role": 3,
+        "tier": 2,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "2c9d2544b34aa7ce303f9521cfd6b01c28e32e63e40065e2fca00fa7465f2d2b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0596",
+      "name": "火継・遠境の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a vast cloud citadel seen from a hanging bridge; front three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, coral and vermilion",
+      "composition": {
+        "group": 2,
+        "local": 19,
+        "role": 3,
+        "tier": 2,
+        "angle": "front three-quarter view",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "8f9b3a8a6317ec55eee6dc5c64c23a492539852b19199911d28daae68691f15b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0628",
+      "name": "風継・遠境の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in sunken library arches lit by luminous fish; full-body diagonal action view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, jade and mint",
+      "composition": {
+        "group": 3,
+        "local": 19,
+        "role": 3,
+        "tier": 2,
+        "angle": "full-body diagonal action view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "47830743c65dbc102c183d7fa9d6d46c9ce8a2de2e72da29a98022baae2d8b9e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0660",
+      "name": "花継・遠境の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a copper and jade forge carved into living stone; rear three-quarter view with visible expressive face; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, rose and lilac",
+      "composition": {
+        "group": 4,
+        "local": 19,
+        "role": 3,
+        "tier": 2,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "155089fca7e50f261293dc08f47ff3ee3d309666743b10f3abed7bcb08ef758a",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0692",
+      "name": "樹継・遠境の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "tree",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a ruined ivory observatory above an ocean of stars; close dynamic view with the entire main silhouette inside the tile; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, forest green and jade",
+      "composition": {
+        "group": 5,
+        "local": 19,
+        "role": 3,
+        "tier": 2,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "7089200a83e4192281750eec2d1de83ca065bc3257e8550139f930105bc842c3",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0724",
+      "name": "晶継・遠境の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "river",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in turquoise cascades through an ancestral sanctuary; wide cinematic view with the creature large in the foreground; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, cobalt and smoky quartz",
+      "composition": {
+        "group": 6,
+        "local": 19,
+        "role": 3,
+        "tier": 2,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "6946c9b2e902d3516146f2ec8a57c890eb505acb8bafcb8e62e852c588a650d8",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0756",
+      "name": "月継・遠境の再生炉",
+      "setId": "BK03",
+      "type": "gimmick",
+      "family": "legacy",
+      "origin": "grass",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a coral garden of floating golden terraces; low three-quarter view; projecting a diagonal beam. Detailed perspective and grounded cast shadows",
+      "palette": "ivory/gold, violet and midnight blue",
+      "composition": {
+        "group": 7,
+        "local": 19,
+        "role": 3,
+        "tier": 2,
+        "angle": "low three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk03-atlas-44.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "73c0a74a06ca090392cdebfebce256dab1b44ff4dbe5da8981ca8ea827c6e362",
+      "cellSha256": "cdec9aaf78e3ae3b761c30de8b3108f6fdea636212ca3ec944c9d0d5890eb099",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

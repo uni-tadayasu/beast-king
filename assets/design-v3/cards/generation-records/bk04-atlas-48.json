@@ -1,0 +1,994 @@
+{
+  "id": "bk04-atlas-48",
+  "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+  "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+  "sourceSha256": "629a337e38c2a409cbc86e6af8e99bc060857199120d8ee7c4e59f4f5cf1d365",
+  "nativeMaster": "exec-17a7018e-241e-411a-980b-ed45ea67e526.png",
+  "width": 1536,
+  "height": 1024,
+  "columns": 6,
+  "rows": 4,
+  "x": [
+    0,
+    256,
+    512,
+    768,
+    1024,
+    1280,
+    1536
+  ],
+  "y": [
+    0,
+    256,
+    512,
+    768,
+    1024
+  ],
+  "nativeDimensionsPreserved": true,
+  "promptSha256": "a7038205e35573dc8efc713a8b73424266cf17a24561de0aca2319aa6e4fd8d5",
+  "visualReview": "reviewed",
+  "cardIds": [
+    "G0827",
+    "G0891",
+    "G0955",
+    "G1019",
+    "G0828",
+    "G0892",
+    "G0956",
+    "G1020",
+    "G0829",
+    "G0893",
+    "G0957",
+    "G1021",
+    "G0830",
+    "G0894",
+    "G0958",
+    "G1022",
+    "G0831",
+    "G0895",
+    "G0959",
+    "G1023",
+    "G0832",
+    "G0896",
+    "G0960",
+    "G1024"
+  ],
+  "cards": [
+    {
+      "id": "G0827",
+      "name": "星巡・永約の共鳴旗",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "orbit",
+      "origin": "flower",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in a vast cloud citadel seen from a hanging bridge; wide cinematic view with the creature large in the foreground; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 58,
+        "role": 2,
+        "tier": 7,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 0,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        10,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "74c1274c0e9b542f6ae7d55e298c10c32c375f79094a645f33d16aefdcd102d8",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0891",
+      "name": "残響・永約の共鳴旗",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "echo",
+      "origin": "seed",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in sunken library arches lit by luminous fish; low three-quarter view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 58,
+        "role": 2,
+        "tier": 7,
+        "angle": "low three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 1,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        10,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "386e09b349ea99ee0e23f37268122201242d1a3d5f2c333fb1d6f2b140f087bb",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0955",
+      "name": "命誓・永約の共鳴旗",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "vow",
+      "origin": "mountain",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in a copper and jade forge carved into living stone; side view with the face turned toward the viewer; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 58,
+        "role": 2,
+        "tier": 7,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 2,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        10,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "f6eaa40e7683bbfd2bbf8cf87afca808c6d5239f6e70a23ac212c7846289c3ac",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1019",
+      "name": "封機・永約の共鳴旗",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "forge",
+      "origin": "flower",
+      "subject": "a suspended astrolabe with many kinetic crystalline arms and a woven hanging standard, physically constructed in a ruined ivory observatory above an ocean of stars; dramatic elevated three-quarter view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 58,
+        "role": 2,
+        "tier": 7,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "rearing or stretching upward beside a giant crystal",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 3,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        10,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "9a7daca798f0efc383e85febf7b13cb89ea88bcbadb07f57e0290ba91173f0ac",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0828",
+      "name": "星巡・永約の再生炉",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "orbit",
+      "origin": "tree",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a ruined ivory observatory above an ocean of stars; low three-quarter view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 59,
+        "role": 3,
+        "tier": 7,
+        "angle": "low three-quarter view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 4,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        10,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "bb028024117b56f50f969b6ed0a68c0f1021d4e5a1ea256ba69ffab43292c054",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0892",
+      "name": "残響・永約の再生炉",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "echo",
+      "origin": "grass",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in turquoise cascades through an ancestral sanctuary; side view with the face turned toward the viewer; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 59,
+        "role": 3,
+        "tier": 7,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 5,
+      "row": 0,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        10,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "aa59dd47c12216ea9a723e886fbcf03ccb2d75ebf116794450100b01720ee4ac",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0956",
+      "name": "命誓・永約の再生炉",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "vow",
+      "origin": "river",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a coral garden of floating golden terraces; dramatic elevated three-quarter view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 59,
+        "role": 3,
+        "tier": 7,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 0,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        266,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "d5ff4cd1d704bebe4c73136de1aa3770961639d5e65d7a121d9aab6a4c792046",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1020",
+      "name": "封機・永約の再生炉",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "forge",
+      "origin": "tree",
+      "subject": "a healing furnace with visible pipework, an open luminous heart and twisting smoke, physically constructed in a violet moonlit grove with giant flowering roots; front three-quarter view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 59,
+        "role": 3,
+        "tier": 7,
+        "angle": "front three-quarter view",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "leaping forward across a broken bridge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 1,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        266,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "b56408112326d04ca7b720e0a12dd84b2a742d2640dde9a0f4c3a113589647b5",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0829",
+      "name": "星巡・永約の伏牙陣",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "orbit",
+      "origin": "mountain",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a violet moonlit grove with giant flowering roots; side view with the face turned toward the viewer; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 60,
+        "role": 4,
+        "tier": 7,
+        "angle": "side view with the face turned toward the viewer",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 2,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        266,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "17cfada16790329ec123c5ab8c548551726a9280ca698e91821a3c7b9aa0d0b1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0893",
+      "name": "残響・永約の伏牙陣",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "echo",
+      "origin": "flower",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a shattered crystal canyon crossed by a silver stream; dramatic elevated three-quarter view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 60,
+        "role": 4,
+        "tier": 7,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 3,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        266,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "03c1f4953e84be3f28f369b551c03056658a4fcd11a10e739760800899f2f540",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0957",
+      "name": "命誓・永約の伏牙陣",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "vow",
+      "origin": "seed",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in a vast cloud citadel seen from a hanging bridge; front three-quarter view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 60,
+        "role": 4,
+        "tier": 7,
+        "angle": "front three-quarter view",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 4,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        266,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "1666a6a7e75450f2aedcd1660c0b7e7d03a4960caa9c04dcb9193fe7f0932759",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1021",
+      "name": "封機・永約の伏牙陣",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "forge",
+      "origin": "mountain",
+      "subject": "a celestial ballista with articulated limbs and a drawn beam of light, physically constructed in sunken library arches lit by luminous fish; full-body diagonal action view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 60,
+        "role": 4,
+        "tier": 7,
+        "angle": "full-body diagonal action view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "standing alert on a high windblown ledge",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 5,
+      "row": 1,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        266,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "5d9cc9c4914ba86756cf3d515a2c20647e697be2125355748bd663f6ae53f021",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0830",
+      "name": "星巡・永約の返光壁",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "orbit",
+      "origin": "river",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in sunken library arches lit by luminous fish; dramatic elevated three-quarter view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 61,
+        "role": 5,
+        "tier": 7,
+        "angle": "dramatic elevated three-quarter view",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "descending toward a luminous pool",
+        "ornament": "layered scale armor with small floating gemstones"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 0,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        522,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "5096350bc43fc48748b5e43fc821b75ef2b2d338eeb850177369cbdb9838eb18",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0894",
+      "name": "残響・永約の返光壁",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "echo",
+      "origin": "tree",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a copper and jade forge carved into living stone; front three-quarter view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 61,
+        "role": 5,
+        "tier": 7,
+        "angle": "front three-quarter view",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "descending toward a luminous pool",
+        "ornament": "a sweeping feather mantle and gilt anatomical markings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 1,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        522,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "50d579275162fce6159990f28734a2b97f8f1470c7299e44eb6b01251c4b30f0",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0958",
+      "name": "命誓・永約の返光壁",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "vow",
+      "origin": "grass",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in a ruined ivory observatory above an ocean of stars; full-body diagonal action view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 61,
+        "role": 5,
+        "tier": 7,
+        "angle": "full-body diagonal action view",
+        "environment": "a ruined ivory observatory above an ocean of stars",
+        "action": "descending toward a luminous pool",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 2,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        522,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "d44e1adc15fa0c3a7ca9085b760767622e57251e7dea965ece8eb9d0346e3304",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1022",
+      "name": "封機・永約の返光壁",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "forge",
+      "origin": "river",
+      "subject": "a many-layered barrier projector with movable mirror leaves, physically constructed in turquoise cascades through an ancestral sanctuary; rear three-quarter view with visible expressive face; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 61,
+        "role": 5,
+        "tier": 7,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "descending toward a luminous pool",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 3,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        522,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "654f2887e0a0b927f5adb1ecb0c1413eb8e4e967266006e7ca006f23a7957efb",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0831",
+      "name": "星巡・永約の星儀壇",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "orbit",
+      "origin": "seed",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in turquoise cascades through an ancestral sanctuary; front three-quarter view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 62,
+        "role": 6,
+        "tier": 7,
+        "angle": "front three-quarter view",
+        "environment": "turquoise cascades through an ancestral sanctuary",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "a luminous chest crystal with trailing ceremonial cords"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 4,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        522,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "c1109a6112a00acd1ebc05c6c5216f975d0745f319328a7c17cb66083457b974",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0895",
+      "name": "残響・永約の星儀壇",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "echo",
+      "origin": "mountain",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a coral garden of floating golden terraces; full-body diagonal action view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 62,
+        "role": 6,
+        "tier": 7,
+        "angle": "full-body diagonal action view",
+        "environment": "a coral garden of floating golden terraces",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "light crownlike antlers or decorative crest and orbiting fireflies"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 5,
+      "row": 2,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        522,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "4d32ffc33823b1d6644b9259c83bf233a7356403992165f32a09366f5512ba2e",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0959",
+      "name": "命誓・永約の星儀壇",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "vow",
+      "origin": "flower",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a violet moonlit grove with giant flowering roots; rear three-quarter view with visible expressive face; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 62,
+        "role": 6,
+        "tier": 7,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a violet moonlit grove with giant flowering roots",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 0,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        10,
+        778,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "3ba3906eaf5893c7ecdb70a1fef544d503c4a619a87d2282093d68f36225ea6b",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1023",
+      "name": "封機・永約の星儀壇",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "forge",
+      "origin": "seed",
+      "subject": "a floating prism engine above an engraved three-tier stone dais, physically constructed in a shattered crystal canyon crossed by a silver stream; close dynamic view with the entire main silhouette inside the tile; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 62,
+        "role": 6,
+        "tier": 7,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "turning toward the viewer amid drifting leaves",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 1,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        266,
+        778,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "170f52efa263a9f35697cc462edc58b5de0945f9e9313d8574c9aa23e9b675d1",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0832",
+      "name": "星巡・永約の帰環庭",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "orbit",
+      "origin": "grass",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a shattered crystal canyon crossed by a silver stream; full-body diagonal action view; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "indigo, cyan, ivory and pale gold; constellation tracery and orbital rings",
+      "composition": {
+        "group": 0,
+        "local": 63,
+        "role": 7,
+        "tier": 7,
+        "angle": "full-body diagonal action view",
+        "environment": "a shattered crystal canyon crossed by a silver stream",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "antique shoulder plates and small ancestral bells"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 2,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        522,
+        778,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "1696ec443780b48666c068e43cc4765eb640422135865607be34f393b63aa0ac",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0896",
+      "name": "残響・永約の帰環庭",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "echo",
+      "origin": "river",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a vast cloud citadel seen from a hanging bridge; rear three-quarter view with visible expressive face; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "violet, silver, lavender and dark blue; spectral memories and musical trails",
+      "composition": {
+        "group": 1,
+        "local": 63,
+        "role": 7,
+        "tier": 7,
+        "angle": "rear three-quarter view with visible expressive face",
+        "environment": "a vast cloud citadel seen from a hanging bridge",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "curling botanical engravings and crystal-tipped plumes"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 3,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        778,
+        778,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "0c8b09eb1c3e30b1bf44bffac986149e844b92ccaeef26c4c4bc4fa4b67bfc20",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G0960",
+      "name": "命誓・永約の帰環庭",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "vow",
+      "origin": "tree",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in sunken library arches lit by luminous fish; close dynamic view with the entire main silhouette inside the tile; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "crimson, rose-gold, warm ivory and restrained teal; oath ribbons and pulse crystals",
+      "composition": {
+        "group": 2,
+        "local": 63,
+        "role": 7,
+        "tier": 7,
+        "angle": "close dynamic view with the entire main silhouette inside the tile",
+        "environment": "sunken library arches lit by luminous fish",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "a flowing two-tone mantle and linked gold rings"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 4,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1034,
+        778,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "56a4463791ddbf09e71c04b703339d760ad78359b9afd5c0acd8704d10bcb74f",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    },
+    {
+      "id": "G1024",
+      "name": "封機・永約の帰環庭",
+      "setId": "BK04",
+      "type": "gimmick",
+      "family": "forge",
+      "origin": "grass",
+      "subject": "a reliquary garden machine whose living roots and glowing channels restore a pool, physically constructed in a copper and jade forge carved into living stone; wide cinematic view with the creature large in the foreground; releasing a curved wave of energy. Detailed perspective and grounded cast shadows",
+      "palette": "copper, teal, verdigris, brass and ivory; engraved mechanical plates with sealed cores",
+      "composition": {
+        "group": 3,
+        "local": 63,
+        "role": 7,
+        "tier": 7,
+        "angle": "wide cinematic view with the creature large in the foreground",
+        "environment": "a copper and jade forge carved into living stone",
+        "action": "rising into the air in a powerful upward curve",
+        "ornament": "a delicate engraved neck harness and long silk ribbons"
+      },
+      "src": "assets/design-v3/cards/bk04-atlas-48.webp",
+      "column": 5,
+      "row": 3,
+      "columns": 6,
+      "rows": 4,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "pixelCrop": [
+        1290,
+        778,
+        235,
+        235
+      ],
+      "sha256": "0f1143cb01497430b358156824f6c0f62e5731c9c3ca239a26628ddb1dc124e9",
+      "cellSha256": "de795daeae04f5e1fbd3a82b7c028366c9f1b3fd13c8339f5f90f58750b00057",
+      "status": "illustrated-original",
+      "method": "built-in-imagegen"
+    }
+  ]
+}

@@ -14,6 +14,9 @@ import {battleLogView} from '../battle-log.js';
 import {handInspectorView} from '../hand-inspector.js';
 import {soloView} from '../mode-views.js';
 import * as campaign from '../campaign.js';
+import * as eventDecks from '../event-decks.js';
+import * as eventBattles from '../event-battles.js';
+import {eventChallengeView} from '../event-views.js';
 import * as product from '../product-views.js';
 import {rulebookView} from '../rules-view.js';
 import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayout} from '../viewport.js';
@@ -23,7 +26,7 @@ import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayou
 const appSource = readFileSync(new URL('../app.js', import.meta.url), 'utf8').replace(/^import\s+[^;]+;\s*$/gm, '');
 const expose = `
 globalThis.__appIntegration = {
-  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, inspectBattleEffect, inspectFieldEffect, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase, loadStarterFromShop, registerOwnedStarter, expansionRecipeModal, loadExpansionRecipe, needsTarget, targetHint,
+  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, resultModal, showEventRecipe, currentMusicScene, inspectHand, inspectBattleEffect, inspectFieldEffect, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase, loadStarterFromShop, registerOwnedStarter, expansionRecipeModal, loadExpansionRecipe, needsTarget, targetHint,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
   purchasePack, packResultModal, closeModal,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
@@ -98,7 +101,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     sendAction: async () => ({ ok: true }),
   };
   const context = vm.createContext({
-    ...catalog, ...engine, ...shop, ...campaign, ...product, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS, CARD_ART_OVERRIDES, CARD_ART_EXPANSIONS,
+    ...catalog, ...engine, ...shop, ...campaign, ...product, ...eventDecks, ...eventBattles, eventChallengeView, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, BRAND_ICONS, CARD_ART_CROPS, CARD_ART_OVERRIDES, CARD_ART_EXPANSIONS,
     createOnlineClient: options => { callbacks = options; return client; },
     createCloudSync: () => ({ getState: () => ({phase:'synced',revision:1,dirty:false}), start: async () => ({phase:'synced',revision:1,dirty:false}), markDirty() {}, flush: async () => ({revision:1}), refresh: async () => ({revision:1}) }),
     createAccountUi: () => ({getOperatorDeck:()=>hooks.operatorDeck||null,onCloudState() {},handleAction:()=>false,touchBrand:()=>false,clearIdentity(){},onModalClosed(){}}),
@@ -301,6 +304,34 @@ test('battle BGM switches at 2500 HP for either player and returns after both re
  }
  state.players[1].core=1;app.setState({page:'home'});assert.equal(app.currentMusicScene(),'menu');
  app.setState({page:'duel',entered:false});assert.equal(app.currentMusicScene(),'menu');
+});
+
+test('environment battles keep owned decks, persist their identity, resume and record results only once',()=>{
+ const {app,storage,nodes}=boot(),deck=eventDecks.getEventDeck('event-mixed-royal');
+ app.data.playerName='挑戦者';app.setState({entered:true});
+ const owned=plain(app.data.collection),campaignBefore=plain(app.data.campaignProgress);
+ app.startGame(null,deck.id);
+ assert.equal(app.game.eventBattleId,deck.id);assert.equal(app.game.difficulty,'hard');assert.equal(app.game.campaignBattleId,undefined);assert.ok(app.game.eventMatchId);
+ const allCpu=[...app.game.players[1].deck,...app.game.players[1].hand].sort();assert.deepEqual(plain(allCpu),[...deck.ids].sort());
+ assert.deepEqual(plain(app.data.collection),owned);assert.equal(app.game.playerDeckId,null);
+ app.persist(true);const saved=JSON.parse(storage.get('beast-king-v6')),restored=app.restoreData(saved);
+ assert.equal(restored.game.eventBattleId,deck.id);assert.equal(restored.game.eventMatchId,app.game.eventMatchId);assert.equal(app.validSavedGame(restored.game),true);
+ app.navigate('events');assert.match(nodes.get('#app').innerHTML,/イベント戦を再開/);app.navigate('duel');assert.equal(app.game.eventMatchId,restored.game.eventMatchId);
+ app.game.winner=0;app.finishGame();const treasure=app.data.treasure;app.finishGame();
+ assert.equal(app.data.treasure,treasure);assert.equal(app.data.stats.played,1);assert.deepEqual(plain(app.data.eventProgress.clearedDeckIds),[deck.id]);assert.equal(app.data.eventProgress.results.length,1);
+ assert.deepEqual(plain(app.data.campaignProgress),campaignBefore);assert.deepEqual(plain(app.data.collection),owned);
+ app.resultModal();assert.match(nodes.get('#modal-root').innerHTML,/イベント一覧へ/);assert.match(nodes.get('#modal-root').innerHTML,/この構築に再挑戦/);
+ const game=app.game;app.startGame(null,'missing-deck');assert.equal(app.game,game);
+});
+
+test('environment recipes expose the public card detail action and reject forged saved battle identity',()=>{
+ const {app,nodes}=boot(),deck=eventDecks.EVENT_DECKS[0];
+ app.showEventRecipe(deck.id,0);let html=nodes.get('#modal-root').innerHTML;
+ assert.equal([...html.matchAll(/class="event-recipe-card"/g)].length,8);assert.match(html,/data-action="detail"[^>]*data-art-context="public"/);
+ app.showEventRecipe(deck.id,2);html=nodes.get('#modal-root').innerHTML;assert.match(html,/3 \/ 3/);
+ const state=cpuGame();state.eventBattleId='unknown';state.eventMatchId='saved-event';assert.equal(app.validSavedGame(state),false);
+ state.eventBattleId=deck.id;state.eventMatchId='';assert.equal(app.validSavedGame(state),false);
+ state.eventMatchId='valid';state.campaignBattleId=campaign.CAMPAIGN_BATTLES[0].id;assert.equal(app.validSavedGame(state),false);
 });
 
 

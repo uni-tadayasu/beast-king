@@ -10,11 +10,11 @@
     "expansionRecipes": 8,
     "totalGames": 10944,
     "hashes": {
-      "catalog.js": "962bdcaa65bc66d3a432dcfc0769e9f5734176311b74bcd32064560d59bb7094",
+      "catalog.js": "1d37585a57b23701ed8e2f8ce0b95190e237b7eb96d4b728b20740d09d9e8b04",
       "catalog-balance.js": "7e288f06c1fd11468948e7e181c98319c3120300bea5747066d3f1ad0af9ba13",
-      "additional-set-data.js": "ab806ff1a47661ab684baa6405989b665dd496c95d08e8d86e115d5455e6369e",
-      "expansion-recipes.js": "ed40583af6f65630f21176360e583d56a60da94ef5b6f2b0e2f1bed0ba254192",
-      "engine.js": "77088bd9c0d257a5636dda95c51c2dde5adbb207661c7ae9e6f0e2176d286675",
+      "additional-set-data.js": "2aa557cbb363b1820d73969044541923add308b1da818cf23affa5b73df8c54e",
+      "expansion-recipes.js": "ad34f05fab4447b1a624a760da5880e68a433716ed80ed62977454a7bbecc52e",
+      "engine.js": "10b499c8728380c010ac476dfb4ce328f4694f29963911a838a5dbd6bb4bedb2",
       "operator-deck.js": "8b7a678f1fb9fc99ad6c4b4c99bbaec5f56a480a113f680611a5db893618aa65"
     }
   },

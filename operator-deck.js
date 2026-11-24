@@ -4,16 +4,16 @@ const pairs=ids=>Object.freeze(ids.flatMap(id=>[id,id]));
 
 export const OPERATOR_DECK_ID='operator-kirahara-v1';
 export const OPERATOR_DECK=Object.freeze({
-  id:OPERATOR_DECK_ID,revision:2,
+  id:OPERATOR_DECK_ID,revision:3,
   name:'𠮷良原デッキ',
-  subtitle:'王源の覇道・低コスト連鎖と合成の完成構築',
-  description:'低コスト魔獣の連鎖、全体強化、ドローと守護、合成4枚、回復結界で制圧する第一弾・第二弾混成構築。レガリアを切り札に採用。',
+  subtitle:'四弾統合・王冠竜を支える守護と再生',
+  description:'第一弾から第四弾のカードを採用。低コストの守護・回復・除去で王冠竜レガリア2枚につなぎ、継承強化と星巡の合成で支える運営専用構築。',
   origin:'king',element:'king',aceId:'B0512',
   ids:pairs([
-    'B0005','B0399','B0647','B0199','B0324','M0166','B0263','B0512',
-    'M0065','B0079','M0256','M0512','B0791','B0769','G0227','G0260',
+    'M0193','G0294','B0066','B0835','B0002','M0476','B0007','B0512',
+    'M0084','B0713','M0256','M0512','B0257','B0583','B0743','B1039',
   ]),
-  specialIds:pairs(['F0128','F0174']),
+  specialIds:pairs(['F0408','F0385']),
 });
 
 export const OPERATOR_DECK_REQUIRED=Object.freeze(Object.fromEntries(

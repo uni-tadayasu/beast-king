@@ -7,13 +7,13 @@ import {CARDS,getCard} from '../catalog.js';
 const flush=async()=>{for(let i=0;i<60;i++)await Promise.resolve();};
 const decode=s=>String(s||'').replace(/&(amp|lt|gt|quot|#39);/g,(_,key)=>({amp:'&',lt:'<',gt:'>',quot:'"','#39':"'"}[key]));
 function fixture(t,hooks={}){
- let modal=null,html='',fields=new Map(),writes=[],reads=[],recordCalls=[],toastMessages=[],savedRevision=4;
+ let modal=null,html='',fields=new Map(),readerNodes=[],panelNodes=[],writes=[],reads=[],recordCalls=[],toastMessages=[],savedRevision=4;
  const now=Date.parse('2026-11-24T10:00:00Z');
  const snapshot={stats:{totalPlayers:4,onlinePlayers:1},settings:{revision:1,notice:'',maintenance:false},messages:[],gifts:[],events:[],notices:[],audit:[],serverTime:now};
  let gift={id:'gift-fixture-1',kind:'gift',title:'お祝い',body:'本文',target:'all',status:'published',phase:'active',revision:1,publishAt:now,treasure:10,cards:[],claimedAt:null,claimable:true};
  const key=kind=>({message:'messages',gift:'gifts',event:'events',notice:'notices'}[kind]);
  const renderHtml=value=>{
-  html=value;fields=new Map();
+  html=value;fields=new Map();readerNodes=[...value.matchAll(/data-op-reader-page="([^"]*)"/g)].map(match=>({dataset:{opReaderPage:match[1]}}));panelNodes=[...value.matchAll(/data-op-panel-active="([^"]*)"/g)].map(match=>({dataset:{opPanelActive:match[1]}}));
   for(const match of value.matchAll(/<(input|textarea|select)\b([^>]*\bid="([^"]+)"[^>]*)>(?:([\s\S]*?)<\/\1>)?/g)){
    const [,tag,attrs,id,body]=match;let fieldValue=decode(attrs.match(/\bvalue="([^"]*)"/)?.[1]);
    if(tag==='textarea')fieldValue=decode(body);
@@ -21,14 +21,14 @@ function fixture(t,hooks={}){
    fields.set(id,{id,value:fieldValue,type:attrs.match(/type="([^"]*)"/)?.[1]||tag,checked:/\bchecked\b/.test(attrs),disabled:/\bdisabled\b/.test(attrs),focus(){},setSelectionRange(){}});
   }
  };
- const documentImpl={hidden:false,activeElement:null,getElementById:id=>fields.get(id)||null,querySelectorAll:selector=>selector.includes('details')?[]:[...fields.values()],querySelector:()=>({scrollTop:0})};
+ const documentImpl={hidden:false,activeElement:null,getElementById:id=>fields.get(id)||null,querySelectorAll:selector=>selector.includes('details')?[]:selector.includes('[data-op-reader-page]')?readerNodes:selector.includes('[data-op-panel-active]')?panelNodes:[...fields.values()],querySelector:()=>({scrollTop:0})};
  async function write(kind,body){writes.push({kind,body:structuredClone(body)});if(hooks.write)return hooks.write(kind,body,{snapshot,writes});const id=body.id||'saved-fixture-'+writes.length,row={...body,id,kind,revision:(body.revision||0)+1,phase:body.status==='draft'?'draft':'active'};snapshot[key(kind)]=[row];return {operator:structuredClone(snapshot),createdId:id};}
  const client={profile:{id:'operator-fixture'},getStatus:()=>({}),getOperator:async()=>hooks.getOperator?hooks.getOperator():({operator:structuredClone(snapshot)}),getOperatorRecords:async values=>{recordCalls.push(values);return {kind:values.kind,items:snapshot[key(values.kind)]||[],page:values.page||0,pageSize:4,total:(snapshot[key(values.kind)]||[]).length};},getPublicStatus:async()=>({ok:true,notice:'',notices:[],maintenance:false}),sendOperatorMessage:body=>write('message',body),sendOperatorGift:body=>write('gift',body),saveOperatorEvent:body=>write('event',body),saveOperatorNotice:body=>write('notice',body),updateOperatorSettings:async body=>{writes.push({kind:'settings',body});if(hooks.settings)throw Error('通信エラー');snapshot.settings={...body,revision:body.revision+1};return {operator:structuredClone(snapshot)};},getInbox:async values=>({messages:values.kind==='message'?[{id:'mail-fixture-1',title:'メール',body:'<script>は文字です',status:'published',phase:'active',readAt:reads.length?now:null}]:[],gifts:values.kind==='gift'?[structuredClone(gift)]:[],counts:{messages:1,gifts:1,unread:reads.length?0:1},pagination:{page:values.page,pageSize:4,total:1}}),getEvents:async()=>({events:[],pagination:{page:0,pageSize:4,total:0}}),markInboxRead:async id=>{reads.push(id);return {ok:true};},claimGift:async(id,revision)=>{if(hooks.claimGift)return hooks.claimGift(id,revision);assert.equal(revision,savedRevision);gift={...gift,claimedAt:now,claimable:false,claim:{id,treasure:10,cards:[],convertedTreasure:5,claimedAt:now}};return {save:{revision:++savedRevision,data:{}},claim:gift.claim};}};
  const cloud={getState:()=>({revision:savedRevision}),flush:async()=>{reads.push('flush');},acceptServerSave:async save=>{reads.push('accepted-'+save.revision);return {phase:'synced'};}};
  const ui=createAccountUi({client,cloud,ensureReady:async()=>{},isBattleActive:()=>false,showModal:renderHtml,setModal:value=>{modal=value;},getModal:()=>modal,closeModal:()=>{modal=null;html='';},render:()=>{},toast:message=>toastMessages.push(message),getCard,documentImpl});
  t.after(()=>ui.onModalClosed());
  const act=async(action,dataset={})=>{assert.equal(ui.handleAction(action,{dataset}),true);await flush();};
- return {ui,client,snapshot,fields:()=>fields,html:()=>html,close:()=>{modal=null;html='';},writes,reads,recordCalls,toastMessages,act};
+ return {ui,client,snapshot,fields:()=>fields,readers:()=>readerNodes,panels:()=>panelNodes,html:()=>html,close:()=>{modal=null;html='';},writes,reads,recordCalls,toastMessages,act};
 }
 
 test('native console has bounded tabs and escapes author content while keeping automatic operator art',()=>{
@@ -37,6 +37,24 @@ test('native console has bounded tabs and escapes author content while keeping a
  assert.match(html,/専用レガリアのイラストは、運営認証後に自動で適用/);assert(!html.includes('operator-artwork-open'));
  const escaped=operatorDashboardView({tab:'notice',draft:{kind:'notice',title:'<img onerror=attack()>',body:'<script>attack()</script>',status:'draft'},step:3});
  assert(!escaped.includes('<script>attack()'));assert.match(escaped,/&lt;script&gt;/);
+});
+
+test('compact reward search reaches every match and resets pagination for a new query',async t=>{
+ const previousWindow=globalThis.window;
+ globalThis.window={BeastKingViewport:{get:()=>({width:844,height:390})}};
+ t.after(()=>{if(previousWindow===undefined)delete globalThis.window;else globalThis.window=previousWindow;});
+ const f=fixture(t);await f.act('operator-open');await f.act('operator-content-new',{kind:'gift'});await f.act('operator-editor-step',{step:'2'});
+ f.fields().get('operator-reward-query').value='B000';await f.act('operator-reward-search');
+ const expected=CARDS.filter(c=>c.id.startsWith('B000')).map(c=>c.id),seen=[];
+ for(let index=0;index<expected.length;index++){
+  const visible=[...f.html().matchAll(/data-action="operator-reward-add"[^>]*data-id="([^"]+)"/g)].map(m=>m[1]);
+  assert.deepEqual(visible,[expected[index]]);seen.push(...visible);
+  if(index<expected.length-1)await f.act('operator-reward-match-next');
+ }
+ assert.deepEqual(seen,expected);assert.equal(f.writes.length,0);
+ const finalCard=CARDS.at(-1);f.fields().get('operator-reward-query').value=finalCard.id;await f.act('operator-reward-search');
+ assert.match(f.html(),new RegExp('data-action="operator-reward-add"[^>]*data-id="'+finalCard.id+'"'));
+ await f.act('operator-reward-add',{id:finalCard.id});assert.ok(f.fields().has('operator-reward-count-0'));
 });
 
 test('composing a scheduled targeted gift carries fields across four steps and sends catalog-driven multi-card rewards after preview',async t=>{
@@ -101,4 +119,56 @@ test('a periodic operator refresh cannot revive the prior account console after 
  const refresh=timer();await flush();f.ui.clearIdentity();f.client.profile={id:'new-player-fixture'};f.close();timer=null;
  resolve({operator:{stats:{totalPlayers:99999},settings:{}}});await refresh;await flush();
  assert.equal(f.html(),'');assert.equal(timer,null,'old account refresh is not rescheduled');
+});
+
+test('periodic operator refresh preserves reading panel and page while an intentional step change resets them',async t=>{
+ const original=globalThis.setTimeout;let timer;
+ globalThis.setTimeout=(fn,delay,...args)=>delay===30000?(timer=fn,123456789):original(fn,delay,...args);
+ t.after(()=>{globalThis.setTimeout=original;});
+ const f=fixture(t);await f.act('operator-open');await f.act('operator-content-new',{kind:'gift'});
+ f.fields().get('operator-editor-title').value='長い案内';f.fields().get('operator-editor-body').value='本文の続きです。\n'.repeat(50);
+ await f.act('operator-editor-step',{step:'3'});
+ assert.ok(f.readers().length>0);assert.equal(f.panels().length,1);
+ f.readers()[0].dataset.opReaderPage='4';f.panels()[0].dataset.opPanelActive='2';
+ await timer();await flush();
+ assert.equal(f.readers()[0].dataset.opReaderPage,'4');assert.equal(f.panels()[0].dataset.opPanelActive,'2');
+ await f.act('operator-editor-step',{step:'0'});await f.act('operator-editor-step',{step:'3'});
+ assert.equal(f.readers()[0].dataset.opReaderPage,'0');assert.equal(f.panels()[0].dataset.opPanelActive,'0');
+});
+
+test('older inbox responses cannot replace a newer refresh, including its loading and error state',async t=>{
+ const f=fixture(t);await f.act('inbox-open');
+ const requests=[];f.client.getInbox=values=>new Promise(resolve=>requests.push({values,resolve}));
+ const first=f.ui.openInbox();await flush();const second=f.ui.openInbox();await flush();
+ const payload=title=>({messages:[],gifts:[{id:title,title,body:'本文',phase:'active',claimable:true,treasure:10,cards:[]}],counts:{messages:0,gifts:1},pagination:{page:0,pageSize:4,total:1}});
+ assert.equal(requests.length,2);requests[1].resolve(payload('最新の配信'));await second;
+ assert.match(f.html(),/最新の配信/);assert(!f.html().includes('aria-busy="true"'));
+ requests[0].resolve(payload('古い配信'));await first;
+ assert.match(f.html(),/最新の配信/);assert(!f.html().includes('古い配信'));
+});
+
+test('rapid inbox page presses wait for the current page instead of skipping records',async t=>{
+ const f=fixture(t);await f.act('inbox-open');
+ const requests=[];f.client.getInbox=values=>new Promise(resolve=>requests.push({values,resolve}));
+ await f.act('inbox-page-next');await f.act('inbox-page-next');await f.act('inbox-tab',{tab:'message'});
+ assert.equal(requests.length,1);assert.equal(requests[0].values.page,1);assert.equal(requests[0].values.kind,'gift');
+ requests[0].resolve({messages:[],gifts:[{id:'second-page',title:'次の4件',phase:'active',treasure:10,cards:[]}],counts:{gifts:12},pagination:{page:1,pageSize:4,total:12}});await flush();
+ assert.match(f.html(),/次の4件/);assert(!f.html().includes('aria-busy="true"'));
+ await f.act('inbox-page-next');assert.equal(requests[1].values.page,2);
+ requests[1].resolve({messages:[],gifts:[],counts:{gifts:12},pagination:{page:2,pageSize:4,total:12}});await flush();
+});
+
+test('reward navigation clamps a narrow-screen page after a resize and retains edited quantities',async t=>{
+ const previousWindow=globalThis.window;let height=390;
+ globalThis.window={BeastKingViewport:{get:()=>({width:844,height})}};
+ t.after(()=>{if(previousWindow===undefined)delete globalThis.window;else globalThis.window=previousWindow;});
+ const f=fixture(t),cards=CARDS.slice(-12).map(card=>({cardId:card.id,count:1}));
+ f.snapshot.gifts=[{id:'resize-gift',kind:'gift',title:'配布カード',body:'本文',target:'all',status:'draft',revision:1,treasure:0,cards,publishAt:null}];
+ await f.act('operator-open');await f.act('operator-tab',{tab:'gift'});await f.act('operator-content-edit',{kind:'gift',id:'resize-gift'});await f.act('operator-editor-step',{step:'2'});
+ for(let index=0;index<11;index++)await f.act('operator-reward-next');
+ assert.ok(f.fields().has('operator-reward-count-11'));f.fields().get('operator-reward-count-11').value='3';
+ height=900;await f.act('operator-editor-step',{step:'2'});assert.ok(f.fields().has('operator-reward-count-8'));
+ await f.act('operator-reward-prev');assert.ok(f.fields().has('operator-reward-count-4'));assert(!f.fields().has('operator-reward-count-8'));
+ await f.act('operator-editor-step',{step:'3'});await f.act('operator-editor-save');
+ assert.equal(f.writes[0].body.cards[11].count,3);
 });

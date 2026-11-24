@@ -24,7 +24,7 @@ export async function runBalanceBenchmark({sourceRoot=resolve(dirname(fileURLToP
   const load = file => import(pathToFileURL(resolve(sourceRoot,file)).href);
   const [{CARDS,DECK_PRESETS,EXPANSION_DECKS=[],validateDeck,validateSpecialDeck},{newGame,runAutomatedTurn},{OPERATOR_DECK}] = await Promise.all([load('catalog.js'),load('engine.js'),load('operator-deck.js')]);
   const presets=presetSourceRoot?(await import(pathToFileURL(resolve(presetSourceRoot,'catalog.js')).href)).DECK_PRESETS:[...DECK_PRESETS,...(expansions?EXPANSION_DECKS:[])];
-  const probes=[{...OPERATOR_DECK,id:'operator-revision-2'},...BALANCE_PROBES];
+  const probes=[{...OPERATOR_DECK,id:'operator-revision-'+OPERATOR_DECK.revision},...BALANCE_PROBES];
   for(const d of [...presets,...probes])if(!validateDeck(d.ids).valid||!validateSpecialDeck(d.specialIds).valid)throw new Error(`Illegal benchmark deck: ${d.id}`);
   const pairs=[];
   const compare=(a,b,pairIndex)=>{
@@ -83,5 +83,6 @@ if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   const option=name=>args.find(arg=>arg.startsWith(`--${name}=`))?.slice(name.length+3);
   const result=await runBalanceBenchmark({sourceRoot:option('source')?resolve(option('source')):undefined,presetSourceRoot:option('presets')?resolve(option('presets')):undefined,seeds:option('seeds')?Number(option('seeds')):32,seedBase:option('seed')?Number(option('seed')):BALANCE_SEED,opening:option('opening')||'current',expansions:option('expansions')!=='false'});
   if(option('output'))await writeFile(resolve(option('output')),JSON.stringify(result,null,2)+'\n');
-  console.log(JSON.stringify({methodology:result.methodology,overall:result.overall,catalog:result.catalog,starters:result.starters,presets:result.presets,probes:result.probes,probePairs:result.pairs.filter(p=>['operator-revision-2','legacy-exploit','midrange-probe'].includes(p.a)&&['operator-revision-2','legacy-exploit','midrange-probe'].includes(p.b))},null,2));
+  const probeIds=Object.keys(result.probes);
+  console.log(JSON.stringify({methodology:result.methodology,overall:result.overall,catalog:result.catalog,starters:result.starters,presets:result.presets,probes:result.probes,probePairs:result.pairs.filter(p=>probeIds.includes(p.a)&&probeIds.includes(p.b))},null,2));
 }

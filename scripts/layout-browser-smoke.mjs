@@ -53,6 +53,21 @@ async function click(selector){
  assert.equal(await evaluate('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');if(!e||e.disabled)return false;e.click();return true})()'),true,'Click: '+selector);
 }
 async function waitElement(selector){await until(()=>evaluate(exists(selector)),selector)}
+async function assertCompleteTextReader(selector,measureOverflow,label){
+ const read=()=>evaluate(`(()=>{const r=document.querySelector(${JSON.stringify(selector)});return {source:r.dataset.opText,text:r.querySelector('.op-reader-text').textContent,page:Number(r.dataset.opReaderPage),count:Number(r.dataset.opPageCount),visiblePage:Number(r.querySelector('[data-op-page-label]').textContent.split(' / ')[0]),nextDisabled:r.querySelector('[data-op-page-step="1"]').disabled}})()`);
+ const first=await read(),parts=[];
+ assert.ok(first.source.split('\n').length>20,label+' uses actual multiline content');
+ assert.ok(first.count>0&&first.count<=Array.from(first.source).length,label+' has a finite page count');
+ for(let page=0;page<first.count;page++){
+  const row=await read();
+  assert.deepEqual([row.page,row.visiblePage,row.count],[page,page+1,first.count],label+' visits page '+(page+1));
+  assert.deepEqual(await measureOverflow(),[],label+' page '+(page+1)+' fits completely');
+  parts.push(row.text);
+  assert.equal(row.nextDisabled,page===first.count-1,label+' last-page navigation');
+  if(!row.nextDisabled){await click(selector+' [data-op-page-step="1"]');await until(async()=>{const next=await read();return next.visiblePage===page+2;},label+' next text page');}
+ }
+ assert.equal(parts.join(''),first.source,label+' preserves every character and line break exactly once');
+}
 async function viewport(width,height,mobile=false){
  await send('Network.setUserAgentOverride',{userAgent:mobile?'Mozilla/5.0 (Linux; Android 14; LayoutSmoke) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',platform:mobile?'Android':'Linux x86_64'});
  await send('Emulation.setTouchEmulationEnabled',mobile?{enabled:true,maxTouchPoints:5}:{enabled:false});
@@ -136,7 +151,7 @@ try{
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
   // Long scheduled operator content is rendered locally; never sent to live players.
-  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261124-26');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
+  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261124-28');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
   // Real native news dialog, not a synthetic layout. Every notice must
   // appear exactly once, fully within the viewport and outside the controls.
   await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);
@@ -169,13 +184,17 @@ try{
    await delay(300);
    const overflow=await measureOperatorOverflow();
    assert.deepEqual(overflow,[],width+'x'+height+' operator editor step '+step+' has no clipped content');
-   if(step===3)for(const panel of [1,2]){await click('.op-reading-tabs [data-op-panel="'+panel+'"]');await delay(120);assert.deepEqual(await measureOperatorOverflow(),[],width+'x'+height+' operator review panel '+panel+' has no clipped content');}
+   if(step===3){
+    await assertCompleteTextReader('.op-main [data-op-panel-content="0"] [data-op-text]',measureOperatorOverflow,width+'x'+height+' operator review body');
+    for(const panel of [1,2]){await click('.op-reading-tabs [data-op-panel="'+panel+'"]');await delay(120);assert.deepEqual(await measureOperatorOverflow(),[],width+'x'+height+' operator review panel '+panel+' has no clipped content');}
+   }
   }
   await evaluate(`(async()=>{const {playerInboxView}=await import('./account-views.js');const {CARDS,getCard}=await import('./catalog.js');const gift={id:'fixture-inbox-long',title:'長い受信タイトルの全文確認。'.repeat(6).slice(0,80),body:'受け取った便りの本文をページ送りで最後まで確認します。\\n'.repeat(40).slice(0,1000),status:'published',phase:'active',publishAt:Date.now(),treasure:100000,cards:CARDS.slice(-12).map(card=>({cardId:card.id,count:3})),claimable:true};document.querySelector('#modal-root').innerHTML='<div class="modal-backdrop"><section class="modal wide" role="dialog"><button class="icon-btn modal-close">×</button>'+playerInboxView({gifts:[gift],selected:gift.id,tab:'gift',getCard})+'</section></div>';return true})()`);
   await delay(300);
   const measureInboxOverflow=()=>evaluate(`(()=>{const pane=document.querySelector('.op-inbox-main'),b=layoutRect(pane);return [...pane.querySelectorAll('.op-surface,.op-editor-footer,.op-copy-reader>p,.op-rewards')].filter(e=>{const r=layoutRect(e);return r.width>0&&(r.left<b.left-2||r.right>b.right+2||r.top<b.top-2||r.bottom>b.bottom+2||e.matches('.op-surface,.op-copy-reader>p')&&e.scrollHeight>e.clientHeight+2)}).map(e=>({tag:e.tagName,class:e.className,width:e.clientWidth,height:e.clientHeight,scrollHeight:e.scrollHeight,scrollWidth:e.scrollWidth,bounds:layoutRect(e).toJSON(),paneBounds:b.toJSON(),parent:{class:e.parentElement.className,bounds:layoutRect(e.parentElement).toJSON(),rows:getComputedStyle(e.parentElement).gridTemplateRows},text:e.textContent.slice(0,35)}))})()`);
   const inboxOverflow=await measureInboxOverflow();
   assert.deepEqual(inboxOverflow,[],width+'x'+height+' inbox long message and twelve-card reward fit');
+  await assertCompleteTextReader('.op-inbox-main [data-op-panel-content="0"] [data-op-text]',measureInboxOverflow,width+'x'+height+' inbox body');
   for(const panel of [1,2]){await click('.op-reading-tabs [data-op-panel="'+panel+'"]');await delay(120);assert.deepEqual(await measureInboxOverflow(),[],width+'x'+height+' inbox detail panel '+panel+' has no clipped content');}
   await evaluate('document.querySelector("#modal-root").removeEventListener("click",window.__opFixtureClick,true);document.querySelector("#modal-root").innerHTML="";delete window.__opFixtureRender;delete window.__opFixtureClick;true');
   await click('.navigation-dock [data-nav=deck]');assert.equal(await evaluate('document.querySelectorAll("#deck-bank-select option").length'),1);

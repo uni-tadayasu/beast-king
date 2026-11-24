@@ -1,5 +1,5 @@
 /** Suggested lists only. Loading these recipes never grants any cards. */
-import {EXPANSION_FAMILIES} from './additional-set-data.js?v=20261124-26';
+import {EXPANSION_FAMILIES} from './additional-set-data.js?v=20261124-28';
 const copies=cards=>cards.flatMap(card=>[card.id,card.id]);
 export function makeExpansionRecipes(cards,starters){
  const get=id=>cards.find(card=>card.id===id),recipes=[];
