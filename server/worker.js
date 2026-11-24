@@ -81,7 +81,7 @@ function publicState(row,viewer){
     if(index===1){p.hand=p.hand.map(()=>null);p.special=(p.special||[]).map(()=>null);p.traps=p.traps.map(trap=>({uid:trap.uid}));}
     return p;
   });
-  return {rulesVersion:state.rulesVersion,turn:state.turn,active:toViewer(state.active),winner:typeof state.winner==='number'?toViewer(state.winner):state.winner,players,log:clone(state.log.slice(-MAX_LOG_ENTRIES)),nextUid:state.nextUid,difficulty:state.difficulty};
+  return {rulesVersion:state.rulesVersion,...(state.openingRuleVersion===1?{openingRuleVersion:1}:{}),turn:state.turn,active:toViewer(state.active),winner:typeof state.winner==='number'?toViewer(state.winner):state.winner,players,log:clone(state.log.slice(-MAX_LOG_ENTRIES)),nextUid:state.nextUid,difficulty:state.difficulty};
 }
 async function snapshot(db,row,playerId,now){
   const seat=seatOf(row,playerId),state=publicState(row,seat),opponent=1-seat,privateState=JSON.parse(row.state_json);

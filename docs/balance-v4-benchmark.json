@@ -4230,5 +4230,6 @@
     "engine.js": "c1e798b9c894f2ca3fabd4237375fb5915ca4520f939afab026efad2bce73b2f",
     "operator-deck.js": "8b7a678f1fb9fc99ad6c4b4c99bbaec5f56a480a113f680611a5db893618aa65"
   },
-  "releaseSourceNote": "Production dependency URLs received a common cache revision after simulations. Per-run methodology.hashes retain the exact executed pre-versioning sources; card and AI logic is unchanged."
+  "releaseSourceNote": "These hashes record the card-balance source before opening compensation. The final opening policy and its source hashes are recorded in balance-opening-v1-benchmark.json; card numeric values and the operator recipe are unchanged.",
+  "supersededByOpeningArtifact": "balance-opening-v1-benchmark.json"
 }

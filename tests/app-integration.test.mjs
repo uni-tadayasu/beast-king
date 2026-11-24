@@ -204,6 +204,31 @@ test('saved games require all physical 32 plus 4 cards and reject legacy games w
   }
 });
 
+test('saved opening policies survive client restoration while legacy saves never receive a retroactive bonus',()=>{
+  const {app}=boot();
+  let game=cpuGame();
+  for(let turn=1;turn<=8;turn++){
+    const saved=plain(app.baseData());saved.game=plain(game);
+    game=app.restoreData(saved).game;
+    assert.equal(game.openingRuleVersion,1);
+    assert.equal(game.players[game.active].energy,game.active===1?[2,3,3,4][turn/2-1]:Math.ceil(turn/2));
+    assert.equal(engine.endTurn(game).ok,true);
+  }
+  for(const value of ['1',0,2,null,true]){
+    const invalid=cpuGame();invalid.openingRuleVersion=value;
+    assert.equal(app.validSavedGame(invalid),false);
+    assert.equal(app.restoreGame(invalid,6),null);
+  }
+  for(const version of [3,4,5,6]){
+    const legacy=plain(cpuGame());delete legacy.openingRuleVersion;
+    if(version<5){delete legacy.rulesVersion;for(const p of legacy.players)p.core=30;}
+    const restored=app.restoreGame(legacy,version);
+    assert.ok(restored);assert.equal(Object.hasOwn(restored,'openingRuleVersion'),false);
+    assert.equal(engine.endTurn(restored).ok,true);
+    assert.equal(restored.players[1].energy,1);
+  }
+});
+
 test('leaving while room or ranked creation is pending cancels despite the busy flag', async () => {
   for (const kind of ['room', 'ranked']) {
     const pending = deferred();

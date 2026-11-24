@@ -140,10 +140,16 @@ function activateStartTraps(state, who, events) {
 function beginTurn(state, events) {
   const who = state.active;
   const player = state.players[who];
-  player.maxEnergy = Math.min(RULES.maxEnergy, player.maxEnergy+1);
+  // New matches give the second player +1 for their first two turns only.
+  // The third turn holds at 3, restoring the ordinary curve without a decrease.
+  // Unmarked suspended matches retain their original opening schedule.
+  const openingBoost = state.openingRuleVersion === 1 && who === 1;
+  const growth = openingBoost && state.turn === 2 ? 2 : openingBoost && state.turn === 6 ? 0 : 1;
+  player.maxEnergy = Math.min(RULES.maxEnergy, player.maxEnergy+growth);
   player.energy = player.maxEnergy;
   player.field.forEach(unit => {unit.ready = true;});
   emit(state, events, `${label(player)}のターン。エーテル ${player.energy}。`, 'turn');
+  if(openingBoost && state.turn === 2)emit(state, events, '後攻補正：最初の2回の自分のターンはエーテルが1多くなります（2→3→3→4…）。', 'info');
   // Delayed gimmicks resolve before refilling the hand to four cards.
   activateStartTraps(state, who, events);
   if (state.winner === null) draw(state, who, Math.max(0, RULES.hand-player.hand.length), events);
@@ -169,7 +175,7 @@ export function newGame({playerDeck, cpuDeck, playerSpecialDeck, cpuSpecialDeck,
     const validation=validateSpecialDeck(ids);
     if (!validation.valid) throw new Error(`${i?'CPU':'あなた'}の特殊デッキを確認してください：${validation.errors.join('／')}`);
   });
-  const state = {rulesVersion:2, turn:1, active:0, winner:null, players:[], log:[], nextUid:1, seed:seedNumber(seed), difficulty:LEVELS.has(difficulty)?difficulty:'normal'};
+  const state = {rulesVersion:2, openingRuleVersion:1, turn:1, active:0, winner:null, players:[], log:[], nextUid:1, seed:seedNumber(seed), difficulty:LEVELS.has(difficulty)?difficulty:'normal'};
   state.players = [first, second].map((ids,i)=>({name:i?'CPU':'あなた', core:MAX_CORE, shield:0, energy:0, maxEnergy:0, deckSize:ids.length, specialSize:specials[i].length, special:[...specials[i]], banished:[], deck:shuffle(state,ids), hand:[], field:[], traps:[], grave:[], fatigue:0, lastMiracle:null}));
   const events=[];
   emit(state,events,`契約成立。${MAX_HEART_POINTS}のハートポイントで対戦を始めます。`,'start');

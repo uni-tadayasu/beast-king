@@ -70,7 +70,7 @@ async function currentSave(db,playerId){return savePublic(await first(db,'SELECT
 function cardIds(ids,types,max,fail){check(Array.isArray(ids)&&ids.length<=max&&ids.every(id=>types.includes(getCard(id)?.type)),fail,'invalid_save','保存するカード情報を確認してください。');return [...ids];}
 function cpuSave(raw,fail){
   if(raw===null||raw===undefined)return null;
-  check(plain(raw)&&raw.rulesVersion===2&&integer(raw.turn,1,9999)&&[0,1].includes(raw.active)&&[null,0,1,'draw'].includes(raw.winner)&&integer(raw.seed,0,0xffffffff)&&integer(raw.nextUid,1,100_000)&&['easy','normal','hard'].includes(raw.difficulty),fail,'invalid_save','ソロ対戦の状態を確認してください。');
+  check(plain(raw)&&raw.rulesVersion===2&&(raw.openingRuleVersion===undefined||raw.openingRuleVersion===1)&&integer(raw.turn,1,9999)&&[0,1].includes(raw.active)&&[null,0,1,'draw'].includes(raw.winner)&&integer(raw.seed,0,0xffffffff)&&integer(raw.nextUid,1,100_000)&&['easy','normal','hard'].includes(raw.difficulty),fail,'invalid_save','ソロ対戦の状態を確認してください。');
   check(Array.isArray(raw.players)&&raw.players.length===2&&Array.isArray(raw.log)&&raw.log.length<=MAX_LOG_ENTRIES,fail,'invalid_save');
   const used=new Set();
   const players=raw.players.map((p,owner)=>{
@@ -87,6 +87,7 @@ function cpuSave(raw,fail){
   });
   const log=raw.log.map(event=>{check(plain(event)&&text(event.text,1000,{lines:true})&&text(event.type,32,{empty:false})&&(event.turn===undefined||integer(event.turn,1,9999)),fail,'invalid_save');return {text:event.text,type:event.type,...(event.turn===undefined?{}:{turn:event.turn})};});
   const game={rulesVersion:2,turn:raw.turn,active:raw.active,winner:raw.winner,players,log,nextUid:raw.nextUid,seed:raw.seed,difficulty:raw.difficulty};
+  if(raw.openingRuleVersion===1)game.openingRuleVersion=1;
   for(const key of ['cpuDeckName','playerDeckName'])if(raw[key]!==undefined){check(text(raw[key],80),fail,'invalid_save');game[key]=raw[key];}
   if(raw.playerDeckId!==undefined){check(raw.playerDeckId===null||raw.playerDeckId==='operator-kirahara-v1',fail,'invalid_save');game.playerDeckId=raw.playerDeckId;}
   for(const key of ['statsRecorded','forfeited'])if(raw[key]!==undefined){check(typeof raw[key]==='boolean',fail,'invalid_save');game[key]=raw[key];}

@@ -222,6 +222,47 @@ test('rooms create real two-player matches and snapshots hide identities and shu
   assert.ok([403,404].includes(unauthorized.status));assert.equal(unauthorized.data.match,undefined);
 });
 
+test('new online matches expose their opening policy to both viewers and give the second seat a 2,3,3,4 energy curve',async t=>{
+  const f=fixture(t),host=await f.profile('先手の王'),guest=await f.profile('後手の王');
+  const {hostMatch,guestMatch}=await roomPair(f,host,guest);
+  for(const match of [hostMatch,guestMatch])assert.equal(match.state.openingRuleVersion,1);
+  let current=hostMatch;
+  const secondEnergy=[2,3,3,4];
+  for(let turn=2;turn<=8;turn++){
+    const actor=turn%2===0?host:guest;
+    current=matchFrom(await f.action(actor,current,'endTurn'));
+    const state=rawState(f,hostMatch.id),seat=(turn-1)%2;
+    assert.equal(state.turn,turn);assert.equal(state.active,seat);assert.equal(state.openingRuleVersion,1);
+    const expected=seat===0?(turn+1)/2:secondEnergy[turn/2-1];
+    assert.equal(state.players[seat].energy,expected,`authoritative energy on turn ${turn}`);
+    assert.equal(state.players[seat].maxEnergy,expected,`authoritative capacity on turn ${turn}`);
+    for(const [viewer,viewerSeat] of [[host,0],[guest,1]]){
+      const projected=matchFrom(await f.api('GET',`/api/matches/${hostMatch.id}`,viewer.token)).state;
+      assert.equal(projected.openingRuleVersion,1);assert.equal(projected.active,seat===viewerSeat?0:1);
+      assert.equal(projected.players[0].energy,state.players[viewerSeat].energy);
+      assert.equal(projected.players[1].maxEnergy,state.players[1-viewerSeat].maxEnergy);
+    }
+  }
+});
+
+test('unmarked stored turn-one matches retain the legacy opening after a worker reconnect',async t=>{
+  const f=fixture(t),host=await f.profile('以前の先手'),guest=await f.profile('以前の後手');
+  const {hostMatch}=await roomPair(f,host,guest),legacy=rawState(f,hostMatch.id);
+  delete legacy.openingRuleVersion;saveState(f,hostMatch.id,legacy);f.reconnect();
+  let current=matchFrom(await f.api('GET',`/api/matches/${hostMatch.id}`,host.token));
+  assert.equal(Object.hasOwn(current.state,'openingRuleVersion'),false);
+  for(let turn=2;turn<=8;turn++){
+    const actor=turn%2===0?host:guest;
+    current=matchFrom(await f.action(actor,current,'endTurn'));
+    const state=rawState(f,hostMatch.id),seat=(turn-1)%2,expected=Math.ceil(turn/2);
+    assert.equal(state.turn,turn);assert.equal(state.active,seat);
+    assert.equal(Object.hasOwn(state,'openingRuleVersion'),false);
+    assert.equal(Object.hasOwn(current.state,'openingRuleVersion'),false);
+    assert.equal(state.players[seat].energy,expected,`legacy energy on turn ${turn}`);
+    assert.equal(state.players[seat].maxEnergy,expected,`legacy capacity on turn ${turn}`);
+  }
+});
+
 test('both match viewers see the opponent public origin without exposing private identity or changing the board',async t=>{
   const f=fixture(t),host=await f.profile('花の王'),guest=await f.profile('草の王');
   await f.api('POST','/api/profile',host.token,{origin:'flower'});await f.api('POST','/api/profile',guest.token,{origin:'grass'});
@@ -355,7 +396,10 @@ test('revision CAS accepts one concurrent action and action IDs are idempotent, 
   const duplicates=await Promise.all([f.api('POST',path,host.token,request),f.api('POST',path,host.token,request)]);
   assert.ok(duplicates.every(r=>r.status===200),JSON.stringify(duplicates.map(r=>r.data)));
   assert.ok(duplicates.every(r=>r.data.match.revision===hostMatch.revision+1));
-  assert.equal(rawState(f,hostMatch.id).turn,2);
+  const afterOpening=rawState(f,hostMatch.id);
+  assert.equal(afterOpening.turn,2);assert.equal(afterOpening.openingRuleVersion,1);
+  assert.equal(afterOpening.players[1].energy,2);assert.equal(afterOpening.players[1].maxEnergy,2);
+  assert.ok(duplicates.every(r=>r.data.match.state.openingRuleVersion===1));
   assert.equal(f.sqlite.prepare('SELECT count(*) AS n FROM bk_actions WHERE match_id=?').get(hostMatch.id).n,1);
   const mismatch=await f.api('POST',path,host.token,{...request,kind:'surrender'});assert.equal(mismatch.status,409);
   const stale=await f.api('POST',path,host.token,{...request,actionId:'stale-action-other'});assert.equal(stale.status,409);
