@@ -16,7 +16,7 @@ function naturalSize(node){
 }
 function setCanvas(node,width,height,fill){
  node.style.setProperty('width',Math.max(1,width)+'px','important');
- node.style.setProperty('height','auto','important');
+ node.style.setProperty('height',node.dataset.page==='deck'&&fill?Math.max(1,height)+'px':'auto','important');
  node.style.setProperty('min-height',fill?Math.max(1,height)+'px':'0px','important');
  node.style.setProperty('--bk-canvas-h',Math.max(1,height)+'px');
  node.style.setProperty('--bk-canvas-w',Math.max(1,width)+'px');
@@ -27,11 +27,13 @@ function measureCardPane(node,height){
  const meta=result.querySelector('.results-meta'),pager=result.querySelector('.pagination');
  const footer=(meta?.offsetHeight||18)+(pager?.offsetHeight||36)+22;
  const pad=Number.parseFloat(getComputedStyle(node).paddingBottom)||0;
- const available=Math.max(1,height-(r.top-bounds.top)-pad-footer);
+ const dual=node.dataset.page==='deck'&&!!node.querySelector('.dual-workshop');
+ const available=Math.max(1,dual?result.clientHeight-footer:height-(r.top-bounds.top)-pad-footer);
  const list=node.querySelector('.deck-list'),foot=node.querySelector('.deck-panel-foot');
- const deckHeight=list?Math.max(0,height-(list.getBoundingClientRect().top-bounds.top)-pad-(foot?.offsetHeight||48)-40):0;
- const metrics={width:Math.max(1,Math.floor(result.clientWidth)),height:Math.floor(available),deckHeight:Math.floor(deckHeight)};
- const key=[node.dataset.page,metrics.width,metrics.height,metrics.deckHeight].join(':');
+ const pagerRight=list?.querySelector('.deck-list-pagination'),rightPadding=20;
+ const deckHeight=list?Math.max(0,dual?list.clientHeight-(pagerRight?.offsetHeight||34)-rightPadding:height-(list.getBoundingClientRect().top-bounds.top)-pad-(foot?.offsetHeight||48)-40):0;
+ const metrics={width:Math.max(1,Math.floor(result.clientWidth)),height:Math.floor(available),deckHeight:Math.floor(deckHeight),deckWidth:list?Math.max(1,list.clientWidth-16):0};
+ const key=[node.dataset.page,metrics.width,metrics.height,metrics.deckHeight,metrics.deckWidth].join(':');
  // A replaced app render needs the current calculation even if geometry is identical.
  if(key!==lastCardMetrics||!node.dataset.bkMetricsApplied){lastCardMetrics=key;node.dataset.bkMetricsApplied='true';window.dispatchEvent(new CustomEvent('bk-fit-card-metrics',{detail:metrics}));}
 }
@@ -46,7 +48,7 @@ function fit(node,width,height,{modal=false,logicalMin=0,center=false,fill=false
  function trial(s,measure=false){
   const w=fill?width/s:Math.max(width,minimum),h=height/s;
   setCanvas(node,w,h,fill);
-  if(measure&&measureCards)measureCardPane(node,h);
+  if(measureCards&&(measure||node.dataset.page==='deck'))measureCardPane(node,h);
   const n=naturalSize(node);
   return {fits:n.w*s<=width+2&&n.h*s<=height+2,ratio:Math.min(1,width/n.w,height/n.h),w,h,n};
  }

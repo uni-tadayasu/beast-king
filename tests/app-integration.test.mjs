@@ -21,7 +21,7 @@ import {calculateCardLayout,calculateFittedCardLayout} from '../viewport.js';
 const appSource = readFileSync(new URL('../app.js', import.meta.url), 'utf8').replace(/^import\s+[^;]+;\s*$/gm, '');
 const expose = `
 globalThis.__appIntegration = {
-  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck,
+  baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
   get workingDeck(){return workingDeck}, get data(){return data}, get game(){return game}, get cpuGame(){return cpuGame},
@@ -413,4 +413,15 @@ test('Regalia artwork is scoped to the authenticated deck instance and the click
  assert.ok(app.artStyle(regalia,'battle').includes('radial-gradient'));
  assert.ok(!app.artStyle(regalia,'battle').includes('king.webp'));
  assert.ok(!JSON.stringify(data).includes(privateArt));
+});
+
+test('dual workshop displays a complete left catalogue and an independent right deck',()=>{
+ const {app}=boot();app.setState({page:'deck',entered:true});
+ assert.equal(app.filteredCards().length,2304);
+ const view=app.deckView();assert.ok(view.indexOf('data-transfer-drop="pool"')<view.indexOf('data-transfer-drop="deck"'));
+ assert.ok(view.includes('data-scope="all"')&&view.includes('data-scope="owned"'));
+ assert.ok(view.includes('id="deck-bank-select"')&&view.includes('data-action="deck-save"'));
+ const id=app.workingDeck[0],collection=plain(app.data.collection);
+ assert.equal(app.editDeck(id,false),true);assert.equal(app.filteredCards().length,2304);
+ assert.deepEqual(plain(app.data.collection),collection);
 });

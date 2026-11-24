@@ -96,6 +96,16 @@ try{
   }
   await click('.navigation-dock [data-nav=deck]');assert.equal(await evaluate('document.querySelectorAll("#deck-bank-select option").length'),4);
   assert.ok(await evaluate('Boolean(document.querySelector(".transfer-source .transfer-card")&&document.querySelector(".deck-panel .deck-row"))'));
+  await waitElement('.bk-native-pane>.bk-fit-pane[data-fit-scale]');await delay(180);
+  const panes=await evaluate(`(()=>{const frame=document.querySelector('.bk-native-pane').getBoundingClientRect(),left=document.querySelector('.transfer-source').getBoundingClientRect(),right=document.querySelector('.deck-panel').getBoundingClientRect();return {left:left.toJSON(),right:right.toJSON(),frame:frame.toJSON()}})()`);
+  assert.ok(panes.left.width>0&&panes.right.width>0&&panes.left.right<=panes.right.left+2,width+'x'+height+' separate left and right panes '+JSON.stringify(panes));
+  assert.ok(panes.left.top>=panes.frame.top-2&&panes.right.top>=panes.frame.top-2&&panes.left.bottom<=panes.frame.bottom+3&&panes.right.bottom<=panes.frame.bottom+3,width+'x'+height+' both panes within the content frame '+JSON.stringify(panes));
+  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),2304);
+  await click('[data-action=deck-filter-scope][data-scope=owned]');
+  const ownedTotal=await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)');assert.ok(ownedTotal>0&&ownedTotal<2304);
+  assert.equal(await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent'),'32/32');
+  await click('[data-action=deck-filter-scope][data-scope=all]');
+  assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),2304);
   assert.equal(await evaluate('document.querySelector("[data-action=deck-filter-scope][data-scope=all]").getAttribute("aria-pressed")'),'true');
   const transferId=await evaluate('document.querySelector(".deck-row [data-action=deck-remove]").dataset.id');
   const before=await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent');

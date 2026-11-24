@@ -511,3 +511,117 @@ html.bk-fit .bk-native-screen .deck-row .row-name>span:last-child{line-height:1.
 .individual-art[data-regalia-status="pending"]::after{content:"専用イラスト\A 認証・配信を確認";white-space:pre-line;position:absolute;inset:0;display:grid;place-content:center;text-align:center;color:#e6d1a0;font-size:clamp(9px,5cqi,16px);font-weight:700;line-height:1.55;background:#11182b55;z-index:2;pointer-events:none}
 .deck-row-art[data-regalia-status="pending"]{border-color:#aa8acb;background:#24243a}
 .operator-art-status{color:#e1c78f;font-size:11px;line-height:1.4}
+
+/* Dedicated dual-pane workshop: catalogue and selected deck always share
+   the same fixed content viewport. Each side has its own page navigation. */
+html.bk-fit .bk-native-screen .page[data-page=deck]{padding:7px clamp(7px,1vw,18px)!important;--bk-pad:7px;min-height:0!important;gap:0}
+html.bk-fit .bk-native-screen .page[data-page=deck]>.dual-workshop{height:100%!important;min-height:0!important;max-height:none!important;flex:1 1 0!important;display:grid;grid-template-rows:auto minmax(0,1fr);gap:6px}
+html.bk-fit .bk-native-screen .dual-workshop>.page-title{margin:0;min-height:0}
+html.bk-fit .bk-native-screen .dual-workshop .page-title .page-label{display:none}
+html.bk-fit .bk-native-screen .dual-workshop .page-title h1{margin:0;font-size:clamp(19px,1.6vw,30px)}
+html.bk-fit .bk-native-screen .dual-workshop .page-title p{margin:0;font-size:clamp(10px,.85vw,14px)}
+html.bk-fit .bk-native-screen .dual-workshop>.transfer-workspace{display:grid!important;grid-template-columns:minmax(0,1.52fr) minmax(0,1fr);align-items:stretch;gap:9px;min-height:0!important;height:100%!important;min-width:0}
+html.bk-fit .bk-native-screen .dual-workshop .transfer-source,
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel{position:relative;display:flex;flex-direction:column;min-height:0!important;height:100%!important;min-width:0!important;width:100%;overflow:visible!important;padding:6px;gap:5px;border:1px solid #a78dbc65;border-radius:8px;background:linear-gradient(150deg,#27253ce8,#12182ce8)}
+html.bk-fit .bk-native-screen .dual-workshop .transfer-source{order:0}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel{order:1}
+html.bk-fit .bk-native-screen .dual-workshop .transfer-heading{flex:none;padding:5px 7px;margin:0;min-height:0;gap:4px}
+html.bk-fit .bk-native-screen .dual-workshop .transfer-heading strong{font-size:clamp(12px,1vw,17px)}
+html.bk-fit .bk-native-screen .dual-workshop .transfer-heading small{font-size:clamp(9px,.8vw,12px)}
+.dual-workshop .deck-source-tools{display:flex;flex-wrap:wrap;align-items:center;gap:4px;min-width:0;flex:none}
+.dual-workshop .deck-scope-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;flex:1 1 100%;min-width:0}
+.dual-workshop .deck-scope-tabs>.btn{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:3px 7px;min-width:0;min-height:34px;font-size:clamp(10px,.9vw,14px);line-height:1.15;white-space:normal;padding:4px}
+.dual-workshop .deck-scope-tabs b{font-size:.9em;color:#e9d8ae;font-variant-numeric:tabular-nums}
+.dual-workshop .deck-source-tools>.btn,.dual-workshop .deck-source-tools>.text-button{min-height:27px;font-size:clamp(10px,.8vw,12px);padding:4px 6px}
+html.bk-fit .bk-native-screen .dual-workshop .filter-bar{flex:none;margin:0;gap:4px;padding:4px;min-height:0;grid-template-columns:minmax(90px,.9fr) minmax(0,1.1fr);grid-template-rows:auto auto}
+html.bk-fit .bk-native-screen .dual-workshop .filter-bar .search-field{grid-column:1;grid-row:1;min-width:0;margin:0}
+html.bk-fit .bk-native-screen .dual-workshop .filter-bar>.tabs{grid-column:2;grid-row:1;min-width:0;grid-template-columns:repeat(5,minmax(0,1fr))}
+html.bk-fit .bk-native-screen .dual-workshop .filter-bar>.filters-secondary{grid-column:1/-1;grid-row:2;margin:0}
+html.bk-fit .bk-native-screen .dual-workshop .filter-bar.deck-filters-compact>.filters-secondary{display:none}
+html.bk-fit .bk-native-screen .dual-workshop .filter-bar.deck-filters-compact{grid-template-rows:auto}
+html.bk-fit .bk-native-screen .dual-workshop .filter-bar .tab{min-height:29px;padding:3px 2px;font-size:clamp(10px,.8vw,13px)}
+html.bk-fit .bk-native-screen .dual-workshop .search-field input{min-width:0;width:100%;min-height:30px}
+html.bk-fit .bk-native-screen .dual-workshop #card-results{display:grid;grid-template-rows:auto minmax(0,1fr) auto;flex:1 1 0!important;min-height:0!important;height:auto!important;gap:5px;overflow:visible}
+html.bk-fit .bk-native-screen .dual-workshop #card-results .cards-grid{height:auto!important;min-height:0!important;min-width:0;align-content:center;justify-content:center;gap:clamp(5px,.8vw,14px);padding:3px;overflow:visible!important}
+html.bk-fit .bk-native-screen .dual-workshop #card-results .results-meta{margin:0;min-height:0;line-height:1.2;gap:3px;font-size:clamp(10px,.8vw,13px)}
+html.bk-fit .bk-native-screen .dual-workshop #card-results .pagination{margin:0;min-height:32px;height:auto;flex:none;gap:4px}
+.dual-workshop .page-jump,.page-jump{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:0;font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.page-jump input{width:clamp(37px,4vw,64px);height:28px;min-width:0;text-align:center;padding:3px;border:1px solid #a991bd70;border-radius:4px;background:#171b2c;color:#eadfc9;font:inherit;appearance:textfield;-moz-appearance:textfield}
+.page-jump input::-webkit-inner-spin-button,.page-jump input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.dual-workshop .deck-page-jump small{display:block;font-size:9px}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-toolbar{flex:none;min-height:0;margin:0;padding:4px;gap:4px;display:grid;grid-template-columns:minmax(0,1fr) auto;background:#1b1c31}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-toolbar>label{min-width:0;display:flex;align-items:center;gap:4px}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-toolbar>label strong{display:none}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-toolbar select{width:100%;min-width:0;min-height:29px;font-size:clamp(10px,.85vw,14px);padding:3px 22px 3px 6px}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-actions{gap:3px;flex-wrap:wrap}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-actions>.btn{font-size:clamp(9px,.75vw,12px);min-height:29px;padding:3px 5px;white-space:normal}
+html.bk-fit .bk-native-screen .dual-workshop .deck-bank-toolbar>p{grid-column:1/-1;margin:0;font-size:10px;line-height:1.3}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head{padding:4px 6px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;flex:none}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head>label{margin:0;font-size:11px;white-space:nowrap}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head>input{flex:1 1 80px;min-width:0;min-height:28px;height:28px;margin:0;font-size:clamp(11px,.9vw,14px)}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head>select{display:none}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head>.operator-deck-preset{flex:1 1 100%;margin:0;padding:3px;min-width:0}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head .deck-total{flex:1 1 100%;margin:0;padding:3px 0;gap:3px;line-height:1.15}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head .deck-total>strong{font-size:clamp(17px,1.6vw,27px)}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head .deck-total>span{font-size:10px}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head .deck-composition{flex:1 1 100%;margin:0;font-size:11px}
+html.bk-fit .bk-native-screen .dual-workshop .deck-zone-tabs{min-height:0;margin:0;gap:4px;padding:0;flex:none}
+html.bk-fit .bk-native-screen .dual-workshop .deck-zone-tabs>button{min-height:31px;font-size:clamp(11px,.85vw,14px);padding:4px}
+html.bk-fit .bk-native-screen .dual-workshop .deck-display-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;padding:0;flex:none}
+html.bk-fit .bk-native-screen .dual-workshop .deck-display-tabs>.btn{min-height:29px;min-width:0;padding:3px 2px;line-height:1.2;white-space:normal;font-size:clamp(9px,.8vw,12px)}
+html.bk-fit .bk-native-screen .dual-workshop .deck-list{flex:1 1 0!important;min-height:0!important;height:auto!important;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:4px;padding:2px;overflow:visible!important}
+html.bk-fit .bk-native-screen .dual-workshop .deck-visible-rows{min-height:0!important;height:auto!important;display:flex;flex-direction:column;justify-content:flex-start;gap:3px;padding:0;overflow:visible!important}
+html.bk-fit .bk-native-screen .dual-workshop .deck-row{flex:none;min-height:39px;height:39px;max-width:100%;padding:2px;gap:4px;grid-template-columns:24px minmax(0,1fr) 30px minmax(13px,auto) 30px}
+html.bk-fit .bk-native-screen .dual-workshop .deck-row .row-name{font-size:clamp(11px,1vw,15px);line-height:1.2}
+html.bk-fit .bk-native-screen .dual-workshop .deck-row .row-name>span:last-child{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+html.bk-fit .bk-native-screen .dual-workshop .deck-row .qty-btn{width:29px;height:29px}
+html.bk-fit .bk-native-screen .dual-workshop .deck-image-grid{min-width:0;min-height:0;display:grid;grid-template-columns:repeat(var(--deck-image-columns,2),minmax(0,var(--deck-image-width,94px)));gap:5px;align-items:start;align-content:center;justify-content:center}
+html.bk-fit .bk-native-screen .dual-workshop .deck-image-slot{min-width:0;padding:2px;gap:3px;box-sizing:border-box}
+html.bk-fit .bk-native-screen .dual-workshop .deck-image-slot>.game-card{max-width:none;width:100%;height:auto;aspect-ratio:360/520}
+html.bk-fit .bk-native-screen .dual-workshop .deck-image-slot>.btn{font-size:clamp(9px,.75vw,12px);min-height:26px}
+html.bk-fit .bk-native-screen .dual-workshop .deck-list-pagination{min-height:32px;height:auto;margin:0;padding:2px;gap:5px;flex:none}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-foot{padding:4px;flex:none;margin:0;min-height:0}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-foot .deck-hint{margin:0 0 3px;min-height:0;font-size:clamp(9px,.8vw,12px);line-height:1.2}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-foot>div{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr) auto;gap:3px;margin:0}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-foot>div>.btn{min-width:0;min-height:30px;padding:3px;line-height:1.15;white-space:normal;font-size:clamp(10px,.85vw,13px)}
+html.bk-fit .bk-native-screen .dual-workshop .deck-panel-foot .text-button{font-size:10px;white-space:normal;padding:2px}
+@media(max-width:800px){
+ html.bk-fit .bk-native-screen .dual-workshop>.transfer-workspace{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:5px}
+ html.bk-fit .bk-native-screen .dual-workshop .transfer-source,html.bk-fit .bk-native-screen .dual-workshop .deck-panel{padding:4px;gap:4px}
+ html.bk-fit .bk-native-screen .dual-workshop .filter-bar{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto}
+ html.bk-fit .bk-native-screen .dual-workshop .filter-bar.deck-filters-compact{grid-template-rows:auto auto}
+ html.bk-fit .bk-native-screen .dual-workshop .filter-bar .search-field{grid-column:1;grid-row:1}
+ html.bk-fit .bk-native-screen .dual-workshop .filter-bar>.tabs{grid-column:1;grid-row:2;grid-template-columns:repeat(3,minmax(0,1fr))}
+ html.bk-fit .bk-native-screen .dual-workshop .filter-bar>.filters-secondary{grid-column:1;grid-row:3;grid-template-columns:repeat(2,minmax(0,1fr))}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-bank-toolbar{grid-template-columns:minmax(0,1fr)}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-bank-actions{display:grid;grid-template-columns:1fr 1fr}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-display-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head .deck-total>span{display:none}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-row{grid-template-columns:18px minmax(0,1fr) 23px minmax(9px,auto) 23px;gap:2px;padding:1px;height:34px;min-height:34px}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-row .qty-btn{width:22px;height:25px}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-row .mini-cost{width:17px;font-size:11px}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-row .row-name{font-size:10px}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-foot>div{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-foot .text-button{grid-column:1/-1}
+}
+@media(max-width:560px){
+ html.bk-fit .bk-native-screen .dual-workshop .page-title p{display:none}
+ html.bk-fit .bk-native-screen .dual-workshop .transfer-heading small{display:none}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-scope-tabs>.btn{min-height:31px;gap:2px;flex-direction:column;font-size:10px;padding:3px 1px}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-source-tools>.btn,.dual-workshop .deck-source-tools>.text-button{min-height:23px;padding:2px 3px;font-size:10px}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head>label{font-size:9px}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head .deck-composition{font-size:9px}
+ html.bk-fit .bk-native-screen .dual-workshop #card-results .pagination .btn{min-width:0;padding:4px;font-size:9px;min-height:27px}
+ html.bk-fit .bk-native-screen .dual-workshop .page-jump input{width:32px;font-size:10px}
+ html.bk-fit .bk-native-screen .dual-workshop .page-jump{gap:2px;font-size:10px}
+}
+@media(max-height:570px) and (orientation:landscape){
+ html.bk-fit .bk-native-screen .dual-workshop>.page-title p{display:none}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-scope-tabs>.btn{min-height:25px;padding:3px;font-size:10px}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-source-tools>.btn{min-height:23px}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head .deck-composition{display:none}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-bank-toolbar>p{display:none}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head .deck-total{display:none}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-panel-head>label{display:none}
+ html.bk-fit .bk-native-screen .dual-workshop .deck-zone-tabs>button,.dual-workshop .deck-display-tabs>.btn{min-height:24px}
+}
