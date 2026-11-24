@@ -2,6 +2,9 @@
    time at physical size; fit an indivisible panel only after reflow and paging. */
 const doc=document,root=doc.documentElement;
 root.classList.add('bk-fit');
+const layoutWidth=()=>window.BeastKingViewport?.get().width||window.innerWidth;
+const layoutHeight=()=>window.BeastKingViewport?.get().height||window.innerHeight;
+const layoutRect=node=>{const r=node.getBoundingClientRect();return window.BeastKingViewport?.toLocalRect(r)||r;};
 let pending=false,running=false,lastRoot=null,lastModal=null,about=null;
 let lastCardMetrics='';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
@@ -11,7 +14,7 @@ function directFrame(host,target){
  const frame=doc.createElement('div');frame.className='bk-fit-frame';host.insertBefore(frame,target);frame.append(target);return frame;
 }
 function naturalSize(node){
- const bounds=node.getBoundingClientRect();
+ const bounds=layoutRect(node);
  return {w:Math.max(node.offsetWidth,node.scrollWidth,1),h:Math.max(node.offsetHeight,node.scrollHeight,1),bounds};
 }
 function setCanvas(node,width,height,fill){
@@ -23,7 +26,7 @@ function setCanvas(node,width,height,fill){
 }
 function measureCardPane(node,height){
  const result=node.querySelector('#card-results');if(!result)return;
- const bounds=node.getBoundingClientRect(),r=result.getBoundingClientRect();
+ const bounds=layoutRect(node),r=layoutRect(result);
  const meta=result.querySelector('.results-meta'),pager=result.querySelector('.pagination');
  const footer=(meta?.offsetHeight||18)+(pager?.offsetHeight||36)+22;
  const pad=Number.parseFloat(getComputedStyle(node).paddingBottom)||0;
@@ -33,7 +36,7 @@ function measureCardPane(node,height){
  const list=node.querySelector('.deck-list'),foot=node.querySelector('.deck-panel-foot');
  const pagerRight=list?.querySelector('.deck-list-pagination'),rightPadding=20;
  const imageGrid=list?.querySelector('.deck-image-grid');
- const deckHeight=list?Math.max(0,dual?(imageGrid?.clientHeight||list.clientHeight-(pagerRight?.offsetHeight||34)-rightPadding):height-(list.getBoundingClientRect().top-bounds.top)-pad-(foot?.offsetHeight||48)-40):0;
+ const deckHeight=list?Math.max(0,dual?(imageGrid?.clientHeight||list.clientHeight-(pagerRight?.offsetHeight||34)-rightPadding):height-(layoutRect(list).top-bounds.top)-pad-(foot?.offsetHeight||48)-40):0;
  const metrics={width:Math.max(1,Math.floor(dual?(leftGrid?.clientWidth||result.clientWidth):result.clientWidth)),height:Math.floor(available),deckHeight:Math.floor(deckHeight),deckWidth:list?Math.max(1,imageGrid?.clientWidth||list.clientWidth-10):0};
  const key=[node.dataset.page,metrics.width,metrics.height,metrics.deckHeight,metrics.deckWidth].join(':');
  // A replaced app render needs the current calculation even if geometry is identical.
@@ -61,10 +64,10 @@ function measureWorkshopTracks(node,logicalHeight){
   return num(s,'paddingTop')+num(s,'paddingBottom')+num(s,'borderTopWidth')+num(s,'borderBottomWidth')+num(s,'rowGap')+2*num(l,'rowGap')+num(l,'paddingTop')+num(l,'paddingBottom')+num(l,'borderTopWidth')+num(l,'borderBottomWidth');
  }));
  // At least one complete illustrated card plus counts and actions.
- const minImageHeight=innerWidth>=1000?235:145;
+ const minImageHeight=layoutWidth()>=1000?235:145;
  const required=Math.ceil(tools+meta+pager+chrome+minImageHeight+3);
  workspace.style.setProperty('min-height',required+'px','important');
- const bounds=node.getBoundingClientRect(),box=workspace.getBoundingClientRect(),style=getComputedStyle(node);
+ const bounds=layoutRect(node),box=layoutRect(workspace),style=getComputedStyle(node);
  const outside=Math.ceil(box.top-bounds.top+num(style,'paddingBottom')+num(style,'borderBottomWidth'));
  // Reserve exactly the same full logical panel and image heights. A grid
  // item's legacy intrinsic/percentage height must never shorten one side.
@@ -110,7 +113,7 @@ function fitDeckWorkshop(node,width,height){
  node.dataset.fitScale=scale.toFixed(4);node.dataset.fitWidth=String(Math.round(result.w*scale));node.dataset.fitHeight=String(Math.round(result.h*scale));
 }
 
-function fit(node,width,height,{modal=false,logicalMin=0,center=false,fill=false,measureCards=false}={}){
+function fit(node,width,height,{modal=false,logicalMin=0,center=false,fill=false,measureCards=false,tolerance=2}={}){
  if(!node||width<1||height<1)return;
  node.style.transform='none';node.style.setProperty('left','0px','important');node.style.setProperty('top','0px','important');
  // Try physical pixel dimensions first. If content is exceptionally tall,
@@ -123,7 +126,7 @@ function fit(node,width,height,{modal=false,logicalMin=0,center=false,fill=false
   setCanvas(node,w,h,fill);
   if(measureCards&&(measure||node.dataset.page==='deck'))measureCardPane(node,h);
   const n=naturalSize(node);
-  return {fits:n.w*s<=width+2&&n.h*s<=height+2,ratio:Math.min(1,width/n.w,height/n.h),w,h,n};
+  return {fits:n.w*s<=width+tolerance&&n.h*s<=height+tolerance,ratio:Math.min(1,width/n.w,height/n.h),w,h,n};
  }
  let result=trial(1,true);
  if(fill){
@@ -168,7 +171,8 @@ function paginateAbout(){
  const prev=doc.createElement('button'),next=doc.createElement('button'),count=doc.createElement('span');prev.type=next.type='button';prev.textContent='前のページ';next.textContent='次のページ';pager.append(prev,count,next);
  main.parentElement.insertBefore(frame,main);frame.append(main);main.classList.add('bk-fit-target');frame.after(pager);
  about={frame,main,sections,index:0,prev,next,count};
- function update(){const {sections,index,prev,next,count}=about;sections.forEach((e,i)=>e.hidden=i!==index);prev.disabled=index<=0;next.disabled=index>=sections.length-1;count.textContent=(index+1)+' / '+sections.length;schedule();}
+ function update(){const {sections,index,prev,next,count}=about;sections.forEach((e,i)=>e.hidden=i!==index);prev.disabled=index<=0;next.disabled=index>=sections.length-1;count.textContent=(index+1)+' / '+sections.length;main.dispatchEvent(new CustomEvent('bk-guide-page',{detail:{index,total:sections.length}}));schedule();}
+ main.addEventListener('bk-guide-jump',event=>{const value=Number(event.detail?.index);if(Number.isInteger(value)){about.index=clamp(value,0,sections.length-1);update();}});
  prev.addEventListener('click',()=>{about.index=Math.max(0,about.index-1);update()});next.addEventListener('click',()=>{about.index=Math.min(sections.length-1,about.index+1);update()});
  update();
 }
@@ -199,7 +203,7 @@ function preparePage(pane){
  }
  if(page==='home'){
   const home=pane.querySelector('.product-home');if(!home)return;
-  const compact=innerWidth<850||innerHeight<650;
+  const compact=layoutWidth()<850||layoutHeight()<650;
   home.dataset.bkHomeMode=compact?homeMode:'all';
   const existing=home.querySelector(':scope > .bk-screen-tabs');
   if(compact){
@@ -207,7 +211,7 @@ function preparePage(pane){
   }else if(existing)existing.hidden=true;
  }
  if(page==='collection'){
-  const compact=innerWidth<900||innerHeight<630;
+  const compact=layoutWidth()<900||layoutHeight()<630;
   if(!compact)catalogMode='cards';
   pane.dataset.bkCatalogMode=compact?catalogMode:'all';
   const existing=pane.querySelector(':scope > .bk-screen-tabs');
@@ -240,7 +244,13 @@ function fitApp(){
   target.dataset.fitScale='1.0000';target.dataset.fitWidth=String(target.clientWidth);target.dataset.fitHeight=String(target.clientHeight);
   lastRoot=target;return;
  }
- // Entry and the separately preserved rebuild client retain their own layouts.
+ if(target.matches('.shell,.entry-screen')){
+  target.classList.remove('bk-fit-target');target.classList.add(target.matches('.shell')?'bk-rebuild-native':'bk-entry-native');
+  if(target.parentElement!==app){const old=target.parentElement;app.insertBefore(target,old);old.remove();}
+  for(const key of ['transform','left','top','width','height','min-height'])target.style.removeProperty(key);
+  lastRoot=target;return;
+ }
+ // The entry canvas retains its own layout.
  // The entire logical canvas fills the viewport rather than a narrow centered strip.
  if(target!==lastRoot){target.classList.add('bk-fit-target');directFrame(app,target);lastRoot=target;}
  const frame=target.parentElement;frame.style.height=app.clientHeight+'px';frame.style.flex='none';
@@ -262,11 +272,11 @@ function paginateList(list,size,label='一覧'){
  state.size=size;updatePagedList(list,state);
 }
 function paginateLongLists(){
- const short=innerHeight<650,phone=innerWidth<600;
- const general=innerHeight<=500?2:innerHeight<=750?4:6;
+ const short=layoutHeight()<650,phone=layoutWidth()<600;
+ const general=layoutHeight()<=500?2:layoutHeight()<=750?4:6;
  const groups=[
-  ['.starter-shelf',phone?1:innerWidth<1100||short?2:4,'スターター'],
-  ['.pack-result-grid',phone?2:short?3:innerWidth<1100?4:6,'開封カード'],
+  ['.starter-shelf',phone?1:layoutWidth()<1100||short?2:4,'スターター'],
+  ['.pack-result-grid',phone?2:short?3:4,'開封カード'],
   ['.rulebook-spread',phone||short?1:2,'ルール'],
   ['.campaign-chapters',phone||short?2:5,'章'],
   ['.battle-log-panel .battle-log-entries',1,'対戦履歴'],
@@ -327,13 +337,13 @@ function fitOperatorConsole(modal){
 function fitModal(){
  const modal=doc.querySelector('#modal-root .modal,dialog[open]:not(.news-dialog)');
  if(!modal)return;
- const w=Math.max(1,innerWidth-20),h=Math.max(1,(window.visualViewport?.height||innerHeight)-20);
+ const w=Math.max(1,layoutWidth()-20),h=Math.max(1,layoutHeight()-20);
  if(modal!==lastModal){lastModal=modal;modal.classList.add('bk-fit-modal');}
  if(fitOperatorConsole(modal))return;
  const wrap=modal.parentElement;
  const inBackdrop=wrap?.classList.contains('modal-backdrop');
  // Native dialogs remain in the top layer and use its centered positioning.
- if(!inBackdrop){modal.style.setProperty('max-height','none','important');modal.style.setProperty('overflow','visible','important');modal.style.width=Math.min(w,960)+'px';modal.style.height='auto';modal.style.transform='none';const n=naturalSize(modal);const factor=Math.min(1,w/n.w,h/n.h);modal.style.transform='scale('+factor+')';modal.style.transformOrigin='center center';return;}
+ if(!inBackdrop){modal.style.setProperty('max-height','none','important');modal.style.setProperty('overflow','visible','important');modal.style.width=Math.min(w,960)+'px';modal.style.height='auto';modal.style.setProperty('--bk-dialog-scale','1');modal.style.transform='none';const n=naturalSize(modal);const factor=Math.min(1,w/n.w,h/n.h);modal.style.setProperty('--bk-dialog-scale',String(factor));modal.style.transform='scale('+factor+')';modal.style.transformOrigin='center center';return;}
  const wide=modal.classList.contains('wide');
  fit(modal,wide?w:Math.min(w,960),h,{modal:true,logicalMin:0,center:true,fill:wide});
  if(!wide)modal.style.setProperty('left',(Number.parseFloat(modal.style.left||'0')+(w-Math.min(w,960))/2)+'px','important');
@@ -361,9 +371,13 @@ function lockOverflow(){
 }
 function run(){
  pending=false;if(running)return;running=true;
- try{paginateAbout();paginateLongLists();fitApp();if(about){const {frame,main}=about;fit(main,frame.clientWidth,frame.clientHeight,{fill:true});}fitModal();fitAuxiliary();lockOverflow();}finally{running=false;}
+ // Guide section boxes must also fit, including fractional CSS pixels rounded
+ // by offsetHeight/scrollHeight. Keep their allowance below the visible edge.
+ try{paginateAbout();paginateLongLists();fitApp();if(about){const {frame,main}=about;fit(main,frame.clientWidth,frame.clientHeight,{fill:true,tolerance:.5});}fitModal();fitAuxiliary();lockOverflow();}finally{running=false;}
 }
 function schedule(){if(pending)return;pending=true;requestAnimationFrame(run);}
 new MutationObserver(records=>{if(records.some(r=>r.type==='childList'&&(r.addedNodes.length||r.removedNodes.length)))schedule();}).observe(doc.body,{childList:true,subtree:true});
 doc.addEventListener('wheel',event=>{if(!event.target?.closest?.('input,select,textarea'))event.preventDefault();},{capture:true,passive:false});
 doc.addEventListener('toggle',schedule,true);window.addEventListener('resize',schedule,{passive:true});window.visualViewport?.addEventListener('resize',schedule,{passive:true});window.addEventListener('bk-fit-layout',schedule);document.fonts?.ready.then(schedule);schedule();
+
+window.addEventListener('beastking:viewport',schedule);

@@ -24,9 +24,11 @@ const expose = `
 globalThis.__appIntegration = {
   baseData, validSavedGame, validSavedPool, restoreData, restoreGame, persist, startGame, finishGame, currentMusicScene, inspectHand, inspectBattleEffect, inspectFieldEffect, handInspectionSelection, restoreDeckCopies, editDeck, transferCard, filteredCards, deckView, operatorRegaliaArt, artStyle, cardMarkup, cardDetails, promoteLegacyKirahara, inspectOptions, replaceInspectedCard, removeInspectedCard, initializeDeckBank, loadBankEntry, saveDeck, createBankDeck, starterPurchaseModal, confirmStarterPurchase, loadStarterFromShop, registerOwnedStarter,
   enterOnlineMatch, acceptOnlineMatch, recordOnlineResult, navigate,
+  purchasePack, packResultModal, closeModal,
   beginOnlineMembership, cancelOnlineWaiting, receiveOnlineUpdate,
   get workingDeck(){return workingDeck}, get data(){return data}, get game(){return game}, get cpuGame(){return cpuGame},
   get online(){return online}, get onlineBattle(){return onlineBattle}, get page(){return page},
+  get packOpening(){return packOpening}, get currentModal(){return currentModal},
   setState(values){
     if('data' in values)data=values.data;
     if('game' in values)game=values.game;
@@ -65,7 +67,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
   const localStorage = { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) };
   const scheduled = new Map();
   let timerId = 0, callbacks;
-  const calls = [];
+  const calls = [], fxCalls = [];
   const profile = { id: 'guest-test', nickname: '旅人', origin: 'mountain', rating: 1000, wins: 0, losses: 0, draws: 0 };
   const client = {
     profile,
@@ -102,6 +104,11 @@ function boot({ hooks = {}, stored = {} } = {}) {
     setPublicNotice() {},
     createPresenceController: () => ({start:async()=>{},stop:async()=>{}}),
     createMusicController: () => ({ sync() {}, unlock() {}, getState: () => ({ scene: 'menu', blocked: false }) }),
+    createExperienceController: () => ({
+      sync() {}, screen() {}, observeBattle() {}, sound() {}, settingsMarkup: () => '',
+      openPack(values) { fxCalls.push({method:'openPack',values,saved:JSON.parse(storage.get('beast-king-v6')||'null')}); return hooks.openPackEffect?.(values) || Promise.resolve(); },
+      revealCards(container,pulls) { fxCalls.push({method:'revealCards',pulls:plain(pulls)}); },
+    }),
     entryView: () => '<main>Entry</main>', document, localStorage, crypto: webcrypto,
     window: { addEventListener() {}, removeEventListener() {}, scrollTo() {} },
     location: { hash: '' }, history: { replaceState() {} }, navigator: {},
@@ -110,7 +117,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     requestAnimationFrame:()=>0, cancelAnimationFrame(){}, URL, Blob, structuredClone, console,
   });
   vm.runInContext(appSource + expose, context, { filename: 'app.js', timeout: 2000 });
-  return { app: context.__appIntegration, storage, calls, nodes, client };
+  return { app: context.__appIntegration, storage, calls, fxCalls, nodes, client };
 }
 function cpuGame(seed = 17) {
   const starter = catalog.STARTER_DECKS[0];
@@ -194,6 +201,31 @@ test('saved games require all physical 32 plus 4 cards and reject legacy games w
     assert.deepEqual(plain(restored.stats), saved.stats);
     if (version === 3) assert.equal(restored.game, null);
     else { assert.equal(app.validSavedGame(restored.game), true); assert.equal(restored.game.players[0].core, 5000); }
+  }
+});
+
+test('saved opening policies survive client restoration while legacy saves never receive a retroactive bonus',()=>{
+  const {app}=boot();
+  let game=cpuGame();
+  for(let turn=1;turn<=8;turn++){
+    const saved=plain(app.baseData());saved.game=plain(game);
+    game=app.restoreData(saved).game;
+    assert.equal(game.openingRuleVersion,1);
+    assert.equal(game.players[game.active].energy,game.active===1?[2,3,3,4][turn/2-1]:Math.ceil(turn/2));
+    assert.equal(engine.endTurn(game).ok,true);
+  }
+  for(const value of ['1',0,2,null,true]){
+    const invalid=cpuGame();invalid.openingRuleVersion=value;
+    assert.equal(app.validSavedGame(invalid),false);
+    assert.equal(app.restoreGame(invalid,6),null);
+  }
+  for(const version of [3,4,5,6]){
+    const legacy=plain(cpuGame());delete legacy.openingRuleVersion;
+    if(version<5){delete legacy.rulesVersion;for(const p of legacy.players)p.core=30;}
+    const restored=app.restoreGame(legacy,version);
+    assert.ok(restored);assert.equal(Object.hasOwn(restored,'openingRuleVersion'),false);
+    assert.equal(engine.endTurn(restored).ok,true);
+    assert.equal(restored.players[1].energy,1);
   }
 });
 
@@ -446,9 +478,11 @@ test('50/50 editor card geometry includes the entire action footer',()=>{
 
 test('illustration replacements affect only the selected public card faces',()=>{
  const {app}=boot();
- assert.equal(Object.keys(CARD_ART_OVERRIDES).length,12);
+ const review=JSON.parse(readFileSync(new URL('../assets/design-v2/art-direction-review.json',import.meta.url),'utf8'));
+ assert.equal(Object.keys(CARD_ART_OVERRIDES).length,review.activeReplacementCount);
+ assert.deepEqual(Object.keys(CARD_ART_OVERRIDES).sort(),[...review.atlases.flatMap(a=>a.cardIds),...review.retainedPriorCardIds].sort());
  for(const id of Object.keys(CARD_ART_OVERRIDES)){const c=catalog.getCard(id);assert.ok(c);const r=CARD_ART_OVERRIDES[id];assert.ok(app.artStyle(c).includes(r.src));assert.ok(app.cardMarkup(c).includes('rarity-'+c.rarity));}
- assert.ok(app.artStyle(catalog.getCard('B0001')).includes('beast-01.webp'));
+ assert.ok(app.artStyle(catalog.getCard('B0017')).includes('beast-02.webp'));
  assert.ok(app.artStyle(catalog.getCard('B0512')).includes('king.webp'));
 });
 
@@ -497,4 +531,47 @@ test('battle effect reference does not mutate the game or send a network action'
  app.inspectBattleEffect('gimmick','0:trap:effect-trap');assert.match(nodes.get('#app').innerHTML,new RegExp('data-inspected-card="'+trap.id+'"'));
  app.inspectBattleEffect('miracle','0:last');assert.match(nodes.get('#app').innerHTML,new RegExp('data-inspected-card="'+spell.id+'"'));
  assert.deepEqual(plain(app.game),before);assert.equal(calls.length,n);
+});
+
+test('pack grant is persisted before the ceremony and rapid repeated activation cannot charge twice',async()=>{
+ const pending=deferred();
+ const {app,storage,fxCalls}=boot({hooks:{openPackEffect:()=>pending.promise}});
+ app.setState({page:'shop',entered:true});app.data.treasure=1000;
+ const before=plain(app.data),opening=app.purchasePack('BK02');
+ assert.equal(app.packOpening,true);
+ assert.equal(fxCalls.filter(call=>call.method==='openPack').length,1);
+ const saved=JSON.parse(storage.get('beast-king-v6'));
+ assert.equal(saved.lastPack.packId,'BK02');assert.equal(saved.lastPack.pulls.length,12);
+ assert.deepEqual(plain(app.data.collection),saved.collection);
+ assert.equal(saved.treasure,before.treasure-100+saved.lastPack.bonusTreasure);
+ assert.deepEqual(fxCalls[0].saved.collection,saved.collection,'the animation sees an already persisted grant');
+ assert.ok(saved.lastPack.pulls.every(pull=>catalog.getCard(pull.cardId)?.setId==='BK02'));
+ const ranks=Object.keys(catalog.RARITY_LABELS),highest=saved.lastPack.pulls.reduce((best,pull)=>{const rarity=catalog.getCard(pull.cardId).rarity;return ranks.indexOf(rarity)>ranks.indexOf(best)?rarity:best},'N');
+ assert.equal(fxCalls[0].values.rarity,highest);
+ await app.purchasePack('BK02');
+ assert.equal(fxCalls.filter(call=>call.method==='openPack').length,1);
+ assert.equal(app.data.treasure,saved.treasure);
+ assert.deepEqual(plain(app.data.collection),saved.collection);
+ pending.resolve();await opening;
+ assert.equal(app.packOpening,false);assert.equal(app.currentModal.kind,'pack-result');
+ assert.equal(fxCalls.filter(call=>call.method==='revealCards').length,1);
+ app.packResultModal();
+ assert.equal(fxCalls.filter(call=>call.method==='revealCards').length,1,'viewing history does not replay opening sounds');
+ await app.purchasePack('BK01');
+ assert.equal(app.data.treasure,saved.treasure,'the result modal blocks another purchase');
+});
+
+test('a presentation failure still displays awarded cards and insufficient treasure releases the purchase guard',async()=>{
+ const {app,fxCalls}=boot({hooks:{openPackEffect:()=>Promise.reject(new Error('presentation unavailable'))}});
+ app.setState({page:'shop',entered:true});app.data.treasure=100;
+ await app.purchasePack('BK01');
+ assert.equal(app.packOpening,false);assert.equal(app.currentModal.kind,'pack-result');
+ assert.equal(app.data.lastPack.pulls.length,12);
+ assert.equal(fxCalls.filter(call=>call.method==='revealCards').length,1);
+ app.closeModal();app.data.treasure=0;
+ const before=plain(app.data);
+ await app.purchasePack('BK02');
+ assert.equal(app.packOpening,false);assert.equal(app.currentModal,null);
+ assert.deepEqual(plain(app.data),before);
+ assert.equal(fxCalls.filter(call=>call.method==='openPack').length,1);
 });

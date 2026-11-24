@@ -1,24 +1,24 @@
 {
   "id": "./",
-  "name": "ビーストキング 新生版｜BEAST KING",
-  "short_name": "BEAST KING 新生版",
-  "description": "第一弾・第二弾のカードデータ計2,304枚。ソロ対戦の先行公開版。",
+  "name": "ビーストキング｜旧セーブ互換版",
+  "short_name": "BEAST KING 互換版",
+  "description": "旧セーブを引き継いで遊ぶビーストキングの互換クライアント。全2,304枚・ソロ対戦に対応。",
   "lang": "ja",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "any",
-  "background_color": "#101422",
-  "theme_color": "#191e30",
+  "orientation": "landscape",
+  "background_color": "#06131e",
+  "theme_color": "#0c2938",
   "icons": [
     {
-      "src": "../assets/icon-192.png",
+      "src": "../assets/icon-192.png?v=20261124-26",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "../assets/icon-512.png",
+      "src": "../assets/icon-512.png?v=20261124-26",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

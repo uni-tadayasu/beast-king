@@ -1,0 +1,37 @@
+/* Art direction belongs to the image, never to a whole card/UI container.
+   A copied background in ::before also keeps the legacy frontend's foil
+   ::after separate from the pigment/ink processing. No runtime image fetches,
+   observers, canvas readbacks, or per-frame filter animation are needed. */
+.card-art-filter-definitions {
+ position: fixed;
+ width: 0;
+ height: 0;
+ inset: 0 auto auto 0;
+ overflow: hidden;
+ pointer-events: none;
+}
+html[data-card-art-direction='painted-ink'] :is(.card-art.individual-art,.starter-box-art,.pack-illustration,.art-well>.art[style*='background-image'])::before {
+ content: '';
+ position: absolute;
+ inset: 0;
+ border-radius: inherit;
+ background-image: inherit;
+ background-size: inherit;
+ background-position: inherit;
+ background-repeat: no-repeat;
+ pointer-events: none;
+ filter: url('#bk-card-painted-ink');
+}
+/* These images were genuinely redrawn with inked contours and cel shadows.
+   Additional contour extraction would only thicken their existing linework. */
+html[data-card-art-direction='painted-ink'] :is(.card-art.individual-art,.starter-box-art,.pack-illustration,.art-well>.art)[style*='illustration-update-']::before {
+ filter: saturate(1.025) contrast(1.015);
+}
+/* Regalia's public printing and authenticated illustration retain their exact
+   approved treatment. Their independent rarity finish remains above the art. */
+html[data-card-art-direction='painted-ink'] :is(.card-art.individual-art,.starter-box-art,.pack-illustration,.art-well>.art):is([data-regalia-context],[style*='king.webp'],[style*='data:image/'])::before {
+ filter: none;
+}
+@media (forced-colors: active) {
+ html[data-card-art-direction='painted-ink'] :is(.card-art.individual-art,.starter-box-art,.pack-illustration,.art-well>.art)::before { filter: none; }
+}

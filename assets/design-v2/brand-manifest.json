@@ -1,5 +1,12 @@
 {
   "copyright": "© 2026 Beast King",
+  "palette": {
+    "navy": "#061426",
+    "gold": "#f3c66d",
+    "cyan": "#66e7e3"
+  },
+  "tagline": "その一手に、王の意志を。",
+  "socialIllustration": "assets/design-v2/backgrounds/entry-illustrated.webp",
   "origins": [
     "mountain",
     "river",
@@ -12,33 +19,43 @@
   "files": [
     {
       "path": "assets/icon.svg",
-      "bytes": 2252,
-      "sha256": "ef0dc3366c38a74557fcb780bbf5785d3d6f3602854a42a883a9100623102bb7"
+      "bytes": 784,
+      "sha256": "8d643558e0568c0265868931bdf71d26d741b56077a270973c0453ae5e49fef2"
+    },
+    {
+      "path": "assets/favicon-16.png",
+      "bytes": 617,
+      "sha256": "3c1eb215da0d47f068be8b10975f5384362cdde35a27b07f282b2c7338470542"
     },
     {
       "path": "assets/favicon-32.png",
-      "bytes": 1970,
-      "sha256": "01fffe14de04ee65003584bc2857f30dd4ff0f5ecafb606236ee84afeb3fa6b4"
+      "bytes": 1400,
+      "sha256": "982d4e6b436db5d3d74afa23365086b48fd2d385ca90b23b80e9cc0c82efaa1e"
+    },
+    {
+      "path": "assets/favicon.ico",
+      "bytes": 18331,
+      "sha256": "525b4d8153b9b0dd9e92d7eb51194004410eb81d8212b46bd52e20ecd289d2f0"
     },
     {
       "path": "assets/apple-touch-icon.png",
-      "bytes": 14717,
-      "sha256": "050f561ac5ddfe47124da1c260baa43b839a18764800192e60e819f42e6ab080"
+      "bytes": 35043,
+      "sha256": "d7c3e0ec0e5eaacd35c2fb1d4b0ca70641b4c20085fb04ce43daef071755cfe2"
     },
     {
       "path": "assets/icon-192.png",
-      "bytes": 16111,
-      "sha256": "a728ad8ecd76470e81dae15a5aa1338bf6a6866d56fdab2a05aa7efe83657d9d"
+      "bytes": 39133,
+      "sha256": "6874b37038fe93dc82413bae5aff4618f0cca3d3aed32dcc87c7f0738aec799b"
     },
     {
       "path": "assets/icon-512.png",
-      "bytes": 56519,
-      "sha256": "980b1a1f2cdbae2f2e5b2d4322ba8d289a7ffbdbae6477756b069d71879e6e93"
+      "bytes": 214791,
+      "sha256": "8b4e938772f064e69f6ef10c121c95e063c50f60b9c9bd3bcd6835810e685305"
     },
     {
       "path": "assets/social-ogp.jpg",
-      "bytes": 99705,
-      "sha256": "13b4f87cc70dd8794b6ebec8bb0c865912339f997e8c217dade1481cefc5116c"
+      "bytes": 270198,
+      "sha256": "b21a05de6c0b209454ba602b59a4744bbce4956d0311d1bf80989ec885a6d3b7"
     },
     {
       "path": "assets/profiles/mountain.svg",
@@ -76,14 +93,29 @@
       "sha256": "06ec21f1364185531aaf564e4b1b3271fee661bd2254fe5bf69a44f58ba5f7f8"
     },
     {
+      "path": "assets/design-v2/brand/crest.svg",
+      "bytes": 2206,
+      "sha256": "4ee28362cf983366085843bf18ed5ede0cc8274c8e43078e9f5ffe990bea46d7"
+    },
+    {
+      "path": "assets/design-v2/brand/wordmark.svg",
+      "bytes": 2686,
+      "sha256": "9ad0082841f818b81d5fed84f5fea07e6bd3bf96128e4f50262679960134efe0"
+    },
+    {
+      "path": "assets/design-v2/brand/favicon.svg",
+      "bytes": 784,
+      "sha256": "8d643558e0568c0265868931bdf71d26d741b56077a270973c0453ae5e49fef2"
+    },
+    {
       "path": "assets/design-v2/brand/app-icon.svg",
-      "bytes": 2373,
-      "sha256": "131e913453574536d1436f4de50bbf6c395f6be99d737b2b353578558bc26c66"
+      "bytes": 2728,
+      "sha256": "1da802d242921edc49fe16232415d4b99e04fbc165045afa1800a4a5571d912b"
     },
     {
       "path": "assets/design-v2/brand/social-ogp.svg",
-      "bytes": 10182,
-      "sha256": "16d2b99e842744ae2d819ec2abad85fb1117e9e0fd71da88c1067132ce904122"
+      "bytes": 817974,
+      "sha256": "d8b175d9f9eeec9ff64de4a9452fc98e3f1a0c162413d402f289c47253dbd47b"
     }
   ]
 }

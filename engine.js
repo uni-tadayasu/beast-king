@@ -1,4 +1,4 @@
-import { getCard, STARTER_DECKS, DECK_PRESETS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, DECK_COPY_LIMIT, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js';
+import { getCard, STARTER_DECKS, DECK_PRESETS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, DECK_COPY_LIMIT, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js?v=20261124-26';
 
 export const MAX_HEART_POINTS = 5000;
 // Internal .core and MAX_CORE remain compatible with saved games and callers.
@@ -140,10 +140,16 @@ function activateStartTraps(state, who, events) {
 function beginTurn(state, events) {
   const who = state.active;
   const player = state.players[who];
-  player.maxEnergy = Math.min(RULES.maxEnergy, player.maxEnergy+1);
+  // New matches give the second player +1 for their first two turns only.
+  // The third turn holds at 3, restoring the ordinary curve without a decrease.
+  // Unmarked suspended matches retain their original opening schedule.
+  const openingBoost = state.openingRuleVersion === 1 && who === 1;
+  const growth = openingBoost && state.turn === 2 ? 2 : openingBoost && state.turn === 6 ? 0 : 1;
+  player.maxEnergy = Math.min(RULES.maxEnergy, player.maxEnergy+growth);
   player.energy = player.maxEnergy;
   player.field.forEach(unit => {unit.ready = true;});
   emit(state, events, `${label(player)}のターン。エーテル ${player.energy}。`, 'turn');
+  if(openingBoost && state.turn === 2)emit(state, events, '後攻補正：最初の2回の自分のターンはエーテルが1多くなります（2→3→3→4…）。', 'info');
   // Delayed gimmicks resolve before refilling the hand to four cards.
   activateStartTraps(state, who, events);
   if (state.winner === null) draw(state, who, Math.max(0, RULES.hand-player.hand.length), events);
@@ -169,7 +175,7 @@ export function newGame({playerDeck, cpuDeck, playerSpecialDeck, cpuSpecialDeck,
     const validation=validateSpecialDeck(ids);
     if (!validation.valid) throw new Error(`${i?'CPU':'あなた'}の特殊デッキを確認してください：${validation.errors.join('／')}`);
   });
-  const state = {rulesVersion:2, turn:1, active:0, winner:null, players:[], log:[], nextUid:1, seed:seedNumber(seed), difficulty:LEVELS.has(difficulty)?difficulty:'normal'};
+  const state = {rulesVersion:2, openingRuleVersion:1, turn:1, active:0, winner:null, players:[], log:[], nextUid:1, seed:seedNumber(seed), difficulty:LEVELS.has(difficulty)?difficulty:'normal'};
   state.players = [first, second].map((ids,i)=>({name:i?'CPU':'あなた', core:MAX_CORE, shield:0, energy:0, maxEnergy:0, deckSize:ids.length, specialSize:specials[i].length, special:[...specials[i]], banished:[], deck:shuffle(state,ids), hand:[], field:[], traps:[], grave:[], fatigue:0, lastMiracle:null}));
   const events=[];
   emit(state,events,`契約成立。${MAX_HEART_POINTS}のハートポイントで対戦を始めます。`,'start');
@@ -579,8 +585,19 @@ function cpuPlayCards(state,difficulty,events) {
     const playable=getPlayableCards(state);
     if (!playable.length) break;
     const scored=playable.map(i=>({i,score:cardScore(state,i,difficulty)})).sort((a,b)=>b.score-a.score);
-    if (difficulty!=='easy' && scored[0].score<0) break;
-    const selected=scored[0].i;
+    let selected=scored[0].i;
+    if (difficulty!=='easy' && scored[0].score<0) {
+      // A full hand prevents the next turn's refill. Keeping four currently
+      // useless support cards forever can deadlock an otherwise legal game.
+      // Spend only one legal, cheapest support to make room for the next draw;
+      // normal targeting, cost, delayed activation and fatigue still apply.
+      const player=state.players[state.active];
+      const recyclable=player.hand.length===RULES.hand?scored.filter(({i})=>
+        ['heal','renew','sweep','spring','fountain'].includes(getCard(player.hand[i]).effect.kind)
+      ).sort((a,b)=>getCard(player.hand[a.i]).cost-getCard(player.hand[b.i]).cost||a.i-b.i):[];
+      if(!recyclable.length)break;
+      selected=recyclable[0].i;
+    }
     const result=playCard(state,selected,chooseCardTarget(state,selected,difficulty));
     if (!result.ok) break;
     events.push(...result.events);

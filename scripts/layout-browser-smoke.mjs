@@ -12,6 +12,12 @@ import {launchSmokeChrome,stopSmokeChrome} from './chrome-smoke-launch.mjs';
 import {setTimeout as delay} from 'node:timers/promises';
 assert.ok(process.argv.length<=3,'Usage: node scripts/layout-browser-smoke.mjs [public-directory]');
 const root=process.argv[2]?resolve(process.argv[2]):fileURLToPath(new URL('../',import.meta.url));
+const viewports=[
+ {width:1920,height:1080,mobile:false},{width:1902,height:800,mobile:false},
+ {width:1366,height:768,mobile:false},{width:1024,height:600,mobile:false},
+ {width:768,height:1024,mobile:true},{width:390,height:844,mobile:true},
+ {width:320,height:568,mobile:true},{width:844,height:390,mobile:true},
+];
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.mp3':'audio/mpeg'};
 const server=createServer(async(req,res)=>{
  try{
@@ -34,8 +40,11 @@ function send(method,params={}){
   pending.set(id,{resolve,reject,timer});ws.send(JSON.stringify({id,method,params}));
  });
 }
+const geometryHelpers=`const layoutViewport=()=>window.BeastKingViewport?.get()||{width:innerWidth,height:innerHeight,rotated:false};
+const layoutRect=node=>{const raw=node.getBoundingClientRect(),r=window.BeastKingViewport?.toLocalRect(raw)||raw;const box={x:r.x,y:r.y,left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height};return {...box,toJSON:()=>box}};`;
 async function evaluate(expression){
- const r=await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});
+ // Block scope avoids creating persistent globals between Runtime.evaluate calls.
+ const r=await send('Runtime.evaluate',{expression:'{'+geometryHelpers+'\n'+expression+'\n}',returnByValue:true,awaitPromise:true});
  if(r.exceptionDetails)throw Error(r.exceptionDetails.exception?.description||r.exceptionDetails.text);
  return r.result.value;
 }
@@ -44,9 +53,19 @@ async function click(selector){
  assert.equal(await evaluate('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');if(!e||e.disabled)return false;e.click();return true})()'),true,'Click: '+selector);
 }
 async function waitElement(selector){await until(()=>evaluate(exists(selector)),selector)}
-async function viewport(width,height){
- await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+async function viewport(width,height,mobile=false){
+ await send('Network.setUserAgentOverride',{userAgent:mobile?'Mozilla/5.0 (Linux; Android 14; LayoutSmoke) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',platform:mobile?'Android':'Linux x86_64'});
+ await send('Emulation.setTouchEmulationEnabled',mobile?{enabled:true,maxTouchPoints:5}:{enabled:false});
+ await send('Emulation.setDeviceMetricsOverride',{width,height,screenWidth:width,screenHeight:height,deviceScaleFactor:1,mobile,screenOrientation:{type:height>width?'portraitPrimary':'landscapePrimary',angle:height>width?0:90}});
  await delay(250);
+ const canvas=await evaluate(`(()=>{const v=window.BeastKingViewport?.get();if(!v)return null;const s=document.querySelector('#orientation-stage').getBoundingClientRect();return {...v,count:document.querySelectorAll('#orientation-stage').length,physicalBox:s.toJSON(),touch:navigator.maxTouchPoints}})()`);
+ if(canvas){
+  assert.equal(canvas.rotated,mobile&&height>width,'Portrait touch uses virtual landscape: '+JSON.stringify(canvas));
+  assert.deepEqual([Math.round(canvas.width),Math.round(canvas.height)],mobile&&height>width?[height,width]:[width,height]);
+  assert.equal(canvas.count,1,'Exactly one live landscape canvas');
+  if(mobile)assert.ok(canvas.touch>0,'Mobile coverage must include touch emulation');
+  assert.ok(canvas.physicalBox.left>=-1&&canvas.physicalBox.top>=-1&&canvas.physicalBox.right<=width+1&&canvas.physicalBox.bottom<=height+1,'Rotated stage stays inside physical screen');
+ }
 }
 async function assertFits(){
  const dimensions=await evaluate('({w:innerWidth,h:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight})');
@@ -67,26 +86,37 @@ try{
  // No production writes: the test runs against a temporary local server/profile.
  await send('Network.enable');await send('Network.setBlockedURLs',{urls:['*chatgpt.site/*']});
  await send('Page.navigate',{url});await waitElement('#entry-start-form');
+ for(const {width,height,mobile} of [{width:1280,height:720,mobile:false},...viewports.filter(v=>v.mobile&&v.height>v.width)]){
+  await viewport(width,height,mobile);await waitElement('.bk-entry-native');
+  const entry=await evaluate(`(()=>{const p=layoutRect(document.querySelector('#app'));return [...document.querySelectorAll('#entry-start-form,#entry-player-name,.entry-profile-option,#entry-starter,.entry-start-button,.entry-footer a')].filter(e=>{const r=layoutRect(e);return r.width<=0||r.height<=0||r.left<p.left-2||r.right>p.right+2||r.top<p.top-2||r.bottom>p.bottom+2}).map(e=>e.id||e.className)})()`);
+  assert.deepEqual(entry,[],width+'x'+height+' complete entry controls inside the live canvas');await assertFits();
+ }
+ await viewport(1280,720);
  await evaluate('document.querySelector("#entry-player-name").value="画面表示テスト十二文字";true');
  assert.equal(await evaluate('document.querySelectorAll("#entry-starter option").length'),4);
  await click('[data-action=name-start]');await waitElement('.product-home');
  assert.equal(await evaluate('Object.values(JSON.parse(localStorage.getItem("beast-king-v6")).collection).reduce((a,b)=>a+b,0)'),36);
- await click('[data-action=starter-packs]');assert.equal(await evaluate('document.querySelectorAll("[data-action=starter-buy]").length'),4);assert.equal(await evaluate('document.querySelectorAll("[data-action=starter-load]:disabled").length'),3);await click('.navigation-dock [data-nav=home]');
- const inspect=`(selectors)=>{const out=[];for(const selector of selectors){const els=[...document.querySelectorAll(selector)].filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden'});for(let i=0;i<els.length;i++)for(let j=i+1;j<els.length;j++){const a=els[i].getBoundingClientRect(),b=els[j].getBoundingClientRect();const w=Math.min(a.right,b.right)-Math.max(a.left,b.left),h=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);if(w>2&&h>2)out.push({selector,i,j,a:els[i].getAttribute('aria-label')||els[i].className,b:els[j].getAttribute('aria-label')||els[j].className,w:Math.round(w),h:Math.round(h)});}}return out}`;
+ await click('.navigation-dock [data-nav=shop]');await click('[data-action=shop-section][data-section=starters]');assert.equal(await evaluate('document.querySelectorAll("[data-action=starter-buy]").length'),4);assert.equal(await evaluate('document.querySelectorAll("[data-action=starter-load]:disabled").length'),3);await click('.navigation-dock [data-nav=home]');
+ const inspect=`(selectors)=>{const out=[];for(const selector of selectors){const els=[...document.querySelectorAll(selector)].filter(e=>{const r=layoutRect(e);return r.width>0&&r.height>0&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden'});for(let i=0;i<els.length;i++)for(let j=i+1;j<els.length;j++){const a=layoutRect(els[i]),b=layoutRect(els[j]);const w=Math.min(a.right,b.right)-Math.max(a.left,b.left),h=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);if(w>2&&h>2)out.push({selector,i,j,a:els[i].getAttribute('aria-label')||els[i].className,b:els[j].getAttribute('aria-label')||els[j].className,w:Math.round(w),h:Math.round(h)});}}return out}`;
  async function check(label,selectors=[]){
   const v=await evaluate('({w:innerWidth,h:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight})');assert.ok(v.sw<=v.w+2&&v.sh<=v.h+2,label+' viewport overflow '+JSON.stringify(v));
-  const fit=await evaluate(`(()=>{const shell=document.querySelector('#app>.bk-native-screen'),frame=shell?.querySelector('.bk-native-pane'),pane=frame?.firstElementChild;if(!shell||!frame||!pane)return null;const s=shell.getBoundingClientRect(),f=frame.getBoundingClientRect(),p=pane.getBoundingClientRect(),a=document.querySelector('#app').getBoundingClientRect();return {native:getComputedStyle(shell).transform==='none',shellWidth:s.width,appWidth:a.width,shellHeight:s.height,appHeight:a.height,frameWidth:frame.clientWidth,paneWidth:p.width,frameHeight:f.height,paneHeight:p.height,scale:Number(pane.dataset.fitScale)}})()`);
+  const fit=await evaluate(`(()=>{const shell=document.querySelector('#app>.bk-native-screen'),frame=shell?.querySelector('.bk-native-pane'),pane=frame?.firstElementChild;if(!shell||!frame||!pane)return null;const s=layoutRect(shell),f=layoutRect(frame),p=layoutRect(pane),a=layoutRect(document.querySelector('#app'));return {native:getComputedStyle(shell).transform==='none',shellWidth:s.width,appWidth:a.width,shellHeight:s.height,appHeight:a.height,frameWidth:frame.clientWidth,paneWidth:p.width,frameHeight:f.height,paneHeight:p.height,scale:Number(pane.dataset.fitScale)}})()`);
   if(fit){assert.ok(fit.scale>0&&fit.scale<=1,label+' finite fitted scale '+JSON.stringify(fit));if(v.w>=1366&&v.h>=720&&/ (home|deck|collection)$/.test(label))assert.ok(fit.scale>=.85,label+' readable desktop scale '+JSON.stringify(fit));assert.ok(fit.native&&Math.abs(fit.shellWidth-fit.appWidth)<3&&Math.abs(fit.shellHeight-fit.appHeight)<3,label+' native screen '+JSON.stringify(fit));assert.ok(fit.paneWidth>=fit.frameWidth*.97&&fit.paneHeight>=fit.frameHeight*.97,label+' full content pane '+JSON.stringify(fit));}
-  const scrolling=await evaluate(`(()=>[...document.querySelectorAll('.bk-native-pane,.bk-fit-frame,.bk-fit-article,.operator-content-frame,.bk-fit-modal,.battle-log-scroll,.hand-inspector-scroll')].filter(e=>e.getBoundingClientRect().width>0&&['auto','scroll'].includes(getComputedStyle(e).overflowY)).map(e=>e.className))()`);assert.deepEqual(scrolling,[],label+' no scrollable panes');
+  const scrolling=await evaluate(`(()=>[...document.querySelectorAll('.bk-native-pane,.bk-fit-frame,.bk-fit-article,.operator-content-frame,.bk-fit-modal,.battle-log-scroll,.hand-inspector-scroll')].filter(e=>layoutRect(e).width>0&&['auto','scroll'].includes(getComputedStyle(e).overflowY)).map(e=>e.className))()`);assert.deepEqual(scrolling,[],label+' no scrollable panes');
   const errors=await evaluate('('+inspect+')('+JSON.stringify(selectors)+')');
   assert.deepEqual(errors,[],label+' overlapping controls '+JSON.stringify(errors));
  }
  const general=['.navigation-dock>.dock-link','.site-controls>button'];
- for(const [width,height] of [[1920,1080],[1902,800],[1366,768],[1024,600],[768,1024],[390,844],[320,568],[844,390]]){
-  await viewport(width,height);
-  for(const [page,selectors] of [['home',['.home-mode-rail>.home-mode','.home-card-fan>.game-card']],['deck',['.deck-panel>.workshop-tools,.deck-panel>.deck-list','.deck-panel>.workshop-tools>*','.transfer-source>.workshop-tools,.transfer-source>#card-results','.transfer-source>.workshop-tools>*','.deck-list>.results-meta,.deck-list>.deck-image-grid,.deck-list>.deck-list-pagination','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination','.transfer-card>.transfer-counts,.transfer-card>.transfer-actions','.deck-bank-actions>.btn','.deck-display-tabs>.btn','.deck-scope-tabs>.btn','.deck-source-tools>.deck-scope-tabs,.deck-source-tools>.btn,.deck-source-tools>.text-button']],['collection',['.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination']],['shop',['.product-section-tabs>button']],['rules',['.rulebook-tabs>button']]]){
+ for(const {width,height,mobile} of viewports){
+  await viewport(width,height,mobile);
+  for(const [page,selectors] of [['home',['.home-mode-rail>.home-mode']],['deck',['.deck-panel>.workshop-tools,.deck-panel>.deck-list','.deck-panel>.workshop-tools>*','.transfer-source>.workshop-tools,.transfer-source>#card-results','.transfer-source>.workshop-tools>*','.deck-list>.results-meta,.deck-list>.deck-image-grid,.deck-list>.deck-list-pagination','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination','.transfer-card>.transfer-counts,.transfer-card>.transfer-actions','.deck-bank-actions>.btn','.deck-display-tabs>.btn','.deck-scope-tabs>.btn','.deck-source-tools>.deck-scope-tabs,.deck-source-tools>.btn,.deck-source-tools>.text-button']],['collection',['.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination']],['shop',['.product-section-tabs>button']],['rules',['.rulebook-tabs>button']]]){
    await click('.navigation-dock [data-nav='+page+']');await waitElement('main[data-page='+page+']');await waitElement('.bk-native-pane>.bk-fit-pane[data-fit-scale]');await delay(200);
-   if(page==='home'){const modeVisibility=await evaluate('(()=>{const p=document.querySelector(".home-page").getBoundingClientRect();return [...document.querySelectorAll(".home-mode-rail>.home-mode")].map(e=>{const r=e.getBoundingClientRect();return r.top>=p.top-2&&r.bottom<=p.bottom+2&&r.left>=p.left-2&&r.right<=p.right+2})})()');assert.deepEqual(modeVisibility,[true,true,true],width+'x'+height+' all three mode controls fully visible');}
+   if(page==='home'){
+    const modeVisibility=await evaluate('(()=>{const p=layoutRect(document.querySelector(".home-page"));return [...document.querySelectorAll(".home-mode-rail>.home-mode")].map(e=>{const r=layoutRect(e);return r.top>=p.top-2&&r.bottom<=p.bottom+2&&r.left>=p.left-2&&r.right<=p.right+2})})()');assert.deepEqual(modeVisibility,[true,true,true],width+'x'+height+' all three mode controls fully visible');
+    // The feature cards deliberately form an overlapping fan; each complete
+    // transformed card must nevertheless remain inside the content pane.
+    const fan=await evaluate('(()=>{const p=layoutRect(document.querySelector(".bk-native-pane"));return {frame:p.toJSON(),cards:[...document.querySelectorAll(".home-card-fan>.game-card")].map(e=>{const r=layoutRect(e);return {visible:r.width>0&&r.height>0&&r.top>=p.top-2&&r.bottom<=p.bottom+2&&r.left>=p.left-2&&r.right<=p.right+2,box:r.toJSON()}})}})()');assert.deepEqual(fan.cards.map(c=>c.visible),[true,true,true],width+'x'+height+' all three featured cards fully visible '+JSON.stringify(fan));
+   }
    // Card ownership/action pairs are tested per card, not between distinct tiles.
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
@@ -95,8 +125,8 @@ try{
   await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);
   const newsSeen=[];let newsPageCount=0;
   while(true){
-   const news=await evaluate(`(()=>{const d=document.querySelector('#news-dialog'),g=d.querySelector('.news-items'),f=d.querySelector('.news-dialog-footer'),h=d.querySelector('.news-dialog-header'),box=d.getBoundingClientRect(),grid=g.getBoundingClientRect(),footer=f.getBoundingClientRect(),header=h.getBoundingClientRect();return {w:innerWidth,h:innerHeight,box:box.toJSON(),grid:grid.toJSON(),header:header.toJSON(),footer:footer.toJSON(),transform:getComputedStyle(d).transform,total:g.children.length,indices:[...g.querySelectorAll('article:not([hidden])')].map(e=>Number(e.dataset.newsIndex)),bad:[...g.querySelectorAll('article:not([hidden])')].filter(e=>{const r=e.getBoundingClientRect();return r.top<grid.top-2||r.bottom>grid.bottom+2||r.left<grid.left-2||r.right>grid.right+2||e.scrollHeight>e.clientHeight+2}).map(e=>e.dataset.newsIndex),next:d.querySelector('.news-next').disabled}})()`);
-   assert.ok(news.transform==='none'&&news.box.width>=news.w-20&&news.box.height>=news.h-20&&news.box.left<=10,width+'x'+height+' full-screen news '+JSON.stringify(news));
+   const news=await evaluate(`(()=>{const d=document.querySelector('#news-dialog'),g=d.querySelector('.news-items'),f=d.querySelector('.news-dialog-footer'),h=d.querySelector('.news-dialog-header'),box=layoutRect(d),grid=layoutRect(g),footer=layoutRect(f),header=layoutRect(h);return {w:layoutViewport().width,h:layoutViewport().height,rotated:layoutViewport().rotated,box:box.toJSON(),grid:grid.toJSON(),header:header.toJSON(),footer:footer.toJSON(),transform:getComputedStyle(d).transform,rotation:(()=>{const t=getComputedStyle(d).transform,m=new DOMMatrix(t==='none'?undefined:t);return {a:m.a,b:m.b,c:m.c,d:m.d}})(),total:g.children.length,indices:[...g.querySelectorAll('article:not([hidden])')].map(e=>Number(e.dataset.newsIndex)),bad:[...g.querySelectorAll('article:not([hidden])')].filter(e=>{const r=layoutRect(e);return r.top<grid.top-2||r.bottom>grid.bottom+2||r.left<grid.left-2||r.right>grid.right+2||e.scrollHeight>e.clientHeight+2}).map(e=>e.dataset.newsIndex),next:d.querySelector('.news-next').disabled}})()`);
+   assert.ok((news.rotated?Math.abs(news.rotation.a)<.001&&Math.abs(news.rotation.b-1)<.001&&Math.abs(news.rotation.c+1)<.001&&Math.abs(news.rotation.d)<.001:news.transform==='none')&&news.box.width>=news.w-20&&news.box.height>=news.h-20&&news.box.left<=10,width+'x'+height+' full-screen news '+JSON.stringify(news));
    assert.ok(news.header.bottom<=news.grid.top+2&&news.grid.bottom<=news.footer.top+2,width+'x'+height+' separate news rows');
    assert.deepEqual(news.bad,[],width+'x'+height+' complete news articles');
    newsSeen.push(...news.indices);newsPageCount++;
@@ -107,33 +137,34 @@ try{
   await click('#news-dialog .news-return');assert.equal(await evaluate('document.querySelector("#news-dialog").open'),false);
   const fixture=await evaluate(`(async()=>{const {operatorDashboardView}=await import('./account-views.js');const snapshot={stats:{totalPlayers:4,activeBattles:0,onlinePlayers:1,recentLogins24h:4},settings:{notice:'検証用',maintenance:false},onlinePlayers:[{id:'fixture-test',nickname:'検証ユーザー',origin:'river',rating:1000,lastLoginAt:Date.now(),lastSeenAt:Date.now()}],recentLogins:[],recentPlayers:[],events:[],audit:[{action:'fixture',createdAt:Date.now()}],messages:[],gifts:[],deck:{unlockedAt:Date.now()}};const root=document.querySelector('#modal-root');root.innerHTML='<div class="modal-backdrop"><section class="modal wide" role="dialog"><button class="icon-btn modal-close" data-action="close-modal">×</button>'+operatorDashboardView({snapshot})+'</section></div>';return true})()`);
   assert.equal(fixture,true);await waitElement('.operator-fullscreen .operator-console-nav');await delay(120);
-  const operatorBox=await evaluate(`(()=>{const r=document.querySelector('.operator-fullscreen').getBoundingClientRect(),s=document.querySelector('.operator-workspace').getBoundingClientRect(),nav=document.querySelector('.operator-console-nav').getBoundingClientRect(),pane=document.querySelector('.operator-console-content').getBoundingClientRect();return {w:innerWidth,h:innerHeight,r:r.toJSON(),s:s.toJSON(),nav:nav.toJSON(),pane:pane.toJSON(),transform:getComputedStyle(document.querySelector('.operator-fullscreen')).transform}})()`);
+  const operatorBox=await evaluate(`(()=>{const r=layoutRect(document.querySelector('.operator-fullscreen')),s=layoutRect(document.querySelector('.operator-workspace')),nav=layoutRect(document.querySelector('.operator-console-nav')),pane=layoutRect(document.querySelector('.operator-console-content'));return {w:layoutViewport().width,h:layoutViewport().height,r:r.toJSON(),s:s.toJSON(),nav:nav.toJSON(),pane:pane.toJSON(),transform:getComputedStyle(document.querySelector('.operator-fullscreen')).transform}})()`);
   assert.ok(operatorBox.transform==='none'&&operatorBox.r.width>=operatorBox.w-20&&operatorBox.r.height>=operatorBox.h-20&&operatorBox.r.left<=10&&operatorBox.r.right>=operatorBox.w-10,width+'x'+height+' operator fills viewport '+JSON.stringify(operatorBox));
   await click('.operator-console-tab:nth-child(4)');await delay(120);
   assert.equal(await evaluate('document.querySelectorAll(".operator-console-content>.operator-section:not([hidden])").length'),1);
   assert.equal(await evaluate('document.querySelector("#operator-notice").closest("details").hidden'),false);
   await click('.operator-console-tab:nth-child(1)');await delay(120);
-  assert.ok(await evaluate('!document.querySelector("[data-action=operator-artwork-open]").closest("details").hidden'));
+  assert.ok(await evaluate('(()=>{const section=document.querySelector("[data-action=operator-deck-use]").closest("details");return !section.hidden&&section.textContent.includes("認証後に自動で適用")&&!section.querySelector("[data-action=operator-artwork-open],input[type=file]")})()'));
   await evaluate('document.querySelector("#modal-root").innerHTML="";true');
   await click('.navigation-dock [data-nav=deck]');assert.equal(await evaluate('document.querySelectorAll("#deck-bank-select option").length'),1);
   assert.ok(await evaluate('Boolean(document.querySelector(".transfer-source .transfer-card")&&document.querySelector(".deck-panel .deck-image-slot"))'));
   await waitElement('.bk-native-pane>.bk-fit-pane[data-fit-scale]');await delay(180);
-  const panes=await evaluate(`(()=>{const frame=document.querySelector('.bk-native-pane').getBoundingClientRect(),left=document.querySelector('.transfer-source').getBoundingClientRect(),right=document.querySelector('.deck-panel').getBoundingClientRect();return {left:left.toJSON(),right:right.toJSON(),frame:frame.toJSON(),scrollHeight:document.querySelector('.bk-native-pane').scrollHeight,clientHeight:document.querySelector('.bk-native-pane').clientHeight,overflow:getComputedStyle(document.querySelector('.bk-native-pane')).overflowY}})()`);
+  const panes=await evaluate(`(()=>{const frame=layoutRect(document.querySelector('.bk-native-pane')),left=layoutRect(document.querySelector('.transfer-source')),right=layoutRect(document.querySelector('.deck-panel'));return {left:left.toJSON(),right:right.toJSON(),frame:frame.toJSON(),scrollHeight:document.querySelector('.bk-native-pane').scrollHeight,clientHeight:document.querySelector('.bk-native-pane').clientHeight,overflow:getComputedStyle(document.querySelector('.bk-native-pane')).overflowY}})()`);
   assert.ok(Math.abs(panes.left.width-panes.right.width)<=2&&panes.left.width>0&&panes.right.width>0&&panes.left.right<=panes.right.left+2,width+'x'+height+' separate left and right panes '+JSON.stringify(panes));
   assert.ok(panes.left.top>=panes.frame.top-2&&panes.right.top>=panes.frame.top-2&&panes.left.bottom<=panes.frame.bottom+3&&panes.right.bottom<=panes.frame.bottom+3&&['hidden','clip'].includes(panes.overflow),width+'x'+height+' both panes within the content frame '+JSON.stringify(panes));
   assert.equal(await evaluate('Number(document.querySelector(".results-meta").dataset.resultTotal)'),2304);
-  const cardGeometry=await evaluate(`(()=>{const failures=[];for(const [grid,selector] of [['.transfer-source .cards-grid','.transfer-card'],['.deck-image-grid','.deck-image-slot']]){const container=document.querySelector(grid);if(!container){failures.push(grid);continue}const bounds=container.getBoundingClientRect();for(const tile of container.querySelectorAll(selector)){const r=tile.getBoundingClientRect(),parts=[...tile.children].map(e=>e.getBoundingClientRect());if(r.left<bounds.left-2||r.right>bounds.right+2||r.top<bounds.top-2||r.bottom>bounds.bottom+2||parts.some((p,i)=>i>0&&p.top<parts[i-1].bottom-2))failures.push({grid,id:tile.dataset.transferId,tile:r.toJSON(),bounds:bounds.toJSON()});}}return failures})()`);
+  const cardGeometry=await evaluate(`(()=>{const failures=[];for(const [grid,selector] of [['.transfer-source .cards-grid','.transfer-card'],['.deck-image-grid','.deck-image-slot']]){const container=document.querySelector(grid);if(!container){failures.push(grid);continue}const bounds=layoutRect(container);for(const tile of container.querySelectorAll(selector)){const r=layoutRect(tile),parts=[...tile.children].map(e=>layoutRect(e));if(r.left<bounds.left-2||r.right>bounds.right+2||r.top<bounds.top-2||r.bottom>bounds.bottom+2||parts.some((p,i)=>i>0&&p.top<parts[i-1].bottom-2))failures.push({grid,id:tile.dataset.transferId,tile:r.toJSON(),bounds:bounds.toJSON()});}}return failures})()`);
   assert.deepEqual(cardGeometry,[],width+'x'+height+' card art, counts, buttons and grid bounds');
-  const symmetric=await evaluate(`(()=>{const q=s=>document.querySelector(s).getBoundingClientRect(),a=q('.transfer-source .cards-grid'),b=q('.deck-image-grid'),c=q('.transfer-card>.game-card'),d=q('.deck-image-slot>.game-card'),p=q('.deck-list-pagination'),l=q('#card-results>.pagination'),foot=q('.deck-panel-foot');return {a:a.toJSON(),b:b.toJSON(),c:c.toJSON(),d:d.toJSON(),p:p.toJSON(),l:l.toJSON(),foot:foot.toJSON()}})()`);
+  const symmetric=await evaluate(`(()=>{const q=s=>layoutRect(document.querySelector(s)),a=q('.transfer-source .cards-grid'),b=q('.deck-image-grid'),c=q('.transfer-card>.game-card'),d=q('.deck-image-slot>.game-card'),p=q('.deck-list-pagination'),l=q('#card-results>.pagination'),foot=q('.deck-panel-foot');return {a:a.toJSON(),b:b.toJSON(),c:c.toJSON(),d:d.toJSON(),p:p.toJSON(),l:l.toJSON(),foot:foot.toJSON()}})()`);
   assert.ok(Math.abs(symmetric.a.top-symmetric.b.top)<=2&&Math.abs(symmetric.a.bottom-symmetric.b.bottom)<=2&&Math.abs(symmetric.c.width-symmetric.d.width)<=2&&Math.abs(symmetric.c.height-symmetric.d.height)<=2,width+'x'+height+' symmetric card grids '+JSON.stringify(symmetric));
   assert.ok(symmetric.foot.bottom<=symmetric.b.top+2&&symmetric.p.top>=symmetric.b.bottom-2&&Math.abs(symmetric.p.top-symmetric.l.top)<=2&&symmetric.p.bottom<=panes.right.bottom+2,width+'x'+height+' save and pager separated '+JSON.stringify(symmetric));
-  // The screenshot came from an authenticated deck with the extra operator
-  // row. Exercise that exact extra height without accessing a live account.
-  await evaluate(`(()=>{const head=document.querySelector('.deck-panel-head'),row=document.createElement('div');row.className='operator-deck-preset';row.dataset.layoutFixture='true';row.innerHTML='<span>運営構築 · 開放済み</span><button class="text-button">𠮷良原デッキを使う</button><button class="text-button">イラスト設定</button><small class="operator-art-status">専用イラスト未受信</small><button class="text-button">再取得</button>';head.append(row);return true})()`);
+  // Exercise the operator status/actions in the visible settings tab without
+  // accessing a live account. Hidden card-mode rows cannot prove their fit.
+  await click('[data-bk-screen-tab=settings]');await delay(120);
+  await evaluate(`(()=>{const head=document.querySelector('.deck-panel-head'),row=document.createElement('div');row.className='operator-deck-preset';row.dataset.layoutFixture='true';row.innerHTML='<span>運営構築 · 開放済み</span><button class="text-button" data-action="operator-deck-use">𠮷良原デッキを使う</button><small class="operator-art-auto">専用イラストを自動適用</small><small class="operator-art-status">専用イラスト未受信</small><button class="text-button" data-action="operator-art-refresh">再取得</button>';head.append(row);return true})()`);
   await delay(180);
-  await check(width+'x'+height+' operator deck with extra controls',['.deck-panel>.workshop-tools,.deck-panel>.deck-list','.deck-panel>.workshop-tools>*','.deck-list>.results-meta,.deck-list>.deck-image-grid,.deck-list>.deck-list-pagination','.operator-deck-preset>*']);
-  const operatorDeckFit=await evaluate(`(()=>{const q=s=>document.querySelector(s).getBoundingClientRect(),left=q('.transfer-source .cards-grid'),right=q('.deck-image-grid'),tools=q('.deck-panel>.workshop-tools'),pager=q('.deck-list-pagination'),panel=q('.deck-panel'),frame=q('.bk-native-pane');return {aligned:Math.abs(left.top-right.top)<=2&&Math.abs(left.bottom-right.bottom)<=2,clear:tools.bottom<=right.top+2&&pager.top>=right.bottom-2&&pager.bottom<=panel.bottom+2,inside:panel.bottom<=frame.bottom+3}})()`);
-  assert.deepEqual(operatorDeckFit,{aligned:true,clear:true,inside:true},width+'x'+height+' operator card grid fit');
+  await check(width+'x'+height+' visible operator deck settings',['.deck-panel>.workshop-tools>*','[data-layout-fixture]>*']);
+  const operatorSettingsFit=await evaluate(`(()=>{const row=document.querySelector('[data-layout-fixture]'),frame=layoutRect(document.querySelector('.bk-native-pane')),bounds=layoutRect(row),nodes=[row,...row.children],inside=(r,b)=>r.left>=b.left-2&&r.right<=b.right+2&&r.top>=b.top-2&&r.bottom<=b.bottom+2;return {mode:document.querySelector('.dual-workshop').dataset.bkWorkshopMode,visible:nodes.every(e=>{const r=layoutRect(e);return r.width>0&&r.height>0}),inside:nodes.every(e=>inside(layoutRect(e),frame)),contained:[...row.children].every(e=>inside(layoutRect(e),bounds))}})()`);
+  assert.deepEqual(operatorSettingsFit,{mode:'settings',visible:true,inside:true,contained:true},width+'x'+height+' complete operator settings controls');
   await evaluate('document.querySelector("[data-layout-fixture]").remove();true');await delay(120);
   await click('[data-bk-screen-tab=filter]');await delay(120);await click('[data-action=deck-advanced-filters]');await delay(200);await check(width+'x'+height+' expanded deck filters',['.transfer-source>.transfer-heading,.transfer-source>.deck-source-tools,.transfer-source>.filter-bar,.transfer-source>#card-results','.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','.filters-secondary>select']);
   await click('[data-action=deck-advanced-filters]');await delay(120);await click('[data-bk-screen-tab=cards]');await delay(160);
@@ -161,16 +192,34 @@ try{
   await click('.navigation-dock [data-nav=collection]');await click('#card-results .game-card');await waitElement('.modal');await check(width+'x'+height+' card detail',['.modal-close,.modal>.detail-layout']);await click('.modal-close');
  }
  await click('.navigation-dock [data-nav=home]');await click('[data-action=solo-mode]');await click('[data-action=solo-section][data-section=practice]');await click('[data-action=start-game]');await waitElement('.duel-shell');
- for(const [width,height] of [[1920,1080],[1366,768],[1024,600],[768,1024],[390,844],[320,568],[844,390]]){
-  await viewport(width,height);
+ for(const {width,height,mobile} of viewports){
+  await viewport(width,height,mobile);
   await waitElement('.bk-native-pane>.bk-fit-pane[data-fit-scale]');await delay(120);
   const tracks=await evaluate(`(()=>{const a=document.querySelector('.arena'),s=['.arena>.zone-strip','.midline>.arcana-zone-row','.own-zone-row>.arcana-zone-row','.own-zone-row>.zone-strip'];return {rows:s.map(q=>getComputedStyle(document.querySelector(q)).gridRowStart),columns:s.map(q=>getComputedStyle(document.querySelector(q)).gridColumnStart),hand:getComputedStyle(a.querySelector('.hand-section')).gridRowStart}})()`);
-  assert.deepEqual(tracks.rows,['1','2','4','5'],width+'x'+height+' public zones have distinct rows');assert.deepEqual(tracks.columns,['2','2','2','2'],width+'x'+height+' zone column');assert.equal(tracks.hand,height<=570&&width>height?'1':'6');
+  const logical=await evaluate('layoutViewport()');
+  assert.deepEqual(tracks.rows,['1','2','4','5'],width+'x'+height+' public zones have distinct rows');assert.deepEqual(tracks.columns,['2','2','2','2'],width+'x'+height+' zone column');assert.equal(tracks.hand,logical.height<=570&&logical.width>logical.height?'1':'6');
   await check(width+'x'+height+' duel',['.duel-top-actions>button','.arena>.duelist,.arena>.field-row,.arena>.hand-section,.arena>.zone-strip,.midline>.turn-label,.midline>.end-turn,.midline>.arcana-zone-row,.own-zone-row>.arcana-zone-row,.own-zone-row>.zone-strip','.hand-cards>.hand-card']);
  }
- await send('Page.navigate',{url:url+'about.html'});await waitElement('body.about-page');await waitElement('.bk-fit-article .bk-fit-target[data-fit-scale]');await delay(150);await check('about page');
+ for(const path of ['about.html','rebuild/about.html']){
+  await send('Page.navigate',{url:url+path});await waitElement('body.about-page');await waitElement('.bk-fit-article .bk-fit-target[data-fit-scale]');await waitElement('[data-guide-select]:not(:disabled)');
+  const chapterCount=await evaluate('document.querySelectorAll("#about-main > section").length');assert.ok(chapterCount>=4,path+' has complete chapter navigation');
+  assert.equal(await evaluate('document.querySelector("[data-guide-select]").options.length'),chapterCount);
+  for(const {width,height,mobile} of [{width:1366,height:768,mobile:false},...viewports.filter(v=>v.mobile&&v.height>v.width)]){
+   await viewport(width,height,mobile);
+   for(let chapter=0;chapter<chapterCount;chapter++){
+    await evaluate('(()=>{const s=document.querySelector("[data-guide-select]");s.value='+chapter+';s.dispatchEvent(new Event("change",{bubbles:true}));return true})()');await delay(100);
+    const guide=await evaluate('(()=>{const f=layoutRect(document.querySelector(".bk-fit-article")),sections=[...document.querySelectorAll("#about-main > section:not([hidden])")];return {visible:sections.length,bad:sections.flatMap(s=>[s,...s.querySelectorAll("h1,h2,h3,p,a,dl,article")]).filter(e=>{const r=layoutRect(e);return r.width>0&&r.height>0&&(r.left<f.left-2||r.right>f.right+2||r.top<f.top-2||r.bottom>f.bottom+2)}).map(e=>e.id||e.className||e.tagName)}})()');
+    if(guide.bad.length){
+     const geometry=await evaluate('(()=>{const main=document.querySelector("#about-main"),frame=document.querySelector(".bk-fit-article");return {frame:layoutRect(frame).toJSON(),main:layoutRect(main).toJSON(),scale:main.dataset.fitScale,sections:[...main.querySelectorAll(":scope > section:not([hidden])")].map(e=>({id:e.id,box:layoutRect(e).toJSON(),offsetHeight:e.offsetHeight,scrollHeight:e.scrollHeight,minHeight:getComputedStyle(e).minHeight}))}})()');
+     console.error('Guide chapter geometry',JSON.stringify({path,width,height,chapter:chapter+1,...geometry}));
+    }
+    assert.deepEqual(guide,{visible:1,bad:[]},path+' '+width+'x'+height+' complete chapter '+(chapter+1));
+   }
+   await check(path+' '+width+'x'+height,['.guide-header>*','.bk-fit-pager>*']);
+  }
+ }
  assert.deepEqual(exceptions,[],'No uncaught browser errors');
- console.log('Layout smoke passed: root home, deck, collection, shop, rules, solo, practice, room, rank, details, battle, about; seven viewports');
+ console.log('Layout smoke passed: entry, home, deck, collection, shop, rules, solo, practice, room, rank, details, battle and every chapter in both guides; eight desktop/mobile viewports including portrait touch landscape fallback');
 }finally{
  for(const p of pending.values())clearTimeout(p.timer);
  server.close();server.closeAllConnections();

@@ -12,14 +12,14 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', starter
     <div class="entry-scene" aria-hidden="true"></div>
     <div class="entry-vignette" aria-hidden="true"></div>
     <header class="entry-header">
-      <div class="entry-mark" aria-hidden="true"><img src="assets/icon.svg" alt="" width="46" height="46"><span>THE GARDEN OF SEVEN ORIGINS</span></div>
+      <div class="entry-mark" aria-hidden="true"><img src="assets/icon.svg" alt="" width="46" height="46"><span>THE CROWN COURT</span></div>
       <div class="entry-audio">${audioControl}</div>
     </header>
     <div class="entry-layout">
       <section class="entry-content">
         <div class="entry-edition"><span class="entry-edition-star" aria-hidden="true">${glyph('spark')}</span><span>第二弾 王源の継承 <span class="entry-edition-dot" aria-hidden="true">·</span> <span class="entry-card-total">1,152 CARDS</span></span></div>
         <h1 id="entry-title" class="entry-title"><span class="entry-title-en" lang="en">BEAST KING</span><span class="entry-title-ja">ビーストキング</span></h1>
-        <p class="entry-invitation">君の名で、戦いを始めよう。</p>
+        <p class="entry-invitation">魔獣と出会い、君だけの王道を。</p>
         <form id="entry-start-form" class="entry-start-panel" novalidate>
           <div class="entry-name-heading"><label for="entry-player-name">プレイヤー名</label><span id="entry-name-help">必須 · 1〜16文字</span></div>
           <div class="entry-input-wrap"><span class="entry-input-mark" aria-hidden="true">${glyph('crown')}</span><input id="entry-player-name" name="playerName" type="text" value="${escape(String(playerName ?? ''))}" maxlength="16" minlength="1" required autocomplete="nickname" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="あなたの名前" aria-describedby="entry-name-help entry-name-note" enterkeyhint="go"></div>
@@ -33,6 +33,6 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', starter
       </section>
       <div class="entry-art-caption" aria-hidden="true"><span class="entry-art-line"></span><span>王が目覚める庭<small>THE CROWN AWAITS</small></span></div>
     </div>
-    <footer class="entry-footer"><span>PC · スマホ · タブレット</span><span>© 2026 Beast King</span></footer>
+    <footer class="entry-footer"><span>PC · スマホ · タブレット</span><a href="about.html">ゲーム紹介・遊び方</a><span>© 2026 Beast King</span></footer>
   </main>`;
 }

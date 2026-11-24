@@ -15,6 +15,7 @@ const read=path=>readFile(resolve(root,path));
 const hash=buffer=>createHash('sha256').update(buffer).digest('hex');
 const manifest=JSON.parse(await read(directory+'manifest.json'));
 const production=JSON.parse(await read(directory+'production.json'));
+const artReview=JSON.parse(await read('assets/design-v2/art-direction-review.json'));
 validateCardArtManifest(manifest,CARDS);
 assert(production.complete,'The card illustration release is incomplete.');
 assert.equal(production.atlases.length,144,'Expected 144 completed illustration atlases.');
@@ -51,7 +52,16 @@ for(const [id,r] of Object.entries(CARD_ART_OVERRIDES)){
  assert.equal(replacementFiles.get(r.src),r.sha256,'Replacement image hash mismatch');
  const key=[r.src,r.x,r.y,r.size].join(':');assert(!replacementCells.has(key),'Duplicate replacement cell');replacementCells.add(key);
 }
-assert.equal(replacementCells.size,12);
+const reviewedIds=artReview.atlases.flatMap(atlas=>atlas.cardIds);
+assert.equal(new Set(reviewedIds).size,artReview.redrawnCardCount,'A redrawn illustration must have one reviewed identity.');
+const expectedReplacements=[...reviewedIds,...artReview.retainedPriorCardIds].sort();
+assert.deepEqual(Object.keys(CARD_ART_OVERRIDES).sort(),expectedReplacements,'Browser overrides differ from the visually reviewed release.');
+assert.equal(replacementCells.size,artReview.activeReplacementCount);
+for(const atlas of artReview.atlases){
+ assert.equal(atlas.cardIds.length,16,'A reviewed atlas must have all 16 cells.');
+ assert.equal(replacementFiles.get(atlas.src),atlas.sha256,'Reviewed atlas hash mismatch.');
+ for(const id of atlas.cardIds)assert.equal(CARD_ART_OVERRIDES[id].src,atlas.src,'Reviewed card points to a different illustration: '+id);
+}
 for(const setId of ['BK01','BK02'])assert.equal(getCardsForSet(setId).length,1152);
 assert.equal(STARTER_DECKS.length,4);
 for(const deck of STARTER_DECKS){
@@ -60,5 +70,14 @@ for(const deck of STARTER_DECKS){
 }
 const fields=await Promise.all(['solo','multi','rank'].map(name=>read('assets/design-v2/backgrounds/'+name+'.webp')));
 assert.equal(new Set(fields.map(hash)).size,3,'Each game mode needs a different battlefield.');
+const illustratedFields=new Set();
+for(const background of artReview.backgrounds){
+ const bytes=await read(background.src);
+ assert.equal(hash(bytes),background.sha256,'Reviewed background changed: '+background.id);
+ assert.equal(bytes.toString('ascii',0,4),'RIFF');assert.equal(bytes.toString('ascii',8,12),'WEBP');
+ if(['solo','multi','rank'].includes(background.id))illustratedFields.add(hash(bytes));
+}
+assert.equal(illustratedFields.size,3,'The illustrated release must have three distinct arenas.');
+assert((await read('card-art-direction.js')).includes('bk-card-painted-ink'),'Missing shared illustration finish.');
 for(const path of ['assets/icon.svg','assets/favicon-32.png','assets/apple-touch-icon.png','assets/social-ogp.jpg','assets/audio/menu.mp3','assets/audio/battle.mp3','assets/audio/battle-danger.mp3'])assert((await stat(resolve(root,path))).size>0,'Missing shipped asset: '+path);
-console.log(JSON.stringify({cards:CARDS.length,uniqueIllustrations:cells.size,atlases:production.atlases.length,redrawn:manifest.cards.filter(c=>c.status==='redrawn').length,preserved:['B0512'],packs:[1152,1152],starters:4,battlefields:3,illustrationReplacements:replacementCells.size,allFilesVerified:true}));
+console.log(JSON.stringify({cards:CARDS.length,uniqueIllustrations:cells.size,atlases:production.atlases.length,originalAtlasIllustrations:manifest.cards.filter(c=>c.status==='redrawn').length,newlyRedrawnIllustrations:artReview.redrawnCardCount,preserved:['B0512'],packs:[1152,1152],starters:4,battlefields:3,illustrationReplacements:replacementCells.size,allFilesVerified:true}));

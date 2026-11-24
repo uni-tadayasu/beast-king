@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
 import {createOnlineWorker} from '../server/worker.js';
 import {STARTER_DECKS,getCard} from '../catalog.js';
-import {newGame} from '../engine.js';
+import {newGame,endTurn} from '../engine.js';
 import {createStarterCollection} from '../shop.js';
 import {createCampaignProgress} from '../campaign.js';
 import {initialProfile,STARTERS,purchase} from '../rebuild/profile.js';
@@ -112,6 +112,50 @@ test('cloud saves preserve validated CPU and campaign data while stripping crede
   const saved=created.data.save.data;assert.equal(saved.game.players[0].deck.length,28);assert.equal(saved.game.seed,data.game.seed);assert.equal(saved.game.statsRecorded,false);assert.equal(saved.game.log[0].turn,1);
   for(const key of ['token','rating','admin','online'])assert.equal(saved[key],undefined);assert.equal(JSON.stringify(saved).includes('must-not-persist'),false);assert.equal(saved.game.role,undefined);
   const linked=await f.link(p),restored=await f.api('GET','/api/cloud-save',linked.token);assert.deepEqual(restored.data.save,created.data.save);assert.equal(restored.data.profile.nickname,'別端末の名前');
+});
+
+test('cloud CPU saves retain the opening policy across linked-device resumes before and after its plateau',async t=>{
+  const f=fixture(t),p=await f.profile(),data=saveData(p);data.game=newGame({seed:42317});
+  assert.equal(data.game.openingRuleVersion,1);
+  while(data.game.turn<5)assert.equal(endTurn(data.game).ok,true);
+  assert.equal(data.game.players[1].maxEnergy,3);
+  const saved=await f.save(p,data);assert.equal(saved.status,200,JSON.stringify(saved.data));
+  assert.equal(saved.data.save.data.game.openingRuleVersion,1);
+  const linked=await f.link(p);f.reconnect();
+  const remote=await f.api('GET','/api/cloud-save',linked.token);assert.equal(remote.status,200);
+  const resumed=remote.data.save.data;assert.equal(resumed.game.openingRuleVersion,1);
+  assert.equal(endTurn(resumed.game).ok,true);assert.equal(resumed.game.turn,6);
+  assert.equal(resumed.game.players[1].energy,3);assert.equal(resumed.game.players[1].maxEnergy,3);
+  const plateau=await f.save({token:linked.token},resumed,1);assert.equal(plateau.status,200,JSON.stringify(plateau.data));
+  f.reconnect();const after=(await f.api('GET','/api/cloud-save',p.token)).data.save;
+  assert.equal(after.revision,2);assert.equal(after.data.game.openingRuleVersion,1);assert.equal(after.data.game.turn,6);
+  assert.equal(endTurn(after.data.game).ok,true);assert.equal(endTurn(after.data.game).ok,true);
+  assert.equal(after.data.game.turn,8);assert.equal(after.data.game.players[1].energy,4);assert.equal(after.data.game.players[1].maxEnergy,4);
+});
+
+test('cloud saves keep an absent opening marker absent and resume turn-one legacy games without the bonus',async t=>{
+  const f=fixture(t),p=await f.profile(),data=saveData(p);data.game=newGame({seed:51832});delete data.game.openingRuleVersion;
+  const saved=await f.save(p,data);assert.equal(saved.status,200,JSON.stringify(saved.data));
+  assert.equal(Object.hasOwn(saved.data.save.data.game,'openingRuleVersion'),false);
+  f.reconnect();const restored=(await f.api('GET','/api/cloud-save',p.token)).data.save.data;
+  assert.equal(Object.hasOwn(restored.game,'openingRuleVersion'),false);
+  assert.equal(endTurn(restored.game).ok,true);assert.equal(restored.game.turn,2);
+  assert.equal(restored.game.players[1].energy,1);assert.equal(restored.game.players[1].maxEnergy,1);
+  assert.equal(endTurn(restored.game).ok,true);assert.equal(endTurn(restored.game).ok,true);
+  assert.equal(restored.game.turn,4);assert.equal(restored.game.players[1].energy,2);
+  const again=await f.save(p,restored,1);assert.equal(again.status,200,JSON.stringify(again.data));
+  assert.equal(Object.hasOwn(again.data.save.data.game,'openingRuleVersion'),false);
+});
+
+test('unsupported opening markers are rejected without replacing a valid cloud save',async t=>{
+  const f=fixture(t),p=await f.profile(),data=saveData(p);data.game=newGame({seed:23816});
+  const saved=await f.save(p,data);assert.equal(saved.status,200,JSON.stringify(saved.data));
+  for(const marker of [null,0,2,'1',true,{}]){
+    const invalid=structuredClone(data);invalid.game.openingRuleVersion=marker;
+    const response=await f.save(p,invalid,1);
+    assert.equal(response.status,400,`invalid marker ${JSON.stringify(marker)}`);assert.equal(response.data.code,'invalid_save');
+  }
+  const current=await f.api('GET','/api/cloud-save',p.token);assert.deepEqual(current.data.save,saved.data.save);
 });
 
 test('invalid decks, copies, quantities, oversized content and redacted online games cannot become cloud saves',async t=>{
