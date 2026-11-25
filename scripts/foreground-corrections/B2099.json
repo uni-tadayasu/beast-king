@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "cardIds": [
+    "B2099"
+  ],
+  "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-pigment.webp?v=0f75183da80d\",1536,1024,[266,266,235,235]]",
+  "sourceSha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+  "source": {
+    "src": "assets/design-v5/cards/bk05-pigment.webp?v=0f75183da80d",
+    "kind": "atlas",
+    "sourceWidth": 1536,
+    "sourceHeight": 1024,
+    "crop": {
+      "x": 266,
+      "y": 266,
+      "width": 235,
+      "height": 235
+    },
+    "fit": "contain",
+    "position": "center"
+  },
+  "sourceFile": "assets/design-v5/cards/bk05-pigment.webp",
+  "sourceCrop": {
+    "x": 266,
+    "y": 266,
+    "width": 235,
+    "height": 235
+  },
+  "viewBox": [
+    0,
+    0,
+    256,
+    256
+  ],
+  "fillRule": "evenodd",
+  "geometryRevision": 1,
+  "purpose": "Source-bound visible-creature clipping geometry; scratch candidate awaiting visual approval",
+  "predictionBase": {
+    "generator": "birefnet-public-mask-v3",
+    "modelFamily": "lite",
+    "modelHash": "1e0da42f0fde010e32e938bad388457ecefe35806fde9d923421997861ae9391",
+    "inputSize": 1024,
+    "preprocessingKey": "{\"normalization\":{\"mean\":[0.485,0.456,0.406],\"std\":[0.229,0.224,0.225],\"divisor\":255},\"inputSize\":1024,\"maskSize\":256,\"outputEncoding\":\"logits\"}",
+    "weightsHash": null,
+    "rawMaskSha256": "87af8a496673dab3d57b0cfe9cf5d5c6cdf89392585d2763ef4bae591afd2168",
+    "used": false,
+    "reason": "Complete source-visible silhouette traced to remove broad scenery",
+    "finishedMaskSha256": "d04041c99297fcb8a3d24a3000be18094ec3099adc8cf88afe73c69ed55a3d5d",
+    "threshold": 128,
+    "loopCount": 25,
+    "representation": "closed numeric pixel-edge contours; no model needed at runtime"
+  },
+  "paths": [
+    {
+      "id": "source-visible-leopard-torso-and-head",
+      "operation": "include",
+      "d": "M 39 75 C 48 59 65 48 84 46 C 110 39 124 52 141 59 L 174 62 L 193 68 L 208 82 L 220 92 L 229 93 L 236 90 L 247 91 L 253 96 L 256 103 V 137 L 250 141 L 246 147 L 238 150 L 228 148 L 224 142 L 224 135 L 214 131 L 209 128 L 201 128 L 197 134 L 188 135 L 183 129 L 176 120 L 168 116 L 157 118 L 148 116 L 136 113 L 122 108 L 111 104 L 100 97 L 87 96 L 78 103 L 64 107 L 53 108 L 43 105 L 33 99 Z"
+    },
+    {
+      "id": "source-visible-curled-leopard-tail",
+      "operation": "include",
+      "d": "M 66 58 C 45 66 22 66 7 55 C -8 44 -6 27 6 15 C 16 2 38 -6 59 0 C 81 5 94 17 96 31 C 99 42 91 48 79 51 L 74 44 C 89 41 91 32 83 23 C 74 12 51 8 33 13 C 14 19 9 31 15 41 C 21 51 37 54 53 49 L 66 47 Z"
+    },
+    {
+      "id": "source-visible-far-front-leg",
+      "operation": "include",
+      "d": "M 181 118 L 196 123 L 201 141 L 212 155 L 224 169 L 236 183 L 246 190 L 256 196 V 211 L 248 209 L 240 206 L 233 199 L 228 190 L 218 183 L 209 177 L 201 168 L 192 159 L 187 148 L 180 137 Z"
+    },
+    {
+      "id": "source-visible-near-front-leg",
+      "operation": "include",
+      "d": "M 153 111 L 168 114 L 170 133 L 177 146 L 186 161 L 197 174 L 208 186 L 214 194 L 218 203 L 214 209 L 207 210 L 202 206 L 199 198 L 189 190 L 179 182 L 173 169 L 166 160 L 157 154 L 153 141 L 150 128 Z"
+    },
+    {
+      "id": "source-visible-extended-rear-leg",
+      "operation": "include",
+      "d": "M 42 91 L 55 95 L 50 108 L 40 117 L 31 124 L 20 126 L 12 131 L 0 136 V 125 L 10 117 L 20 106 L 27 94 L 31 88 Z"
+    },
+    {
+      "id": "source-visible-second-rear-leg",
+      "operation": "include",
+      "d": "M 62 95 L 77 96 L 72 109 L 65 120 L 58 129 L 53 137 L 48 138 L 45 135 L 46 129 L 48 122 L 48 117 L 54 107 Z"
+    }
+  ],
+  "reviewNotes": [
+    "Only alpha clipping changes; original artwork RGB remains unchanged.",
+    "Visible original anatomy only; no hidden anatomy is invented.",
+    "Manually traced contours are exempt from confidence finishing."
+  ]
+}

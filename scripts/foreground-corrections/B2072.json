@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "cardIds": [
+    "B2072"
+  ],
+  "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-glass.webp?v=d7333e907d2f\",1536,1024,[1034,10,235,235]]",
+  "sourceSha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+  "source": {
+    "src": "assets/design-v5/cards/bk05-glass.webp?v=d7333e907d2f",
+    "kind": "atlas",
+    "sourceWidth": 1536,
+    "sourceHeight": 1024,
+    "crop": {
+      "x": 1034,
+      "y": 10,
+      "width": 235,
+      "height": 235
+    },
+    "fit": "contain",
+    "position": "center"
+  },
+  "sourceFile": "assets/design-v5/cards/bk05-glass.webp",
+  "sourceCrop": {
+    "x": 1034,
+    "y": 10,
+    "width": 235,
+    "height": 235
+  },
+  "viewBox": [
+    0,
+    0,
+    256,
+    256
+  ],
+  "fillRule": "evenodd",
+  "geometryRevision": 1,
+  "purpose": "Source-bound visible-creature clipping geometry; scratch candidate awaiting visual approval",
+  "predictionBase": {
+    "generator": "birefnet-public-mask-v3",
+    "modelFamily": "lite",
+    "modelHash": "1e0da42f0fde010e32e938bad388457ecefe35806fde9d923421997861ae9391",
+    "inputSize": 1024,
+    "preprocessingKey": "{\"normalization\":{\"mean\":[0.485,0.456,0.406],\"std\":[0.229,0.224,0.225],\"divisor\":255},\"inputSize\":1024,\"maskSize\":256,\"outputEncoding\":\"logits\"}",
+    "weightsHash": null,
+    "rawMaskSha256": "c145cdc3649e5e96d6c81979166757dbc5c4665ca74f590bec1f172810787736",
+    "used": false,
+    "reason": "Complete source-visible silhouette traced to remove broad scenery",
+    "finishedMaskSha256": "2bb05388a37a114245b81b54359a0c5a070af11a587679bd690850d74e433d5e",
+    "threshold": 128,
+    "loopCount": 42,
+    "representation": "closed numeric pixel-edge contours; no model needed at runtime"
+  },
+  "paths": [
+    {
+      "id": "visible-deer-head-neck-body-and-legs",
+      "operation": "include",
+      "d": "M 184 51 L 186 57 L 178 66 L 171 71 L 168 79 L 176 91 L 178 104 L 176 119 L 171 132 L 172 143 L 169 156 L 170 166 L 161 177 L 160 192 L 157 212 L 158 226 L 164 234 L 164 238 L 148 236 L 145 231 L 145 218 L 147 200 L 147 180 L 148 170 L 144 158 L 134 154 L 119 161 L 104 163 L 91 162 L 85 165 L 83 176 L 80 186 L 92 200 L 106 214 L 113 221 L 113 226 L 101 225 L 93 216 L 82 199 L 75 193 L 70 184 L 63 199 L 53 212 L 42 231 L 37 245 L 32 251 L 27 250 L 28 238 L 33 223 L 38 199 L 46 182 L 53 163 L 49 156 L 41 153 L 33 156 L 27 157 L 30 150 L 41 147 L 52 137 L 64 125 L 79 116 L 99 116 L 114 117 L 133 114 L 141 108 L 147 97 L 150 87 L 148 79 L 145 74 L 141 70 L 137 64 L 138 61 L 145 62 L 152 66 L 157 64 L 166 63 L 173 60 Z"
+    },
+    {
+      "id": "visible-raised-front-leg",
+      "operation": "include",
+      "d": "M 169 143 L 182 149 L 197 153 L 200 160 L 196 174 L 193 186 L 185 196 L 181 195 L 181 187 L 186 177 L 187 168 L 173 164 L 163 159 Z"
+    },
+    {
+      "id": "main-left-antler-and-visible-tines",
+      "operation": "include",
+      "d": "M 151 63 L 139 63 L 128 59 L 116 60 L 108 63 L 102 72 L 98 81 L 91 86 L 80 87 L 73 84 L 71 80 L 75 79 L 82 82 L 89 78 L 93 69 L 94 61 L 84 64 L 76 69 L 70 77 L 65 80 L 61 80 L 61 76 L 66 71 L 70 64 L 68 57 L 58 54 L 51 47 L 48 38 L 49 21 L 53 9 L 62 0 H 68 L 60 10 L 56 22 L 55 35 L 57 44 L 65 49 L 77 51 L 85 48 L 85 40 L 82 33 L 83 26 L 87 19 L 94 14 L 101 12 L 102 15 L 93 20 L 90 27 L 90 35 L 93 41 L 94 47 L 102 50 L 112 48 L 122 45 L 125 46 L 119 51 L 111 54 L 117 56 L 128 55 L 139 59 L 149 59 Z"
+    },
+    {
+      "id": "upper-left-antler-tines",
+      "operation": "include",
+      "d": "M 67 49 L 65 39 L 66 29 L 72 17 L 83 7 L 94 0 H 101 L 89 8 L 79 17 L 73 27 L 71 38 L 73 48 Z M 92 48 L 99 36 L 109 28 L 119 23 L 128 18 L 132 17 L 130 22 L 119 28 L 109 35 L 101 44 L 99 50 Z M 126 57 L 130 48 L 129 40 L 125 33 L 122 30 L 125 28 L 131 33 L 135 42 L 138 49 L 145 53 L 145 57 L 134 54 L 131 59 Z"
+    },
+    {
+      "id": "right-antler-crown",
+      "operation": "include",
+      "d": "M 151 65 L 149 51 L 145 44 L 143 33 L 142 20 L 141 6 L 142 0 L 145 14 L 148 25 L 155 28 L 161 30 L 169 30 L 174 27 L 174 17 L 173 7 L 169 0 H 173 L 178 7 L 180 20 L 180 29 L 184 31 L 190 31 L 193 27 L 194 17 L 195 8 L 193 0 H 196 L 199 9 L 199 21 L 197 31 L 191 36 L 181 35 L 175 34 L 167 35 L 167 44 L 171 49 L 169 54 L 163 50 L 162 43 L 161 36 L 155 34 L 151 35 L 152 45 L 155 51 L 158 55 L 158 61 Z"
+    }
+  ],
+  "reviewNotes": [
+    "Only alpha clipping changes; original artwork RGB remains unchanged.",
+    "Visible original anatomy only; no hidden anatomy is invented.",
+    "Manually traced contours are exempt from confidence finishing."
+  ]
+}

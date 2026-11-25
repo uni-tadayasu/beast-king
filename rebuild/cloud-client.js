@@ -1,6 +1,6 @@
 // Explicit cloud backup/restore; never create or replace an account session.
-import {ONLINE_API_BASE,ONLINE_STORAGE_KEY} from '../online.js?v=20261125-34';
-import {validateRebuildBackup} from './backup.js?v=20261125-34';
+import {ONLINE_API_BASE,ONLINE_STORAGE_KEY} from '../online.js?v=20261125-35';
+import {validateRebuildBackup} from './backup.js?v=20261125-35';
 export function createRebuildCloudClient({storage=globalThis.localStorage,fetchImpl=globalThis.fetch?.bind(globalThis),baseUrl=ONLINE_API_BASE}={}){
  function credential(){
   try{const x=JSON.parse(storage?.getItem(ONLINE_STORAGE_KEY)||'null');return !x?.authInvalidated&&typeof x?.token==='string'&&/^[A-Za-z0-9_-]{43}$/.test(x.token)?x.token:null}catch{return null}

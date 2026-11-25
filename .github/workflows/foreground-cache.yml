@@ -1,0 +1,89 @@
+name: Build public foreground masks
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  ORT_DISABLE_TELEMETRY: '1'
+
+jobs:
+  mask:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - name: Checkout public source
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install build-only CPU dependencies
+        env:
+          ONNXRUNTIME_NODE_INSTALL: skip
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Download pinned public segmentation model
+        run: |
+          curl --fail --location --retry 3 'https://huggingface.co/knowicki/rembg-models/resolve/8d33a6ad9ce2666ebd682a8fd28e8310aee87a14/birefnet_dynamic/birefnet_dynamic.onnx' --output /tmp/birefnet_dynamic.onnx
+          curl --fail --location --retry 3 'https://huggingface.co/knowicki/rembg-models/resolve/8d33a6ad9ce2666ebd682a8fd28e8310aee87a14/birefnet_dynamic/birefnet_dynamic.onnx.data' --output /tmp/birefnet_dynamic.onnx.data
+      - name: Generate source-bound alpha masks
+        run: node scripts/build-summon-masks.mjs --model-family dynamic --input-size 512 --model /tmp/birefnet_dynamic.onnx --threads 2 --shard ${{ matrix.shard }}/16 --output artifacts/foreground-${{ matrix.shard }}
+      - name: Upload public mask shard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: foreground-${{ matrix.shard }}
+          path: artifacts/foreground-${{ matrix.shard }}
+          retention-days: 7
+
+  pack:
+    needs: mask
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout the exact generation source
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install build-only dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Collect all public mask shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: foreground-*
+          path: artifacts/masks
+      - name: Pack complete source-bound atlases
+        run: node scripts/pack-summon-masks.mjs artifacts/masks/foreground-*
+      - name: Verify all original and foreground illustrations
+        run: npm run verify:release
+      - name: Upload reviewable generated files
+        uses: actions/upload-artifact@v4
+        with:
+          name: foreground-packed
+          path: |
+            assets/foreground/
+            card-foreground-masks.js
+            docs/summon-mask-production.json
+          retention-days: 7
+      - name: Commit generated files to the same review branch
+        if: startsWith(github.ref, 'refs/heads/release/')
+        env:
+          CACHE_BRANCH: ${{ github.ref_name }}
+          CACHE_SOURCE_SHA: ${{ github.sha }}
+        run: |
+          test "$(git ls-remote origin "refs/heads/$CACHE_BRANCH" | cut -f1)" = "$CACHE_SOURCE_SHA"
+          git add assets/foreground card-foreground-masks.js docs/summon-mask-production.json
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Generate verified public foreground mask atlases'
+            git push origin "HEAD:$CACHE_BRANCH"
+          fi

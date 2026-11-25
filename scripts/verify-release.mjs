@@ -16,11 +16,15 @@ import {PREMIUM_DECK} from '../premium-deck.js';
 import {validateCardArtManifest} from './validate-card-art.mjs';
 import {validateExpansionArtManifest} from './validate-expansion-art.mjs';
 import {validateFifthArtManifest} from './validate-fifth-art.mjs';
+import {CARD_FOREGROUND_MASKS} from '../card-foreground-masks.js';
+import {validateForegroundMaskManifest} from './validate-foreground-masks.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const directory='assets/design-v2/cards/individual/';
 const read=path=>readFile(resolve(root,path));
 const hash=buffer=>createHash('sha256').update(buffer).digest('hex');
+const foregroundMasks=await validateForegroundMaskManifest(CARD_FOREGROUND_MASKS,CARDS,{root});
+assert.equal(foregroundMasks.cards,2625,'Every public beast/fusion must have a verified mask.');
 const manifest=JSON.parse(await read(directory+'manifest.json'));
 const production=JSON.parse(await read(directory+'production.json'));
 const artReview=JSON.parse(await read('assets/design-v2/art-direction-review.json'));
@@ -184,4 +188,4 @@ for(const card of CARDS){
 const shared=[...effective.values()].filter(ids=>ids.length>1);
 assert.equal(shared.length,1);assert.deepEqual(shared[0].sort(),[...selva.cardIds].sort());
 assert.equal(effective.size,4714);
-console.log(JSON.stringify({cards:CARDS.length,uniqueIllustrations:effective.size,explicitSharedArtwork:{selva:selva.cardIds.length},newPremiumIllustrations:nativeHashes.size,premiumDeckGgrTypes:18,atlases:production.atlases.length+expansionFiles.size+fifth.atlases.length,originalAtlasIllustrations:manifest.cards.filter(c=>c.status==='redrawn').length,newlyRedrawnIllustrations:artReview.redrawnCardCount,newExpansionIllustrations:expansion.cards.length,newExpansionAtlases:expansionFiles.size,preserved:['B0512'],fifthIllustrations:fifth.cards.length,fifthAtlases:fifth.atlases.length,packs:['BK01','BK02','BK03','BK04','BK05'].map(id=>getCardsForSet(id).length),starters:4,battlefields:3,illustrationReplacements:replacementCells.size,premiumAssets:premiumHashes.size,allFilesVerified:true}));
+console.log(JSON.stringify({cards:CARDS.length,uniqueIllustrations:effective.size,explicitSharedArtwork:{selva:selva.cardIds.length},newPremiumIllustrations:nativeHashes.size,premiumDeckGgrTypes:18,atlases:production.atlases.length+expansionFiles.size+fifth.atlases.length,originalAtlasIllustrations:manifest.cards.filter(c=>c.status==='redrawn').length,newlyRedrawnIllustrations:artReview.redrawnCardCount,newExpansionIllustrations:expansion.cards.length,newExpansionAtlases:expansionFiles.size,preserved:['B0512'],fifthIllustrations:fifth.cards.length,fifthAtlases:fifth.atlases.length,packs:['BK01','BK02','BK03','BK04','BK05'].map(id=>getCardsForSet(id).length),starters:4,battlefields:3,illustrationReplacements:replacementCells.size,premiumAssets:premiumHashes.size,foregroundMasks,allFilesVerified:true}));

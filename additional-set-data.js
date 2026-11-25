@@ -1,7 +1,7 @@
 /** Authored expansion families. Printed values are final battle points.
  * New effects use only existing public zones; old saved games need no counters.
  */
-import {balancedExpansionCreature} from './catalog-balance.js?v=20261125-34';
+import {balancedExpansionCreature} from './catalog-balance.js?v=20261125-35';
 
 export const ADDITIONAL_CARD_SETS=Object.freeze([
  {id:'BK03',edition:3,editionLabel:'第三弾',name:'継承の共鳴',reading:'けいしょうのきょうめい',coverId:'B1025',cardCount:1152,theme:'第一弾・第二弾の魔獣を支え、受け継いだデッキを育てる。'},

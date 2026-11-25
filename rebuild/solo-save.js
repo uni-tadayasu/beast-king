@@ -1,8 +1,8 @@
 // Strict allowlisted solo snapshots. No bearer tokens, operator grant, or
 // server authority can be recovered from the local save.
-import {getCard,validateDeck,validateSpecialDeck,STARTER_DECKS} from './catalog.js?v=20261125-34';
-import {RULES,MAX_HEART_POINTS,MAX_LOG_ENTRIES} from './engine.js?v=20261125-34';
-import {CAMPAIGN_BATTLES} from '../campaign.js?v=20261125-34';
+import {getCard,validateDeck,validateSpecialDeck,STARTER_DECKS} from './catalog.js?v=20261125-35';
+import {RULES,MAX_HEART_POINTS,MAX_LOG_ENTRIES} from './engine.js?v=20261125-35';
+import {CAMPAIGN_BATTLES} from '../campaign.js?v=20261125-35';
 const plain=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
 const int=(v,min,max)=>Number.isSafeInteger(v)&&v>=min&&v<=max;
 const text=(v,max)=>typeof v==='string'&&Array.from(v).length<=max;

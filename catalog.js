@@ -6,14 +6,14 @@
 import {
   SECOND_SET_CLANS, secondBeastDefinition, secondMiracleDefinition,
   secondGimmickDefinition, secondFusionDefinition,
-} from './second-set-data.js?v=20261125-34';
-import {balanceCreature, balancedMiracleStats, balancedGimmickStats} from './catalog-balance.js?v=20261125-34';
+} from './second-set-data.js?v=20261125-35';
+import {balanceCreature, balancedMiracleStats, balancedGimmickStats} from './catalog-balance.js?v=20261125-35';
 
-import {ADDITIONAL_CARD_SETS,makeAdditionalCards,EXPANSION_FAMILIES as ADDITIONAL_FAMILIES,EXPANSION_EFFECT_KINDS as ADDITIONAL_EFFECT_KINDS} from './additional-set-data.js?v=20261125-34';
-import {FIFTH_CARD_SET,FIFTH_FAMILIES,FIFTH_EFFECT_KINDS,makeFifthCards} from './fifth-set-data.js?v=20261125-34';
-import {makeExpansionRecipes} from './expansion-recipes.js?v=20261125-34';
-import {makePremiumCards,upgradeRegalia,PREMIUM_SET_ADDITIONS} from './premium-cards.js?v=20261125-34';
-import {PREMIUM_DECK} from './premium-deck.js?v=20261125-34';
+import {ADDITIONAL_CARD_SETS,makeAdditionalCards,EXPANSION_FAMILIES as ADDITIONAL_FAMILIES,EXPANSION_EFFECT_KINDS as ADDITIONAL_EFFECT_KINDS} from './additional-set-data.js?v=20261125-35';
+import {FIFTH_CARD_SET,FIFTH_FAMILIES,FIFTH_EFFECT_KINDS,makeFifthCards} from './fifth-set-data.js?v=20261125-35';
+import {makeExpansionRecipes} from './expansion-recipes.js?v=20261125-35';
+import {makePremiumCards,upgradeRegalia,PREMIUM_SET_ADDITIONS} from './premium-cards.js?v=20261125-35';
+import {PREMIUM_DECK} from './premium-deck.js?v=20261125-35';
 export const EXPANSION_FAMILIES=Object.freeze([...ADDITIONAL_FAMILIES.map(f=>Object.freeze({...f,setId:'BK04',editionLabel:'第四弾'})),...FIFTH_FAMILIES]);
 export const EXPANSION_EFFECT_KINDS=Object.freeze([...ADDITIONAL_EFFECT_KINDS,...FIFTH_EFFECT_KINDS]);
 

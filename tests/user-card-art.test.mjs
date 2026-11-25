@@ -10,6 +10,7 @@ import {CARD_ART_OVERRIDES} from '../card-art-overrides.js';
 import {CARD_ART_EXPANSIONS} from '../card-art-expansion.js';
 import {ARTWORK_OVERRIDES} from '../rebuild/artwork-manifest.js';
 import {CARD_ART_USER_OVERRIDES,CARD_ART_USER_GROUPS} from '../card-art-user.js';
+import {isApexReliefCard} from '../card-relief.js';
 
 const SELVA_IDS=['B0263','B0271','B0279','B0287','B0295','B0303','B0311','B0319'];
 const ORIGINAL_SHA256='4dc15129aedbccf18d4d8d89d512a72b8645cbf3f13283c2ab01bcd3bbf943a6';
@@ -30,7 +31,7 @@ async function mainRenderer(){
   Object.assign(artwork,await import(new URL(match[1].split('?')[0],new URL('../app.js',import.meta.url))));
  }
  return vm.runInNewContext(section(source,'function artStyle(','const navItems=')+'\n({artStyle,cardMarkup});',{
-  ...catalog,...artwork,
+  ...catalog,...artwork,isApexReliefCard,
   REGALIA_ID:'B0512',elementMap:Object.fromEntries(catalog.ELEMENTS.map(element=>[element.id,element])),
   typeColors:{beast:'#f00',fusion:'#0f0',miracle:'#00f',gimmick:'#fff'},
   regaliaStatus:()=> 'public',operatorRegaliaArt:()=>null,esc,icon:()=>'<svg></svg>'

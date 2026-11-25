@@ -49,11 +49,11 @@ test('a missing browser module fails without replacing the last good package',as
 
 test('a fresh browser entry rejects stale module, page, and manifest cache queries before replacing output',async t=>{
  const {root,write,page}=await fixture(t);
- await write('index.html',page.replace('src="app.js"','src="app.js?v=20261125-34"'));
- await write('app.js',"import {cards} from './catalog.js?v=20261125-34'; export const total=cards.length;");
+ await write('index.html',page.replace('src="app.js"','src="app.js?v=20261125-35"'));
+ await write('app.js',"import {cards} from './catalog.js?v=20261125-35'; export const total=cards.length;");
  const {directory}=await buildClient(root),before=await readFile(join(directory,'app.js'),'utf8');
  for(const [path,valid,stale] of [
-  ['app.js',before,before.replace('20261125-34','20261124-28')],
+  ['app.js',before,before.replace('20261125-35','20261124-28')],
   ['about.html',page,page.replace('src="app.js"','src="app.js?v=20261124-28"')],
   ['rebuild/profile.js','export const saved=true;',"import '../catalog.js?v=20261124-26';"],
   ['manifest.webmanifest','{"icons":[]}','{"icons":[{"src":"assets/icon.svg?v=20261124-28"}]}'],
@@ -72,4 +72,20 @@ test('an asset symlink cannot copy private data into the browser package',async 
  const {root}=await fixture(t);
  await symlink(join(root,'.env'),join(root,'assets/leak.svg'));
  await assert.rejects(buildClient(root),/Public files must be regular files/);
+});
+
+test('browser packaging ships public mask media without inference code or models',async t=>{
+ const {root,write}=await fixture(t);
+ await write('card-foreground-masks.js','export const CARD_FOREGROUND_MASKS=Object.freeze({});');
+ await write('assets/foreground/atlas-001.png','public grayscale mask atlas fixture');
+ await write('assets/summon-runtime/ort.wasm.min.mjs','obsolete inference code');
+ await write('assets/summon-runtime/ort-wasm-simd-threaded.wasm','obsolete inference binary');
+ await write('assets/summon-runtime/u2netp-192.onnx','obsolete model');
+ await write('assets/summon-runtime/LICENSE-ONNX.txt','obsolete runtime attribution');
+ await write('assets/unreviewed.wasm','not browser media');
+ await write('assets/unreviewed.onnx','not browser media');
+ await write('assets/summon-runtime/unreviewed.mjs','not reviewed code');
+ const {directory}=await buildClient(root),paths=await readdir(directory,{recursive:true});
+ for(const name of ['card-foreground-masks.js','assets/foreground/atlas-001.png'])assert(paths.includes(name));
+ for(const name of ['assets/unreviewed.wasm','assets/unreviewed.onnx','assets/summon-runtime/unreviewed.mjs','assets/summon-runtime/ort.wasm.min.mjs','assets/summon-runtime/ort-wasm-simd-threaded.wasm','assets/summon-runtime/u2netp-192.onnx','assets/summon-runtime/LICENSE-ONNX.txt'])assert(!paths.includes(name));
 });

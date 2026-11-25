@@ -57,9 +57,9 @@ export async function buildClient(sourceRoot=scriptRoot){
   assert(files.has(path),'Missing browser dependency: '+owner+' -> '+value);
  };
  for(const [path,source] of files){
-  const extension=extname(path);if(!['.js','.html','.css','.webmanifest'].includes(extension))continue;
+  const extension=extname(path);if(!['.js','.mjs','.html','.css','.webmanifest'].includes(extension))continue;
   const text=await readFile(source,'utf8');
-  if(extension==='.js')for(const match of text.matchAll(/\b(?:from\s*|import\s*(?:\(\s*)?)(['"])(\.{1,2}\/[^'"]+)\1/g))localUrl(path,match[2]);
+  if(extension==='.js'||extension==='.mjs')for(const match of text.matchAll(/\b(?:from\s*|import\s*(?:\(\s*)?)(['"])(\.{1,2}\/[^'"]+)\1/g))localUrl(path,match[2]);
   if(extension==='.html')for(const match of text.matchAll(/\b(?:src|href)\s*=\s*(['"])([^'"]+)\1/g))localUrl(path,match[2]);
   if(extension==='.css')for(const match of text.matchAll(/url\(\s*(['"]?)([^)'"\s]+)\1\s*\)/g))localUrl(path,match[2]);
   if(extension==='.webmanifest')for(const icon of JSON.parse(text).icons||[])localUrl(path,icon.src);

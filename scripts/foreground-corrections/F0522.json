@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "cardIds": [
+    "F0522"
+  ],
+  "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-pigment.webp?v=0f75183da80d\",1536,1024,[1290,778,235,235]]",
+  "sourceSha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+  "width": 256,
+  "height": 256,
+  "fillRule": "nonzero",
+  "paths": [
+    "M 255 9 C 249 5 242 6 235 8 L 228 8 L 219 12 L 211 14 L 204 18 L 194 20 L 187 26 L 177 29 L 169 33 L 159 35 L 152 39 L 142 41 L 137 41 L 132 39 L 124 37 L 114 37 C 122 38 126 40 128 43 C 123 46 119 48 114 50 L 106 52 L 96 59 L 86 64 C 73 71 60 80 49 91 L 41 101 L 35 108 L 29 111 L 22 115 L 14 119 L 6 122 L 0 124 L 0 133 L 8 130 L 17 126 L 25 124 C 16 132 10 141 6 151 L 5 160 L 8 172 L 13 183 L 17 187 L 20 190 L 21 185 L 18 174 L 17 162 C 19 177 28 188 39 194 L 48 199 L 52 203 L 59 199 L 64 201 L 66 204 L 68 200 L 76 203 L 80 204 L 79 198 L 87 201 L 91 204 L 90 198 L 85 191 L 77 183 L 68 177 L 59 174 C 50 168 46 159 46 149 C 47 140 50 134 56 130 L 59 127 L 55 124 L 51 125 L 48 122 L 45 123 L 43 122 L 41 124 L 40 122 L 43 119 L 48 119 L 53 116 L 56 117 L 61 115 L 64 118 L 69 116 L 72 117 L 76 113 L 80 112 L 84 109 L 89 110 L 93 106 L 98 105 L 102 108 L 107 108 L 111 105 L 116 104 L 120 103 L 123 100 L 127 99 L 130 95 L 134 94 L 138 95 L 141 98 L 145 98 L 148 100 L 150 104 L 155 107 L 157 112 C 171 109 186 103 199 94 C 217 81 228 66 240 45 L 248 28 L 255 17 Z",
+    "M 110 52 C 91 58 81 62 70 61 C 55 61 49 55 41 49 L 34 44 L 27 44 L 20 43 L 14 46 L 9 51 L 5 58 L 3 65 L 10 57 L 16 53 L 22 50 L 28 51 C 36 58 42 64 52 65 C 69 70 85 65 98 61 Z",
+    "M 210 83 C 211 90 216 91 219 96 C 223 101 227 109 229 119 C 225 115 222 111 219 107 L 215 105 L 213 101 L 208 99 L 205 95 Z",
+    "M 46 130 C 57 132 67 131 77 128 L 87 125 C 83 132 75 136 69 141 L 61 145 L 53 152 L 47 158 L 43 150 Z"
+  ],
+  "notes": [
+    "Clipping geometry only; original card RGB must remain byte-for-byte unchanged.",
+    "The gold-edged landscape scroll at lower/right is detached scenery, not the whale tail, and is excluded.",
+    "The visible whale torso curves down the left into its tail/flukes. External rainbow, floating islands, clouds and other flying silhouettes are excluded.",
+    "Foreground clouds occlude parts of the torso in the original; the contour follows visible creature regions instead of inventing hidden anatomy."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "cardIds": [
+    "F0518"
+  ],
+  "purpose": "Source-bound visible glass-creature contour; scratch visual review only",
+  "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-glass.webp?v=d7333e907d2f\",1536,1024,[1290,778,235,235]]",
+  "sourceSha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+  "sourceFile": "assets/design-v5/cards/bk05-glass.webp",
+  "sourceCrop": {
+    "x": 1290,
+    "y": 778,
+    "width": 235,
+    "height": 235
+  },
+  "viewBox": [
+    0,
+    0,
+    256,
+    256
+  ],
+  "fillRule": "nonzero",
+  "geometryRevision": 1,
+  "paths": [
+    {
+      "id": "glass-creature-head-neck-and-visible-fin-body",
+      "operation": "include",
+      "d": "M 179 35 C 175 33 168 33 160 34 C 145 31 126 37 113 42 L 99 47 C 83 46 70 49 59 56 L 47 60 L 69 56 C 48 65 41 73 29 79 L 50 73 C 39 81 29 88 22 97 L 40 89 C 31 97 24 106 20 114 L 34 103 C 28 115 23 128 21 140 L 34 125 C 25 142 20 158 18 174 L 29 159 C 24 179 20 194 19 205 L 27 197 L 24 205 L 35 197 L 37 205 L 48 192 L 47 201 L 59 193 L 63 201 L 75 185 L 78 194 L 88 186 L 93 200 L 103 184 L 109 194 L 120 179 L 124 190 L 135 180 L 142 192 L 150 181 L 163 191 L 166 183 L 181 195 L 179 186 L 198 200 L 196 188 L 214 204 L 208 189 L 235 208 L 224 190 L 256 212 L 256 176 C 239 169 222 159 205 152 L 209 156 L 195 150 L 196 154 L 181 146 L 182 151 L 168 143 L 171 148 L 158 141 C 145 130 140 117 143 101 C 146 77 158 58 169 51 L 173 45 L 177 44 C 179 42 181 37 179 35 Z"
+    }
+  ],
+  "reviewNotes": [
+    "The creature is traced from its blue/iridescent head, curved neck, and broad pointed fin/plumage body. The enclosing stained-glass dome, gold architectural arches and ocean are excluded.",
+    "Original RGB, including glass surface reflections and colors, is unchanged. The clipping data does not invent hidden geometry.",
+    "The original contains transparent-looking glass material against similarly colored architecture; fine fin boundaries require visual approval."
+  ]
+}

@@ -1,5 +1,5 @@
 /** Bounded, JSON-safe challenge progress. Does not grant cards or entitlements. */
-import {EVENT_DECKS,getEventDeck} from './event-decks.js?v=20261125-34';
+import {EVENT_DECKS,getEventDeck} from './event-decks.js?v=20261125-35';
 export const EVENT_BATTLES=EVENT_DECKS;
 export const getEventBattle=getEventDeck;
 export const createEventProgress=()=>({version:1,clearedDeckIds:[],results:[]});

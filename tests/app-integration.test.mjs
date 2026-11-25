@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import { webcrypto } from 'node:crypto';
 import {splitReadingText} from '../reading-pages.js';
 import {bindOutsideDismiss} from '../overlay-dismiss.js';
+import {isApexReliefCard} from '../card-relief.js';
 import {BRAND_ICONS} from '../brand-icons.js';
 import {CARD_ART_CROPS} from '../card-art-layouts.js';
 import {CARD_ART_EXPANSIONS} from '../card-art-expansion.js';
@@ -108,7 +109,7 @@ function boot({ hooks = {}, stored = {} } = {}) {
     sendAction: async () => ({ ok: true }),
   };
   const context = vm.createContext({
-    bindOutsideDismiss,
+    bindOutsideDismiss, isApexReliefCard,
     ...catalog, ...engine, ...shop, ...campaign, ...product, ...eventDecks, ...eventBattles, eventChallengeView, rulebookView, calculateCardLayout, calculateFittedCardLayout, calculateWorkshopTileLayout, battleLogView, handInspectorView, soloView, splitReadingText, BRAND_ICONS, CARD_ART_CROPS, CARD_ART_OVERRIDES, CARD_ART_EXPANSIONS, CARD_ART_FIFTH, CARD_ART_USER_OVERRIDES, PREMIUM_CARD_ART, PREMIUM_DECK, PREMIUM_DECK_ID,
     getCard: hooks.getCard || catalog.getCard,
     createOnlineClient: options => { callbacks = options; return client; },

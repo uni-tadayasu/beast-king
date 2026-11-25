@@ -1,35 +1,36 @@
-import {splitReadingText} from './reading-pages.js?v=20261125-34';
-import {bindOutsideDismiss} from './overlay-dismiss.js?v=20261125-34';
-import {createSummonScene} from './summon-scene.js?v=20261125-34';
-import {createExperienceController} from './experience-fx.js?v=20261125-34';
-import {BRAND_ICONS} from './brand-icons.js?v=20261125-34';
-import {CARD_ART_CROPS} from './card-art-layouts.js?v=20261125-34';
-import {CARD_ART_EXPANSIONS} from './card-art-expansion.js?v=20261125-34';
-import {CARD_ART_FIFTH} from './card-art-fifth.js?v=20261125-34';
-import {CARD_ART_OVERRIDES} from './card-art-overrides.js?v=20261125-34';
-import {CARD_ART_USER_OVERRIDES} from './card-art-user.js?v=20261125-34';
-import {PREMIUM_CARD_ART} from './card-art-premium.js?v=20261125-34';
-import {PREMIUM_DECK,PREMIUM_DECK_ID} from './premium-deck.js?v=20261125-34';
-import { CARDS, DECK_MIN, DECK_COPY_LIMIT, ELEMENTS, TYPE_LABELS, RARITY_LABELS, KEYWORD_LABELS, STARTER_DECKS, DECK_PRESETS, getDeckPreset, getCard, validateDeck, validateSpecialDeck, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS, SUBTYPE_LABELS, EXPANSION_DECKS, EXPANSION_FAMILIES, getExpansionDeck } from './catalog.js?v=20261125-34';
-import {createMusicController} from './music.js?v=20261125-34';
-import {createOnlineClient} from './online.js?v=20261125-34';
-import {createCloudSync} from './cloud-sync.js?v=20261125-34';
-import {createAccountUi} from './account-ui.js?v=20261125-34';
-import {setPublicNotice} from './news.js?v=20261125-34';
-import {createPresenceController} from './presence.js?v=20261125-34';
-import {entryView} from './entry.js?v=20261125-34';
-import {soloView} from './mode-views.js?v=20261125-34';
-import {EVENT_DECKS,EVENT_DECK_GROUPS,getEventDeck} from './event-decks.js?v=20261125-34';
-import {createEventProgress,normalizeEventProgress,recordEventResult} from './event-battles.js?v=20261125-34';
-import {eventChallengeView} from './event-views.js?v=20261125-34';
-import {rulebookView} from './rules-view.js?v=20261125-34';
-import {homeDashboard,treasureShop,packOddsView} from './product-views.js?v=20261125-34';
-import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayout} from './viewport.js?v=20261125-34';
-import {battleLogView} from './battle-log.js?v=20261125-34';
-import {handInspectorView} from './hand-inspector.js?v=20261125-34';
-import {CAMPAIGN_BATTLES,createCampaignProgress,normalizeCampaignProgress,getCampaignBattle,isCampaignBattleUnlocked,getNextCampaignBattle,recordCampaignResult} from './campaign.js?v=20261125-34';
-import {PACKS,getPack,PACK_ID,PACK_NAME,PACK_DESCRIPTION,PACK_COST,PACK_SIZE,STARTING_TREASURE,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,PACK_CARD_IDS,createStarterCollection,hasStarterCards,migrateLegacyStarters,normalizeCollection,grantDeckCollection,openPack,getBattleReward,quoteStarterPurchase,purchaseStarter,quoteDeckRecipe} from './shop.js?v=20261125-34';
-import { newGame, playCard, attack, endTurn, runCpuTurn, getLegalTargets, getAttackTargets, canAttack, getPlayableCards, getCardCost, getFusionChoices, getEligibleFusionMaterials, validateFusionSelection, MAX_HEART_POINTS } from './engine.js?v=20261125-34';
+import {splitReadingText} from './reading-pages.js?v=20261125-35';
+import {bindOutsideDismiss} from './overlay-dismiss.js?v=20261125-35';
+import {createSummonScene} from './summon-scene.js?v=20261125-35';
+import {isApexReliefCard} from './card-relief.js?v=20261125-35';
+import {createExperienceController} from './experience-fx.js?v=20261125-35';
+import {BRAND_ICONS} from './brand-icons.js?v=20261125-35';
+import {CARD_ART_CROPS} from './card-art-layouts.js?v=20261125-35';
+import {CARD_ART_EXPANSIONS} from './card-art-expansion.js?v=20261125-35';
+import {CARD_ART_FIFTH} from './card-art-fifth.js?v=20261125-35';
+import {CARD_ART_OVERRIDES} from './card-art-overrides.js?v=20261125-35';
+import {CARD_ART_USER_OVERRIDES} from './card-art-user.js?v=20261125-35';
+import {PREMIUM_CARD_ART} from './card-art-premium.js?v=20261125-35';
+import {PREMIUM_DECK,PREMIUM_DECK_ID} from './premium-deck.js?v=20261125-35';
+import { CARDS, DECK_MIN, DECK_COPY_LIMIT, ELEMENTS, TYPE_LABELS, RARITY_LABELS, KEYWORD_LABELS, STARTER_DECKS, DECK_PRESETS, getDeckPreset, getCard, validateDeck, validateSpecialDeck, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS, SUBTYPE_LABELS, EXPANSION_DECKS, EXPANSION_FAMILIES, getExpansionDeck } from './catalog.js?v=20261125-35';
+import {createMusicController} from './music.js?v=20261125-35';
+import {createOnlineClient} from './online.js?v=20261125-35';
+import {createCloudSync} from './cloud-sync.js?v=20261125-35';
+import {createAccountUi} from './account-ui.js?v=20261125-35';
+import {setPublicNotice} from './news.js?v=20261125-35';
+import {createPresenceController} from './presence.js?v=20261125-35';
+import {entryView} from './entry.js?v=20261125-35';
+import {soloView} from './mode-views.js?v=20261125-35';
+import {EVENT_DECKS,EVENT_DECK_GROUPS,getEventDeck} from './event-decks.js?v=20261125-35';
+import {createEventProgress,normalizeEventProgress,recordEventResult} from './event-battles.js?v=20261125-35';
+import {eventChallengeView} from './event-views.js?v=20261125-35';
+import {rulebookView} from './rules-view.js?v=20261125-35';
+import {homeDashboard,treasureShop,packOddsView} from './product-views.js?v=20261125-35';
+import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayout} from './viewport.js?v=20261125-35';
+import {battleLogView} from './battle-log.js?v=20261125-35';
+import {handInspectorView} from './hand-inspector.js?v=20261125-35';
+import {CAMPAIGN_BATTLES,createCampaignProgress,normalizeCampaignProgress,getCampaignBattle,isCampaignBattleUnlocked,getNextCampaignBattle,recordCampaignResult} from './campaign.js?v=20261125-35';
+import {PACKS,getPack,PACK_ID,PACK_NAME,PACK_DESCRIPTION,PACK_COST,PACK_SIZE,STARTING_TREASURE,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,PACK_CARD_IDS,createStarterCollection,hasStarterCards,migrateLegacyStarters,normalizeCollection,grantDeckCollection,openPack,getBattleReward,quoteStarterPurchase,purchaseStarter,quoteDeckRecipe} from './shop.js?v=20261125-35';
+import { newGame, playCard, attack, endTurn, runCpuTurn, getLegalTargets, getAttackTargets, canAttack, getPlayableCards, getCardCost, getFusionChoices, getEligibleFusionMaterials, validateFusionSelection, MAX_HEART_POINTS } from './engine.js?v=20261125-35';
 
 const $ = (s, r=document) => r.querySelector(s);
 const layoutWidth=()=>window.BeastKingViewport?.get().width||window.innerWidth;
@@ -389,11 +390,11 @@ function operatorDeckChanged(){
  refreshRegaliaImages();
 }
 function artStyle(c,artContext='public'){if(c.id==='B0512'){const status=regaliaStatus(c,artContext);if(status==='pending')return 'background:radial-gradient(ellipse,#283b5a,#100f24 70%);background-size:cover';const src=operatorRegaliaArt(artContext)||'assets/design-v2/cards/individual/king.webp';return "background-image:url('"+src+"');background-position:center;background-repeat:no-repeat;background-size:"+(src.startsWith('data:image/webp;')?'contain':'cover');}const original=CARD_ART_USER_OVERRIDES[c.id]||PREMIUM_CARD_ART[c.id];if(original)return "background-image:url('"+original.src+"?v="+original.sha256.slice(0,12)+"');background-position:"+original.position+";background-size:"+original.fit+";background-repeat:no-repeat";const replacement=CARD_ART_FIFTH[c.id]||CARD_ART_EXPANSIONS[c.id]||CARD_ART_OVERRIDES[c.id];if(replacement){const r=replacement;return "background-image:url('"+r.src+"?v="+r.sha256.slice(0,12)+"');background-position:"+(r.x*100/(r.width-r.size))+"% "+(r.y*100/(r.height-r.size))+"%;background-size:"+(r.width*100/r.size)+"% "+(r.height*100/r.size)+"%";}const n=Number(c.id.slice(1))-1,cell=n%16,batch=String(Math.floor(n/16)+1).padStart(2,'0'),src=`assets/design-v2/cards/individual/${c.type}-${batch}.webp?art=20261124`,crop=CARD_ART_CROPS[c.id];if(crop)return `background-image:url('${src}');background-position:${crop.x*100/(crop.width-crop.size)}% ${crop.y*100/(crop.height-crop.size)}%;background-size:${crop.width*100/crop.size}% ${crop.height*100/crop.size}%`;return `background-image:url('${src}');background-position:${(cell%4+.01)*100/3.02}% ${(Math.floor(cell/4)+.01)*100/3.02}%;background-size:408.163265% 408.163265%`;}
-function art(c,artContext='public'){return `<div class="card-art individual-art" data-protect-art aria-hidden="true" ${c.id===REGALIA_ID?`data-regalia-context="${artContext}" data-regalia-status="${regaliaStatus(c,artContext)}"`:''} style="${artStyle(c,artContext)}"></div><span class="card-finish rarity-${c.rarity}" aria-hidden="true"><i class="finish-crown">${icon('crown')}</i></span>`;}
+function art(c,artContext='public'){return `<div class="card-art individual-art" data-protect-art aria-hidden="true" ${c.id===REGALIA_ID?`data-regalia-context="${artContext}" data-regalia-status="${regaliaStatus(c,artContext)}"`:''} style="${artStyle(c,artContext)}"></div><span class="card-finish rarity-${c.rarity}" ${isApexReliefCard(c)?'data-card-relief="apex"':''} aria-hidden="true"><i class="finish-crown">${icon('crown')}</i></span>`;}
 function counts(ids){return ids.reduce((r,id)=>{const c=getCard(id);if(c)r[c.type]++;return r;},{beast:0,miracle:0,gimmick:0,fusion:0});}
 function cardMarkup(c,{action='detail',extra='',classes='',idx='',label='',artContext='public'}={}){
  const e=elementMap[c.element],beast=['beast','fusion'].includes(c.type),cost=action==='hand'&&game?getCardCost(game,c,0):c.cost;
- return `<button class="game-card rarity-${c.rarity} ${classes}" data-card-type="${c.type}" data-origin="${e.id}" data-protect-art data-action="${action}" data-id="${c.id}" data-art-context="${artContext}" ${idx!==''?`data-index="${idx}"`:''} style="--card-border:${typeColors[c.type]};--element-color:${e.color}" aria-label="${esc(label||`${c.name}、${TYPE_LABELS[c.type]}、${c.type==='fusion'?'特殊デッキ':`コスト${cost}`}、${RARITY_LABELS[c.rarity]}、詳細を表示`)}">
+ return `<button class="game-card rarity-${c.rarity} ${classes}" ${isApexReliefCard(c)?'data-card-relief="apex"':''} data-card-type="${c.type}" data-origin="${e.id}" data-protect-art data-action="${action}" data-id="${c.id}" data-art-context="${artContext}" ${idx!==''?`data-index="${idx}"`:''} style="--card-border:${typeColors[c.type]};--element-color:${e.color}" aria-label="${esc(label||`${c.name}、${TYPE_LABELS[c.type]}、${c.type==='fusion'?'特殊デッキ':`コスト${cost}`}、${RARITY_LABELS[c.rarity]}${isApexReliefCard(c)?'、レリーフ加工':''}、詳細を表示`)}">
   ${art(c,artContext)}
   <div class="card-top"><span class="cost-gem ${c.type==='fusion'?'fusion-gem':''}">${c.type==='fusion'?'合':cost}</span><span class="card-name">${esc(c.name)}</span><span class="element-badge" title="${e.name}">${icon('origin-'+e.id)}</span></div>
   <div class="card-bottom"><div class="card-kind"><span>${TYPE_LABELS[c.type]} · ${e.name}</span><span class="rarity" title="${esc(RARITY_LABELS[c.rarity])}">${esc(RARITY_LABELS[c.rarity])}</span></div><p class="card-effect">${esc(c.text)}</p><div class="card-stats">${beast?`<span title="攻撃力">${icon('sword')}${c.attack}</span><em class="card-model">${MODEL_LABELS[c.model]||''}</em><span class="health" title="守備力">${icon('shield')}${c.hp}</span>`:`<span class="card-subtype-stat">${icon(c.type==='miracle'?'spark':'trap')} ${esc(SUBTYPE_LABELS[c.subtype]||TYPE_LABELS[c.type])}</span>`}</div><div class="card-imprint"><span>${c.id}</span><span>© 2026 Beast King</span></div></div>${extra}</button>`;
