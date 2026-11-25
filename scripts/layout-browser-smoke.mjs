@@ -136,9 +136,19 @@ async function pointerClick(selector,mobile,label){
   window.__bkPointerProbeCleanup=()=>types.forEach(type=>document.removeEventListener(type,trace,true));
   return true;
  })()`);
- const point=await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e||e.disabled)return null;const r=e.getBoundingClientRect(),x=r.x+r.width*.5,y=r.y+r.height*.36,hit=document.elementFromPoint(x,y);return {x,y,width:r.width,height:r.height,unobstructed:!!hit&&(hit===e||e.contains(hit))}})()`);
+ // Closing settings starts the fitted layout and then the camera's next-frame
+ // projection. A ready texture alone does not mean the hitbox has settled.
+ let point=null,previous=null,stable=0;
+ await until(async()=>{
+  const current=await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e||e.disabled)return null;const r=e.getBoundingClientRect(),x=r.x+r.width*.5,y=r.y+r.height*.36,hit=document.elementFromPoint(x,y);return {x,y,width:r.width,height:r.height,unobstructed:!!hit&&(hit===e||e.contains(hit))}})()`);
+  const usable=current&&current.width>=24&&current.height>=24&&current.unobstructed;
+  const unchanged=previous&&current&&['x','y','width','height'].every(key=>Math.abs(current[key]-previous[key])<=.5);
+  stable=usable?(unchanged?stable+1:1):0;previous=current;point=current;
+  return stable>=3;
+ },label+' reaches a stable visible hit target');
  assert.ok(point&&point.width>=24&&point.height>=24,label+' has a usable visible hit target '+JSON.stringify(point));
  assert.equal(point.unobstructed,true,label+' target is not covered by another control');
+ await evaluate('window.__bkPointerProbe.point='+JSON.stringify(point)+';true');
  if(mobile){
   await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:point.x,y:point.y,radiusX:1,radiusY:1,force:1,id:1}]});
   await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
