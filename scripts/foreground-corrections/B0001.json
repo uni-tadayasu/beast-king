@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "cardIds": [
+    "B0001"
+  ],
+  "purpose": "Source-bound visible-creature clipping geometry; scratch visual review only",
+  "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/illustration-update-02.webp?v=5ab7cf86a59a\",1254,1254,[4,4,306,306]]",
+  "sourceSha256": "5ab7cf86a59a8aea9d0132498e92fc4bc62b667e4b65e0f8125f32ecd072d0f6",
+  "sourceFile": "assets/design-v2/cards/individual/illustration-update-02.webp",
+  "sourceCrop": {
+    "x": 4,
+    "y": 4,
+    "width": 306,
+    "height": 306
+  },
+  "viewBox": [
+    0,
+    0,
+    256,
+    256
+  ],
+  "fillRule": "nonzero",
+  "paths": [
+    {
+      "id": "head-neck-and-back-coil",
+      "operation": "include",
+      "d": "M 187 38 C 186 34 182 33 178 34 L 171 36 L 165 33 L 161 26 L 162 32 L 155 28 L 152 25 L 149 16 L 148 24 L 144 23 C 140 17 139 8 137 0 L 134 0 C 134 10 134 18 137 25 L 132 23 C 127 16 125 8 124 0 L 121 0 C 122 13 125 23 130 28 L 125 27 C 118 19 113 9 111 0 L 108 0 C 110 12 114 23 120 30 L 114 29 C 103 19 98 8 94 0 L 91 0 C 96 16 104 28 115 35 L 114 33 C 101 28 87 21 74 14 C 85 25 100 33 112 37 L 104 35 C 87 33 76 32 65 31 C 81 39 99 42 112 43 L 103 44 C 93 43 81 45 75 48 C 88 46 101 47 112 48 L 103 51 C 91 53 80 59 74 68 C 85 59 99 56 108 56 L 100 57 C 91 61 81 65 73 70 C 80 68 90 64 99 61 L 95 65 C 87 69 78 77 73 82 C 82 79 91 73 98 69 L 95 75 C 87 82 82 88 82 92 C 87 87 92 83 97 78 L 95 85 C 89 89 83 98 82 104 C 88 98 93 91 97 88 L 97 99 L 88 117 L 99 103 L 97 114 L 97 130 L 102 117 L 102 133 L 108 145 L 107 132 L 113 144 L 120 151 L 118 140 L 126 151 L 130 158 L 128 145 L 136 156 C 132 161 123 163 112 162 L 105 160 L 112 165 L 96 163 L 102 168 L 82 164 L 91 170 L 68 167 L 78 173 L 54 170 L 65 175 L 43 173 L 51 176 C 36 176 26 181 18 190 L 9 197 L 12 195 C 6 204 2 215 0 225 L 0 256 L 44 256 C 47 241 56 229 69 221 L 68 224 L 80 216 L 77 221 L 94 214 L 92 218 L 109 213 L 107 216 L 124 210 L 122 213 L 139 206 C 155 201 166 189 170 177 L 169 190 C 177 180 178 164 175 150 L 178 159 L 179 176 C 183 164 183 151 176 140 L 178 144 L 182 157 C 179 143 172 132 163 127 L 171 139 L 159 128 L 153 121 L 156 130 L 150 122 L 146 113 L 146 121 L 141 114 L 137 106 L 138 114 L 132 108 C 128 102 125 96 125 88 L 129 91 L 129 80 L 133 84 L 135 75 L 139 79 L 143 69 L 145 74 L 149 66 L 152 70 L 157 63 L 159 69 L 163 67 L 165 75 L 168 69 L 170 75 L 173 68 L 175 72 L 178 63 L 177 57 L 172 61 L 166 56 C 173 56 181 51 185 46 C 188 43 189 40 187 38 Z"
+    },
+    {
+      "id": "foreground-coil",
+      "operation": "include",
+      "d": "M 72 256 C 89 239 105 226 126 216 C 143 208 160 201 180 196 C 198 191 219 187 235 191 C 244 193 251 199 256 204 L 256 247 C 244 240 231 236 217 235 C 193 233 172 242 151 256 Z"
+    },
+    {
+      "id": "left-wing-upper-membrane-and-leading-bone",
+      "operation": "include",
+      "d": "M 0 10 C 17 1 42 0 55 12 C 64 24 69 45 62 56 C 57 60 60 74 65 82 L 66 78 L 71 88 L 79 99 C 68 92 49 80 32 78 L 25 79 L 31 74 C 24 61 11 53 0 49 Z"
+    },
+    {
+      "id": "left-wing-middle-membrane",
+      "operation": "include",
+      "d": "M 0 91 C 10 91 15 82 29 79 C 46 78 61 88 73 96 L 79 100 C 65 92 44 90 27 97 C 15 101 8 107 0 112 Z"
+    },
+    {
+      "id": "left-wing-lower-membrane-and-arm",
+      "operation": "include",
+      "d": "M 65 94 C 59 98 61 104 67 112 C 80 129 94 137 108 145 L 100 142 C 90 139 82 141 74 146 L 78 141 C 70 135 61 140 55 144 C 60 135 65 132 73 132 C 63 128 51 124 42 127 L 42 133 L 45 126 C 35 128 33 137 23 138 C 17 139 9 137 0 140 L 0 135 C 13 124 23 119 29 112 L 29 118 C 45 109 57 116 71 122 C 58 110 53 101 58 95 Z"
+    },
+    {
+      "id": "right-wing-membranes",
+      "operation": "include",
+      "d": "M 154 107 L 158 100 L 174 87 L 167 98 L 188 89 L 176 98 C 194 94 203 85 211 73 C 224 57 239 46 256 38 L 256 105 C 245 101 239 113 229 117 C 224 120 219 117 214 116 C 230 125 243 122 256 134 L 256 173 C 244 163 233 156 222 160 C 221 145 207 132 194 128 L 191 129 L 184 129 L 186 124 C 179 119 169 115 157 118 L 153 116 L 164 112 C 160 110 157 108 154 107 Z"
+    },
+    {
+      "id": "right-wing-arm",
+      "operation": "include",
+      "d": "M 162 111 C 173 116 181 127 186 143 L 179 140 C 174 131 169 124 156 118 L 156 115 L 167 119 Z"
+    },
+    {
+      "id": "occluding-lotus-removal",
+      "operation": "exclude",
+      "d": "M 56 215 C 60 218 63 224 64 228 C 67 224 72 222 74 221 L 75 229 C 79 227 82 226 84 226 L 81 233 C 85 233 87 233 90 234 C 87 240 81 244 73 245 C 76 248 78 252 79 256 C 72 256 67 254 63 252 L 59 248 C 55 252 49 254 39 255 C 41 250 46 247 49 245 C 42 246 35 243 30 239 L 26.5 234.5 C 34 233 40 234 44 235 C 40 231 39 226 40 220 C 45 222 49 225 51 228 C 51 223 53 218 56 215 Z"
+    },
+    {
+      "id": "lotus-stem-removal",
+      "operation": "exclude",
+      "d": "M 54.5 245 L 60 245 L 60 256 L 54.5 256 Z"
+    }
+  ],
+  "reviewNotes": [
+    "Both sides have visible pointed wings: gold wrist joints, leading bones, and scalloped membranes. Their original galaxy texture is retained as wing artwork.",
+    "Separate wing panels and their source-bound contours leave the open sky between the wings and neck, between membrane scallops, and between coils transparent.",
+    "The large bottom lotus physically occludes scales in the source. Removing it necessarily leaves a hole; hidden dragon anatomy is not invented.",
+    "Thin crown, wing-bone, and spine boundaries require final visual approval at the 256px tile scale."
+  ],
+  "geometryRevision": 4
+}

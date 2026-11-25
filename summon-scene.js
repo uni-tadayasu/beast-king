@@ -212,7 +212,14 @@ export function createSummonScene(options={}){
   renderer.begin(m.width,m.height);const layout=cameraLayout(m);if(!layout)return;
   const {camera,slots}=layout;drawTable(renderer,camera);let count=0;
   const poses=new Map();
-  for(const item of slots){if(item.binding){poses.set(item.binding,poseFor(item.binding,now,animate));item.element.dataset.summonState=item.binding.item.failed?'unavailable':item.binding.item.texture?'ready':'preparing';if(item.binding.item.floorTexture)item.element.dataset.summonFloorReady='true';}drawGround(renderer,camera,item.slot,item.binding,poses.get(item.binding)?.glow||0);}
+  for(const item of slots){
+   if(item.binding){poses.set(item.binding,poseFor(item.binding,now,animate));item.element.dataset.summonState=item.binding.item.failed?'unavailable':item.binding.item.texture?'ready':'preparing';}
+   // Readiness belongs to the current artwork, including a replacement that
+   // is still loading or has failed. Keep its DOM card visible until the
+   // current floor texture can actually be drawn.
+   if(item.binding?.item.floorTexture)item.element.dataset.summonFloorReady='true';else delete item.element.dataset.summonFloorReady;
+   drawGround(renderer,camera,item.slot,item.binding,poses.get(item.binding)?.glow||0);
+  }
   for(const {slot,binding,element} of slots.sort((a,b)=>b.slot.owner-a.slot.owner)){
    if(!binding?.item.texture){delete element.dataset.summonReady;continue;}
    drawCreature(renderer,camera,slot,binding,poses.get(binding));element.dataset.summonReady='true';

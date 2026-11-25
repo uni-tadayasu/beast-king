@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "cardIds": [
+    "B0368"
+  ],
+  "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-23.webp?art=20261124\",1254,1254,[944,944,306,306]]",
+  "sourceSha256": "41378bbc47f3971b0eb0e30833c7df27ff971acd535ca59135b11f82984e52e5",
+  "sourceFile": "assets/design-v2/cards/individual/beast-23.webp",
+  "sourceCrop": {
+    "x": 944,
+    "y": 944,
+    "width": 306,
+    "height": 306
+  },
+  "viewBox": [
+    0,
+    0,
+    256,
+    256
+  ],
+  "fillRule": "evenodd",
+  "geometryRevision": 1,
+  "derivedFrom": {
+    "file": "masks/B0368-mask.png",
+    "maskSha256": "c370c62ebfcb4a67fb82083780b7cf253be87e5707d887954b8d12652702497f",
+    "threshold": 128,
+    "prediction": {
+      "generator": "birefnet-public-mask-v3",
+      "modelFamily": "lite",
+      "modelHash": "1e0da42f0fde010e32e938bad388457ecefe35806fde9d923421997861ae9391",
+      "inputSize": 1024,
+      "preprocessingKey": "{\"normalization\":{\"mean\":[0.485,0.456,0.406],\"std\":[0.229,0.224,0.225],\"divisor\":255},\"inputSize\":1024,\"maskSize\":256,\"outputEncoding\":\"logits\"}",
+      "weightsHash": null,
+      "rawMaskSha256": "6ab2af12f8e9ea8940acef2440cd312c907b66013eec9ab98a62d92550172d37"
+    }
+  },
+  "paths": [
+    {
+      "id": "reviewed-baseline-visible-parts",
+      "operation": "include",
+      "d": "M 115 0 L 142 0 L 142 1 L 144 1 L 144 2 L 145 2 L 145 3 L 147 3 L 147 2 L 150 2 L 150 1 L 152 1 L 152 2 L 155 2 L 155 3 L 156 3 L 156 4 L 158 4 L 158 5 L 160 5 L 160 6 L 162 6 L 162 7 L 165 7 L 165 8 L 166 8 L 166 11 L 165 11 L 165 16 L 166 16 L 166 17 L 169 17 L 169 18 L 171 18 L 171 19 L 172 19 L 172 20 L 177 20 L 177 22 L 178 22 L 178 24 L 179 24 L 179 27 L 180 27 L 180 28 L 183 28 L 183 29 L 186 29 L 186 28 L 188 28 L 188 29 L 189 29 L 189 31 L 190 31 L 190 33 L 191 33 L 191 35 L 192 35 L 192 36 L 193 36 L 193 37 L 194 37 L 194 38 L 195 38 L 195 39 L 196 39 L 196 40 L 198 40 L 198 41 L 199 41 L 199 42 L 201 42 L 201 43 L 202 43 L 202 44 L 203 44 L 203 46 L 202 46 L 202 47 L 201 47 L 201 49 L 200 49 L 200 51 L 199 51 L 199 53 L 198 53 L 198 54 L 197 54 L 197 56 L 196 56 L 196 59 L 195 59 L 195 60 L 190 60 L 190 59 L 185 59 L 185 58 L 181 58 L 181 57 L 177 57 L 177 56 L 172 56 L 172 55 L 159 55 L 159 56 L 158 56 L 158 57 L 157 57 L 157 58 L 155 58 L 155 59 L 154 59 L 154 60 L 151 60 L 151 61 L 150 61 L 150 62 L 149 62 L 149 63 L 148 63 L 148 64 L 147 64 L 147 65 L 145 65 L 145 66 L 144 66 L 144 67 L 143 67 L 143 69 L 142 69 L 142 70 L 141 70 L 141 72 L 140 72 L 140 73 L 139 73 L 139 74 L 138 74 L 138 76 L 137 76 L 137 78 L 136 78 L 136 81 L 135 81 L 135 82 L 134 82 L 134 83 L 133 83 L 133 81 L 130 81 L 130 82 L 128 82 L 128 81 L 127 81 L 127 80 L 126 80 L 126 79 L 125 79 L 125 78 L 123 78 L 123 77 L 122 77 L 122 76 L 121 76 L 121 75 L 120 75 L 120 73 L 119 73 L 119 72 L 118 72 L 118 70 L 117 70 L 117 69 L 116 69 L 116 68 L 115 68 L 115 66 L 114 66 L 114 65 L 113 65 L 113 63 L 112 63 L 112 60 L 111 60 L 111 59 L 110 59 L 110 58 L 108 58 L 108 59 L 104 59 L 104 58 L 101 58 L 101 57 L 93 57 L 93 56 L 91 56 L 91 55 L 89 55 L 89 54 L 87 54 L 87 53 L 86 53 L 86 52 L 84 52 L 84 53 L 82 53 L 82 52 L 79 52 L 79 51 L 77 51 L 77 50 L 72 50 L 72 51 L 69 51 L 69 52 L 67 52 L 67 53 L 65 53 L 65 54 L 61 54 L 61 53 L 60 53 L 60 52 L 59 52 L 59 50 L 58 50 L 58 48 L 57 48 L 57 47 L 56 47 L 56 45 L 57 45 L 57 44 L 58 44 L 58 43 L 60 43 L 60 42 L 61 42 L 61 41 L 63 41 L 63 40 L 64 40 L 64 39 L 65 39 L 65 38 L 66 38 L 66 37 L 68 37 L 68 36 L 69 36 L 69 35 L 70 35 L 70 34 L 71 34 L 71 33 L 72 33 L 72 26 L 75 26 L 75 25 L 77 25 L 77 24 L 79 24 L 79 23 L 81 23 L 81 22 L 82 22 L 82 21 L 84 21 L 84 20 L 86 20 L 86 19 L 87 19 L 87 18 L 90 18 L 90 17 L 92 17 L 92 16 L 93 16 L 93 10 L 92 10 L 92 9 L 93 9 L 93 7 L 96 7 L 96 6 L 99 6 L 99 5 L 100 5 L 100 4 L 102 4 L 102 3 L 104 3 L 104 2 L 109 2 L 109 3 L 113 3 L 113 2 L 114 2 L 114 1 L 115 1 Z"
+    },
+    {
+      "id": "torso-shoulders-and-hands",
+      "operation": "include",
+      "d": "M 0 88 L 14 79 L 28 78 L 39 69 L 53 63 L 66 60 L 79 57 C 93 72 107 84 128 85 C 150 81 166 60 183 58 L 203 64 L 220 64 L 239 75 L 256 86 L 256 256 L 0 256 Z"
+    }
+  ],
+  "reviewNotes": [
+    "Restore the ruby torso, shoulders, arms and hands. The held rock/mountain core is retained as part of the visible pose pending reviewer decision; outer cavern scenery is removed.",
+    "Original RGB is unchanged. Clipping geometry is source-bound; manual visual review is pending."
+  ]
+}

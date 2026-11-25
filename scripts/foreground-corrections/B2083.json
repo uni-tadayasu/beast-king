@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "cardIds": [
+    "B2083"
+  ],
+  "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-shadow.webp?v=9b78f329a5d2\",1536,1024,[778,10,235,235]]",
+  "sourceSha256": "9b78f329a5d277095446048a253408a79552eea573b12c9f32cde05486991198",
+  "source": {
+    "src": "assets/design-v5/cards/bk05-shadow.webp?v=9b78f329a5d2",
+    "kind": "atlas",
+    "sourceWidth": 1536,
+    "sourceHeight": 1024,
+    "crop": {
+      "x": 778,
+      "y": 10,
+      "width": 235,
+      "height": 235
+    },
+    "fit": "contain",
+    "position": "center"
+  },
+  "sourceFile": "assets/design-v5/cards/bk05-shadow.webp",
+  "sourceCrop": {
+    "x": 778,
+    "y": 10,
+    "width": 235,
+    "height": 235
+  },
+  "viewBox": [
+    0,
+    0,
+    256,
+    256
+  ],
+  "fillRule": "evenodd",
+  "geometryRevision": 1,
+  "purpose": "Source-bound visible-creature clipping geometry; scratch candidate awaiting visual approval",
+  "predictionBase": {
+    "generator": "birefnet-public-mask-v3",
+    "modelFamily": "lite",
+    "modelHash": "1e0da42f0fde010e32e938bad388457ecefe35806fde9d923421997861ae9391",
+    "inputSize": 1024,
+    "preprocessingKey": "{\"normalization\":{\"mean\":[0.485,0.456,0.406],\"std\":[0.229,0.224,0.225],\"divisor\":255},\"inputSize\":1024,\"maskSize\":256,\"outputEncoding\":\"logits\"}",
+    "weightsHash": null,
+    "rawMaskSha256": "4fcc8dd3c56432887e6eeeec9cde6cbd8e1e452a68ffab59c72ba90a089581e8",
+    "used": false,
+    "reason": "Complete source-visible silhouette traced to remove broad scenery",
+    "finishedMaskSha256": "b054e762bb2cefbafbcc9c1129d77a9d2400f1c4413b7f7fc652c11420bb1ce5",
+    "threshold": 128,
+    "loopCount": 11,
+    "representation": "closed numeric pixel-edge contours; no model needed at runtime"
+  },
+  "paths": [
+    {
+      "id": "source-visible-left-wing",
+      "operation": "include",
+      "d": "M 0 0 H 17 L 16 7 L 20 14 L 29 26 L 25 15 L 25 0 H 34 L 36 13 L 43 24 L 48 35 L 47 18 L 48 0 H 59 L 60 23 L 68 42 L 68 18 L 73 0 H 82 L 78 23 L 77 43 L 86 57 L 84 44 L 84 35 L 88 28 L 93 26 L 91 34 L 92 49 L 96 64 L 105 76 L 104 67 L 106 61 L 109 59 L 109 73 L 114 85 L 122 97 L 139 113 L 144 136 L 120 148 L 103 139 L 91 139 L 82 137 L 88 132 L 77 135 L 69 133 L 66 129 L 74 128 L 65 125 L 52 126 L 43 123 L 49 120 L 40 119 L 35 116 L 43 114 L 37 109 L 25 112 L 17 109 L 27 104 L 35 100 L 25 101 L 13 99 L 18 95 L 0 99 V 87 L 19 89 L 24 86 L 0 85 V 72 L 24 77 L 28 73 L 0 67 V 57 L 29 64 L 31 61 L 17 55 L 0 51 V 39 L 25 49 L 24 43 L 0 28 Z"
+    },
+    {
+      "id": "source-visible-right-wing",
+      "operation": "include",
+      "d": "M 124 101 L 122 91 L 128 84 L 119 87 L 124 81 L 137 78 L 128 75 L 124 75 L 128 70 L 140 68 L 132 66 L 131 63 L 141 60 L 138 57 L 145 54 L 160 54 L 146 49 L 139 49 L 145 47 L 154 48 L 161 50 L 159 42 L 155 38 L 155 27 L 156 24 L 162 35 L 175 44 L 180 49 L 177 37 L 177 25 L 179 14 L 182 10 L 184 12 L 182 24 L 187 37 L 192 45 L 193 33 L 197 26 L 207 23 L 210 22 L 207 28 L 202 37 L 202 48 L 215 40 L 224 35 L 234 35 L 238 37 L 232 38 L 222 41 L 215 49 L 211 65 L 207 75 L 201 82 L 190 89 L 182 94 L 177 103 L 167 109 L 152 121 L 136 115 Z"
+    },
+    {
+      "id": "source-visible-body-head-tail-and-talons",
+      "operation": "include",
+      "d": "M 125 99 L 146 105 L 167 110 L 175 113 L 179 119 L 190 126 L 197 142 L 200 152 L 204 163 L 206 173 L 201 185 L 198 179 L 195 164 L 194 174 L 191 181 L 186 170 L 180 163 L 175 158 L 166 156 L 155 155 L 148 157 L 143 165 L 148 172 L 158 180 L 166 188 L 164 195 L 160 194 L 159 186 L 155 185 L 157 193 L 153 196 L 151 193 L 152 184 L 147 181 L 140 184 L 139 190 L 135 190 L 136 183 L 139 178 L 135 175 L 127 174 L 126 167 L 128 160 L 122 160 L 123 167 L 119 171 L 113 172 L 113 167 L 116 165 L 115 160 L 110 160 L 103 162 L 100 167 L 93 174 L 87 179 L 81 183 L 82 176 L 89 167 L 83 172 L 76 181 L 68 187 L 64 185 L 69 178 L 60 182 L 50 187 L 41 188 L 43 182 L 32 187 L 19 188 L 32 180 L 45 172 L 59 166 L 48 168 L 34 172 L 21 173 L 16 169 L 23 169 L 39 164 L 58 158 L 66 153 L 48 158 L 42 157 L 43 154 L 68 149 L 79 144 L 90 138 L 101 135 L 108 131 L 117 119 Z"
+    }
+  ],
+  "reviewNotes": [
+    "Only alpha clipping changes; original artwork RGB remains unchanged.",
+    "Visible original anatomy only; no hidden anatomy is invented.",
+    "Manually traced contours are exempt from confidence finishing."
+  ]
+}

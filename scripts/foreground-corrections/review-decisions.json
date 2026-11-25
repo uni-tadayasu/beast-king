@@ -1,0 +1,3589 @@
+{
+  "schemaVersion": 1,
+  "scope": "Root-authorized reviewed public source-bound foreground selections; original RGB unchanged",
+  "summary": {
+    "reviewedQueueSources": 192,
+    "originalCorrectionsPreserved": 6,
+    "newContours": 118,
+    "newFinishedPredictions": 70,
+    "keepDefault": 5,
+    "totalOverrides": 194,
+    "contours": 120,
+    "predictions": 74,
+    "supplementalReviewSources": 1
+  },
+  "queues": [
+    {
+      "directory": "fallback-finished-review",
+      "count": 96,
+      "ids": [
+        "B0168",
+        "F0518",
+        "B0081",
+        "B0133",
+        "B0134",
+        "B0290",
+        "B0306",
+        "B0361",
+        "B0368",
+        "B0370",
+        "B0415",
+        "B0442",
+        "B0718",
+        "B0808",
+        "B0819",
+        "B0961",
+        "B1115",
+        "B1124",
+        "B1143",
+        "B1159",
+        "B1170",
+        "B1188",
+        "B1320",
+        "B1329",
+        "B1427",
+        "B1563",
+        "B1587",
+        "B1611",
+        "B1694",
+        "B1698",
+        "B1705",
+        "B1731",
+        "B1734",
+        "B1753",
+        "B1758",
+        "B1761",
+        "B1766",
+        "B1771",
+        "B1777",
+        "B1816",
+        "B1824",
+        "B1846",
+        "B1851",
+        "B1886",
+        "B1915",
+        "B1951",
+        "B1971",
+        "B1979",
+        "B1999",
+        "B2007",
+        "B2035",
+        "B2057",
+        "B2060",
+        "B2063",
+        "B2072",
+        "B2080",
+        "B2083",
+        "B2090",
+        "B2097",
+        "B2099",
+        "B2101",
+        "B2102",
+        "F0066",
+        "F0259",
+        "F0263",
+        "F0281",
+        "F0296",
+        "F0312",
+        "F0317",
+        "F0322",
+        "F0328",
+        "F0339",
+        "F0344",
+        "F0365",
+        "F0372",
+        "F0377",
+        "F0380",
+        "F0391",
+        "F0392",
+        "F0395",
+        "F0427",
+        "F0431",
+        "F0437",
+        "F0442",
+        "F0447",
+        "F0465",
+        "F0466",
+        "F0470",
+        "F0486",
+        "F0487",
+        "F0488",
+        "F0502",
+        "F0504",
+        "F0511",
+        "F0515",
+        "F0516"
+      ]
+    },
+    {
+      "directory": "semantic-finished-review",
+      "count": 96,
+      "ids": [
+        "B0025",
+        "B0048",
+        "B0056",
+        "B0060",
+        "B0065",
+        "B0089",
+        "B0120",
+        "B0122",
+        "B0129",
+        "B0145",
+        "B0164",
+        "B0172",
+        "B0193",
+        "B0219",
+        "B0223",
+        "B0224",
+        "B0227",
+        "B0235",
+        "B0248",
+        "B0274",
+        "B0356",
+        "B0360",
+        "B0362",
+        "B0375",
+        "B0400",
+        "B0413",
+        "B0472",
+        "B0532",
+        "B0564",
+        "B0597",
+        "B0629",
+        "B0646",
+        "B0662",
+        "B0678",
+        "B0682",
+        "B0684",
+        "B0691",
+        "B0694",
+        "B0730",
+        "B0734",
+        "B0767",
+        "B0771",
+        "B0804",
+        "B0848",
+        "B0882",
+        "B0928",
+        "B0935",
+        "B0942",
+        "B0955",
+        "B1008",
+        "B1012",
+        "B1286",
+        "B1301",
+        "B1306",
+        "B1319",
+        "B1324",
+        "B1325",
+        "B1342",
+        "B1360",
+        "B1388",
+        "B1422",
+        "B1429",
+        "B1655",
+        "B1720",
+        "B1739",
+        "B1775",
+        "B1782",
+        "B2061",
+        "B2067",
+        "B2068",
+        "B2076",
+        "B2077",
+        "B2078",
+        "B2079",
+        "B2089",
+        "B2091",
+        "B2096",
+        "B2100",
+        "B2103",
+        "F0009",
+        "F0041",
+        "F0090",
+        "F0145",
+        "F0266",
+        "F0275",
+        "F0310",
+        "F0315",
+        "F0323",
+        "F0331",
+        "F0343",
+        "F0349",
+        "F0386",
+        "F0416",
+        "F0418",
+        "F0517",
+        "F0521"
+      ]
+    }
+  ],
+  "records": [
+    {
+      "cardId": "B0025",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-02.webp?art=20261124\",1254,1254,[5,631,305,305]]",
+      "sourceSha256": "d119b64c63c4fa3a5e217c47994c4dcca59f908ab71266a53649541ee2d5c4c1",
+      "decision": "reviewed-contour",
+      "file": "B0025.json",
+      "fileSha256": "66bcd76301a7ab8cc93c04875666a5445dcefca289d96661215ea358becd3dba",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0048",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-03.webp?art=20261124\",1254,1254,[944,944,306,306]]",
+      "sourceSha256": "ec584736cb333cc8fe106449011ea16781d77d6791c118748e838f3e19e0205d",
+      "decision": "reviewed-contour",
+      "file": "B0048.json",
+      "fileSha256": "2baa70d7521902ef385a09bd0cdff9489cf2d723de0e0e348b4c6e2aeed5cc0e",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0056",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-04.webp?art=20261124\",1254,1254,[945,318,305,305]]",
+      "sourceSha256": "784261a81ea01b7ed8acfe3b2233b3d9d07cdee577c92e47921102f863d1cc7e",
+      "decision": "selected-finished-lite",
+      "file": "B0056-mask.png",
+      "maskSha256": "f28264edc0a748d4f6e223f8c9a44164cd3ce514aa0e097ea241e759498d8517",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0060",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-04.webp?art=20261124\",1254,1254,[945,631,305,305]]",
+      "sourceSha256": "784261a81ea01b7ed8acfe3b2233b3d9d07cdee577c92e47921102f863d1cc7e",
+      "decision": "selected-finished-lite",
+      "file": "B0060-mask.png",
+      "maskSha256": "c92029c7f6e875ef6a8cf09dc2a3d9322af998e1cd64de8e7f82124420a4555e",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0065",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/illustration-update-03.webp?v=b0afad79d2aa\",1254,1254,[4,4,306,306]]",
+      "sourceSha256": "b0afad79d2aaecd09a9cad1936f47f9b26b0ed0ea40045e79298acce6054810f",
+      "decision": "selected-finished-lite",
+      "file": "B0065-mask.png",
+      "maskSha256": "9f97d3caf36cd850e3316f57dda1532d9e7496c667d69914402f710d6c1bbad9",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0081",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/illustration-update-04.webp?v=281bc7f9b027\",1254,1254,[4,4,306,306]]",
+      "sourceSha256": "281bc7f9b027784e23b49600acce3a98d65dc140705dd9d1356d868c2b8058b0",
+      "decision": "reviewed-contour",
+      "file": "B0081.json",
+      "fileSha256": "a67455c3e8f72ae8befc30d912fb028bff4078c3cabfd819599ca69360b3fc4f",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B0089",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/illustration-update-04.webp?v=281bc7f9b027\",1254,1254,[4,631,305,305]]",
+      "sourceSha256": "281bc7f9b027784e23b49600acce3a98d65dc140705dd9d1356d868c2b8058b0",
+      "decision": "reviewed-contour",
+      "file": "B0089.json",
+      "fileSha256": "80de681341cf0a449faebf52f60542458fa7c134b34b4ad6418ae8acefc0388c",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0120",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-08.webp?art=20261124\",1254,1254,[945,318,305,305]]",
+      "sourceSha256": "0b8b6aac867573d930bb5ca19390b0b322b59178fc5205f38aaf6d7a8407b843",
+      "decision": "reviewed-contour",
+      "file": "B0120.json",
+      "fileSha256": "7f8174690966dfb5d4621b2e3e3d54eb5f160ad6a99c603d45834cc5ed69d593",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0122",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-08.webp?art=20261124\",1254,1254,[318,631,305,305]]",
+      "sourceSha256": "0b8b6aac867573d930bb5ca19390b0b322b59178fc5205f38aaf6d7a8407b843",
+      "decision": "reviewed-contour",
+      "file": "B0122.json",
+      "fileSha256": "7ba1f0f6d1ba3498ebf5c1a01c7be4f2fe7dd1c313c7b97f06f517cc07845726",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0129",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/illustration-update-05.webp?v=2310b7e1b2ef\",1254,1254,[4,4,306,306]]",
+      "sourceSha256": "2310b7e1b2ef93d7f637c9e15d1fa8fc7229ba3e208f4be4e17fb35ac1cf5111",
+      "decision": "selected-finished-lite",
+      "file": "B0129-mask.png",
+      "maskSha256": "8c7f2c8497bdfef7c287f226e566139d6ab70cb095c5d91f118012dc11ad744e",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0133",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/illustration-update-05.webp?v=2310b7e1b2ef\",1254,1254,[4,318,305,305]]",
+      "sourceSha256": "2310b7e1b2ef93d7f637c9e15d1fa8fc7229ba3e208f4be4e17fb35ac1cf5111",
+      "decision": "selected-finished-lite",
+      "file": "B0133-mask.png",
+      "maskSha256": "0b8fb26e4e1e7fc9b8049abc5dfb29d9e9f72ed580a732646fed76fb5daca993",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/semantic-review-01-02.json",
+          "sha256": "a7c766bdac8ee8782ff038045f2e27921dd3af256d546a18469769d9e8f83eef"
+        }
+      }
+    },
+    {
+      "cardId": "B0134",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/illustration-update-05.webp?v=2310b7e1b2ef\",1254,1254,[318,318,305,305]]",
+      "sourceSha256": "2310b7e1b2ef93d7f637c9e15d1fa8fc7229ba3e208f4be4e17fb35ac1cf5111",
+      "decision": "reviewed-contour",
+      "file": "B0134.json",
+      "fileSha256": "99c3727e9d2c3b3a68ba4a57853b0f237a30d6d4e4ade09d091f55b62d28752e",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B0145",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-10.webp?art=20261124\",1254,1254,[4,4,306,306]]",
+      "sourceSha256": "cec48841867f8bfe4e6b3787890d8398e81d1a7ce66a3b6ce34df10a53301d36",
+      "decision": "reviewed-contour",
+      "file": "B0145.json",
+      "fileSha256": "2961e0317f8783a5fb0c7b4aab983177e58fcc3e4c20fecc5785458d9b285986",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0164",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-11.webp?art=20261124\",1254,1254,[944,4,306,306]]",
+      "sourceSha256": "18624556c99dcc14080be8f4dfa991946068cd0d8c72631a733feb5f99574f80",
+      "decision": "reviewed-contour",
+      "file": "B0164.json",
+      "fileSha256": "78b9b01c8dacb2711afcb91cb867449fbe2d81e0e644ddb2f4ee58b3525cbfa5",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0168",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-11.webp?art=20261124\",1254,1254,[945,318,305,305]]",
+      "sourceSha256": "18624556c99dcc14080be8f4dfa991946068cd0d8c72631a733feb5f99574f80",
+      "decision": "selected-finished-lite",
+      "file": "B0168-mask.png",
+      "maskSha256": "fd8f46c084d223e88b23fcdde46da1d3adae6eff0c08192842b9a48c44d8ef91",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "sourceBoundPortraitException": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "Root directly approved this close-up portrait at 97.259% coverage without shrinking visible anatomy; exact source-bound quality exception is required.",
+        "evidence": {
+          "file": "fallback-finished-review/semantic-review-01-02.json",
+          "sha256": "a7c766bdac8ee8782ff038045f2e27921dd3af256d546a18469769d9e8f83eef"
+        }
+      }
+    },
+    {
+      "cardId": "B0172",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-11.webp?art=20261124\",1254,1254,[945,631,305,305]]",
+      "sourceSha256": "18624556c99dcc14080be8f4dfa991946068cd0d8c72631a733feb5f99574f80",
+      "decision": "reviewed-contour",
+      "file": "B0172.json",
+      "fileSha256": "a8e6218707e66698a69d424aa8fba29bea938252b1ffd08a169fdbd162a5e9e5",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0193",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/illustration-update-06.webp?v=02ba1acdc5da\",1254,1254,[4,4,306,306]]",
+      "sourceSha256": "02ba1acdc5dae58bdfcf0a3906755f36e668f24c79485f795b0decc041111749",
+      "decision": "selected-finished-lite",
+      "file": "B0193-mask.png",
+      "maskSha256": "77a14d6c3c4ce113a3e6bca84fa9c187b201503bebe9ced0d9f2579563db1b99",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0219",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-14.webp?art=20261124\",1254,1254,[631,631,305,305]]",
+      "sourceSha256": "4da7879b02dd396eb984c9094f98e5e0c9ba25895784e2a17146c61e5d711f9a",
+      "decision": "selected-finished-lite",
+      "file": "B0219-mask.png",
+      "maskSha256": "0fe24fb1766b6a18979c24434d3c6228b0a4256e27756bd5dcc8da35e39d5add",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0223",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-14.webp?art=20261124\",1254,1254,[631,945,305,305]]",
+      "sourceSha256": "4da7879b02dd396eb984c9094f98e5e0c9ba25895784e2a17146c61e5d711f9a",
+      "decision": "reviewed-contour",
+      "file": "B0223.json",
+      "fileSha256": "1ed421d95e7dd96e6c3d537d271d9c615e75396af06ffcb6ac2816cd777340d9",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0224",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-14.webp?art=20261124\",1254,1254,[944,944,306,306]]",
+      "sourceSha256": "4da7879b02dd396eb984c9094f98e5e0c9ba25895784e2a17146c61e5d711f9a",
+      "decision": "selected-finished-lite",
+      "file": "B0224-mask.png",
+      "maskSha256": "64c644e4395e46501ae5a8af29c70245c99baa2187e6835e304106d362a8319b",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0227",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-15.webp?art=20261124\",1254,1254,[631,5,305,305]]",
+      "sourceSha256": "983cd2a3f8c57f22a78683ed91d50d4633457ea20a4712c08d72cb65fcf3e791",
+      "decision": "selected-finished-lite",
+      "file": "B0227-mask.png",
+      "maskSha256": "0b6b20f66f9ef27618dcb27502ab298a9a2629a7b754e52367392628023e3d44",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0235",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-15.webp?art=20261124\",1254,1254,[631,631,305,305]]",
+      "sourceSha256": "983cd2a3f8c57f22a78683ed91d50d4633457ea20a4712c08d72cb65fcf3e791",
+      "decision": "selected-finished-lite",
+      "file": "B0235-mask.png",
+      "maskSha256": "6b3fbd2b28ee86bd887cddb3d3450f477519853158fba7e020c555afbbf0d847",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0248",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-16.webp?art=20261124\",1254,1254,[945,318,305,305]]",
+      "sourceSha256": "74d5c623c581642bd42d847ddb319e0dc2bf774a9d4644c659b9b5195d224f55",
+      "decision": "reviewed-contour",
+      "file": "B0248.json",
+      "fileSha256": "88a4874fc42aa960cc75728f3232392f3c2da51b3e09cf7bf610f591c3db3f7e",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0257",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-17.webp?art=20261124\",1254,1254,[4,4,306,306]]",
+      "sourceSha256": "5c006287fe76ed4ca502269cd716c3953def00dc50c6fc6cf2dc48236ca4f273",
+      "decision": "reviewed-contour",
+      "file": "B0257.json",
+      "fileSha256": "6a0894ec3af9beec31e8d89167b1911182f4b3123d5a162fbce3b20142111d13",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard comparison; restored visible green branch crown using source-bound contours",
+        "evidence": {
+          "file": "manual-b0257/approved-corrections.json",
+          "sha256": "96905c884196cca2462eff33c5ff0a9c21eadbfc8bbcbb4700dae3889185ada6"
+        }
+      }
+    },
+    {
+      "cardId": "B0274",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-18.webp?art=20261124\",1254,1254,[318,5,305,305]]",
+      "sourceSha256": "7cd4bcb8b1eee473c0b6d144592507e5743fb41a4c83349eb0e203991e922a1e",
+      "decision": "reviewed-contour",
+      "file": "B0274.json",
+      "fileSha256": "ebfac239c89b03a5cdc1555084933181f3d785cccf6415f2bd589acc5a88ea20",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0290",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-19.webp?art=20261124\",1254,1254,[318,5,305,305]]",
+      "sourceSha256": "7aa4b61ec0df16f7449e98cf487c9980e211eb92f04e60f599e2739aca9dd8c9",
+      "decision": "reviewed-contour",
+      "file": "B0290.json",
+      "fileSha256": "2f62178d6c4989fe3434d4dc36eaa49deb650a369343b07cf7772906235cfd20",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B0306",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-20.webp?art=20261124\",1254,1254,[318,5,305,305]]",
+      "sourceSha256": "7080e6f409a4442651f76fb3371b5f929443ee2a0e09427a41c69e809c9eb826",
+      "decision": "reviewed-contour",
+      "file": "B0306.json",
+      "fileSha256": "97473e4a72e0cf6c75fd5776adbd7b2a1cd7cbf780168c5fa45ee1a823619e6d",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B0356",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-23.webp?art=20261124\",1254,1254,[944,4,306,306]]",
+      "sourceSha256": "41378bbc47f3971b0eb0e30833c7df27ff971acd535ca59135b11f82984e52e5",
+      "decision": "reviewed-contour",
+      "file": "B0356.json",
+      "fileSha256": "e5e4606c0dc80a7cff867e6759ca3291694b1f6d0bcdeca6a61b14a33f11d2b5",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0360",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-23.webp?art=20261124\",1254,1254,[945,318,305,305]]",
+      "sourceSha256": "41378bbc47f3971b0eb0e30833c7df27ff971acd535ca59135b11f82984e52e5",
+      "decision": "selected-finished-lite",
+      "file": "B0360-mask.png",
+      "maskSha256": "3b684bfbc6bc90fe08d4c6ffcf978cc538d4eed7d3106dfb1ec1debf2253996d",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0361",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-23.webp?art=20261124\",1254,1254,[5,631,305,305]]",
+      "sourceSha256": "41378bbc47f3971b0eb0e30833c7df27ff971acd535ca59135b11f82984e52e5",
+      "decision": "reviewed-contour",
+      "file": "B0361.json",
+      "fileSha256": "7448cfb1f6195e84614aee0e51b77b22be6179f206ab4d3e70d0ef13edce2c1b",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B0362",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-23.webp?art=20261124\",1254,1254,[318,631,305,305]]",
+      "sourceSha256": "41378bbc47f3971b0eb0e30833c7df27ff971acd535ca59135b11f82984e52e5",
+      "decision": "reviewed-contour",
+      "file": "B0362.json",
+      "fileSha256": "7e5e811ada2cfcfbfbef924497dfc4537d15048db93f3af43f08512e1ee79b95",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0368",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-23.webp?art=20261124\",1254,1254,[944,944,306,306]]",
+      "sourceSha256": "41378bbc47f3971b0eb0e30833c7df27ff971acd535ca59135b11f82984e52e5",
+      "decision": "reviewed-contour",
+      "file": "B0368.json",
+      "fileSha256": "5f894d6538b3450061aad03719b3ce1deba277dd4f13ada030b529a3e0c6cf8c",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B0370",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-24.webp?art=20261124\",1254,1254,[318,5,305,305]]",
+      "sourceSha256": "4ecab0a0e7fd453d5802e5076d9961c6860b077a8f84cf098aff784af65879eb",
+      "decision": "reviewed-contour",
+      "file": "B0370.json",
+      "fileSha256": "4b2207c1178c64cca25937ba286e1ec1a6825d7babdbcc8ac1659df0a15a8f18",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B0375",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-24.webp?art=20261124\",1254,1254,[631,318,305,305]]",
+      "sourceSha256": "4ecab0a0e7fd453d5802e5076d9961c6860b077a8f84cf098aff784af65879eb",
+      "decision": "reviewed-contour",
+      "file": "B0375.json",
+      "fileSha256": "645fcc97977f405c47b345cb55285c4f1bef3a207789fc4047466eee65378a1a",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0400",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-25.webp?art=20261124\",1254,1254,[944,944,306,306]]",
+      "sourceSha256": "46ffb3d357fc5dfc88add157d24e00572fd9eb0fde156966a0a7078da14aafce",
+      "decision": "keep-default-full512",
+      "rawMaskSha256": "29e62b259c255a34c162cb52c7ba0f3ef5ee5f9d99a4c4d2953cf772f26bc9ea",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "reason": "Full512 excludes the detached lantern and keeps translucent ribbons.",
+        "evidence": {
+          "file": "manual-semantic-root/keep-default.json",
+          "sha256": "d547f6a04161c12f929e52068e362368dc94d62ac059014a36261bf9d55dcbef"
+        }
+      }
+    },
+    {
+      "cardId": "B0413",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-26.webp?art=20261124\",1254,1254,[4,944,306,306]]",
+      "sourceSha256": "e02ee4ae6bee1c46363991a2f9ec737d93b888a8aea3c2357efd39b04bc06f03",
+      "decision": "reviewed-contour",
+      "file": "B0413.json",
+      "fileSha256": "f7968f1c9ac49da6b1041db1b72b08a437cc94f1809ceb2d8df379405342a8fa",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0415",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-26.webp?art=20261124\",1254,1254,[631,945,305,305]]",
+      "sourceSha256": "e02ee4ae6bee1c46363991a2f9ec737d93b888a8aea3c2357efd39b04bc06f03",
+      "decision": "reviewed-contour",
+      "file": "B0415.json",
+      "fileSha256": "a0dd73774b6eaa07d72dbbc559d46885a462b1e389869af8d417418d54483595",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B0442",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-28.webp?art=20261124\",1254,1254,[318,631,305,305]]",
+      "sourceSha256": "fbefcdbaf14da20623bf12028d5117ea9b23f609f2f7eca463d492ddfa24ecc0",
+      "decision": "reviewed-contour",
+      "file": "B0442.json",
+      "fileSha256": "a23b3caab675951e7354fed03c1f0815f4b2af06da13c60e4e86a3c75d2a30a3",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B0472",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-30.webp?art=20261124\",1254,1254,[945,318,305,305]]",
+      "sourceSha256": "2c93551f4cf149f2ab45a355fdc16d8faa24a5fe0e8bdbba8e945d00f177e796",
+      "decision": "selected-finished-lite",
+      "file": "B0472-mask.png",
+      "maskSha256": "f758a23a97e84f2a4be272f193a6c2a83aa01a29a4d9a0b60af423f276ae1f5e",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0532",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-34.webp?art=20261124\",1254,1254,[944,4,306,306]]",
+      "sourceSha256": "d2617378c55b375bb43b14d33984b56742c44f2be0b1adb06635b19a6b399689",
+      "decision": "selected-finished-lite",
+      "file": "B0532-mask.png",
+      "maskSha256": "2345aaf9346c7ace2e8e3699a914d2fa9c454b5895cd64ace97404970ba21a13",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0564",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-36.webp?art=20261124\",1254,1254,[944,4,306,306]]",
+      "sourceSha256": "737e1bf8f73f561f3d5e97896c441e4b8762eacabcfc0c5f59614a911b613b62",
+      "decision": "keep-default-full512",
+      "rawMaskSha256": "113e1ae9bd372103af367bbb9b98e04c853d69bd44364fefb99b368e8a2d543c",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "reason": "Full512 excludes the detached orb and retains complete deer.",
+        "evidence": {
+          "file": "manual-semantic-root/keep-default.json",
+          "sha256": "d547f6a04161c12f929e52068e362368dc94d62ac059014a36261bf9d55dcbef"
+        }
+      }
+    },
+    {
+      "cardId": "B0597",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-38.webp?art=20261124\",1254,1254,[5,318,305,305]]",
+      "sourceSha256": "9db3b3ba73e872544485d5944b868cb83105807e5a85b56f048d20ab399551e0",
+      "decision": "selected-finished-lite",
+      "file": "B0597-mask.png",
+      "maskSha256": "b1366f64e469e3bf23fcc93d295a17c81b79e3cc217d443dd3197094d32a4718",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0629",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-40.webp?art=20261124\",1254,1254,[5,318,305,305]]",
+      "sourceSha256": "0296304e839f505152cc597162337bb4f896127cf6fd4628468f4c5b5c2c5734",
+      "decision": "selected-finished-lite",
+      "file": "B0629-mask.png",
+      "maskSha256": "7e0d6a7063a5113e4484db86f68440d5847aec8d2e53aa5b353c7733968502a1",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0646",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-41.webp?art=20261124\",1254,1254,[318,318,305,305]]",
+      "sourceSha256": "04a1550e8ce83c5a2adab41f51981f7d29fb05020f17c4300c92c94c33c8cc10",
+      "decision": "keep-default-full512",
+      "rawMaskSha256": "3ce8b77fb42945c5b2035dd147b390076fdf34ac91c744156e16b5233938f220",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "reason": "Full512 retains the coral ornament and complete bird.",
+        "evidence": {
+          "file": "manual-semantic-root/keep-default.json",
+          "sha256": "d547f6a04161c12f929e52068e362368dc94d62ac059014a36261bf9d55dcbef"
+        }
+      }
+    },
+    {
+      "cardId": "B0662",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-42.webp?art=20261124\",1254,1254,[318,318,305,305]]",
+      "sourceSha256": "7825450cfae99eeff12665a3ac8ac2171763b3821da799c805590898293e1d1f",
+      "decision": "reviewed-contour",
+      "file": "B0662.json",
+      "fileSha256": "a164e6ba5370ab2311b6a0c3fc1adadbc60c8474ae9fa70691315ed26b6c903d",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0678",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-43.webp?art=20261124\",1254,1254,[318,318,305,305]]",
+      "sourceSha256": "b4daf0d2069b3c105b626c57f5c1100d15df94164e876675f5e5eba90039c765",
+      "decision": "selected-finished-lite",
+      "file": "B0678-mask.png",
+      "maskSha256": "b5063540e745230c591f79c8caa153b27c205caf35f1fe1ebb8d4492c1dd0729",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0682",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-43.webp?art=20261124\",1254,1254,[318,631,305,305]]",
+      "sourceSha256": "b4daf0d2069b3c105b626c57f5c1100d15df94164e876675f5e5eba90039c765",
+      "decision": "reviewed-contour",
+      "file": "B0682.json",
+      "fileSha256": "081057a456069deb9af31f6ab7e031f5ac691375f8a78a741461e2e890a69b71",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0684",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-43.webp?art=20261124\",1254,1254,[945,631,305,305]]",
+      "sourceSha256": "b4daf0d2069b3c105b626c57f5c1100d15df94164e876675f5e5eba90039c765",
+      "decision": "selected-finished-lite",
+      "file": "B0684-mask.png",
+      "maskSha256": "e62bd37811f16eaad4c2eff3134f3071463a8c7562079b433477566854a38e65",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0691",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-44.webp?art=20261124\",1254,1254,[631,5,305,305]]",
+      "sourceSha256": "0964590570cca327e4f67b462b1f6d36fbc9fa848d8fbb41c4e0b3b7ef33a71d",
+      "decision": "reviewed-contour",
+      "file": "B0691.json",
+      "fileSha256": "8aaf9f7e9d29447121d2bf08c7d5afeb901c3d2c54dc623f203dffc3301a84b4",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0694",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-44.webp?art=20261124\",1254,1254,[318,318,305,305]]",
+      "sourceSha256": "0964590570cca327e4f67b462b1f6d36fbc9fa848d8fbb41c4e0b3b7ef33a71d",
+      "decision": "keep-default-full512",
+      "rawMaskSha256": "0122c05b3f619d39d29a8eec5bbc3deb03ee14d7891c9cbfd5ba95d36d39d0d3",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "reason": "Full512 retains both patterned wings.",
+        "evidence": {
+          "file": "manual-semantic-root/keep-default.json",
+          "sha256": "d547f6a04161c12f929e52068e362368dc94d62ac059014a36261bf9d55dcbef"
+        }
+      }
+    },
+    {
+      "cardId": "B0718",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-45.webp?art=20261124\",1254,1254,[318,945,305,305]]",
+      "sourceSha256": "711ab42623b5773e436f4196cd2447f29e25c496b76faaca9c687115cc93dcdf",
+      "decision": "reviewed-contour",
+      "file": "B0718.json",
+      "fileSha256": "9b3199a238865d0e8a9ec81579246cb74ca354d0b9ff7af61192aa6a3908fce6",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B0730",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-46.webp?art=20261124\",1254,1254,[318,631,305,305]]",
+      "sourceSha256": "cae6f16d0b9104cecf5214db41d1b1b8a6ec5447f05637a60d9f16ac2008954f",
+      "decision": "selected-finished-lite",
+      "file": "B0730-mask.png",
+      "maskSha256": "7cae1fafc2bfdd4d351abd4c778d73ad6a30281321984a1f740d5f49cbcb282f",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0734",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-46.webp?art=20261124\",1254,1254,[318,945,305,305]]",
+      "sourceSha256": "cae6f16d0b9104cecf5214db41d1b1b8a6ec5447f05637a60d9f16ac2008954f",
+      "decision": "selected-finished-lite",
+      "file": "B0734-mask.png",
+      "maskSha256": "a454a174ccabede40aa3b1fa92a913f37b7330d195c02ddfa84ce657794336c9",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0767",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-48.webp?art=20261124\",1254,1254,[631,945,305,305]]",
+      "sourceSha256": "c1b1891ecff8c2920af574530b54a912e894055c54731760db305cca1f601a06",
+      "decision": "selected-finished-lite",
+      "file": "B0767-mask.png",
+      "maskSha256": "00b2a960978dc59752b7e51971576eb441d67306895575a0ed946befa4e6133d",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0771",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-49.webp?art=20261124\",1254,1254,[631,5,305,305]]",
+      "sourceSha256": "998b28d8559c1875da65ff4ec726d8015bc24628114bfab996233654876aa34c",
+      "decision": "selected-finished-lite",
+      "file": "B0771-mask.png",
+      "maskSha256": "4ff874ae92f3f735eb594e246252240f4e0a00b8dc44aadd917c81c4661c1b50",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0804",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-51.webp?art=20261124\",1254,1254,[944,4,306,306]]",
+      "sourceSha256": "8a33384067d37ddd17c836c5f07b0101b87f1d8ba7b94ed82c73d8b70c487e5d",
+      "decision": "selected-finished-lite",
+      "file": "B0804-mask.png",
+      "maskSha256": "2c8e24e1818674745204a85563a6b534c5554ab21396a4988cf2322e90039c26",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0808",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-51.webp?art=20261124\",1254,1254,[945,318,305,305]]",
+      "sourceSha256": "8a33384067d37ddd17c836c5f07b0101b87f1d8ba7b94ed82c73d8b70c487e5d",
+      "decision": "reviewed-contour",
+      "file": "B0808.json",
+      "fileSha256": "e73e64dec9e223cce0decf3e5d9f953dc499b4eef276f715a10638b8e875c993",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B0819",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/illustration-update-01.webp?v=120f4f9a2250\",1280,960,[643,3,314,314]]",
+      "sourceSha256": "120f4f9a2250a95173b186f562a7383d421324f8cedd53804e29d75e2a21c7af",
+      "decision": "reviewed-contour",
+      "file": "B0819.json",
+      "fileSha256": "3ce10da95651bf041764b31e7db4ed5aeaae0857352c99aca46cd77e85741545",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B0848",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-53.webp?art=20261124\",1254,1254,[944,944,306,306]]",
+      "sourceSha256": "83578a41bfe25f1521519a2faaba101f59e70f4b17a357f140637aac0711c721",
+      "decision": "selected-finished-lite",
+      "file": "B0848-mask.png",
+      "maskSha256": "23888830cbfd404a80f83a74defe1f2182e217ff810600c3c7628a7aad4ccab3",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0882",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-56.webp?art=20261124\",1254,1254,[318,5,305,305]]",
+      "sourceSha256": "6028f1285596acb03e97d4f435d53061c43ade63373f70b68683d682e031f039",
+      "decision": "selected-finished-lite",
+      "file": "B0882-mask.png",
+      "maskSha256": "74e2a9b99d399383b580059694040440dc76972b291a7b0940c8386b38e0edf8",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0928",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-58.webp?art=20261124\",1254,1254,[944,944,306,306]]",
+      "sourceSha256": "b20fa7417f4b0246c276f55d7749ed8a9f0a294b2bb812fa8c96f92871d0b8f4",
+      "decision": "selected-finished-lite",
+      "file": "B0928-mask.png",
+      "maskSha256": "aeea80c58257a7f1a6d44355018004520f9a798e51c5f7bf1e19f26637b42a7a",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0935",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-59.webp?art=20261124\",1254,1254,[631,318,305,305]]",
+      "sourceSha256": "0242e2bcfb6631c0c769913a792ff879bc694690592cb7595888e79f2d3da8da",
+      "decision": "selected-finished-lite",
+      "file": "B0935-mask.png",
+      "maskSha256": "8fcbf4b0ee3b52565e5e3a9ef4d0389b10aaf9afe0269d62b47ca9f9d4765f06",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "semantic-finished-review/root-review01-04.json",
+          "sha256": "6747e301209c5434f14743cc9b3a628f430b5dece99d0097c09e97a36737c7e1"
+        }
+      }
+    },
+    {
+      "cardId": "B0942",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-59.webp?art=20261124\",1254,1254,[318,945,305,305]]",
+      "sourceSha256": "0242e2bcfb6631c0c769913a792ff879bc694690592cb7595888e79f2d3da8da",
+      "decision": "reviewed-contour",
+      "file": "B0942.json",
+      "fileSha256": "43d219365245cd6d580b59a0b8c954fd77e59ba247f0825d1aca65717fc6b800",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root/approved-corrections.json",
+          "sha256": "eb5985440ca733213e3ed2de5447573ff394477a21a58c8b11963ee7cd48f4a6"
+        }
+      }
+    },
+    {
+      "cardId": "B0955",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-60.webp?art=20261124\",1254,1254,[631,631,305,305]]",
+      "sourceSha256": "e83587f86ceb7ca8182715b085329cb312520bae3aaada53f18dbe9347fcb223",
+      "decision": "selected-finished-lite",
+      "file": "B0955-mask.png",
+      "maskSha256": "604b683aa483ab532a5c471caee2bcfb23a67984e34a7349b4fbcd51448e6c21",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "B0961",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-61.webp?art=20261124\",1254,1254,[4,4,306,306]]",
+      "sourceSha256": "a88ce5233aa9ddc91cad8910cf6028fe7534e925c881b4a4e55a3bde5cb97f4e",
+      "decision": "reviewed-contour",
+      "file": "B0961.json",
+      "fileSha256": "3c6187f2f7c70fc11c4730dbdac467b1de59f180d37afe02c402b29222a7c01d",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B1008",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-63.webp?art=20261124\",1254,1254,[944,944,306,306]]",
+      "sourceSha256": "6c6707ccf728044b29c46f5be02da1cfcaa4c66bdcc68107f7e53d90bcf6ae4d",
+      "decision": "selected-finished-lite",
+      "file": "B1008-mask.png",
+      "maskSha256": "521fb13cbf08d70a43cded364986d25efd4bb0b7c2f875fcfcb6ce7ea15fcd52",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "B1012",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/beast-64.webp?art=20261124\",1254,1254,[944,4,306,306]]",
+      "sourceSha256": "c8e533ebbfc9584cdc77e54a457c9a0a64645c1d68e9015580f59a39d3dddbdd",
+      "decision": "selected-finished-lite",
+      "file": "B1012-mask.png",
+      "maskSha256": "c1715a6f1ea3d9c845df1554c2c080c7558db52554800d21806ab9d57f1a6881",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "B1115",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-09.webp?v=7d2040d96cc9\",1536,1024,[1290,522,235,235]]",
+      "sourceSha256": "7d2040d96cc9a35c0724fd287ea2063899c31bf001615818b9171f07f440f24a",
+      "decision": "reviewed-contour",
+      "file": "B1115.json",
+      "fileSha256": "92f5943671ce0abf377acc3335a7527bb48503eb285e80000a6e43fc3f8561fd",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B1124",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-12.webp?v=dc000ee4f88e\",1536,1024,[1290,522,235,235]]",
+      "sourceSha256": "dc000ee4f88ed7a87c18308c934eddbb52118baab872e36d044644ba52435383",
+      "decision": "reviewed-contour",
+      "file": "B1124.json",
+      "fileSha256": "9327709b042b4adfa4b79fa7ac45b3058602fe55dfeebdc0b5222fbdeafcff8b",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B1143",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-19.webp?v=f318c6f352ff\",1536,1024,[266,10,235,235]]",
+      "sourceSha256": "f318c6f352ffd5d29f9fe9523edf79d561c11a24b213b34f2a7f571e9dff163f",
+      "decision": "reviewed-contour",
+      "file": "B1143.json",
+      "fileSha256": "01d00ca6af12432ae384cd638e5c776cf47a5bc127787d19a9fb0a9b5560334b",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B1159",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-03.webp?v=d0b442578aa0\",1536,1024,[522,10,235,235]]",
+      "sourceSha256": "d0b442578aa0c932047e33840a3b95e77fc004fe76ed67788fe92634c8fd2387",
+      "decision": "reviewed-contour",
+      "file": "B1159.json",
+      "fileSha256": "5178e9151c7f62ac926d8548aba297fed869e5e7ead7d15f7cd37fe7490dd882",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B1170",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-06.webp?v=6843d27c40ab\",1536,1024,[10,778,235,235]]",
+      "sourceSha256": "6843d27c40ab7098da9891dc2312d6b5b47b0e7de3fc6511003a0e20cde0dc7e",
+      "decision": "reviewed-contour",
+      "file": "B1170.json",
+      "fileSha256": "666d1b5111115b8cd0dd35b0d0350921f8583eeae1ea9dd720d1e80366e59657",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B1188",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-12.webp?v=dc000ee4f88e\",1536,1024,[10,778,235,235]]",
+      "sourceSha256": "dc000ee4f88ed7a87c18308c934eddbb52118baab872e36d044644ba52435383",
+      "decision": "selected-finished-lite",
+      "file": "B1188-mask.png",
+      "maskSha256": "b6a322788facc963648234314779a5d2fe0ce5ce3230f737f9a87c009822ea64",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/semantic-review-01-02.json",
+          "sha256": "a7c766bdac8ee8782ff038045f2e27921dd3af256d546a18469769d9e8f83eef"
+        }
+      }
+    },
+    {
+      "cardId": "B1286",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-02.webp?v=0d9672d8c350\",1536,1024,[522,778,235,235]]",
+      "sourceSha256": "0d9672d8c350ec4e80a4fa9c536ccbbbacb9ff2ef0243cfd874c0a7fb4a26b21",
+      "decision": "reviewed-contour",
+      "file": "B1286.json",
+      "fileSha256": "0ac071c20ba686dd33b962cbed075cc27394d95a03717dba79229f3055051ba2",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1301",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-07.webp?v=9221a2fa0828\",1536,1024,[522,778,235,235]]",
+      "sourceSha256": "9221a2fa08288d7c1bf42c2308c1a85f81894bfb2795b0b06951e17368dd02cd",
+      "decision": "reviewed-contour",
+      "file": "B1301.json",
+      "fileSha256": "7f4916e59d12d8c9dae90c42e0040d24da268dab0d54d3a646ead598c166a369",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1306",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-09.webp?v=7d2040d96cc9\",1536,1024,[10,522,235,235]]",
+      "sourceSha256": "7d2040d96cc9a35c0724fd287ea2063899c31bf001615818b9171f07f440f24a",
+      "decision": "reviewed-contour",
+      "file": "B1306.json",
+      "fileSha256": "c368b0777bfae3af1fb160d3a294b2b592ee43f8c44e3e5296713b5325af839a",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1319",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-13.webp?v=bac5caddb127\",1536,1024,[522,778,235,235]]",
+      "sourceSha256": "bac5caddb12718f30b8a2d48d4c64333abe3e4416559f7796c90c91b1bed6e0a",
+      "decision": "selected-finished-lite",
+      "file": "B1319-mask.png",
+      "maskSha256": "40b628c88513dec193a265ece45cef14b8216ea6069195da5cf32626ae77c79c",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "B1320",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-14.webp?v=2c3e464009c5\",1536,1024,[1034,10,235,235]]",
+      "sourceSha256": "2c3e464009c5578483992387beb80d6529ac3d341a65995633b46d78c7379743",
+      "decision": "reviewed-contour",
+      "file": "B1320.json",
+      "fileSha256": "cbbf6e93d36b8bf7c82502ccc718bb3225ce0cbf9593401c324a54045852ff16",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B1324",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-15.webp?v=cc1f948cee40\",1536,1024,[10,522,235,235]]",
+      "sourceSha256": "cc1f948cee400f434101c18a95ab381d9d83fbd609c6a7d3b3b77b2326ec0ac7",
+      "decision": "reviewed-contour",
+      "file": "B1324.json",
+      "fileSha256": "d7aa9df2fb0d939ac050960474702c1a78ccb5d9baabcd090c5fd0b9be8c6587",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1325",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-15.webp?v=cc1f948cee40\",1536,1024,[522,778,235,235]]",
+      "sourceSha256": "cc1f948cee400f434101c18a95ab381d9d83fbd609c6a7d3b3b77b2326ec0ac7",
+      "decision": "reviewed-contour",
+      "file": "B1325.json",
+      "fileSha256": "84cece94b2154e09d276beb700eaf7b95f09d49b6372c99851ad7295174b1617",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1329",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-17.webp?v=423d429e1a87\",1536,1024,[1034,10,235,235]]",
+      "sourceSha256": "423d429e1a87b984d46fe998127c1b02c332c81d60ee95af1231b47238e06671",
+      "decision": "reviewed-contour",
+      "file": "B1329.json",
+      "fileSha256": "78a49eeab22532f2305b567a0c25826874d6156f6dbdaef75fd67371d2db7b49",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B1342",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-21.webp?v=5ed6631735fd\",1536,1024,[10,522,235,235]]",
+      "sourceSha256": "5ed6631735fd6c6df1a22ae809a54c773efdedab9903b04e57c9b7a13177fda4",
+      "decision": "selected-finished-lite",
+      "file": "B1342-mask.png",
+      "maskSha256": "2a3097258801404ca381f984bf89101d36bb90b03de784a577e18bfc607d4555",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "B1360",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-06.webp?v=6843d27c40ab\",1536,1024,[1290,10,235,235]]",
+      "sourceSha256": "6843d27c40ab7098da9891dc2312d6b5b47b0e7de3fc6511003a0e20cde0dc7e",
+      "decision": "reviewed-contour",
+      "file": "B1360.json",
+      "fileSha256": "5a3308ce6e2bfeb17a31a77c50b74e993e7e40ca1fdd73f9fd080e36f4cee702",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B1388",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-15.webp?v=cc1f948cee40\",1536,1024,[266,522,235,235]]",
+      "sourceSha256": "cc1f948cee400f434101c18a95ab381d9d83fbd609c6a7d3b3b77b2326ec0ac7",
+      "decision": "reviewed-contour",
+      "file": "B1388.json",
+      "fileSha256": "fa80fd9767f9b92d62a998e692942c5eca4ef50e2646103404ddbb1100b31941",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1422",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-05.webp?v=9cbae6e091e9\",1536,1024,[522,522,235,235]]",
+      "sourceSha256": "9cbae6e091e9280800e0984d5d520f4ed90994efad6fa191725054074e6b2ddb",
+      "decision": "reviewed-contour",
+      "file": "B1422.json",
+      "fileSha256": "2b50efa37c709be9801b3d2b4229893a5dc5970c2beae5b0ae5b0e350824d787",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root-extra/approved-corrections.json",
+          "sha256": "4030d5455c044f426a25153d6cf51d12335b8dda883a48a46469aac0a2552b75"
+        }
+      }
+    },
+    {
+      "cardId": "B1427",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-07.webp?v=9221a2fa0828\",1536,1024,[10,266,235,235]]",
+      "sourceSha256": "9221a2fa08288d7c1bf42c2308c1a85f81894bfb2795b0b06951e17368dd02cd",
+      "decision": "reviewed-contour",
+      "file": "B1427.json",
+      "fileSha256": "c9918ea1a95b3eb4803ee644134247f9c9596e558582b7ca1d31b40a499a5b2c",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1429",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-07.webp?v=9221a2fa0828\",1536,1024,[1034,778,235,235]]",
+      "sourceSha256": "9221a2fa08288d7c1bf42c2308c1a85f81894bfb2795b0b06951e17368dd02cd",
+      "decision": "reviewed-contour",
+      "file": "B1429.json",
+      "fileSha256": "f8cc6b74f33aed4bd296d1ada9c3dcd98712c4f420bea72ea376d5cabec267e5",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1563",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-05.webp?v=a05e12783546\",1536,1024,[522,266,235,235]]",
+      "sourceSha256": "a05e12783546ec53ade08ed3c9d9d7fca076bd4ce0abce46a25a2105b90c522c",
+      "decision": "selected-finished-lite",
+      "file": "B1563-mask.png",
+      "maskSha256": "1f937920ce7ee0e86c8c4fc75bb62d8d7e89d0061b4f3951bd4efebb0d0568f2",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B1587",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-09.webp?v=030f586b81cc\",1536,1024,[522,266,235,235]]",
+      "sourceSha256": "030f586b81ccc2e8cd17ea34d5c7aed69a2aa6048518c5eaa46f8fd6f8bab189",
+      "decision": "selected-finished-lite",
+      "file": "B1587-mask.png",
+      "maskSha256": "4e9c0be5b06cc07f189e7591213b06f7b5758c8ff1edec80525779d528017e01",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B1611",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-13.webp?v=59b587cc6f89\",1536,1024,[522,266,235,235]]",
+      "sourceSha256": "59b587cc6f8937e19550771e850ffd5de17dec41724440d8f663f39658a24ddc",
+      "decision": "selected-finished-lite",
+      "file": "B1611-mask.png",
+      "maskSha256": "92b018db1137272f4efb8e89ddf5251b692980602605a14e072f5a09c6896e48",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B1655",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-20.webp?v=b205c603eb54\",1536,1024,[1034,522,235,235]]",
+      "sourceSha256": "b205c603eb546acabececa01527a344e4bbb59953c9bf20ee713d2b75e1c77e7",
+      "decision": "reviewed-contour",
+      "file": "B1655.json",
+      "fileSha256": "5f373819a82419148f933f03933d96405b1bdb64f9eb11f03d5a47f8e939bbcc",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B1694",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-05.webp?v=a05e12783546\",1536,1024,[778,778,235,235]]",
+      "sourceSha256": "a05e12783546ec53ade08ed3c9d9d7fca076bd4ce0abce46a25a2105b90c522c",
+      "decision": "reviewed-contour",
+      "file": "B1694.json",
+      "fileSha256": "1c3df5934b974995b0eeb80c87a25b7fb573d99bf54aa796ac544ee97d23564b",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1698",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-06.webp?v=921f651029a8\",1536,1024,[266,522,235,235]]",
+      "sourceSha256": "921f651029a84c94a630c1d85a2b437de8c72437619e71155a5102c1ac4ad5b4",
+      "decision": "reviewed-contour",
+      "file": "B1698.json",
+      "fileSha256": "7b518366541aec18ffec592f77bfc70ee8a6436f41f9696e780758217ca7f795",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1705",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-07.webp?v=c4d2458137f8\",1536,1024,[1290,522,235,235]]",
+      "sourceSha256": "c4d2458137f834d9fa6842f571968c939b3d7e410028a12f1e56c762bf4d772e",
+      "decision": "selected-finished-lite",
+      "file": "B1705-mask.png",
+      "maskSha256": "6eeed16dbbff704ef412fd27bfd37d5f3b31fc83c1ea1476d61779aa0a2e9855",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B1720",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-10.webp?v=377c3cd7624d\",1536,1024,[1290,10,235,235]]",
+      "sourceSha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "decision": "reviewed-contour",
+      "file": "B1720.json",
+      "fileSha256": "e5778078d7cdf8300afa18ca06463f93d186ec5cc5b4328186727f8cd0ced3ce",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1731",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-12.webp?v=ca6dd36366e4\",1536,1024,[266,10,235,235]]",
+      "sourceSha256": "ca6dd36366e4673555161ddc93ae65159b19bd980c59783b8c666413defef289",
+      "decision": "selected-finished-lite",
+      "file": "B1731-mask.png",
+      "maskSha256": "c91268213a31e21b55f4e3c54a07edbe441fc3dc2149edaa91df8ea8ff6de834",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B1734",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-12.webp?v=ca6dd36366e4\",1536,1024,[266,522,235,235]]",
+      "sourceSha256": "ca6dd36366e4673555161ddc93ae65159b19bd980c59783b8c666413defef289",
+      "decision": "reviewed-contour",
+      "file": "B1734.json",
+      "fileSha256": "5c7989f866eab5f72b8087d28b6d3ada49322555aae64e528be037c4d3f62055",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1739",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-13.webp?v=59b587cc6f89\",1536,1024,[778,266,235,235]]",
+      "sourceSha256": "59b587cc6f8937e19550771e850ffd5de17dec41724440d8f663f39658a24ddc",
+      "decision": "reviewed-contour",
+      "file": "B1739.json",
+      "fileSha256": "0e115f8169103cd338eeca146e5bd0b800f48a85289bdd103f866f89f00ba692",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B1753",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-15.webp?v=d9e6496bbc52\",1536,1024,[1290,522,235,235]]",
+      "sourceSha256": "d9e6496bbc520f11e64a4a64fe9dc1f18e95d67a369acb753a1e873d2212cc8e",
+      "decision": "selected-finished-lite",
+      "file": "B1753-mask.png",
+      "maskSha256": "96d37d6cc14043a74e9e15bc218f25b80ea17d9606e465d31c1b089ed2d53a8c",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B1758",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-16.webp?v=cb9e7dc45b91\",1536,1024,[266,522,235,235]]",
+      "sourceSha256": "cb9e7dc45b91bd4fc8b6456c5a817d7c716c6a5d9f526a080f35b4ccbdb1c999",
+      "decision": "reviewed-contour",
+      "file": "B1758.json",
+      "fileSha256": "78efa2eca2120991765ba2541cdceac8807d76c3e697d7409e0d04d2c543a315",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1761",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-17.webp?v=c8150dab29bf\",1536,1024,[266,10,235,235]]",
+      "sourceSha256": "c8150dab29bf8ef84263bad6b82c772a85dc421ffb0e30e2e1c36fc3a592aacb",
+      "decision": "selected-finished-lite",
+      "file": "B1761-mask.png",
+      "maskSha256": "f9c55370b85b43bc5160612a667a3a9d41b3084e465314815d31c78674e01a9e",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B1766",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-17.webp?v=c8150dab29bf\",1536,1024,[778,778,235,235]]",
+      "sourceSha256": "c8150dab29bf8ef84263bad6b82c772a85dc421ffb0e30e2e1c36fc3a592aacb",
+      "decision": "selected-finished-lite",
+      "file": "B1766-mask.png",
+      "maskSha256": "3fa38800a477a759868c345df39a928b57a5fb6cc67151e21aee6d90669acc2f",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B1771",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-18.webp?v=c47ef18b8c35\",1536,1024,[1290,522,235,235]]",
+      "sourceSha256": "c47ef18b8c35b10796bb4f4b601a7c1a9a4227a89a69d9ef1b9cb12938af8042",
+      "decision": "reviewed-contour",
+      "file": "B1771.json",
+      "fileSha256": "52c36625732331f4d42bbd94aad9c2ecaeb2d65688fdd91ba3feb4b240bad042",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1775",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-19.webp?v=2a9b57e29a67\",1536,1024,[778,266,235,235]]",
+      "sourceSha256": "2a9b57e29a67e64b09f28d0845340d428e84f13d18c25ba5a2ec00247c673ed3",
+      "decision": "reviewed-contour",
+      "file": "B1775.json",
+      "fileSha256": "7321a7317f2153c2ed71b52565d716050632730840a7ff893fa7ba2866a2dca4",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1777",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-19.webp?v=2a9b57e29a67\",1536,1024,[1290,522,235,235]]",
+      "sourceSha256": "2a9b57e29a67e64b09f28d0845340d428e84f13d18c25ba5a2ec00247c673ed3",
+      "decision": "reviewed-contour",
+      "file": "B1777.json",
+      "fileSha256": "46ee7d6d86d4c25100546483c7775b56b50cc714710e2d192493661cb747a5b7",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1782",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-20.webp?v=b205c603eb54\",1536,1024,[266,522,235,235]]",
+      "sourceSha256": "b205c603eb546acabececa01527a344e4bbb59953c9bf20ee713d2b75e1c77e7",
+      "decision": "selected-finished-lite",
+      "file": "B1782-mask.png",
+      "maskSha256": "4e1a35c177e6d144f55cb2e15af23169c91ae965cc9ce59e4bfc9b66ced0795e",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All visible limbs, body and tail are retained; original foreground crystals occlude portions of anatomy that cannot be invented. Full512 loses body/appendages and retains crystal scenery.",
+        "evidence": {
+          "file": "manual-relief-batch/approved-predictions.json",
+          "sha256": "14cc982dfeb5d188546c569a5ffe99aefaf45645bba93b0dfa69941b89102dea"
+        }
+      }
+    },
+    {
+      "cardId": "B1816",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-04.webp?v=28b9926a8baf\",1536,1024,[1034,778,235,235]]",
+      "sourceSha256": "28b9926a8baf1747104a55acf66cf26e73b5563ec06d0bf237087c3bdac602fb",
+      "decision": "reviewed-contour",
+      "file": "B1816.json",
+      "fileSha256": "625004a47e8257c959eb2581958cd6af9a3553cc01bd549de58d81fd22443496",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1824",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-06.webp?v=921f651029a8\",1536,1024,[10,266,235,235]]",
+      "sourceSha256": "921f651029a84c94a630c1d85a2b437de8c72437619e71155a5102c1ac4ad5b4",
+      "decision": "reviewed-contour",
+      "file": "B1824.json",
+      "fileSha256": "c80a0675e99bc0c736b3f0a804d20b13a7f952cf338f22f8c25a88b31372aa56",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1846",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-09.webp?v=030f586b81cc\",1536,1024,[1034,778,235,235]]",
+      "sourceSha256": "030f586b81ccc2e8cd17ea34d5c7aed69a2aa6048518c5eaa46f8fd6f8bab189",
+      "decision": "selected-finished-lite",
+      "file": "B1846-mask.png",
+      "maskSha256": "980362befeba85bb8592c55c0ab54a9905712cc29d284008af9e9a979820464b",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B1851",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-10.webp?v=377c3cd7624d\",1536,1024,[10,778,235,235]]",
+      "sourceSha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "decision": "reviewed-contour",
+      "file": "B1851.json",
+      "fileSha256": "7e98be6c6ca2cf10b6c4fce1f1c9e6e927b748d126e0bee34b4059479bea6a0f",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1886",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-16.webp?v=cb9e7dc45b91\",1536,1024,[522,522,235,235]]",
+      "sourceSha256": "cb9e7dc45b91bd4fc8b6456c5a817d7c716c6a5d9f526a080f35b4ccbdb1c999",
+      "decision": "reviewed-contour",
+      "file": "B1886.json",
+      "fileSha256": "1159f0618e3aa008f2de26f541b783314418c5cd62f0d7a97c02e11740ec4536",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1915",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-21.webp?v=523fc14fac09\",1536,1024,[1034,266,235,235]]",
+      "sourceSha256": "523fc14fac096392b283bbff49862b0b875de2270b2dad1a3893cd813e159068",
+      "decision": "selected-finished-lite",
+      "file": "B1915-mask.png",
+      "maskSha256": "c237908756b82bfbf8358e05e7203fc0fb9758689a9adc86b5814c64e1b81359",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B1951",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-06.webp?v=921f651029a8\",1536,1024,[778,10,235,235]]",
+      "sourceSha256": "921f651029a84c94a630c1d85a2b437de8c72437619e71155a5102c1ac4ad5b4",
+      "decision": "selected-finished-lite",
+      "file": "B1951-mask.png",
+      "maskSha256": "4f69b7d576590cc4a0627d61f2765bda399dc8729d9806b23c1164cee1ff4803",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B1971",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-09.webp?v=030f586b81cc\",1536,1024,[1290,266,235,235]]",
+      "sourceSha256": "030f586b81ccc2e8cd17ea34d5c7aed69a2aa6048518c5eaa46f8fd6f8bab189",
+      "decision": "reviewed-contour",
+      "file": "B1971.json",
+      "fileSha256": "50d52da5eae09522b0e730b916b07e574a909afb6755b4b26c0db6449466074e",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1979",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-10.webp?v=377c3cd7624d\",1536,1024,[266,778,235,235]]",
+      "sourceSha256": "377c3cd7624d29c8d5b338b8223398183d39c6d985e164bd69f0f49c327ef9bd",
+      "decision": "reviewed-contour",
+      "file": "B1979.json",
+      "fileSha256": "221e332e7e51d831ba403d29a41ac3620cfb7b348e5a69aabd49b12bc23fad3d",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B1999",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-14.webp?v=8fdfa29c4d94\",1536,1024,[778,10,235,235]]",
+      "sourceSha256": "8fdfa29c4d94e0126e511fb9a509931282e3ba47fe430332d843eb83bf2c43bd",
+      "decision": "selected-finished-lite",
+      "file": "B1999-mask.png",
+      "maskSha256": "46456e6c874d89b2e2c844ff90e5243c8507dc4c56366d2976da5c75801f45fd",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B2007",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-15.webp?v=d9e6496bbc52\",1536,1024,[1290,266,235,235]]",
+      "sourceSha256": "d9e6496bbc520f11e64a4a64fe9dc1f18e95d67a369acb753a1e873d2212cc8e",
+      "decision": "selected-finished-lite",
+      "file": "B2007-mask.png",
+      "maskSha256": "d4d16f8c22c28c84b668370f58b5851275155e2228c7f3976a1eb37b465ce953",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross defect observed in original/cutout comparison; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/relief-scope-review03-05.json",
+          "sha256": "02b3c8d72e80b7040c49b3ccd824c3172fa61b6072472ee45b87257a7ec3a894"
+        }
+      }
+    },
+    {
+      "cardId": "B2035",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-20.webp?v=b205c603eb54\",1536,1024,[778,10,235,235]]",
+      "sourceSha256": "b205c603eb546acabececa01527a344e4bbb59953c9bf20ee713d2b75e1c77e7",
+      "decision": "reviewed-contour",
+      "file": "B2035.json",
+      "fileSha256": "9fb91292256d9e78d0d0f7d01aa870a28d133ec1178bb507d938dbaa739764e4",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B2057",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-origami.webp?v=9518f39b7715\",1536,1024,[266,10,235,235]]",
+      "sourceSha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "decision": "reviewed-contour",
+      "file": "B2057.json",
+      "fileSha256": "b6054d971169c28a2bff9127f8a725ad78cc66365020bf264ae3e195a964342d",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B2060",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-origami.webp?v=9518f39b7715\",1536,1024,[1034,10,235,235]]",
+      "sourceSha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "decision": "reviewed-contour",
+      "file": "B2060.json",
+      "fileSha256": "98f4a795fb2aab013b5c3993ab71a66bbaa0f39c64455c96261ad9a80f4c6b9c",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B2061",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-origami.webp?v=9518f39b7715\",1536,1024,[1290,10,235,235]]",
+      "sourceSha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "decision": "reviewed-contour",
+      "file": "B2061.json",
+      "fileSha256": "9e591a57937b03b97f2220f3ab868be60b9e1fc65ba9df1f33f2baffd8c0a274",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B2063",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-origami.webp?v=9518f39b7715\",1536,1024,[266,266,235,235]]",
+      "sourceSha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "decision": "reviewed-contour",
+      "file": "B2063.json",
+      "fileSha256": "9d8049c926d8be0bc56f33895028168baef409f71393850d0c08f39114874d3f",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B2067",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-origami.webp?v=9518f39b7715\",1536,1024,[1290,266,235,235]]",
+      "sourceSha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "decision": "selected-finished-lite",
+      "file": "B2067-mask.png",
+      "maskSha256": "bdaf115638df9748d30308e180219edcd69d66d33445794feb5e8d5a2bd336dc",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "B2068",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-glass.webp?v=d7333e907d2f\",1536,1024,[10,10,235,235]]",
+      "sourceSha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "decision": "selected-finished-lite",
+      "file": "B2068-mask.png",
+      "maskSha256": "4c6bd7bff4c4e1af9fdc55b7e9c59fb78883fdb21994ec8e4ddc2a7683315dd1",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "B2072",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-glass.webp?v=d7333e907d2f\",1536,1024,[1034,10,235,235]]",
+      "sourceSha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "decision": "reviewed-contour",
+      "file": "B2072.json",
+      "fileSha256": "282535cb9aa4e3c1982979a55844a47a0d3a8070481824e6c2eecda52d6ed030",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B2076",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-glass.webp?v=d7333e907d2f\",1536,1024,[522,266,235,235]]",
+      "sourceSha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "decision": "reviewed-contour",
+      "file": "B2076.json",
+      "fileSha256": "7906dc38b5be11970e4f84d0dfbcfad065c0999efc97d66beedb0ad6792bcfb9",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root-extra/approved-corrections.json",
+          "sha256": "4030d5455c044f426a25153d6cf51d12335b8dda883a48a46469aac0a2552b75"
+        }
+      }
+    },
+    {
+      "cardId": "B2077",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-glass.webp?v=d7333e907d2f\",1536,1024,[778,266,235,235]]",
+      "sourceSha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "decision": "reviewed-contour",
+      "file": "B2077.json",
+      "fileSha256": "c5e54d367492c524d487d144bac7233de1b810f84a9b4e5ca16530858c5ac36c",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B2078",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-glass.webp?v=d7333e907d2f\",1536,1024,[1034,266,235,235]]",
+      "sourceSha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "decision": "reviewed-contour",
+      "file": "B2078.json",
+      "fileSha256": "e8647d810d5af60a1d2e8432530c482e0e3282216f430d12f0347394caaf619b",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root-extra/approved-corrections.json",
+          "sha256": "4030d5455c044f426a25153d6cf51d12335b8dda883a48a46469aac0a2552b75"
+        }
+      }
+    },
+    {
+      "cardId": "B2079",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-glass.webp?v=d7333e907d2f\",1536,1024,[1290,266,235,235]]",
+      "sourceSha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "decision": "selected-finished-lite",
+      "file": "B2079-mask.png",
+      "maskSha256": "87d3f65f9cef539f9d77d052b082c974dadd970b49eee8e78d516447397962b7",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "B2080",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-shadow.webp?v=9b78f329a5d2\",1536,1024,[10,10,235,235]]",
+      "sourceSha256": "9b78f329a5d277095446048a253408a79552eea573b12c9f32cde05486991198",
+      "decision": "reviewed-contour",
+      "file": "B2080.json",
+      "fileSha256": "cf0e71377137734d6c3b0cc791fafe7abe475bfeca9a2f739182fbe855efac6a",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B2083",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-shadow.webp?v=9b78f329a5d2\",1536,1024,[778,10,235,235]]",
+      "sourceSha256": "9b78f329a5d277095446048a253408a79552eea573b12c9f32cde05486991198",
+      "decision": "reviewed-contour",
+      "file": "B2083.json",
+      "fileSha256": "d59a9d22a269972b5b0886b84b81b68a89dc418960493ea7a0ee5df99b7f69d8",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B2089",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-shadow.webp?v=9b78f329a5d2\",1536,1024,[778,266,235,235]]",
+      "sourceSha256": "9b78f329a5d277095446048a253408a79552eea573b12c9f32cde05486991198",
+      "decision": "keep-default-full512",
+      "rawMaskSha256": "00eb3c86be8e561168c4e001b879a57d2263f755962656e287cf99fab10e36af",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "reason": "Full512 finished mask preserves the entire curled tail and visible limbs without broad scenery.",
+        "evidence": {
+          "file": "semantic-scope-compare/decisions.json",
+          "sha256": "8df435b832a5c3ee171b46fe98345fd389c9245982d3bc11a2d2acbc82c16699"
+        }
+      }
+    },
+    {
+      "cardId": "B2090",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-shadow.webp?v=9b78f329a5d2\",1536,1024,[1034,266,235,235]]",
+      "sourceSha256": "9b78f329a5d277095446048a253408a79552eea573b12c9f32cde05486991198",
+      "decision": "reviewed-contour",
+      "file": "B2090.json",
+      "fileSha256": "a1a9a9fec1600889bc6b635a24198af24c33b6e6466171b42ddeff97e1e59399",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B2091",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-shadow.webp?v=9b78f329a5d2\",1536,1024,[1290,266,235,235]]",
+      "sourceSha256": "9b78f329a5d277095446048a253408a79552eea573b12c9f32cde05486991198",
+      "decision": "reviewed-contour",
+      "file": "B2091.json",
+      "fileSha256": "ace702decb03645365d039a506732af20ae464d7cc42705734734e864100d82a",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B2096",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-pigment.webp?v=0f75183da80d\",1536,1024,[1034,10,235,235]]",
+      "sourceSha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "decision": "reviewed-contour",
+      "file": "B2096.json",
+      "fileSha256": "4dec0aa8f2726233bb445a4c41aacb20c2b91978e26c125a822c0c7cb9cc5dec",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "B2097",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-pigment.webp?v=0f75183da80d\",1536,1024,[1290,10,235,235]]",
+      "sourceSha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "decision": "reviewed-contour",
+      "file": "B2097.json",
+      "fileSha256": "bdf6e4081f2a66d989b005a616afe22499a402075337914648f86c3be29f31c6",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B2099",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-pigment.webp?v=0f75183da80d\",1536,1024,[266,266,235,235]]",
+      "sourceSha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "decision": "reviewed-contour",
+      "file": "B2099.json",
+      "fileSha256": "7ff33f59359f06e039362f9b674543d09204ee2c4eb048cee5a84d0c829c4ef9",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "relief-scope-approved-corrections.json",
+          "sha256": "de1d841767697d95fe9b535f6a36abbe951562def81b93c85bd0705d54f7741a"
+        }
+      }
+    },
+    {
+      "cardId": "B2100",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-pigment.webp?v=0f75183da80d\",1536,1024,[522,266,235,235]]",
+      "sourceSha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "decision": "reviewed-contour",
+      "file": "B2100.json",
+      "fileSha256": "31cb149186b5858db1c19e0cfe24af31a365f6b6cd286449d51838d714546d30",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root-extra/approved-corrections.json",
+          "sha256": "4030d5455c044f426a25153d6cf51d12335b8dda883a48a46469aac0a2552b75"
+        }
+      }
+    },
+    {
+      "cardId": "B2101",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-pigment.webp?v=0f75183da80d\",1536,1024,[778,266,235,235]]",
+      "sourceSha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "decision": "reviewed-contour",
+      "file": "B2101.json",
+      "fileSha256": "faffeec3e41eed5b83ef41b304dee3de1d6b802866616d2c78571fc8f58ca34b",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "B2102",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-pigment.webp?v=0f75183da80d\",1536,1024,[1034,266,235,235]]",
+      "sourceSha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "decision": "selected-finished-lite",
+      "file": "B2102-mask.png",
+      "maskSha256": "94dd99371831bc1e24274c3b6212b14c26a09b716393d55e60d3996fcf642bc1",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "B2103",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-pigment.webp?v=0f75183da80d\",1536,1024,[1290,266,235,235]]",
+      "sourceSha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "decision": "reviewed-contour",
+      "file": "B2103.json",
+      "fileSha256": "18af52bca89d66a01b273e774fe439e92294697fc66410cc287bb758ac606a72",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0009",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/illustration-update-08.webp?v=a9f4c89ae582\",1254,1254,[4,631,305,305]]",
+      "sourceSha256": "a9f4c89ae582517f961c8c2ce296d974a681c642b83ae0b921c67e3665c5910d",
+      "decision": "reviewed-contour",
+      "file": "F0009.json",
+      "fileSha256": "fe15fefbcc8c695e6e9e4dd14c6d3103b3205bd1697ace42644b73097513ab42",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0041",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/fusion-03.webp?art=20261124\",1254,1254,[5,631,305,305]]",
+      "sourceSha256": "12f9246ccab087fdf796ac866f741ca353531de835a588b46fe80b7d4bffce11",
+      "decision": "selected-finished-lite",
+      "file": "F0041-mask.png",
+      "maskSha256": "3ab970b21da3b8f14d72d60425b3209657f2d4714630d063dabf9ab890164154",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "F0066",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/fusion-05.webp?art=20261124\",1254,1254,[318,5,305,305]]",
+      "sourceSha256": "72f1d70900df2604d28eb7ea6ced3805e7efc33b51bc5b5bd5a726200cdcb72b",
+      "decision": "reviewed-contour",
+      "file": "F0066.json",
+      "fileSha256": "b13e1d5f1677af2217e989869aac499629d568f0280addbddfef4d26e655af43",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0090",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/fusion-06.webp?art=20261124\",1254,1254,[318,631,305,305]]",
+      "sourceSha256": "8f0bb23e270808a7277d5630a02ec2489709c66f939ae96460dd59f37fb288ab",
+      "decision": "reviewed-contour",
+      "file": "F0090.json",
+      "fileSha256": "f1c19f831ce279007f3319dd0245b8a714c55fe5571e0ce94195902148491a96",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0145",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v2/cards/individual/fusion-10.webp?art=20261124\",1254,1254,[4,4,306,306]]",
+      "sourceSha256": "457eb10978a7fd06aad416e535f0ab5ebdee98a15583c68ee20d897d236a6f7f",
+      "decision": "reviewed-contour",
+      "file": "F0145.json",
+      "fileSha256": "a43337d77117c698cff14d67077c45458318741cdd6d5b6f142220161bbf1eb3",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0259",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-23.webp?v=d937aa5ec423\",1536,1024,[10,10,235,235]]",
+      "sourceSha256": "d937aa5ec423171f8f58a9d142ce224602b50c33599885ff0b3cd9814a84e869",
+      "decision": "selected-finished-lite",
+      "file": "F0259-mask.png",
+      "maskSha256": "7f683ac8a78caf2b2c81d7f72f554fd7eedb7163fadddd931ea70aabf903fcd7",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0263",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-24.webp?v=5dcbc235cd74\",1536,1024,[522,266,235,235]]",
+      "sourceSha256": "5dcbc235cd74a51fa16b85e5f6fd20e6c5e464e50f447c9ae0501c5ca581b2e0",
+      "decision": "selected-finished-lite",
+      "file": "F0263-mask.png",
+      "maskSha256": "81484242febf6dd6019517da5cbee4ebc0320655ed4e011227378a94a5461a62",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0266",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-25.webp?v=15b80692d95d\",1536,1024,[522,266,235,235]]",
+      "sourceSha256": "15b80692d95d7607d1dd821be05e1b2dcbf1be67d9f5a48ae10a015b4ebfaa9a",
+      "decision": "reviewed-contour",
+      "file": "F0266.json",
+      "fileSha256": "a813688b36229d657bf58880a169147c125211187a83239cd480c7b26a8e0d71",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0275",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-23.webp?v=d937aa5ec423\",1536,1024,[266,10,235,235]]",
+      "sourceSha256": "d937aa5ec423171f8f58a9d142ce224602b50c33599885ff0b3cd9814a84e869",
+      "decision": "reviewed-contour",
+      "file": "F0275.json",
+      "fileSha256": "088d47f3044c40dedb4e2676fa4aaa8c83e67fe2f39d218aa3502df4f347269d",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0281",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-25.webp?v=15b80692d95d\",1536,1024,[266,10,235,235]]",
+      "sourceSha256": "15b80692d95d7607d1dd821be05e1b2dcbf1be67d9f5a48ae10a015b4ebfaa9a",
+      "decision": "reviewed-contour",
+      "file": "F0281.json",
+      "fileSha256": "8da5e8c6be22956b536be2898c6b5fc33ab5efafc62ddccb478a9f8efb19f5f0",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0296",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-24.webp?v=5dcbc235cd74\",1536,1024,[10,778,235,235]]",
+      "sourceSha256": "5dcbc235cd74a51fa16b85e5f6fd20e6c5e464e50f447c9ae0501c5ca581b2e0",
+      "decision": "reviewed-contour",
+      "file": "F0296.json",
+      "fileSha256": "bfeb3a42a7df4f64e457b6e1a7e4658fe92cbcfbf9d29679725ee1e3d7cfb22f",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0310",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-24.webp?v=5dcbc235cd74\",1536,1024,[778,10,235,235]]",
+      "sourceSha256": "5dcbc235cd74a51fa16b85e5f6fd20e6c5e464e50f447c9ae0501c5ca581b2e0",
+      "decision": "selected-finished-lite",
+      "file": "F0310-mask.png",
+      "maskSha256": "0786d607f8182caeb3ffeaf93c57187743310d3ece6c8b924466d33db8a51a28",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "F0312",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-24.webp?v=5dcbc235cd74\",1536,1024,[266,778,235,235]]",
+      "sourceSha256": "5dcbc235cd74a51fa16b85e5f6fd20e6c5e464e50f447c9ae0501c5ca581b2e0",
+      "decision": "selected-finished-lite",
+      "file": "F0312-mask.png",
+      "maskSha256": "dd47baceee94efad95f111b30cc358e218ba287c3dd9d08d37c7aec5720eb1a1",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0315",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-25.webp?v=15b80692d95d\",1536,1024,[266,778,235,235]]",
+      "sourceSha256": "15b80692d95d7607d1dd821be05e1b2dcbf1be67d9f5a48ae10a015b4ebfaa9a",
+      "decision": "selected-finished-lite",
+      "file": "F0315-mask.png",
+      "maskSha256": "6a91eea2fe9fde641175e60220b88de72703acd3a53bf18488a634a79e338c21",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "F0317",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-26.webp?v=a2b132dc0c5c\",1536,1024,[1290,266,235,235]]",
+      "sourceSha256": "a2b132dc0c5c705f001319313f0f6fdbde7670b2acda080ebfbd3f04e8a304f5",
+      "decision": "reviewed-contour",
+      "file": "F0317.json",
+      "fileSha256": "7b07f79131a79bd9dd05221837b3c84b013614c283334e90c63a9f076ff5854c",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0322",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-22.webp?v=440c8005f6f8\",1536,1024,[522,778,235,235]]",
+      "sourceSha256": "440c8005f6f824442b3613491fa7c59f2a2c79469e86740db6158d8398e1a020",
+      "decision": "reviewed-contour",
+      "file": "F0322.json",
+      "fileSha256": "ff16749afca3bdc5ad4d70dcbeb2097902ccc86d4c734bc7c3a55df3f4825843",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0323",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-23.webp?v=d937aa5ec423\",1536,1024,[1034,10,235,235]]",
+      "sourceSha256": "d937aa5ec423171f8f58a9d142ce224602b50c33599885ff0b3cd9814a84e869",
+      "decision": "reviewed-contour",
+      "file": "F0323.json",
+      "fileSha256": "6d3ffe17fc2360b18f351ecd258840c410d638adee8ba3b03fa12d1b3292aa40",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root-extra/approved-corrections.json",
+          "sha256": "4030d5455c044f426a25153d6cf51d12335b8dda883a48a46469aac0a2552b75"
+        }
+      }
+    },
+    {
+      "cardId": "F0328",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-24.webp?v=5dcbc235cd74\",1536,1024,[522,778,235,235]]",
+      "sourceSha256": "5dcbc235cd74a51fa16b85e5f6fd20e6c5e464e50f447c9ae0501c5ca581b2e0",
+      "decision": "reviewed-contour",
+      "file": "F0328.json",
+      "fileSha256": "d608d491c15eb1231bbabc3d85fc53f379a877a33c677b7c5aee82f19f65440b",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0331",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-25.webp?v=15b80692d95d\",1536,1024,[522,778,235,235]]",
+      "sourceSha256": "15b80692d95d7607d1dd821be05e1b2dcbf1be67d9f5a48ae10a015b4ebfaa9a",
+      "decision": "reviewed-contour",
+      "file": "F0331.json",
+      "fileSha256": "be553c0352ebef1d6fea17614016b07b0b1e8054b89354728ba01687fc38a12b",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0339",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-23.webp?v=d937aa5ec423\",1536,1024,[1290,10,235,235]]",
+      "sourceSha256": "d937aa5ec423171f8f58a9d142ce224602b50c33599885ff0b3cd9814a84e869",
+      "decision": "selected-finished-lite",
+      "file": "F0339-mask.png",
+      "maskSha256": "04fda7dd3a613c11adbce01949b383ed54b5f3df8b06f0d43aeea237416e0210",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0343",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-24.webp?v=5dcbc235cd74\",1536,1024,[266,522,235,235]]",
+      "sourceSha256": "5dcbc235cd74a51fa16b85e5f6fd20e6c5e464e50f447c9ae0501c5ca581b2e0",
+      "decision": "selected-finished-lite",
+      "file": "F0343-mask.png",
+      "maskSha256": "e37b34da844c0455ecde26aed6494b1c482124fb0add1829067ec1ae993c6719",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "F0344",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-24.webp?v=5dcbc235cd74\",1536,1024,[778,778,235,235]]",
+      "sourceSha256": "5dcbc235cd74a51fa16b85e5f6fd20e6c5e464e50f447c9ae0501c5ca581b2e0",
+      "decision": "selected-finished-lite",
+      "file": "F0344-mask.png",
+      "maskSha256": "a40eccac1b624c305578e97729e0df3e328abbf04fce921b2bb2987da3953345",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0349",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-26.webp?v=a2b132dc0c5c\",1536,1024,[266,522,235,235]]",
+      "sourceSha256": "a2b132dc0c5c705f001319313f0f6fdbde7670b2acda080ebfbd3f04e8a304f5",
+      "decision": "reviewed-contour",
+      "file": "F0349.json",
+      "fileSha256": "5845bc7235d777860a90f0f4d442989487d095ff472117429897a6278665fbb7",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0365",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-26.webp?v=a2b132dc0c5c\",1536,1024,[522,522,235,235]]",
+      "sourceSha256": "a2b132dc0c5c705f001319313f0f6fdbde7670b2acda080ebfbd3f04e8a304f5",
+      "decision": "reviewed-contour",
+      "file": "F0365.json",
+      "fileSha256": "de8d6719db4fe97ca12fa8f24679c4540c0425c43f713ccd3a958c33311f7484",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0372",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-23.webp?v=d937aa5ec423\",1536,1024,[778,522,235,235]]",
+      "sourceSha256": "d937aa5ec423171f8f58a9d142ce224602b50c33599885ff0b3cd9814a84e869",
+      "decision": "reviewed-contour",
+      "file": "F0372.json",
+      "fileSha256": "2920a66e41f13372bae3dbe231711c2baeb27809383a0e1239572fb9b18c3050",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0377",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-25.webp?v=15b80692d95d\",1536,1024,[266,266,235,235]]",
+      "sourceSha256": "15b80692d95d7607d1dd821be05e1b2dcbf1be67d9f5a48ae10a015b4ebfaa9a",
+      "decision": "selected-finished-lite",
+      "file": "F0377-mask.png",
+      "maskSha256": "50e19e958534abd7724e9d4f70b05e93b27dc6f3f45d5c08e8514d534213e338",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0380",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk03-atlas-26.webp?v=a2b132dc0c5c\",1536,1024,[266,266,235,235]]",
+      "sourceSha256": "a2b132dc0c5c705f001319313f0f6fdbde7670b2acda080ebfbd3f04e8a304f5",
+      "decision": "selected-finished-lite",
+      "file": "F0380-mask.png",
+      "maskSha256": "73a7ae9fb62e2d45ccac4afac49ab70f4312755365a7e64700dd17e6cf33351f",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0386",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-22.webp?v=333ed5ada834\",1536,1024,[10,522,235,235]]",
+      "sourceSha256": "333ed5ada83494245f388501e58f82b621904b6e946f66895728133e3134a5ed",
+      "decision": "reviewed-contour",
+      "file": "F0386.json",
+      "fileSha256": "2dff1e1d41085f63ff45a6b4604afa79cd4bc0edef0660cfad36af989c049a01",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0391",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-23.webp?v=574da529e0bc\",1536,1024,[522,266,235,235]]",
+      "sourceSha256": "574da529e0bc6baa1a86af66c9ca2db696b472d76582dae634dd5e2757c270ed",
+      "decision": "reviewed-contour",
+      "file": "F0391.json",
+      "fileSha256": "2289d5eb860584481fb15e89e664376756d314f04862b578dc8c260adb22d14d",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0392",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-23.webp?v=574da529e0bc\",1536,1024,[10,522,235,235]]",
+      "sourceSha256": "574da529e0bc6baa1a86af66c9ca2db696b472d76582dae634dd5e2757c270ed",
+      "decision": "reviewed-contour",
+      "file": "F0392.json",
+      "fileSha256": "ec17862559136f90cfc9151a7c442db4d74ef5a6593db470e924c8133e3bd2f6",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0395",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-24.webp?v=5e08fec2aa6d\",1536,1024,[10,10,235,235]]",
+      "sourceSha256": "5e08fec2aa6dee23de22eb230df8d348816dd74c395c045ad0d989fa3a0e16a1",
+      "decision": "reviewed-contour",
+      "file": "F0395.json",
+      "fileSha256": "9951fdc0fbf72a1024916f7022d3d1e75900ae615324de74e762a59172591931",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0416",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-27.webp?v=35ec1ca61284\",1536,1024,[10,522,235,235]]",
+      "sourceSha256": "35ec1ca61284291c687f6fcf866a018328ca41910a9e16f768036f8e6fd696f1",
+      "decision": "reviewed-contour",
+      "file": "F0416.json",
+      "fileSha256": "50a5a5c7fdc32d67ed9cea9ebfdefe7f2e85738f227304c283b44ffdf25605e8",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0418",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-22.webp?v=333ed5ada834\",1536,1024,[266,522,235,235]]",
+      "sourceSha256": "333ed5ada83494245f388501e58f82b621904b6e946f66895728133e3134a5ed",
+      "decision": "selected-finished-lite",
+      "file": "F0418-mask.png",
+      "maskSha256": "521ff7881841a6dd533289b8d9e4f05961aad6e70f494c5944bc8d26aa225f3e",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "F0427",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-24.webp?v=5e08fec2aa6d\",1536,1024,[266,10,235,235]]",
+      "sourceSha256": "5e08fec2aa6dee23de22eb230df8d348816dd74c395c045ad0d989fa3a0e16a1",
+      "decision": "reviewed-contour",
+      "file": "F0427.json",
+      "fileSha256": "9afce6c4d1754e8c0f969ed757bdbdaaacae032cb36c166f92e85fd8d5fd41da",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0431",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-24.webp?v=5e08fec2aa6d\",1536,1024,[1290,522,235,235]]",
+      "sourceSha256": "5e08fec2aa6dee23de22eb230df8d348816dd74c395c045ad0d989fa3a0e16a1",
+      "decision": "selected-finished-lite",
+      "file": "F0431-mask.png",
+      "maskSha256": "ab5099811e96f8bf8b7048f99564044cf61185e5ab2d56104d062103f5560d97",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0437",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-25.webp?v=b3cd849daf52\",1536,1024,[1290,522,235,235]]",
+      "sourceSha256": "b3cd849daf52c904b518ff81ef3ce5d420b37aad5bd14b517ac551edffc56351",
+      "decision": "selected-finished-lite",
+      "file": "F0437-mask.png",
+      "maskSha256": "d95db844d30ad5b027d08ed4c9439e77eb54e982596cb59bd200a0bcb45ea00e",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0442",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-26.webp?v=c94be61fa0a9\",1536,1024,[266,522,235,235]]",
+      "sourceSha256": "c94be61fa0a9fccec15b8a61a04d22d9d0673203b82be83877b037bcb269c39b",
+      "decision": "selected-finished-lite",
+      "file": "F0442-mask.png",
+      "maskSha256": "af07154ace1d36c61c4be00aef03f0b3a3b9c3581daa97e8aa995b4c2cbf91b7",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0447",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-27.webp?v=35ec1ca61284\",1536,1024,[778,266,235,235]]",
+      "sourceSha256": "35ec1ca61284291c687f6fcf866a018328ca41910a9e16f768036f8e6fd696f1",
+      "decision": "selected-finished-lite",
+      "file": "F0447-mask.png",
+      "maskSha256": "6c1c7695348cddade06922695a9376646ceffe43685a92ef3a28df6c6c2e6bfd",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0465",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-25.webp?v=b3cd849daf52\",1536,1024,[522,10,235,235]]",
+      "sourceSha256": "b3cd849daf52c904b518ff81ef3ce5d420b37aad5bd14b517ac551edffc56351",
+      "decision": "reviewed-contour",
+      "file": "F0465.json",
+      "fileSha256": "0eef21d760d6388615e3ff69c5795364a306d89c1b71c80ae37e09e653b53829",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0466",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-25.webp?v=b3cd849daf52\",1536,1024,[10,266,235,235]]",
+      "sourceSha256": "b3cd849daf52c904b518ff81ef3ce5d420b37aad5bd14b517ac551edffc56351",
+      "decision": "reviewed-contour",
+      "file": "F0466.json",
+      "fileSha256": "cbe084548262019f7fce452e5bdc4999a2ae75d8d091eee841374370cef8d90d",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0470",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-25.webp?v=b3cd849daf52\",1536,1024,[1034,778,235,235]]",
+      "sourceSha256": "b3cd849daf52c904b518ff81ef3ce5d420b37aad5bd14b517ac551edffc56351",
+      "decision": "reviewed-contour",
+      "file": "F0470.json",
+      "fileSha256": "f7f2f92b5b09f62cbb47db9f6a69986cd4a394d33c1493d160a8e9b38f227975",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0486",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-23.webp?v=574da529e0bc\",1536,1024,[266,266,235,235]]",
+      "sourceSha256": "574da529e0bc6baa1a86af66c9ca2db696b472d76582dae634dd5e2757c270ed",
+      "decision": "reviewed-contour",
+      "file": "F0486.json",
+      "fileSha256": "8ad918444c0fcdab962da0ee2d6821da3f2aa84a762cd7da323066a3dbe507b9",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0487",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-23.webp?v=574da529e0bc\",1536,1024,[1290,266,235,235]]",
+      "sourceSha256": "574da529e0bc6baa1a86af66c9ca2db696b472d76582dae634dd5e2757c270ed",
+      "decision": "selected-finished-lite",
+      "file": "F0487-mask.png",
+      "maskSha256": "734650dcedcbd58930546546c65bc31605a53059456fb5d13fa60762d0a5f211",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0488",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-23.webp?v=574da529e0bc\",1536,1024,[778,522,235,235]]",
+      "sourceSha256": "574da529e0bc6baa1a86af66c9ca2db696b472d76582dae634dd5e2757c270ed",
+      "decision": "reviewed-contour",
+      "file": "F0488.json",
+      "fileSha256": "7794904e2775e064e2bda928a50c09dfa7b6cd7e508dccb07963be8dd77ba58b",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0502",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-25.webp?v=b3cd849daf52\",1536,1024,[1290,778,235,235]]",
+      "sourceSha256": "b3cd849daf52c904b518ff81ef3ce5d420b37aad5bd14b517ac551edffc56351",
+      "decision": "reviewed-contour",
+      "file": "F0502.json",
+      "fileSha256": "432ed0cc5c2f60767e451a28339e94d6be05cb8bc3931677992f1e7d541c0f5d",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0504",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-26.webp?v=c94be61fa0a9\",1536,1024,[266,266,235,235]]",
+      "sourceSha256": "c94be61fa0a9fccec15b8a61a04d22d9d0673203b82be83877b037bcb269c39b",
+      "decision": "reviewed-contour",
+      "file": "F0504.json",
+      "fileSha256": "05bec8750f7c474c34436e9d964d98989179770b852086245ce563d36fc62545",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0511",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v3/cards/bk04-atlas-27.webp?v=35ec1ca61284\",1536,1024,[1290,266,235,235]]",
+      "sourceSha256": "35ec1ca61284291c687f6fcf866a018328ca41910a9e16f768036f8e6fd696f1",
+      "decision": "selected-finished-lite",
+      "file": "F0511-mask.png",
+      "maskSha256": "acdb02e3ac17abb3039ddf569354b5b183ef2b1517ad9da2ed5231720be7c1f6",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "No gross visible anatomy loss or broad scenery observed; root authorized this finished selection.",
+        "evidence": {
+          "file": "fallback-finished-review/root-review06-08.json",
+          "sha256": "7a1c5f42845ba268036e0ae37f83d177bbc75dec8737aa77c512a769f1b38edb"
+        }
+      }
+    },
+    {
+      "cardId": "F0515",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-origami.webp?v=9518f39b7715\",1536,1024,[1034,778,235,235]]",
+      "sourceSha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "decision": "reviewed-contour",
+      "file": "F0515.json",
+      "fileSha256": "2452e8047d94b39bc449b3abde06777b5509a75d0787f290fc49adbf7f7817fc",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0516",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-origami.webp?v=9518f39b7715\",1536,1024,[1290,778,235,235]]",
+      "sourceSha256": "9518f39b7715277626be21378ef34c8ca06646600f69cf82730a9abf3bc555fc",
+      "decision": "reviewed-contour",
+      "file": "F0516.json",
+      "fileSha256": "bcf2d58cb9f910d33adbd28347faad2c14e891ffa115f2beccfaa15cf3107780",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "root-approved-corrections.json",
+          "sha256": "8e968e9974492e06f54d6eb44c7b31b68cdcba1fc200050862532394b1ee0583"
+        }
+      }
+    },
+    {
+      "cardId": "F0517",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-glass.webp?v=d7333e907d2f\",1536,1024,[1034,778,235,235]]",
+      "sourceSha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "decision": "selected-finished-lite",
+      "file": "F0517-mask.png",
+      "maskSha256": "1293ea30a840cb0ec8a79614cff3f302b634cbd936382159a3a8d97dc7bc6b7a",
+      "approval": {
+        "rgbChanged": 0,
+        "alphaIncreased": 0,
+        "numericBoundsPassed": true,
+        "visualApproval": "approved-by-root",
+        "reviewStatus": "approved",
+        "approvalBasis": "All48 cases visually reviewed; this source is outside the explicit gross anatomy, scenery and close-review findings. Root authorized the no-gross finished selections.",
+        "evidence": {
+          "file": "semantic-finished-review/semantic-review-05-08.json",
+          "sha256": "d4efa55925550c10fb7c3be18ec9e103ee8aa5007bcbfa6904b5a7d0d1c6ea56"
+        }
+      }
+    },
+    {
+      "cardId": "F0518",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-glass.webp?v=d7333e907d2f\",1536,1024,[1290,778,235,235]]",
+      "sourceSha256": "d7333e907d2ff453e275bbe97c739040e093a93f67512274dfb48ca5cfa83ae7",
+      "decision": "reviewed-contour",
+      "file": "F0518.json",
+      "fileSha256": "f0454c0be9868bd58a42500b079662260ee522e68d6b603c702878bbcd32159a",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-relief-batch/approved-corrections.json",
+          "sha256": "1e3d490df82dbdd3a0e8893549f1975f2e716bf3a428b9a1e83e4b386dbb815b"
+        }
+      }
+    },
+    {
+      "cardId": "F0521",
+      "sourceKey": "[\"mask-source-v1\",\"assets/design-v5/cards/bk05-pigment.webp?v=0f75183da80d\",1536,1024,[1034,778,235,235]]",
+      "sourceSha256": "0f75183da80dfc017451ab43656ae540cd33b2493ddfb29dfc752e91c3684b10",
+      "decision": "reviewed-contour",
+      "file": "F0521.json",
+      "fileSha256": "02f71654dfaeadac691eed4b6d345c9b80a4faa10c398468701284f7b5d40b08",
+      "approval": {
+        "visualApproval": "approved-by-root",
+        "approvalBasis": "Direct original artwork and checkerboard foreground comparison",
+        "evidence": {
+          "file": "manual-semantic-root-extra/approved-corrections.json",
+          "sha256": "4030d5455c044f426a25153d6cf51d12335b8dda883a48a46469aac0a2552b75"
+        }
+      }
+    }
+  ],
+  "supplementalIds": [
+    "B0257"
+  ]
+}

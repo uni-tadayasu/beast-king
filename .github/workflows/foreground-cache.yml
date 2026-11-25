@@ -2,11 +2,6 @@ name: Build public foreground masks
 
 on:
   workflow_dispatch:
-  push:
-    branches: ['release/**']
-    paths:
-      - 'scripts/build-summon-masks.mjs'
-      - '.github/workflows/foreground-cache.yml'
 
 permissions:
   contents: read

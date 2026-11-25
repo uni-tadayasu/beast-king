@@ -33,6 +33,15 @@ its telemetry uploader, events, and persistent identifier from being created;
 it must precede loading the native module. Production browsers never load this
 build dependency. Reference: [ONNX Runtime privacy documentation](https://github.com/microsoft/onnxruntime/blob/main/docs/Privacy.md).
 
+The base masks use BiRefNet during asset preparation. Source-bound corrections
+can select a reviewed prediction or a manually traced clipping contour; their
+original source key and SHA-256 must match before the packer applies them.
+Confidence finishing is applied once to model output, never to native alpha or
+already-finished reviewed coverage. Contours change alpha only and do not
+repaint the illustration or invent anatomy hidden by foreground scenery.
+Every encoded atlas is decoded and all final tile bytes are compared with the
+reviewed inputs before files are written.
+
 The production alpha is distinct from a depth estimate. A distance field over
 that alpha supplies the rounded front in `summon-geometry.js`. The WebGL path
 uses clipped triangles, a narrow back, contour sides, lighting, and depth
@@ -80,8 +89,11 @@ runs this gate; the public readback probe checks the shipped manifest, lookup
 module, coordinator, and every referenced mask atlas against local bytes.
 
 Each non-native mask must have at least four clear and four visible pixels,
-and mean coverage between 3% and 97%. Missing, empty, effectively opaque, or
-outlying masks block release for repair and review. Native-alpha records may
+and mean coverage between 3% and 97%. A reviewed close portrait, B0168, has a
+98% ceiling only when its exact original URL/crop, original SHA-256, and final
+coverage-pixel SHA-256 all match the reviewed bytes. This does not relax the
+limits for changed artwork or another prediction. Missing, empty, effectively
+opaque, or outlying masks block release for repair and review. Native-alpha records may
 have a white cache tile because the browser uses the actual source alpha
 directly. These metrics are calculated by the packer from the final tiles;
 their atlas SHA-256 binds them to the bytes checked by the release gate.

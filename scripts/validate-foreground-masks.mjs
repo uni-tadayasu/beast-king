@@ -6,6 +6,7 @@ import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {resolveSummonArt} from '../summon-art.js';
 import {resolveSummonMask,summonMaskSourceKey} from '../summon-mask.js';
+import {maximumForegroundCoverage} from './foreground-mask-quality.mjs';
 
 const BASE='https://beast-king.invalid/';
 const TILE=256,ATLAS=2048;
@@ -63,7 +64,7 @@ export async function validateForegroundMaskManifest(registry,cards,options={}){
   if(!stats.nativeAlpha){
    const coverage=stats.alphaSum/(pixels*255);
    assert(stats.clearPixels>=4&&stats.visiblePixels>=4&&stats.alphaSum>0&&stats.alphaSum<pixels*255,'Foreground mask is empty or effectively opaque: '+card.id);
-   assert(coverage>=.03&&coverage<=.97,'Foreground mask coverage requires visual repair/review: '+card.id);
+   assert(coverage>=.03&&coverage<=maximumForegroundCoverage(row),'Foreground mask coverage requires visual repair/review: '+card.id);
   }
   const sourcePath=localAssetPath(art.src),atlasPath=localAssetPath(row.src,'assets/foreground/');
   assert(atlasPath.endsWith('.png'),'Foreground masks must be PNG atlases: '+card.id);
