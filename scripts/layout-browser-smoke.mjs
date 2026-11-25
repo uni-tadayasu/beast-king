@@ -772,6 +772,17 @@ try{
   const transferId=await evaluate('document.querySelector(".deck-image-slot [data-action=deck-return-slot]").dataset.id');
   const before=await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent');
   await click('.deck-image-slot [data-action=deck-return-slot][data-id='+transferId+']');
+  await evaluate('Promise.all([...document.querySelectorAll("#toasts .toast")].flatMap(node=>node.getAnimations().map(animation=>animation.finished.catch(()=>{})))).then(()=>true)');
+  const toastFit=await evaluate(`(()=>{
+   const viewport=layoutViewport(),stage={left:0,top:0,right:viewport.width,bottom:viewport.height},inside=(r,b)=>r.width>0&&r.height>0&&r.left>=b.left-2&&r.right<=b.right+2&&r.top>=b.top-2&&r.bottom<=b.bottom+2;
+   return [...document.querySelectorAll('#toasts .toast')].filter(node=>{const r=layoutRect(node),s=getComputedStyle(node);return r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden'&&Number(s.opacity)>0}).map(node=>{
+    const box=layoutRect(node),range=document.createRange();range.selectNodeContents(node);
+    const lines=[...range.getClientRects()].map(raw=>layoutRect({getBoundingClientRect:()=>raw}));
+    return {text:node.textContent.trim(),box:box.toJSON(),inside:inside(box,stage),bodyInside:lines.length>0&&lines.every(line=>inside(line,stage)&&inside(line,box)),unclipped:node.scrollWidth<=node.clientWidth+2&&node.scrollHeight<=node.clientHeight+2};
+   });
+  })()`);
+  assert.ok(toastFit.length>0,width+'x'+height+' returned-card notification is visible');
+  assert.deepEqual(toastFit.filter(item=>!item.text||!item.inside||!item.bodyInside||!item.unclipped),[],width+'x'+height+' complete notification bounds and text stay inside the logical stage '+JSON.stringify(toastFit));
   assert.equal(await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent'),'31/32');
   await evaluate('(()=>{const e=document.querySelector("#card-search");e.value='+JSON.stringify(transferId)+';e.dispatchEvent(new Event("input",{bubbles:true}));return true})()');
   await until(()=>evaluate('Boolean(document.querySelector(".transfer-add[data-id='+transferId+']:not(:disabled)"))'),'returned card is available again');

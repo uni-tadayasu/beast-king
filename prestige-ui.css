@@ -59,6 +59,8 @@ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canva
 html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .modal{border-top:1px solid #b39a68;color:#eee4d2;box-shadow:inset 0 0 0 5px #cbb68d05,0 24px 90px #000a}
 html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .modal h2{font-family:var(--bk-prestige-serif);font-weight:500;color:#f0e6d2;letter-spacing:.04em}
 html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .modal-close{color:#dac7a1;background:#1a1b1e;border-color:#76634480;border-radius:4px}
+/* Center notifications within the logical game stage, including rotated phones. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #toasts{left:50%;right:auto;max-width:min(calc(100% - 30px),560px)}
 html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.toast,.deck-check-note){color:#e7e4d0;background:#222a26;border-color:#7c927d;border-radius:5px}
 html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .toast.error{color:#f2d3c9;background:#302121;border-color:#b48278}
 
