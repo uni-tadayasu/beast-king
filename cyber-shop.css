@@ -187,6 +187,13 @@ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .product
  background:linear-gradient(180deg,#b08b461c,#b08b4607),var(--bk-prestige-shop-panel);
  box-shadow:inset 0 -2px var(--bk-prestige-shop-gold),inset 0 1px #fff8dd12;
 }
+/* fit-screen marks the shop task tabs with aria-pressed, independently of
+   the expansion selector above. Keep its measured tab tracks intact. */
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode]>.bk-screen-tabs[data-bk-tab-kind=shop]>button[aria-pressed=true]{
+ color:var(--bk-prestige-shop-ivory);border-color:var(--bk-prestige-shop-gold);
+ background:linear-gradient(180deg,#b08b461c,#b08b4607),var(--bk-prestige-shop-panel);
+ box-shadow:inset 0 -2px var(--bk-prestige-shop-gold),inset 0 1px #fff8dd12;
+}
 html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-tab-number{
  color:var(--bk-prestige-shop-gold);font-family:Georgia,"Times New Roman",serif;
  border-color:#c5a66a40;background:transparent;font-variant-numeric:tabular-nums;
