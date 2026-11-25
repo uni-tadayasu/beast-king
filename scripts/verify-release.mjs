@@ -16,19 +16,15 @@ import {PREMIUM_DECK} from '../premium-deck.js';
 import {validateCardArtManifest} from './validate-card-art.mjs';
 import {validateExpansionArtManifest} from './validate-expansion-art.mjs';
 import {validateFifthArtManifest} from './validate-fifth-art.mjs';
+import {CARD_FOREGROUND_MASKS} from '../card-foreground-masks.js';
+import {validateForegroundMaskManifest} from './validate-foreground-masks.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const directory='assets/design-v2/cards/individual/';
 const read=path=>readFile(resolve(root,path));
 const hash=buffer=>createHash('sha256').update(buffer).digest('hex');
-const foregroundRuntime={
- 'ort.wasm.min.mjs':'f53ed4792e758e7232f779d479eb8931b97ff3ab2e3b9a33ee00d1251ffdaad6',
- 'ort-wasm-simd-threaded.mjs':'745eb7c0ce6f18a6aa521971b2877babc7ffb27eecb58ab3bc6e5ef4692672e8',
- 'ort-wasm-simd-threaded.wasm':'207d02be4591c156b0a98f024f3d58005b5b04c92274d759fb390338c63559ea',
- 'u2netp-192.onnx':'0022dc72eb3f891abcb975063186ddc06e49b04cb63c5df62f681b3dc5ec8cf0'
-};
-for(const [file,checksum] of Object.entries(foregroundRuntime))assert.equal(hash(await read('assets/summon-runtime/'+file)),checksum,'Foreground runtime provenance mismatch: '+file);
-for(const file of ['LICENSE-ONNX.txt','LICENSE-U2NET.txt','NOTICE.txt'])assert((await read('assets/summon-runtime/'+file)).length>100,'Missing foreground runtime attribution');
+const foregroundMasks=await validateForegroundMaskManifest(CARD_FOREGROUND_MASKS,CARDS,{root});
+assert.equal(foregroundMasks.cards,2625,'Every public beast/fusion must have a verified mask.');
 const manifest=JSON.parse(await read(directory+'manifest.json'));
 const production=JSON.parse(await read(directory+'production.json'));
 const artReview=JSON.parse(await read('assets/design-v2/art-direction-review.json'));
@@ -192,4 +188,4 @@ for(const card of CARDS){
 const shared=[...effective.values()].filter(ids=>ids.length>1);
 assert.equal(shared.length,1);assert.deepEqual(shared[0].sort(),[...selva.cardIds].sort());
 assert.equal(effective.size,4714);
-console.log(JSON.stringify({cards:CARDS.length,uniqueIllustrations:effective.size,explicitSharedArtwork:{selva:selva.cardIds.length},newPremiumIllustrations:nativeHashes.size,premiumDeckGgrTypes:18,atlases:production.atlases.length+expansionFiles.size+fifth.atlases.length,originalAtlasIllustrations:manifest.cards.filter(c=>c.status==='redrawn').length,newlyRedrawnIllustrations:artReview.redrawnCardCount,newExpansionIllustrations:expansion.cards.length,newExpansionAtlases:expansionFiles.size,preserved:['B0512'],fifthIllustrations:fifth.cards.length,fifthAtlases:fifth.atlases.length,packs:['BK01','BK02','BK03','BK04','BK05'].map(id=>getCardsForSet(id).length),starters:4,battlefields:3,illustrationReplacements:replacementCells.size,premiumAssets:premiumHashes.size,allFilesVerified:true}));
+console.log(JSON.stringify({cards:CARDS.length,uniqueIllustrations:effective.size,explicitSharedArtwork:{selva:selva.cardIds.length},newPremiumIllustrations:nativeHashes.size,premiumDeckGgrTypes:18,atlases:production.atlases.length+expansionFiles.size+fifth.atlases.length,originalAtlasIllustrations:manifest.cards.filter(c=>c.status==='redrawn').length,newlyRedrawnIllustrations:artReview.redrawnCardCount,newExpansionIllustrations:expansion.cards.length,newExpansionAtlases:expansionFiles.size,preserved:['B0512'],fifthIllustrations:fifth.cards.length,fifthAtlases:fifth.atlases.length,packs:['BK01','BK02','BK03','BK04','BK05'].map(id=>getCardsForSet(id).length),starters:4,battlefields:3,illustrationReplacements:replacementCells.size,premiumAssets:premiumHashes.size,foregroundMasks,allFilesVerified:true}));

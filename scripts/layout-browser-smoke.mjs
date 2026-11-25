@@ -367,28 +367,28 @@ async function runReliefSmoke(){
  await click('.navigation-dock [data-nav=home]');await viewport(1280,720);
 }
 
-/** Review actual worker output, using public catalog artwork only. The sheet
- * is created in the CI browser so the pixels pass through the shipped decoder,
- * preprocessing, WASM model and alpha composer. No generated/repainted art. */
+/** Review public mask cache output against the exact original card artwork.
+ * The CI browser exercises the shipped source-key resolver, atlas crop and
+ * alpha composer; it downloads no inference runtime and never repaints RGB. */
 async function runForegroundReview(){
  const cases=[['B0001','BASE / redrawn atlas'],['B0257','BASE / original atlas'],['B0263','ORIGINAL / portrait'],['B0512','REGALIA / public printing'],['B1537','BK04 / star deer'],['B1609','BK04 / evolved deer'],['B2049','PREMIUM / dragon'],['B2053','PREMIUM / messenger'],['F0513','PREMIUM / fusion'],['B2056','BK05 / origami'],['B2073','BK05 / glass'],['F0522','BK05 / pigment']];
  foregroundNetwork=[];
  try{
   await evaluate(`(()=>{
-   const state={done:false,error:null,rows:[],startupMs:null,inputSize:null,sheet:null,extractor:null};window.__bkForegroundReview=state;
+   const state={done:false,error:null,rows:[],prepareMs:null,maskTileSize:null,sheet:null,extractor:null};window.__bkForegroundReview=state;
    const overlay=document.createElement('div');overlay.id='foreground-review-overlay';overlay.setAttribute('aria-hidden','true');overlay.style.cssText='position:fixed;inset:0;z-index:2147483647;background:#07121d;pointer-events:none;display:flex;align-items:center;justify-content:center';document.body.appendChild(overlay);
    void (async()=>{
     const {getCard}=await import('./catalog.js?v=20261125-35');
     const {resolveSummonArt,computeSummonArtCrop}=await import('./summon-art.js?v=20261125-35');
-    const {createForegroundExtractor,FOREGROUND_INPUT_SIZE}=await import('./summon-foreground.js?v=20261125-35');state.inputSize=FOREGROUND_INPUT_SIZE;
+    const {createForegroundExtractor,FOREGROUND_INPUT_SIZE}=await import('./summon-foreground.js?v=20261125-35');state.maskTileSize=FOREGROUND_INPUT_SIZE;
     const cases=${JSON.stringify(cases)},tileW=480,tileH=348,gap=16,pad=24,top=112;
     const sheet=document.createElement('canvas');sheet.width=1520;sheet.height=1588;sheet.style.cssText='width:100%;height:100%;object-fit:contain';state.sheet=sheet;overlay.appendChild(sheet);
     const ctx=sheet.getContext('2d');ctx.fillStyle='#07121d';ctx.fillRect(0,0,sheet.width,sheet.height);
     ctx.fillStyle='#e7f4ff';ctx.font='bold 28px sans-serif';ctx.fillText('BEAST KING · ORIGINAL ART / FOREGROUND REVIEW',pad,42);
-    ctx.fillStyle='#9fc4d9';ctx.font='16px sans-serif';ctx.fillText('Public illustrations · 320px source crop · original RGB retained · local U²-Net-P '+FOREGROUND_INPUT_SIZE+'px alpha',pad,72);
+    ctx.fillStyle='#9fc4d9';ctx.font='16px sans-serif';ctx.fillText('Public illustrations · 320px source crop · original RGB retained · verified public '+FOREGROUND_INPUT_SIZE+'px alpha cache',pad,72);
     const checker=(x,y,w,h)=>{ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();for(let row=0;row<Math.ceil(h/12);row++)for(let col=0;col<Math.ceil(w/12);col++){ctx.fillStyle=(row+col)%2?'#20313f':'#11212e';ctx.fillRect(x+col*12,y+row*12,12,12);}ctx.restore();};
     const fitImage=(image,x,y,size)=>{const s=Math.min(size/image.width,size/image.height),w=image.width*s,h=image.height*s;ctx.drawImage(image,x+(size-w)/2,y+(size-h)/2,w,h);};
-    state.extractor=createForegroundExtractor({window,document});const startup=performance.now();await state.extractor.prepare();state.startupMs=Math.round(performance.now()-startup);
+    state.extractor=createForegroundExtractor({window,document});const startup=performance.now();await state.extractor.prepare();state.prepareMs=Math.round(performance.now()-startup);
     for(let index=0;index<cases.length;index++){
      const [id,group]=cases[index],x=pad+(index%3)*(tileW+gap),y=top+Math.floor(index/3)*(tileH+gap),row={id,group,status:'preparing'};state.rows.push(row);
      ctx.fillStyle='#0b1b29';ctx.fillRect(x,y,tileW,tileH);ctx.strokeStyle='#315166';ctx.strokeRect(x+.5,y+.5,tileW-1,tileH-1);
@@ -402,7 +402,7 @@ async function runForegroundReview(){
       const source=document.createElement('canvas'),aspect=crop.width/crop.height;source.width=Math.round(aspect>=1?320:320*aspect);source.height=Math.round(aspect>=1?320/aspect:320);
       const originalContext=source.getContext('2d',{willReadFrequently:true});originalContext.drawImage(image,crop.x,crop.y,crop.width,crop.height,0,0,source.width,source.height);
       const before=originalContext.getImageData(0,0,source.width,source.height);fitImage(source,x+12,y+60,220);
-      const started=performance.now(),result=await state.extractor.extract(source,{persistent:false});row.latencyMs=Math.round(performance.now()-started);
+      const started=performance.now(),result=await state.extractor.extract(source,{art,baseUrl:document.baseURI});row.latencyMs=Math.round(performance.now()-started);
       if(result.width!==source.width||result.height!==source.height)throw Error('foreground changed source dimensions');
       let rgbChanged=0,sourceChanged=0,alphaIncreased=0,clear=0,opaque=0,soft=0,alphaSum=0;const after=originalContext.getImageData(0,0,source.width,source.height);
       for(let p=0;p<before.data.length;p+=4){for(let channel=0;channel<3;channel++)if(result.data[p+channel]!==before.data[p+channel])rgbChanged++;for(let channel=0;channel<4;channel++)if(after.data[p+channel]!==before.data[p+channel])sourceChanged++;const alpha=result.data[p+3];if(alpha>before.data[p+3])alphaIncreased++;if(alpha<=8)clear++;else if(alpha<128)soft++;else opaque++;alphaSum+=alpha;}
@@ -413,7 +413,7 @@ async function runForegroundReview(){
       cutout.width=0;source.width=0;
      }catch(error){row.status='failed';row.error=error.code||error.message||String(error);ctx.fillStyle='#ffb0b6';ctx.font='16px sans-serif';ctx.fillText('EXTRACTION FAILED · '+row.error.slice(0,38),x+12,y+310);}
     }
-    ctx.fillStyle='#9fc4d9';ctx.font='14px sans-serif';ctx.fillText('Runtime startup '+state.startupMs+'ms · semantic outline quality requires visual review',pad,sheet.height-15);
+    ctx.fillStyle='#9fc4d9';ctx.font='14px sans-serif';ctx.fillText('Cache preparation '+state.prepareMs+'ms · sampled silhouette quality requires visual review',pad,sheet.height-15);
    })().catch(error=>{state.error=error.stack||String(error);}).finally(()=>{state.extractor?.destroy();state.extractor=null;state.done=true;});return true;
   })()`);
   let completed=-1;
@@ -421,14 +421,15 @@ async function runForegroundReview(){
    const progress=await evaluate('(()=>{const s=window.__bkForegroundReview;return {done:s.done,count:s.rows.filter(r=>r.status!=="preparing").length,last:s.rows.at(-1)?.id}})()');
    if(progress.count!==completed){completed=progress.count;console.log('Foreground review '+completed+'/'+cases.length+(progress.last?' · '+progress.last:''));}
    return progress.done;
-  },'12 actual foreground extractions',300000);
-  const payload=await evaluate('(()=>{const s=window.__bkForegroundReview;return {report:{startupMs:s.startupMs,inputSize:s.inputSize,error:s.error,rows:s.rows},png:s.sheet?.toDataURL("image/png")}})()');
+  },'12 verified public foreground masks',90000);
+  const payload=await evaluate('(()=>{const s=window.__bkForegroundReview;return {report:{prepareMs:s.prepareMs,maskTileSize:s.maskTileSize,error:s.error,rows:s.rows},png:s.sheet?.toDataURL("image/png")}})()');
   const requests=foregroundNetwork;foregroundNetwork=null;
   payload.report.requests=requests;
   await mkdir('artifacts/layout',{recursive:true});
   await writeFile('artifacts/layout/foreground-review.json',JSON.stringify(payload.report,null,2));
   if(payload.png)await writeFile('artifacts/layout/foreground-review.png',Buffer.from(payload.png.split(',')[1],'base64'));
-  assert.equal(payload.report.error,null,'The shipped foreground runtime initializes successfully');
+  assert.equal(payload.report.error,null,'The shipped public mask coordinator initializes successfully');
+  assert.equal(payload.report.maskTileSize,256,'The public cache uses the reviewed mask tile resolution');
   assert.equal(payload.report.rows.length,cases.length,'All requested original-art styles were reviewed');
   for(const row of payload.report.rows){
    assert.equal(row.status,'ok',row.id+' produces a foreground silhouette');
@@ -439,6 +440,7 @@ async function runForegroundReview(){
   }
   const sourceOrigin=await evaluate('location.origin');
   assert.ok(requests.every(request=>new URL(request.url).origin===sourceOrigin&&request.method==='GET'),'Foreground review uses only local GET requests; artwork is never uploaded: '+JSON.stringify(requests));
+  assert.ok(requests.every(request=>!/(?:\.onnx|\.wasm|summon-runtime|summon-foreground-worker)/i.test(new URL(request.url).pathname)),'Public mask display must not download an inference runtime or model');
  }finally{
   foregroundNetwork=null;
   await evaluate('window.__bkForegroundReview?.extractor?.destroy();document.getElementById("foreground-review-overlay")?.remove();delete window.__bkForegroundReview;true');

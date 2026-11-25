@@ -1,7 +1,8 @@
 /** Persistent, background-free relief summons. Only revealed field units and
  * their already-authorized artwork enter this presentation layer. Original RGB
- * pixels supply the creature; a local worker provides alpha, not a new painting
- * or invented back-side anatomy. Battle rules and saves never enter the worker. */
+ * pixels supply the creature; exact public mask assets or native image alpha
+ * provide its contour. Battle rules, saves, and private artwork are not sent
+ * to another service or a browser inference runtime. */
 import {resolveSummonArt,computeSummonArtCrop,summonArtSourceFromBackground} from './summon-art.js?v=20261125-35';
 import {freshBattleEvents} from './experience-fx.js?v=20261125-35';
 import {createBattleCamera,projectBattlePoint,getBattleSlot} from './battle-camera.js?v=20261125-35';
@@ -141,8 +142,8 @@ export function createSummonScene(options={}){
    const ctx=source.getContext('2d',{willReadFrequently:true});if(!ctx)throw Error('image canvas unavailable');
    ctx.drawImage(img,crop.x,crop.y,crop.width,crop.height,0,0,source.width,source.height);
    item.floorSource=source;item.aspect=aspect;item.floorTexture=renderer?.upload(source);schedule();
-   foreground??=createForegroundExtractor({window:win,document:doc});
-   const pixels=await foreground.extract(source,{persistent:false});
+   foreground??=createForegroundExtractor({window:win,document:doc,loadImage});
+   const pixels=await foreground.extract(source,{art,baseUrl:doc.baseURI});
    if(destroyed||textures.get(key)!==item)return;
    const geometry=buildCreatureGeometry(pixels,{grid:renderer?.kind==='canvas'?12:24});
    if(!geometry)throw Error('creature outline unavailable');
@@ -226,7 +227,7 @@ export function createSummonScene(options={}){
   prefs={motion:next.motion??prefs.motion,intensity:next.intensity??prefs.intensity};const state=snapshotSummons(game),newArena=state?doc.querySelector('.duel-shell .arena'):null;
   if(!state||!newArena||next.enabled===false){active=false;stop();unmark();bindings=[];evict();for(const [id,item] of textures)if(!item.done){if(item.floorTexture)renderer?.release(item.floorTexture);textures.delete(id);}foreground?.destroy();foreground=null;instances.clear();snapshot=null;battleKey=null;activation=-Infinity;if(arena?.dataset)delete arena.dataset.summonRenderer;canvas?.remove();arena=null;return;}
   const key=next.key??game,newBattle=battleKey!==key||!snapshot,changes=newBattle?[]:summonChanges(snapshot,state),now=clock();
-  if(newBattle){instances.clear();activation=-Infinity;foreground??=createForegroundExtractor({window:win,document:doc});foreground.prepare().catch(()=>{});}battleKey=key;snapshot=state;
+  if(newBattle){instances.clear();activation=-Infinity;}battleKey=key;snapshot=state;
   const alive=new Set(state.units.map(u=>u.key));for(const id of instances.keys())if(!alive.has(id))instances.delete(id);
   for(const u of state.units){const prior=instances.get(u.key);instances.set(u.key,{...u,phase:prior?.phase??Array.from(u.uid).reduce((sum,c)=>sum+c.charCodeAt(0),u.owner*17),cue:prior?.cue||'',at:prior?.at??-Infinity});}
   if(moving())for(const change of changes){if(change.kind==='activate')activation=now;else{const unit=instances.get(change.key);if(unit){unit.cue=change.kind;unit.at=now;}}}

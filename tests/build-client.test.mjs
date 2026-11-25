@@ -74,16 +74,18 @@ test('an asset symlink cannot copy private data into the browser package',async 
  await assert.rejects(buildClient(root),/Public files must be regular files/);
 });
 
-test('browser packaging permits only the reviewed foreground runtime paths',async t=>{
+test('browser packaging ships public mask media without inference code or models',async t=>{
  const {root,write}=await fixture(t);
- await write('assets/summon-runtime/ort.wasm.min.mjs','export const version="reviewed";');
- await write('assets/summon-runtime/ort-wasm-simd-threaded.wasm','reviewed wasm fixture');
- await write('assets/summon-runtime/u2netp-192.onnx','reviewed model fixture');
- await write('assets/summon-runtime/LICENSE-ONNX.txt','MIT fixture');
+ await write('card-foreground-masks.js','export const CARD_FOREGROUND_MASKS=Object.freeze({});');
+ await write('assets/foreground/atlas-001.png','public grayscale mask atlas fixture');
+ await write('assets/summon-runtime/ort.wasm.min.mjs','obsolete inference code');
+ await write('assets/summon-runtime/ort-wasm-simd-threaded.wasm','obsolete inference binary');
+ await write('assets/summon-runtime/u2netp-192.onnx','obsolete model');
+ await write('assets/summon-runtime/LICENSE-ONNX.txt','obsolete runtime attribution');
  await write('assets/unreviewed.wasm','not browser media');
  await write('assets/unreviewed.onnx','not browser media');
  await write('assets/summon-runtime/unreviewed.mjs','not reviewed code');
  const {directory}=await buildClient(root),paths=await readdir(directory,{recursive:true});
- for(const name of ['ort.wasm.min.mjs','ort-wasm-simd-threaded.wasm','u2netp-192.onnx','LICENSE-ONNX.txt'])assert(paths.includes('assets/summon-runtime/'+name));
- for(const name of ['assets/unreviewed.wasm','assets/unreviewed.onnx','assets/summon-runtime/unreviewed.mjs'])assert(!paths.includes(name));
+ for(const name of ['card-foreground-masks.js','assets/foreground/atlas-001.png'])assert(paths.includes(name));
+ for(const name of ['assets/unreviewed.wasm','assets/unreviewed.onnx','assets/summon-runtime/unreviewed.mjs','assets/summon-runtime/ort.wasm.min.mjs','assets/summon-runtime/ort-wasm-simd-threaded.wasm','assets/summon-runtime/u2netp-192.onnx','assets/summon-runtime/LICENSE-ONNX.txt'])assert(!paths.includes(name));
 });

@@ -13,8 +13,6 @@ const scriptRoot=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const run=promisify(execFile);
 const browserExtensions=new Set(['.html','.js','.css','.webmanifest']);
 const mediaExtensions=new Set(['.svg','.webp','.png','.jpg','.jpeg','.ico','.mp3','.ogg','.wav','.woff','.woff2','.ttf']);
-// Only these reviewed inference assets may ship as code/binaries under assets.
-const summonRuntimeFiles=new Set(['ort.wasm.min.mjs','ort-wasm-simd-threaded.mjs','ort-wasm-simd-threaded.wasm','u2netp.onnx','u2netp-192.onnx','LICENSE-ONNX.txt','LICENSE-U2NET.txt','NOTICE.txt'].map(name=>'assets/summon-runtime/'+name));
 const rootFiles=new Set(['CNAME','.nojekyll','robots.txt','sitemap.xml']);
 const hidden=name=>name.startsWith('.')||/^__qa/i.test(name);
 const exists=path=>lstat(path).then(()=>true).catch(error=>{if(error.code==='ENOENT')return false;throw error;});
@@ -33,7 +31,7 @@ export async function buildClient(sourceRoot=scriptRoot){
    }
    if(kind==='root'&&!browserExtensions.has(extname(name))&&!rootFiles.has(name))continue;
    if(kind!=='root'&&entry.isDirectory()){await collect(source,path,kind);continue;}
-   if(kind==='assets'&&!mediaExtensions.has(extname(name))&&!summonRuntimeFiles.has(path))continue;
+   if(kind==='assets'&&!mediaExtensions.has(extname(name)))continue;
    if(kind==='rebuild'&&!browserExtensions.has(extname(name)))continue;
    assert(entry.isFile()&&!entry.isSymbolicLink(),'Public files must be regular files: '+path);
    files.set(path,source);
