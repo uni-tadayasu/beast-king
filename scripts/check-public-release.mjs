@@ -7,7 +7,7 @@ import {CARD_FOREGROUND_MASKS} from '../card-foreground-masks.js';
 import {createHash} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 const total=CARDS.length.toLocaleString('en-US');
-const releaseRevision='20261125-37';
+const releaseRevision='20261125-38';
 const sourceMatches=file=>async response=>(await response.text())===(await readFile(new URL('../'+file,import.meta.url),'utf8'));
 const binaryMatches=file=>async response=>{
  const [actual,expected]=await Promise.all([response.arrayBuffer(),readFile(new URL('../'+file,import.meta.url))]);

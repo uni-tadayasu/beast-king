@@ -3,7 +3,7 @@
  * No game state, save data, card definitions or input handlers are changed.
  */
 
-import { syncCardRelief, clearCardRelief } from './card-relief.js?v=20261125-37';
+import { syncCardRelief, clearCardRelief } from './card-relief.js?v=20261125-38';
 
 export const RARITY_FX_LAYERS = Object.freeze({
   N: Object.freeze(['foil', 'glints']),

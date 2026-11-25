@@ -49,11 +49,11 @@ test('a missing browser module fails without replacing the last good package',as
 
 test('a fresh browser entry rejects stale module, page, and manifest cache queries before replacing output',async t=>{
  const {root,write,page}=await fixture(t);
- await write('index.html',page.replace('src="app.js"','src="app.js?v=20261125-37"'));
- await write('app.js',"import {cards} from './catalog.js?v=20261125-37'; export const total=cards.length;");
+ await write('index.html',page.replace('src="app.js"','src="app.js?v=20261125-38"'));
+ await write('app.js',"import {cards} from './catalog.js?v=20261125-38'; export const total=cards.length;");
  const {directory}=await buildClient(root),before=await readFile(join(directory,'app.js'),'utf8');
  for(const [path,valid,stale] of [
-  ['app.js',before,before.replace('20261125-37','20261124-28')],
+  ['app.js',before,before.replace('20261125-38','20261124-28')],
   ['about.html',page,page.replace('src="app.js"','src="app.js?v=20261124-28"')],
   ['rebuild/profile.js','export const saved=true;',"import '../catalog.js?v=20261124-26';"],
   ['manifest.webmanifest','{"icons":[]}','{"icons":[{"src":"assets/icon.svg?v=20261124-28"}]}'],

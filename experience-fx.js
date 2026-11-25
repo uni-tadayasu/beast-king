@@ -1,7 +1,7 @@
 /** Purposeful feedback for the whole game. No game rules, purchases, hidden
  * cards or save data are changed here. Call openPack only AFTER saving a purchase.
  * Its presentation can always be skipped; it never grants cards itself. */
-import {bindOutsideDismiss} from './overlay-dismiss.js?v=20261125-37';
+import {bindOutsideDismiss} from './overlay-dismiss.js?v=20261125-38';
 export const EXPERIENCE_STORAGE_KEY = 'beast-king-experience-v1';
 export const RARITY_ORDER = Object.freeze(['N', 'R', 'KR', 'KKR', 'GR', 'GGR']);
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));

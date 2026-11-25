@@ -1,8 +1,8 @@
 // New local save boundary. The live game's storage is never read or modified.
-import {STARTER_DECKS,getCard,validateDeck,validateSpecialDeck} from './catalog.js?v=20261125-37';
-import {grantDeckCollection,normalizeCollection,STARTING_TREASURE,openPack,getBattleReward} from './shop.js?v=20261125-37';
-import {normalizeSoloSnapshot,normalizeAudioSettings} from './solo-save.js?v=20261125-37';
-import {migrateLegacyStarters} from '../shop.js?v=20261125-37';
+import {STARTER_DECKS,getCard,validateDeck,validateSpecialDeck} from './catalog.js?v=20261125-38';
+import {grantDeckCollection,normalizeCollection,STARTING_TREASURE,openPack,getBattleReward} from './shop.js?v=20261125-38';
+import {normalizeSoloSnapshot,normalizeAudioSettings} from './solo-save.js?v=20261125-38';
+import {migrateLegacyStarters} from '../shop.js?v=20261125-38';
 export const STORAGE_KEY='beast-king-rebuild-v1';
 export const STARTERS=Object.freeze(STARTER_DECKS.filter(s=>['star-crown','azure-memory','crimson-pulse','sky-promise'].includes(s.id)));
 export const ORIGIN_IDS=Object.freeze(['mountain','river','seed','grass','flower','tree','king']);

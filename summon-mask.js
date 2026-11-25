@@ -2,7 +2,7 @@
  * An authorized private/custom source never falls back to a public mask.
  * Native source alpha should be handled before this public-only resolver.
  */
-import {CARD_FOREGROUND_MASKS} from './card-foreground-masks.js?v=20261125-37';
+import {CARD_FOREGROUND_MASKS} from './card-foreground-masks.js?v=20261125-38';
 
 const DEFAULT_BASE = 'https://beast-king.invalid/';
 const MAX_IMAGE_EDGE = 8192;
