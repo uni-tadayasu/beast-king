@@ -2,12 +2,12 @@
  * looked up here: an override must come from the card's already-approved DOM.
  * Atlas coordinates retain the reviewed painting, without another character
  * interpretation or a crop that can include a neighbouring card. */
-import {CARD_ART_CROPS} from './card-art-layouts.js?v=20261125-33';
-import {CARD_ART_EXPANSIONS} from './card-art-expansion.js?v=20261125-33';
-import {CARD_ART_FIFTH} from './card-art-fifth.js?v=20261125-33';
-import {CARD_ART_OVERRIDES} from './card-art-overrides.js?v=20261125-33';
-import {CARD_ART_USER_OVERRIDES} from './card-art-user.js?v=20261125-33';
-import {PREMIUM_CARD_ART} from './card-art-premium.js?v=20261125-33';
+import {CARD_ART_CROPS} from './card-art-layouts.js?v=20261125-34';
+import {CARD_ART_EXPANSIONS} from './card-art-expansion.js?v=20261125-34';
+import {CARD_ART_FIFTH} from './card-art-fifth.js?v=20261125-34';
+import {CARD_ART_OVERRIDES} from './card-art-overrides.js?v=20261125-34';
+import {CARD_ART_USER_OVERRIDES} from './card-art-user.js?v=20261125-34';
+import {PREMIUM_CARD_ART} from './card-art-premium.js?v=20261125-34';
 
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
 const positive = value => Number.isFinite(value) && value > 0;

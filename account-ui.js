@@ -1,6 +1,6 @@
-import {CARDS} from './catalog.js?v=20261125-33';
-import {accountSyncView,accountDevicePageSize,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js?v=20261125-33';
-import {operatorRewardPageSize} from './operator-paging.js?v=20261125-33';
+import {CARDS} from './catalog.js?v=20261125-34';
+import {accountSyncView,accountDevicePageSize,operatorGateView,operatorDashboardView,playerInboxView} from './account-views.js?v=20261125-34';
+import {operatorRewardPageSize} from './operator-paging.js?v=20261125-34';
 
 /** Account dialogs use the same server identity as online battles. No role or
  * activation credential is saved in the game data or inferred from the UI. */

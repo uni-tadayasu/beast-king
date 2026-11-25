@@ -10,8 +10,9 @@ import {resolve,sep,extname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {launchSmokeChrome,stopSmokeChrome} from './chrome-smoke-launch.mjs';
 import {setTimeout as delay} from 'node:timers/promises';
-assert.ok(process.argv.length<=3,'Usage: node scripts/layout-browser-smoke.mjs [public-directory]');
-const root=process.argv[2]?resolve(process.argv[2]):fileURLToPath(new URL('../',import.meta.url));
+const args=process.argv.slice(2),cameraOnly=args.includes('--camera-only'),directories=args.filter(arg=>arg!=='--camera-only');
+assert.ok(directories.length<=1&&!directories.some(arg=>arg.startsWith('--')),'Usage: node scripts/layout-browser-smoke.mjs [public-directory] [--camera-only]');
+const root=directories[0]?resolve(directories[0]):fileURLToPath(new URL('../',import.meta.url));
 const viewports=[
  {width:1920,height:1080,mobile:false},{width:1902,height:800,mobile:false},
  {width:1366,height:768,mobile:false},{width:1024,height:600,mobile:false},
@@ -116,6 +117,123 @@ async function assertReadableModal(label,{fullViewport=false,controls=[],body=[]
  for(const key of ['missing','clipped','small','overlaps','closeText','scrolling'])assert.deepEqual(result[key],[],label+' '+key+' '+JSON.stringify(result[key]));
  await assertFits();
 }
+/** Send real browser input at the visible model's screen position. The raw
+ * rectangle deliberately stays in physical screen coordinates for rotated
+ * portrait play; layoutRect is only used for logical geometry assertions. */
+async function pointerClick(selector,mobile,label){
+ const point=await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e||e.disabled)return null;const r=e.getBoundingClientRect(),x=r.x+r.width*.5,y=r.y+r.height*.36,hit=document.elementFromPoint(x,y);return {x,y,width:r.width,height:r.height,unobstructed:!!hit&&(hit===e||e.contains(hit))}})()`);
+ assert.ok(point&&point.width>=24&&point.height>=24,label+' has a usable visible hit target '+JSON.stringify(point));
+ assert.equal(point.unobstructed,true,label+' target is not covered by another control');
+ if(mobile){
+  await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:point.x,y:point.y,radiusX:1,radiusY:1,force:1,id:1}]});
+  await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+ }else{
+  await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:point.x,y:point.y});
+  await send('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',buttons:1,clickCount:1,x:point.x,y:point.y});
+  await send('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',buttons:0,clickCount:1,x:point.x,y:point.y});
+ }
+}
+async function assertCameraGeometry(label){
+ const result=await evaluate(`(()=>{
+  const arena=document.querySelector('.arena'),field=layoutRect(arena),viewport=layoutViewport(),canvas=arena.querySelector('.bk-summon-canvas');
+  const units=[...arena.querySelectorAll('.field-unit')].map(unit=>{const slot=unit.closest('.field-slot'),r=layoutRect(unit),name=layoutRect(unit.querySelector('.unit-name')),stats=layoutRect(unit.querySelector('.unit-stats'));return {owner:Number(unit.dataset.player),uid:unit.dataset.uid,placed:slot.dataset.cameraPlaced==='true',box:r.toJSON(),name:name.toJSON(),stats:stats.toJSON()}});
+  const overlaps=[];
+  const overlap=(a,b)=>Math.min(a.right,b.right)-Math.max(a.left,b.left)>2&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>2;
+  for(let i=0;i<units.length;i++)for(let j=i+1;j<units.length;j++)if(overlap(units[i].box,units[j].box)||[units[i].name,units[i].stats].some(a=>[units[j].name,units[j].stats].some(b=>overlap(a,b))))overlaps.push([units[i].uid,units[j].uid]);
+  const inside=(r,b)=>r.width>0&&r.height>0&&r.left>=b.left-2&&r.right<=b.right+2&&r.top>=b.top-2&&r.bottom<=b.bottom+2;
+  return {camera:arena.dataset.battleCamera,units,overlaps,allPlaced:arena.querySelectorAll('.field-slot[data-camera-placed="true"]').length===8,inside:units.every(u=>inside(u.box,field)&&inside(u.box,{left:0,top:0,right:viewport.width,bottom:viewport.height})&&inside(u.name,u.box)&&inside(u.stats,u.box)),canvasCount:document.querySelectorAll('.bk-summon-canvas').length};
+ })()`);
+ assert.equal(result.camera,'angled',label+' uses the own-side angled battle camera');
+ assert.equal(result.allPlaced,true,label+' places all eight ground sockets in the camera');
+ assert.ok(result.units.every(u=>u.placed),label+' aligns every model with its interactive target');
+ assert.equal(result.inside,true,label+' keeps model controls and labels inside the field and viewport '+JSON.stringify(result));
+ assert.deepEqual(result.overlaps,[],label+' keeps targets and nameplates separate '+JSON.stringify(result));
+ const average=owner=>{const rows=result.units.filter(u=>u.owner===owner);return rows.reduce((sum,u)=>sum+u.box.width,0)/rows.length;};
+ if(result.units.some(u=>u.owner===0)&&result.units.some(u=>u.owner===1))assert.ok(average(0)>average(1)*1.03,label+' makes near creatures visibly larger than far creatures '+JSON.stringify(result.units));
+}
+async function assertSummonScene(expected,label){
+ await until(()=>evaluate(`(()=>{const c=document.querySelector('.bk-summon-canvas');return c&&Number(c.dataset.summonCount)===${expected.length}&&document.querySelectorAll('.field-slot[data-summon-ready="true"]').length===${expected.length}})()`),label+' loaded summon artwork',15000);
+ const result=await evaluate(`(async()=>{
+  const {getCard}=await import('./catalog.js?v=20261125-34');
+  const {resolveSummonArt}=await import('./summon-art.js?v=20261125-34');
+  const canvas=document.querySelector('.bk-summon-canvas'),rect=layoutRect(canvas),style=getComputedStyle(canvas);
+  const slots=[...document.querySelectorAll('.field-slot[data-summon-ready="true"]')].map(slot=>{
+   const unit=slot.querySelector('.field-unit'),painting=unit.querySelector('.summon-card-floor .card-art');
+   const background=painting&&getComputedStyle(painting).backgroundImage;
+   const actual=background?.match(/^url\\(["']?(.*?)["']?\\)$/)?.[1];
+   const source=resolveSummonArt(getCard(unit.dataset.cardId));
+   return {uid:unit.dataset.uid,cardId:unit.dataset.cardId,owner:Number(unit.dataset.player),sameCard:slot.dataset.cardId===unit.dataset.cardId&&source?.cardId===unit.dataset.cardId,originalSource:!!actual&&!!source&&new URL(actual,document.baseURI).pathname===new URL(source.src,document.baseURI).pathname};
+  });
+  return {canvases:document.querySelectorAll('.bk-summon-canvas').length,count:Number(canvas.dataset.summonCount),renderer:canvas.closest('.arena')?.dataset.summonRenderer,visible:rect.width>0&&rect.height>0&&canvas.width>0&&canvas.height>0&&style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)>0,pointerEvents:style.pointerEvents,slots};
+ })()`);
+ assert.equal(result.canvases,1,label+' has one shared summon canvas');
+ assert.equal(result.count,expected.length,label+' keeps every living field creature visible');
+ assert.ok(['webgl','canvas'].includes(result.renderer),label+' has a working renderer');
+ assert.equal(result.visible,true,label+' keeps the scene visible');
+ assert.equal(result.pointerEvents,'none',label+' does not cover battle controls');
+ assert.deepEqual(result.slots.map(({uid,cardId,owner})=>({uid,cardId,owner})).sort((a,b)=>a.uid.localeCompare(b.uid)),[...expected].sort((a,b)=>a.uid.localeCompare(b.uid)),label+' mirrors both public fields');
+ assert.ok(result.slots.every(slot=>slot.sameCard&&slot.originalSource),label+' uses each slot’s exact published card illustration');
+ await assertCameraGeometry(label);
+}
+async function runSummonSmoke(){
+ // Both modes use the test's temporary local profile. Move owned cards from
+ // their existing piles into the field; each complete pool remains 32 + 4.
+ const savedProfile=await evaluate('localStorage.getItem("beast-king-v6")');
+ async function loadFixture(count,{width,height,mobile}){
+  // Let debounced saves settle so pagehide cannot overwrite the new fixture.
+  await delay(250);
+  const expected=await evaluate(`(async()=>{
+   const {newGame}=await import('./engine.js?v=20261125-34');
+   const {getCard}=await import('./catalog.js?v=20261125-34');
+   const saved=JSON.parse(${JSON.stringify(savedProfile)});
+   const battle=newGame({playerDeck:saved.deckIds,cpuDeck:saved.deckIds,playerSpecialDeck:saved.specialIds,cpuSpecialDeck:saved.specialIds,seed:33});
+   for(const [owner,player] of battle.players.entries())for(let i=0;i<${count};i++){
+    const chosen=new Set(player.field.map(unit=>unit.cardId)),piles=[player.deck,player.hand];
+    const unique=piles.find(pile=>pile.some(id=>getCard(id).type==='beast'&&!chosen.has(id)));
+    const pile=unique||piles.find(pile=>pile.some(id=>getCard(id).type==='beast'));
+    const index=pile?.findIndex(id=>getCard(id).type==='beast'&&(!unique||!chosen.has(id)));if(index===undefined||index<0)throw Error('Fixture needs owned beasts');
+    const card=getCard(pile.splice(index,1)[0]);
+    player.field.push({uid:'u'+battle.nextUid++,cardId:card.id,owner,attack:owner===0?1200:card.attack,hp:owner===0?card.hp:100,maxHp:owner===0?card.hp:100,ready:true,keywords:[...card.keywords]});
+   }
+   saved.game=battle;saved.motion=true;saved.sound=false;saved.bgm=false;
+   localStorage.setItem('beast-king-v6',JSON.stringify(saved));
+   return battle.players.flatMap((player,owner)=>player.field.map(unit=>({uid:unit.uid,cardId:unit.cardId,owner})));
+  })()`);
+  await send('Page.reload',{ignoreCache:true});await waitElement('.home-resume');
+  await viewport(width,height,mobile);await click('[data-action=resume]');await waitElement('.duel-shell');
+  await until(()=>evaluate(`Number(document.querySelector('.bk-summon-canvas')?.dataset.summonCount)===${expected.length}`),'fixture models are loaded',15000);
+  return expected;
+ }
+ for(const size of [{width:1366,height:768,mobile:false},{width:390,height:844,mobile:true}]){
+  const {width,height,mobile}=size,label=width+'x'+height+' persistent summons';
+  const crowded=await loadFixture(4,size);
+  // Capture the full board before geometry assertions, so a failed placement
+  // still supplies a useful real-browser image for the next implementation fix.
+  await evaluate('document.fonts.ready.then(()=>true)');
+  const screenshot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+  await mkdir('artifacts/layout',{recursive:true});
+  await writeFile(`artifacts/layout/summons-${width}x${height}.png`,Buffer.from(screenshot.data,'base64'));
+  await assertSummonScene(crowded,label+' with all eight slots occupied');
+  const expected=await loadFixture(2,size);
+  await assertSummonScene(expected,label);
+  await click('[data-action=toggle-hand-effects]');await click('[data-action=toggle-hand-effects]');
+  await assertSummonScene(expected,label+' after rerender');
+  await click('.duel-top [data-action=settings]');await click('[data-action=settings-tab][data-tab=motion]');
+  assert.equal(await evaluate('document.querySelector("[data-action=motion]").getAttribute("aria-checked")'),'true');
+  await click('[data-action=motion]');await click('.modal-close');
+  await assertSummonScene(expected,label+' with animation disabled');
+  assert.equal(await evaluate('document.querySelector(".bk-summon-canvas").dataset.summonMotion'),'off',label+' stops movement rather than hiding creatures');
+  const attacker=expected.find(unit=>unit.owner===0);
+  await pointerClick('.field-unit[data-player="0"][data-uid="'+attacker.uid+'"]',mobile,label+' attacker');
+  await until(()=>evaluate('Boolean(document.querySelector(".field-unit.targetable[data-player=\\"1\\"]"))'),label+' selects an attacker with real input');
+  const target=await evaluate('document.querySelector(".field-unit.targetable[data-player=\\"1\\"]")?.dataset.uid');
+  assert.ok(target,label+' has a legal enemy target');
+  await pointerClick('.field-unit[data-player="1"][data-uid="'+target+'"]',mobile,label+' enemy');
+  await until(()=>evaluate('document.querySelectorAll(".field-unit").length===3'),label+' resolves the pointer attack');
+  await assertSummonScene(expected.filter(unit=>unit.uid!==target),label+' after a creature leaves the field');
+ }
+}
+
 try{
  await new Promise((res,rej)=>{server.once('error',rej);server.listen(0,'127.0.0.1',res)});
  const url='http://127.0.0.1:'+server.address().port+'/';
@@ -131,7 +249,7 @@ try{
  // No production writes: the test runs against a temporary local server/profile.
  await send('Network.enable');await send('Network.setBlockedURLs',{urls:['*chatgpt.site/*']});
  await send('Page.navigate',{url});await waitElement('#entry-start-form');
- for(const {width,height,mobile} of [{width:1280,height:720,mobile:false},...viewports.filter(v=>v.mobile&&v.height>v.width)]){
+ for(const {width,height,mobile} of cameraOnly?[{width:1280,height:720,mobile:false}]:[{width:1280,height:720,mobile:false},...viewports.filter(v=>v.mobile&&v.height>v.width)]){
   await viewport(width,height,mobile);await waitElement('.bk-entry-native');
   const entry=await evaluate(`(()=>{const p=layoutRect(document.querySelector('#app'));return [...document.querySelectorAll('#entry-start-form,#entry-player-name,.entry-profile-option,#entry-starter,.entry-start-button,.entry-footer a')].filter(e=>{const r=layoutRect(e);return r.width<=0||r.height<=0||r.left<p.left-2||r.right>p.right+2||r.top<p.top-2||r.bottom>p.bottom+2}).map(e=>e.id||e.className)})()`);
   assert.deepEqual(entry,[],width+'x'+height+' complete entry controls inside the live canvas');await assertFits();
@@ -141,6 +259,11 @@ try{
  assert.equal(await evaluate('document.querySelectorAll("#entry-starter option").length'),4);
  await click('[data-action=name-start]');await waitElement('.product-home');
  assert.equal(await evaluate('Object.values(JSON.parse(localStorage.getItem("beast-king-v6")).collection).reduce((a,b)=>a+b,0)'),36);
+ if(cameraOnly){
+  await runSummonSmoke();
+  assert.deepEqual(exceptions,[],'No uncaught camera browser errors');
+  console.log('Angled battle camera passed: eight original-art creatures, perspective depth, visible hit targets, desktop mouse and portrait touch attacks, rerenders, animation-off, and removal');
+ }else{
  await click('.navigation-dock [data-nav=shop]');await click('[data-action=shop-section][data-section=starters]');assert.equal(await evaluate('document.querySelectorAll("[data-action=starter-buy]").length'),4);assert.equal(await evaluate('document.querySelectorAll("[data-action=starter-load]:disabled").length'),3);await click('.navigation-dock [data-nav=home]');
  const inspect=`(selectors)=>{const out=[];for(const selector of selectors){const els=[...document.querySelectorAll(selector)].filter(e=>{const r=layoutRect(e);return r.width>0&&r.height>0&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden'});for(let i=0;i<els.length;i++)for(let j=i+1;j<els.length;j++){const a=layoutRect(els[i]),b=layoutRect(els[j]);const w=Math.min(a.right,b.right)-Math.max(a.left,b.left),h=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);if(w>2&&h>2)out.push({selector,i,j,a:els[i].getAttribute('aria-label')||els[i].className,b:els[j].getAttribute('aria-label')||els[j].className,w:Math.round(w),h:Math.round(h)});}}return out}`;
  async function check(label,selectors=[]){
@@ -190,7 +313,7 @@ try{
      await selectShopPane('details');
      await assertShopVisible('.pack-offer>p:not([class]),.pack-assurance,.pack-collection,.pack-offer>[data-action=pack-odds]',4,pack+' complete pack description and collection details',true);
      const packContent=await evaluate(`(async()=>{
-      const {getPack}=await import('./shop.js?v=20261125-33'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
+      const {getPack}=await import('./shop.js?v=20261125-34'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
       return {description:document.querySelector('.pack-offer>p:not([class])').textContent===pack.description,purchase:buy.dataset.pack===pack.id&&buy.textContent.includes(pack.cost+'秘宝で'+pack.size+'枚'),guarantee:document.querySelector('.pack-assurance').textContent.includes('レア以上を1枚保証'),collection:document.querySelector('.pack-collection').textContent.includes(pack.cardCount.toLocaleString('ja-JP')+'種類')};
      })()`);
      assert.deepEqual(packContent,{description:true,purchase:true,guarantee:true,collection:true},pack+' complete supply information');
@@ -210,7 +333,7 @@ try{
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
   // Long scheduled operator content is rendered locally; never sent to live players.
-  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261125-33');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
+  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261125-34');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
   // Real native news dialog, not a synthetic layout. Every notice must
   // appear exactly once, fully within the viewport and outside the controls.
   await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);
@@ -436,76 +559,7 @@ try{
   assert.deepEqual(tracks.rows,['1','2','4','5'],width+'x'+height+' public zones have distinct rows');assert.deepEqual(tracks.columns,['2','2','2','2'],width+'x'+height+' zone column');assert.equal(tracks.hand,logical.height<=570&&logical.width>logical.height?'1':'6');
   await check(width+'x'+height+' duel',['.duel-top-actions>button','.arena>.duelist,.arena>.field-row,.arena>.hand-section,.arena>.zone-strip,.midline>.turn-label,.midline>.end-turn,.midline>.arcana-zone-row,.own-zone-row>.arcana-zone-row,.own-zone-row>.zone-strip','.hand-cards>.hand-card']);
  }
- // These fixtures use the smoke test's temporary browser profile only. Move
- // owned cards into the field so both saved pools remain exactly 32 + 4.
- // Resume, settings, rerender and a real attack exercise the production scene.
- const summonSave=await evaluate('localStorage.getItem("beast-king-v6")');
- async function assertSummonScene(expected,label){
-  await until(()=>evaluate(`(()=>{const c=document.querySelector('.bk-summon-canvas');return c&&Number(c.dataset.summonCount)===${expected.length}&&document.querySelectorAll('.field-slot[data-summon-ready="true"]').length===${expected.length}})()`),label+' loaded summon artwork',15000);
-  const result=await evaluate(`(async()=>{
-   const {getCard}=await import('./catalog.js?v=20261125-33');
-   const {resolveSummonArt}=await import('./summon-art.js?v=20261125-33');
-   const canvas=document.querySelector('.bk-summon-canvas'),rect=layoutRect(canvas),style=getComputedStyle(canvas);
-   const slots=[...document.querySelectorAll('.field-slot[data-summon-ready="true"]')].map(slot=>{
-    const unit=slot.querySelector('.field-unit'),painting=unit.querySelector('.summon-card-floor .card-art');
-    const background=painting&&getComputedStyle(painting).backgroundImage;
-    const actual=background?.match(/^url\\(["']?(.*?)["']?\\)$/)?.[1];
-    const source=resolveSummonArt(getCard(unit.dataset.cardId));
-    return {uid:unit.dataset.uid,cardId:unit.dataset.cardId,owner:Number(unit.dataset.player),sameCard:slot.dataset.cardId===unit.dataset.cardId&&source?.cardId===unit.dataset.cardId,originalSource:!!actual&&!!source&&new URL(actual,document.baseURI).pathname===new URL(source.src,document.baseURI).pathname};
-   });
-   return {canvases:document.querySelectorAll('.bk-summon-canvas').length,count:Number(canvas.dataset.summonCount),renderer:canvas.closest('.arena')?.dataset.summonRenderer,visible:rect.width>0&&rect.height>0&&canvas.width>0&&canvas.height>0&&style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)>0,pointerEvents:style.pointerEvents,slots};
-  })()`);
-  assert.equal(result.canvases,1,label+' has one shared summon canvas');
-  assert.equal(result.count,expected.length,label+' keeps every living field creature visible');
-  assert.ok(['webgl','canvas'].includes(result.renderer),label+' has a working renderer');
-  assert.equal(result.visible,true,label+' keeps the scene visible');
-  assert.equal(result.pointerEvents,'none',label+' does not cover battle controls');
-  assert.deepEqual(result.slots.map(({uid,cardId,owner})=>({uid,cardId,owner})).sort((a,b)=>a.uid.localeCompare(b.uid)),[...expected].sort((a,b)=>a.uid.localeCompare(b.uid)),label+' mirrors both public fields');
-  assert.ok(result.slots.every(slot=>slot.sameCard&&slot.originalSource),label+' uses each slot’s exact published card illustration');
- }
- for(const {width,height,mobile} of [{width:1366,height:768,mobile:false},{width:390,height:844,mobile:true}]){
-  // Let the previous UI action finish its debounced save before replacing the
-  // isolated fixture; pagehide otherwise flushes that older game on reload.
-  await delay(250);
-  const expected=await evaluate(`(async()=>{
-   const {newGame}=await import('./engine.js?v=20261125-33');
-   const {getCard}=await import('./catalog.js?v=20261125-33');
-   const saved=JSON.parse(${JSON.stringify(summonSave)});
-   const battle=newGame({playerDeck:saved.deckIds,cpuDeck:saved.deckIds,playerSpecialDeck:saved.specialIds,cpuSpecialDeck:saved.specialIds,seed:33});
-   for(const [owner,player] of battle.players.entries())for(let i=0;i<2;i++){
-    const pile=player.deck.some(id=>getCard(id).type==='beast')?player.deck:player.hand;
-    const index=pile.findIndex(id=>getCard(id).type==='beast');if(index<0)throw Error('Fixture needs two owned beasts');
-    const card=getCard(pile.splice(index,1)[0]);
-    player.field.push({uid:'u'+battle.nextUid++,cardId:card.id,owner,attack:owner===0?1200:card.attack,hp:owner===0?card.hp:100,maxHp:owner===0?card.hp:100,ready:true,keywords:[...card.keywords]});
-   }
-   saved.game=battle;saved.motion=true;saved.sound=false;saved.bgm=false;
-   localStorage.setItem('beast-king-v6',JSON.stringify(saved));
-   return battle.players.flatMap((player,owner)=>player.field.map(unit=>({uid:unit.uid,cardId:unit.cardId,owner})));
-  })()`);
-  // A hash-only navigation would retain the old in-memory game. A fresh load
-  // at #duel opens Home and restores this fixture through the real save loader.
-  await send('Page.reload',{ignoreCache:true});await waitElement('.home-resume');
-  await viewport(width,height,mobile);await click('[data-action=resume]');await waitElement('.duel-shell');
-  const label=width+'x'+height+' persistent summons';
-  await assertSummonScene(expected,label);
-  const screenshot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
-  await mkdir('artifacts/layout',{recursive:true});
-  await writeFile(`artifacts/layout/summons-${width}x${height}.png`,Buffer.from(screenshot.data,'base64'));
-  await click('[data-action=toggle-hand-effects]');await click('[data-action=toggle-hand-effects]');
-  await assertSummonScene(expected,label+' after rerender');
-  await click('.duel-top [data-action=settings]');await click('[data-action=settings-tab][data-tab=motion]');
-  assert.equal(await evaluate('document.querySelector("[data-action=motion]").getAttribute("aria-checked")'),'true');
-  await click('[data-action=motion]');await click('.modal-close');
-  await assertSummonScene(expected,label+' with animation disabled');
-  assert.equal(await evaluate('document.querySelector(".bk-summon-canvas").dataset.summonMotion'),'off',label+' stops movement rather than hiding creatures');
-  const attacker=expected.find(unit=>unit.owner===0);
-  await click('.field-unit[data-player="0"][data-uid="'+attacker.uid+'"]');
-  const target=await evaluate('document.querySelector(".field-unit.targetable[data-player=\\"1\\"]")?.dataset.uid');
-  assert.ok(target,label+' has a legal enemy target');
-  await click('.field-unit[data-player="1"][data-uid="'+target+'"]');
-  await until(()=>evaluate('document.querySelectorAll(".field-unit").length===3'),label+' resolves the attack');
-  await assertSummonScene(expected.filter(unit=>unit.uid!==target),label+' after a creature leaves the field');
- }
+ await runSummonSmoke();
  for(const path of ['about.html','rebuild/about.html']){
   await send('Page.navigate',{url:url+path});await waitElement('body.about-page');await waitElement('.bk-fit-article .bk-fit-target[data-fit-scale]');await waitElement('[data-guide-select]:not(:disabled)');
   const chapterCount=await evaluate('document.querySelectorAll("#about-main > section").length');assert.ok(chapterCount>=4,path+' has complete chapter navigation');
@@ -526,6 +580,14 @@ try{
  }
  assert.deepEqual(exceptions,[],'No uncaught browser errors');
  console.log('Layout smoke passed: entry, home, deck, collection, shop, rules, solo, practice, room, rank, details, battle and every chapter in both guides; eight desktop/mobile viewports including portrait touch landscape fallback; readable account workspaces, conflict/code/device pages and profile/settings/analysis dialogs; persistent original-art summons, motion-off, rerenders and creature removal on desktop/mobile');
+ }
+}catch(error){
+ try{
+  const screenshot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+  await mkdir('artifacts/layout',{recursive:true});
+  await writeFile('artifacts/layout/failure.png',Buffer.from(screenshot.data,'base64'));
+ }catch{}
+ throw error;
 }finally{
  for(const p of pending.values())clearTimeout(p.timer);
  server.close();server.closeAllConnections();

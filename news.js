@@ -1,7 +1,8 @@
-import {ONLINE_API_BASE} from './online.js?v=20261125-33';
-import {bindOutsideDismiss,isDialogBackdrop} from './overlay-dismiss.js?v=20261125-33';
+import {ONLINE_API_BASE} from './online.js?v=20261125-34';
+import {bindOutsideDismiss,isDialogBackdrop} from './overlay-dismiss.js?v=20261125-34';
 /** Built-in release notices. Update these entries when a new game version is published. */
 export const NEWS_ITEMS = Object.freeze([
+ {date:'2026.11.25',title:'自分側の斜め視点で戦うバトル画面',text:'自分の陣地の斜め手前から相手を見る視点へ変更。手前のカードを大きく、奥を小さく映し、盤面と魔獣の高さを表現します。原画の魔獣がカードの上に立ち、名前・能力値・操作位置も視点に合わせます。'},
  {date:'2026.11.25',title:'カード原画を使った魔獣の常時立体投影',text:'自分と相手の魔獣を、カード原画の姿と色を保ってカードの上に立体投影します。場にいる間は表示が続き、召喚・攻撃・発動に反応。アニメーションをオフにしても静止した姿が残り、場を離れると消えます。'},
  {date:'2026.11.25',title:'サブ画面の外側で閉じる・右クリックを無効化',text:'設定・カード詳細・お知らせ・対戦中の小窓は、外側をクリックまたはタップすると閉じられます。画面内から外へドラッグした時は閉じません。サイト内の右クリックメニューも無効化しました。'},
  {date:'2026.11.24',title:'第五弾「幻彩の夢界」— 新テーマ96枚',text:'折紙・玻璃・影絵・彩墨の4系統が登場。手札の残り枚数、結界、魔獣の数、手札の種類を使う新戦術と、それぞれの構築例を追加しました。専用イラスト96点を収録。12枚入り・100秘宝・レア以上1枚保証で、全収録カードは4,721枚です。'},
