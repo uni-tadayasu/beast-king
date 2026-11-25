@@ -1,6 +1,6 @@
-import {EVENT_DECKS,EVENT_DECK_GROUPS,getEventDeck} from './event-decks.js?v=20261125-35';
-import {normalizeEventProgress} from './event-battles.js?v=20261125-35';
-import {getCard,ELEMENTS} from './catalog.js?v=20261125-35';
+import {EVENT_DECKS,EVENT_DECK_GROUPS,getEventDeck} from './event-decks.js?v=20261125-36';
+import {normalizeEventProgress} from './event-battles.js?v=20261125-36';
+import {getCard,ELEMENTS} from './catalog.js?v=20261125-36';
 
 export function eventChallengeView({data={},game=null,group='all',listPage=0,pageSize=4,selectedId=null,compact=false,section='opponents',esc,icon,artStyle}={}){
  const e=typeof esc==='function'?esc:value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),i=typeof icon==='function'?icon:()=>'';

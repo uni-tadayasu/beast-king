@@ -20,11 +20,23 @@ const viewports=[
  {width:320,height:568,mobile:true},{width:844,height:390,mobile:true},
 ];
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.mp3':'audio/mpeg','.wasm':'application/wasm'};
+// Hold a real local response long enough to inspect genuine pending work.
+// The production controller, image URLs and progress values are never replaced.
+let heldServerAsset=null;
+function holdServerAsset(pathname){
+ assert.equal(heldServerAsset,null,'Only one local response gate may be active');
+ let release;
+ const gate={pathname,requests:0,ready:new Promise(resolve=>{release=resolve;})};
+ gate.release=()=>{if(heldServerAsset===gate)heldServerAsset=null;release();};
+ heldServerAsset=gate;return gate;
+}
 const server=createServer(async(req,res)=>{
  try{
   const url=new URL(req.url,'http://127.0.0.1'),path=resolve(root,'.'+decodeURIComponent(url.pathname)+(url.pathname.endsWith('/')?'index.html':''));
   if(!path.startsWith(resolve(root)+sep))throw Error('invalid path');
   const info=await stat(path);if(!info.isFile())throw Error('not a file');
+  const gate=heldServerAsset;
+  if(gate?.pathname===url.pathname){gate.requests++;await gate.ready;if(res.destroyed)return;}
   res.setHeader('Content-Type',types[extname(path)]||'application/octet-stream');res.setHeader('Cache-Control','no-store');
   res.setHeader('Content-Length',info.size);createReadStream(path).on('error',()=>res.destroy()).pipe(res);
  }catch{res.writeHead(404);res.end('Not found')}
@@ -86,6 +98,73 @@ async function viewport(width,height,mobile=false){
 async function assertFits(){
  const dimensions=await evaluate('({w:innerWidth,h:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight})');
  assert.ok(dimensions.sw<=dimensions.w+1,'Horizontal overflow: '+JSON.stringify(dimensions));assert.ok(dimensions.sh<=dimensions.h+1,'Vertical overflow: '+JSON.stringify(dimensions));
+}
+async function captureLayout(name){
+ const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+ await mkdir('artifacts/layout',{recursive:true});
+ await writeFile('artifacts/layout/'+name+'.png',Buffer.from(shot.data,'base64'));
+}
+async function captureCompletedLayout(name){
+ await until(()=>evaluate('(()=>{const layer=document.getElementById("bk-loading-layer");return !!layer&&layer.hidden&&!layer.classList.contains("is-loading")})()'),name+' artwork loader is dismissed');
+ await evaluate('document.fonts.ready.then(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true)))))');
+ await captureLayout(name);
+}
+const loadingReview={boot:null,cases:[]};
+async function navigateWithBootReview(url){
+ const gate=holdServerAsset('/app.js');
+ try{
+  await send('Page.navigate',{url});await waitElement('#app>.boot .bk-loading-track');
+  await until(()=>gate.requests>0,'actual application module remains pending');
+  await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true))))');
+  const boot=await evaluate(`(()=>{const boot=document.querySelector('#app>.boot'),track=boot.querySelector('.bk-loading-track');return {visible:layoutRect(boot).width>0&&layoutRect(boot).height>0,role:track.getAttribute('role'),value:track.getAttribute('aria-valuenow'),message:boot.querySelector('[data-boot-message]')?.textContent,entryReady:!!document.querySelector('#entry-start-form')}})()`);
+  assert.equal(boot.visible,true,'Initial boot is visible while the real application module is pending');
+  assert.equal(boot.role,'progressbar');assert.equal(boot.value,null,'Unknown startup work stays indeterminate');
+  assert.ok(boot.message?.trim(),'Initial boot includes an actual loading message');
+  assert.equal(boot.entryReady,false,'Entry is not mounted before the application is available');
+  await captureLayout('loading-boot-1280x720');loadingReview.boot=boot;
+ }finally{gate.release();}
+}
+async function runLoadingReview(){
+ const read=()=>evaluate(`(()=>{
+  const layer=document.getElementById('bk-loading-layer'),track=layer?.querySelector('.bk-loading-track'),card=layer?.querySelector('.bk-loading-card'),image=document.querySelector('.pack-cover-art');
+  return {hidden:layer?.hidden,compact:layer?.classList.contains('is-compact'),active:layer?.classList.contains('is-loading'),label:layer?.querySelector('[data-loading-label]')?.textContent,count:layer?.querySelector('[data-loading-count]')?.textContent,percent:track?.hasAttribute('aria-valuenow')?Number(track.getAttribute('aria-valuenow')):null,fill:parseFloat(track?.querySelector('i').style.width),pointerEvents:layer&&getComputedStyle(layer).pointerEvents,box:card&&layoutRect(card).toJSON(),viewport:layoutViewport(),imageReady:!!image?.complete&&image.naturalWidth>0};
+ })()`);
+ const settled=label=>until(async()=>{const state=await read();return state.hidden&&!state.active;},label);
+ await settled('home artwork completes before loader review');
+ for(const scenario of [{width:1280,height:720,mobile:false,pack:'BK05',compact:false},{width:390,height:844,mobile:true,pack:'BK04',compact:true}]){
+  const {width,height,mobile,pack,compact}=scenario,label=width+'x'+height+' '+(compact?'compact':'full')+' asset loader';
+  await viewport(width,height,mobile);
+  const gate=holdServerAsset('/assets/design-v3/packs/'+pack.toLowerCase()+'-cover.webp');
+  try{
+   if(compact)await click('.product-section-tabs [data-action=pack-select][data-pack='+pack+']');
+   else await click('.navigation-dock [data-nav=shop]');
+   await until(()=>gate.requests>0,label+' requests the real pack illustration');
+   await until(async()=>{const state=await read();return !state.hidden&&state.active&&state.percent!==null;},label+' is visible for pending artwork');
+   const pendingState=await read(),count=pendingState.count.match(/^(\d+) \/ (\d+) 画像を読み込み$/);
+   assert.ok(count,label+' reports actual successful image counts without a failed-image substitute: '+pendingState.count);
+   const loaded=Number(count[1]),total=Number(count[2]);
+   assert.ok(total>0&&loaded>=0&&loaded<total,label+' retains a pending image in its denominator');
+   assert.equal(pendingState.percent,Math.round(loaded/total*100),label+' percentage matches the displayed image counts');
+   assert.equal(pendingState.fill,pendingState.percent,label+' painted progress uses the same value');
+   assert.equal(pendingState.imageReady,false,label+' does not finish before the held illustration arrives');
+   assert.equal(pendingState.compact,compact,label+' uses the appropriate presentation');
+   assert.equal(pendingState.pointerEvents,'none',label+' does not intercept input');
+   const {box,viewport:v}=pendingState;
+   assert.ok(box.width>0&&box.height>0&&box.left>=-1&&box.top>=-1&&box.right<=v.width+1&&box.bottom<=v.height+1,label+' fits inside the logical viewport '+JSON.stringify({box,v}));
+   await captureLayout('loading-'+(compact?'compact-':'full-')+width+'x'+height);
+   gate.release();
+   await until(async()=>{const state=await read();return state.hidden&&!state.active&&state.imageReady;},label+' disappears after actual artwork completion');
+   const finished=await read();
+   if(finished.percent!==null)assert.equal(finished.percent,100,label+' finishes at the completed image count');
+   assert.equal(await evaluate('document.querySelectorAll(".bk-loading-layer:not([hidden])").length'),0,label+' leaves no visible loading overlay');
+   loadingReview.cases.push({width,height,mobile,pack,heldRequests:gate.requests,pending:pendingState,finished});
+  }finally{gate.release();}
+ }
+ // Restore the ordinary initial shop selection and home before the existing QA.
+ await click('.product-section-tabs [data-action=pack-select][data-pack=BK05]');
+ await click('.navigation-dock [data-nav=home]');await viewport(1280,720);
+ await settled('loading review restores the completed home screen');
+ await writeFile('artifacts/layout/loading-review.json',JSON.stringify(loadingReview,null,2));
 }
 async function assertReadableModal(label,{fullViewport=false,controls=[],body=[],labels=[]}={}){
  const result=await evaluate(`(()=>{
@@ -164,6 +243,23 @@ async function pointerClick(selector,mobile,label){
   await send('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',buttons:0,clickCount:1,x:point.x,y:point.y});
  }
 }
+async function waitForCameraLayoutStable(label){
+ // Closing settings refits the page before the camera projects the next frame.
+ // Readiness is geometric stability, never the result of the collision checks.
+ let previous=null,stable=0;
+ await until(async()=>{
+  const current=await evaluate(`(()=>{
+   const arena=document.querySelector('.arena'),canvas=arena?.querySelector('.bk-summon-canvas');if(!arena||!canvas)return null;
+   const rows=[...arena.querySelectorAll(':scope > .field-row')],units=[...arena.querySelectorAll('.field-unit')].sort((a,b)=>a.dataset.uid.localeCompare(b.dataset.uid));
+   const nodes=[arena,...rows,...units.flatMap(unit=>[unit,unit.querySelector('.unit-name'),unit.querySelector('.unit-stats')])];if(nodes.some(node=>!node))return null;
+   return {identities:[canvas.dataset.summonCount,canvas.dataset.summonMotion,...rows.map(row=>'row:'+row.dataset.owner),...units.map(unit=>unit.dataset.player+':'+unit.dataset.uid)],positions:nodes.flatMap(node=>{const r=layoutRect(node);return [r.x,r.y,r.width,r.height]}),bodyHeight:Number(canvas.dataset.cameraBodyHeight),cameraRectHeight:Number(canvas.dataset.cameraRectHeight)};
+  })()`);
+  const finite=current&&[...current.positions,current.bodyHeight,current.cameraRectHeight].every(Number.isFinite);
+  const unchanged=finite&&previous&&current.identities.length===previous.identities.length&&current.identities.every((value,index)=>value===previous.identities[index])&&current.positions.length===previous.positions.length&&current.positions.every((value,index)=>Math.abs(value-previous.positions[index])<=.5)&&Math.abs(current.bodyHeight-previous.bodyHeight)<=.000001&&Math.abs(current.cameraRectHeight-previous.cameraRectHeight)<=.5;
+  stable=finite?(unchanged?stable+1:1):0;previous=current;
+  return stable>=3;
+ },label+' reaches settled fitted camera geometry');
+}
 async function assertCameraGeometry(label){
  const result=await evaluate(`(()=>{
   const arena=document.querySelector('.arena'),field=layoutRect(arena),viewport=layoutViewport(),canvas=arena.querySelector('.bk-summon-canvas');
@@ -186,8 +282,8 @@ async function assertCameraGeometry(label){
 async function assertSummonScene(expected,label){
  await until(()=>evaluate(`(()=>{const c=document.querySelector('.bk-summon-canvas');return c&&Number(c.dataset.summonCount)===${expected.length}&&document.querySelectorAll('.field-slot[data-summon-ready="true"]').length===${expected.length}})()`),label+' loaded summon artwork',90000);
  const result=await evaluate(`(async()=>{
-  const {getCard}=await import('./catalog.js?v=20261125-35');
-  const {resolveSummonArt}=await import('./summon-art.js?v=20261125-35');
+  const {getCard}=await import('./catalog.js?v=20261125-36');
+  const {resolveSummonArt}=await import('./summon-art.js?v=20261125-36');
   const canvas=document.querySelector('.bk-summon-canvas'),rect=layoutRect(canvas),style=getComputedStyle(canvas);
   const slots=[...document.querySelectorAll('.field-slot[data-summon-ready="true"]')].map(slot=>{
    const unit=slot.querySelector('.field-unit'),painting=unit.querySelector('.summon-card-floor .card-art');
@@ -217,8 +313,8 @@ async function runSummonSmoke(){
   // Let debounced saves settle so pagehide cannot overwrite the new fixture.
   await delay(250);
   const expected=await evaluate(`(async()=>{
-   const {newGame}=await import('./engine.js?v=20261125-35');
-   const {getCard}=await import('./catalog.js?v=20261125-35');
+   const {newGame}=await import('./engine.js?v=20261125-36');
+   const {getCard}=await import('./catalog.js?v=20261125-36');
    const saved=JSON.parse(${JSON.stringify(savedProfile)});
    const battle=newGame({playerDeck:saved.deckIds,cpuDeck:saved.deckIds,playerSpecialDeck:saved.specialIds,cpuSpecialDeck:saved.specialIds,seed:33});
    for(const [owner,player] of battle.players.entries())for(let i=0;i<${count};i++){
@@ -256,6 +352,7 @@ async function runSummonSmoke(){
   await click('.duel-top [data-action=settings]');await click('[data-action=settings-tab][data-tab=motion]');
   assert.equal(await evaluate('document.querySelector("[data-action=motion]").getAttribute("aria-checked")'),'true');
   await click('[data-action=motion]');await click('.modal-close');
+  await waitForCameraLayoutStable(label+' after closing motion settings');
   await assertSummonScene(expected,label+' with animation disabled');
   assert.equal(await evaluate('document.querySelector(".bk-summon-canvas").dataset.summonMotion'),'off',label+' stops movement rather than hiding creatures');
   const attacker=expected.find(unit=>unit.owner===0);
@@ -291,7 +388,7 @@ async function runReliefSmoke(){
  }
  async function inspectApex(label,moving){
   const result=await evaluate(`(async()=>{
-   const {getCard}=await import('./catalog.js?v=20261125-35');
+   const {getCard}=await import('./catalog.js?v=20261125-36');
    const card=document.querySelector('#modal-root .game-card[data-id=B0001]'),data=getCard('B0001'),art=card.querySelector('.card-art'),finish=card.querySelector('.card-finish'),relief=finish.querySelector('.bk-relief'),contour=relief.querySelector('.bk-relief-contour'),polish=relief.querySelector('.bk-relief-polish');
    const background=node=>{const s=getComputedStyle(node);return {image:s.backgroundImage,size:s.backgroundSize,position:s.backgroundPosition,repeat:s.backgroundRepeat}};
    const inside=(a,b)=>a.left>=b.left-1&&a.right<=b.right+1&&a.top>=b.top-1&&a.bottom<=b.bottom+1;
@@ -378,9 +475,9 @@ async function runForegroundReview(){
    const state={done:false,error:null,rows:[],prepareMs:null,maskTileSize:null,sheet:null,extractor:null};window.__bkForegroundReview=state;
    const overlay=document.createElement('div');overlay.id='foreground-review-overlay';overlay.setAttribute('aria-hidden','true');overlay.style.cssText='position:fixed;inset:0;z-index:2147483647;background:#07121d;pointer-events:none;display:flex;align-items:center;justify-content:center';document.body.appendChild(overlay);
    void (async()=>{
-    const {getCard}=await import('./catalog.js?v=20261125-35');
-    const {resolveSummonArt,computeSummonArtCrop}=await import('./summon-art.js?v=20261125-35');
-    const {createForegroundExtractor,FOREGROUND_INPUT_SIZE}=await import('./summon-foreground.js?v=20261125-35');state.maskTileSize=FOREGROUND_INPUT_SIZE;
+    const {getCard}=await import('./catalog.js?v=20261125-36');
+    const {resolveSummonArt,computeSummonArtCrop}=await import('./summon-art.js?v=20261125-36');
+    const {createForegroundExtractor,FOREGROUND_INPUT_SIZE}=await import('./summon-foreground.js?v=20261125-36');state.maskTileSize=FOREGROUND_INPUT_SIZE;
     const cases=${JSON.stringify(cases)},tileW=480,tileH=348,gap=16,pad=24,top=112;
     const sheet=document.createElement('canvas');sheet.width=1520;sheet.height=1588;sheet.style.cssText='width:100%;height:100%;object-fit:contain';state.sheet=sheet;overlay.appendChild(sheet);
     const ctx=sheet.getContext('2d');ctx.fillStyle='#07121d';ctx.fillRect(0,0,sheet.width,sheet.height);
@@ -462,17 +559,24 @@ try{
 
  // No production writes: the test runs against a temporary local server/profile.
  await send('Network.enable');await send('Network.setBlockedURLs',{urls:['*chatgpt.site/*']});
- await send('Page.navigate',{url});await waitElement('#entry-start-form');
+ if(cameraOnly||reliefOnly||foregroundOnly)await send('Page.navigate',{url});
+ else await navigateWithBootReview(url);
+ await waitElement('#entry-start-form');
  for(const {width,height,mobile} of cameraOnly||reliefOnly||foregroundOnly?[{width:1280,height:720,mobile:false}]:[{width:1280,height:720,mobile:false},...viewports.filter(v=>v.mobile&&v.height>v.width)]){
   await viewport(width,height,mobile);await waitElement('.bk-entry-native');
   const entry=await evaluate(`(()=>{const p=layoutRect(document.querySelector('#app'));return [...document.querySelectorAll('#entry-start-form,#entry-player-name,.entry-profile-option,#entry-starter,.entry-start-button,.entry-footer a')].filter(e=>{const r=layoutRect(e);return r.width<=0||r.height<=0||r.left<p.left-2||r.right>p.right+2||r.top<p.top-2||r.bottom>p.bottom+2}).map(e=>e.id||e.className)})()`);
   assert.deepEqual(entry,[],width+'x'+height+' complete entry controls inside the live canvas');await assertFits();
+  if(!cameraOnly&&!reliefOnly&&!foregroundOnly&&(width===1280||width===390)){
+   await until(()=>evaluate('Boolean(window.BeastKingLoading)&&!document.querySelector(".bk-loading-layer:not([hidden])")'),'entry artwork loader finishes before its screenshot');
+   await captureLayout('entry-'+width+'x'+height);
+  }
  }
  await viewport(1280,720);
  await evaluate('document.querySelector("#entry-player-name").value="画面表示テスト十二文字";true');
  assert.equal(await evaluate('document.querySelectorAll("#entry-starter option").length'),4);
  await click('[data-action=name-start]');await waitElement('.product-home');
  assert.equal(await evaluate('Object.values(JSON.parse(localStorage.getItem("beast-king-v6")).collection).reduce((a,b)=>a+b,0)'),36);
+ if(!cameraOnly&&!reliefOnly&&!foregroundOnly)await runLoadingReview();
  if(!foregroundOnly)await runReliefSmoke();
  if(foregroundOnly||cameraOnly)await runForegroundReview();
  if(foregroundOnly){
@@ -499,6 +603,7 @@ try{
  const general=['.navigation-dock>.dock-link','.site-controls>button'];
  for(const {width,height,mobile} of viewports){
   await viewport(width,height,mobile);
+  const reviewScreen=width===1366&&height===768||width===390&&height===844;
   for(const [page,selectors] of [['home',['.home-mode-rail>.home-mode']],['deck',['.deck-panel>.workshop-tools,.deck-panel>.deck-list','.deck-panel>.workshop-tools>*','.transfer-source>.workshop-tools,.transfer-source>#card-results','.transfer-source>.workshop-tools>*','.deck-list>.results-meta,.deck-list>.deck-image-grid,.deck-list>.deck-list-pagination','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination','.transfer-card>.transfer-counts,.transfer-card>.transfer-actions','.deck-bank-actions>.btn','.deck-display-tabs>.btn','.deck-scope-tabs>.btn','.deck-source-tools>.deck-scope-tabs,.deck-source-tools>.btn,.deck-source-tools>.text-button']],['collection',['.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination']],['shop',['.product-section-tabs>button']],['rules',['.rulebook-tabs>button']]]){
    await click('.navigation-dock [data-nav='+page+']');await waitElement('main[data-page='+page+']');await waitElement('.bk-native-pane>.bk-fit-pane[data-fit-scale]');await delay(200);
    if(page==='home'){
@@ -506,6 +611,7 @@ try{
     // The feature cards deliberately form an overlapping fan; each complete
     // transformed card must nevertheless remain inside the content pane.
     const fan=await evaluate('(()=>{const p=layoutRect(document.querySelector(".bk-native-pane"));return {frame:p.toJSON(),cards:[...document.querySelectorAll(".home-card-fan>.game-card")].map(e=>{const r=layoutRect(e);return {visible:r.width>0&&r.height>0&&r.top>=p.top-2&&r.bottom<=p.bottom+2&&r.left>=p.left-2&&r.right<=p.right+2,box:r.toJSON()}})}})()');assert.deepEqual(fan.cards.map(c=>c.visible),[true,true,true],width+'x'+height+' all three featured cards fully visible '+JSON.stringify(fan));
+    if(reviewScreen)await captureCompletedLayout('home-'+width+'x'+height);
    }
    if(page==='shop'){
     const assertShopVisible=async(selector,count,label,completeText=false)=>{
@@ -532,10 +638,11 @@ try{
      await assertShopVisible('.pack-display,.pack-buy',2,pack+' artwork and purchase control');
      assert.equal(await evaluate('document.querySelector(".pack-cover-art").complete&&document.querySelector(".pack-cover-art").naturalWidth>0'),true,pack+' illustrated cover loads');
      await check(width+'x'+height+' '+pack+' purchase',['.product-section-tabs>button','.pack-offer>.pack-buy,.pack-offer>.pack-assurance,.pack-offer>.pack-collection']);
+     if(reviewScreen&&pack==='BK05')await captureCompletedLayout('shop-BK05-'+width+'x'+height);
      await selectShopPane('details');
      await assertShopVisible('.pack-offer>p:not([class]),.pack-assurance,.pack-collection,.pack-offer>[data-action=pack-odds]',4,pack+' complete pack description and collection details',true);
      const packContent=await evaluate(`(async()=>{
-      const {getPack}=await import('./shop.js?v=20261125-35'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
+      const {getPack}=await import('./shop.js?v=20261125-36'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
       return {description:document.querySelector('.pack-offer>p:not([class])').textContent===pack.description,purchase:buy.dataset.pack===pack.id&&buy.textContent.includes(pack.cost+'秘宝で'+pack.size+'枚'),guarantee:document.querySelector('.pack-assurance').textContent.includes('レア以上を1枚保証'),collection:document.querySelector('.pack-collection').textContent.includes(pack.cardCount.toLocaleString('ja-JP')+'種類')};
      })()`);
      assert.deepEqual(packContent,{description:true,purchase:true,guarantee:true,collection:true},pack+' complete supply information');
@@ -555,7 +662,7 @@ try{
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
   // Long scheduled operator content is rendered locally; never sent to live players.
-  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261125-35');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
+  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261125-36');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
   // Real native news dialog, not a synthetic layout. Every notice must
   // appear exactly once, fully within the viewport and outside the controls.
   await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);
@@ -665,6 +772,17 @@ try{
   const transferId=await evaluate('document.querySelector(".deck-image-slot [data-action=deck-return-slot]").dataset.id');
   const before=await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent');
   await click('.deck-image-slot [data-action=deck-return-slot][data-id='+transferId+']');
+  await evaluate('Promise.all([...document.querySelectorAll("#toasts .toast")].flatMap(node=>node.getAnimations().map(animation=>animation.finished.catch(()=>{})))).then(()=>true)');
+  const toastFit=await evaluate(`(()=>{
+   const viewport=layoutViewport(),stage={left:0,top:0,right:viewport.width,bottom:viewport.height},inside=(r,b)=>r.width>0&&r.height>0&&r.left>=b.left-2&&r.right<=b.right+2&&r.top>=b.top-2&&r.bottom<=b.bottom+2;
+   return [...document.querySelectorAll('#toasts .toast')].filter(node=>{const r=layoutRect(node),s=getComputedStyle(node);return r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden'&&Number(s.opacity)>0}).map(node=>{
+    const box=layoutRect(node),range=document.createRange();range.selectNodeContents(node);
+    const lines=[...range.getClientRects()].map(raw=>layoutRect({getBoundingClientRect:()=>raw}));
+    return {text:node.textContent.trim(),box:box.toJSON(),inside:inside(box,stage),bodyInside:lines.length>0&&lines.every(line=>inside(line,stage)&&inside(line,box)),unclipped:node.scrollWidth<=node.clientWidth+2&&node.scrollHeight<=node.clientHeight+2};
+   });
+  })()`);
+  assert.ok(toastFit.length>0,width+'x'+height+' returned-card notification is visible');
+  assert.deepEqual(toastFit.filter(item=>!item.text||!item.inside||!item.bodyInside||!item.unclipped),[],width+'x'+height+' complete notification bounds and text stay inside the logical stage '+JSON.stringify(toastFit));
   assert.equal(await evaluate('document.querySelector(".deck-zone-tabs [data-section=main] b").textContent'),'31/32');
   await evaluate('(()=>{const e=document.querySelector("#card-search");e.value='+JSON.stringify(transferId)+';e.dispatchEvent(new Event("input",{bubbles:true}));return true})()');
   await until(()=>evaluate('Boolean(document.querySelector(".transfer-add[data-id='+transferId+']:not(:disabled)"))'),'returned card is available again');
@@ -801,7 +919,7 @@ try{
   }
  }
  assert.deepEqual(exceptions,[],'No uncaught browser errors');
- console.log('Layout smoke passed: entry, home, deck, collection, shop, rules, solo, practice, room, rank, details, battle and every chapter in both guides; eight desktop/mobile viewports including portrait touch landscape fallback; readable account workspaces, conflict/code/device pages and profile/settings/analysis dialogs; persistent original-art summons, motion-off, rerenders and creature removal on desktop/mobile');
+ console.log('Layout smoke passed: indeterminate boot and truthful full/compact asset loading with completion dismissal; entry, home, deck, collection, shop, rules, solo, practice, room, rank, details, battle and every chapter in both guides; eight desktop/mobile viewports including portrait touch landscape fallback; readable account workspaces, conflict/code/device pages and profile/settings/analysis dialogs; persistent original-art summons, motion-off, rerenders and creature removal on desktop/mobile');
  }
 }catch(error){
  try{
@@ -818,6 +936,7 @@ try{
  }catch{}
  throw error;
 }finally{
+ heldServerAsset?.release();
  for(const p of pending.values())clearTimeout(p.timer);
  server.close();server.closeAllConnections();
  await stopSmokeChrome(browser);

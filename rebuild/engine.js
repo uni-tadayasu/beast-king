@@ -1,4 +1,4 @@
-import { getCard, STARTER_DECKS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js?v=20261125-35';
+import { getCard, STARTER_DECKS, validateDeck, validateSpecialDeck, DECK_MIN, DECK_SIZE, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS } from './catalog.js?v=20261125-36';
 
 export const MAX_HEART_POINTS = 5000;
 // Internal .core and MAX_CORE remain compatible with saved games and callers.

@@ -1,7 +1,7 @@
 /** Foreground presentation uses reviewed public mask assets or the original
  * image's native alpha. No browser inference, image upload, or persistence.
  */
-import {resolveSummonMask, loadSummonMask, applySummonMask} from './summon-mask.js?v=20261125-35';
+import {resolveSummonMask, loadSummonMask, applySummonMask} from './summon-mask.js?v=20261125-36';
 
 // Kept for the application's QA metadata: this is the cached mask tile size.
 export const FOREGROUND_INPUT_SIZE = 256;

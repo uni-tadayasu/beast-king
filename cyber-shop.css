@@ -134,3 +134,225 @@ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .pro
  html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .shop-side :is(.btn,.text-button){font-size:.875rem!important;min-height:32px;margin:0;line-height:1.35}
  html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode=recipes] .last-pack-link{min-height:32px;height:32px}
 }
+
+/* Collectible boutique finish. These rules own materials and typography only;
+   the viewport budgets, six product tabs and compact task panes above continue
+   to determine size and visibility. Cover art is displayed without a colour
+   filter or an animated wash over the original illustration. */
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop{
+ --bk-prestige-shop-gold:var(--bk-prestige-gold,#d6b576);
+ --bk-prestige-shop-ivory:var(--bk-prestige-ivory,#f3ebdd);
+ --bk-prestige-shop-muted:var(--bk-prestige-muted,#c3baad);
+ --bk-prestige-shop-ink:var(--bk-prestige-ink,#0c1015);
+ --bk-prestige-shop-panel:var(--bk-prestige-panel,#171b21);
+ --bk-prestige-shop-edge:var(--bk-prestige-line,#bfa16b42);
+ --pack-accent:var(--bk-prestige-shop-gold);
+ --pack-glow:transparent;
+ color:var(--bk-prestige-shop-ivory);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .shop-stage{
+ position:relative;isolation:isolate;
+ background:linear-gradient(115deg,#a7803d13,transparent 43%),var(--bk-prestige-shop-panel);
+ border-color:var(--bk-prestige-shop-edge);border-radius:16px;
+ box-shadow:inset 0 1px #f6e9cb12,inset 0 0 0 5px #04070b22,0 16px 40px #0003;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-display{
+ background:radial-gradient(ellipse at 50% 44%,#b9954e13,transparent 70%);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-display::before{
+ border:0;border-radius:50%;background:radial-gradient(ellipse,#e6bf6b0b,transparent 70%);
+ box-shadow:none;animation:none;pointer-events:none;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-foil[class*="pack-BK"]{
+ background:var(--bk-prestige-shop-ink);border-radius:5px;
+ outline:1px solid #d1b57b80;outline-offset:0;
+ box-shadow:1px 1px 0 #e8c98c55,3px 4px 0 #06090e,0 17px 27px #0008;
+ animation:none;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-foil::after{
+ background:linear-gradient(110deg,#fff0ce0d,transparent 15%,transparent 83%,#fff0ce07);
+ opacity:1;animation:none;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-cover-art{
+ object-fit:contain;filter:none;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .product-section-tabs>button{
+ color:var(--bk-prestige-shop-muted);background:var(--bk-prestige-shop-ink);
+ border-color:var(--bk-prestige-shop-edge);border-radius:8px;
+ box-shadow:inset 0 1px #fff8dd06;
+ transition:background-color .18s ease,border-color .18s ease,color .18s ease;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .product-section-tabs>button.active{
+ color:var(--bk-prestige-shop-ivory);border-color:var(--bk-prestige-shop-gold);
+ background:linear-gradient(180deg,#b08b461c,#b08b4607),var(--bk-prestige-shop-panel);
+ box-shadow:inset 0 -2px var(--bk-prestige-shop-gold),inset 0 1px #fff8dd12;
+}
+/* fit-screen marks the shop task tabs with aria-pressed, independently of
+   the expansion selector above. Keep its measured tab tracks intact. */
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .bk-native-screen .product-shop[data-bk-shop-mode]>.bk-screen-tabs[data-bk-tab-kind=shop]>button[aria-pressed=true]{
+ color:var(--bk-prestige-shop-ivory);border-color:var(--bk-prestige-shop-gold);
+ background:linear-gradient(180deg,#b08b461c,#b08b4607),var(--bk-prestige-shop-panel);
+ box-shadow:inset 0 -2px var(--bk-prestige-shop-gold),inset 0 1px #fff8dd12;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-tab-number{
+ color:var(--bk-prestige-shop-gold);font-family:Georgia,"Times New Roman",serif;
+ border-color:#c5a66a40;background:transparent;font-variant-numeric:tabular-nums;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-new-badge{
+ color:var(--bk-prestige-shop-gold);font-size:.75rem;letter-spacing:.06em;text-shadow:none;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-offer>h2{
+ color:var(--bk-prestige-shop-ivory);font-family:var(--serif,serif);font-weight:600;
+ letter-spacing:.035em;text-shadow:0 2px 14px #0004;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-offer>p{
+ color:var(--bk-prestige-shop-muted);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-offer .pack-reading{
+ color:var(--bk-prestige-shop-gold);letter-spacing:.14em;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-edition-seal{
+ color:var(--bk-prestige-shop-gold);background:transparent;border-color:var(--bk-prestige-shop-edge);
+ text-shadow:none;letter-spacing:.08em;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-edition-seal i{
+ color:var(--bk-prestige-shop-gold);font-style:normal;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-balance{
+ color:var(--bk-prestige-shop-gold);background:var(--bk-prestige-shop-ink);
+ border-color:var(--bk-prestige-shop-edge);border-radius:8px;box-shadow:inset 0 1px #fff4db06;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-balance>span{
+ color:var(--bk-prestige-shop-muted);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-balance strong{
+ color:var(--bk-prestige-shop-ivory);font-family:var(--serif,serif);
+ font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.02em;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop :is(.pack-buy,.starter-sale-actions>.btn.primary){
+ color:#201a11;background:linear-gradient(180deg,#eed9af,#c9a96a);
+ border-color:#e6c990;border-radius:8px;
+ box-shadow:inset 0 1px #fff7e9a3,0 5px 15px #0003;text-shadow:none;font-weight:700;
+ transition:background-color .18s ease,box-shadow .18s ease,border-color .18s ease;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop :is(.pack-buy,.starter-sale-actions>.btn.primary) .icon{
+ color:inherit;filter:none;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop :is(.pack-buy,.starter-sale-actions>.btn.primary):disabled{
+ opacity:1;color:#a9a396;background:#292a29;border-color:#74706466;box-shadow:inset 0 1px #ffffff08;
+ cursor:not-allowed;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-offer>.pack-assurance{
+ color:#ded1b8;text-shadow:none;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-collection{
+ color:var(--bk-prestige-shop-muted);font-variant-numeric:tabular-nums;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-collection b{
+ color:var(--bk-prestige-shop-ivory);font-weight:600;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-collection>i{
+ background:var(--bk-prestige-shop-ink);border-color:var(--bk-prestige-shop-edge);box-shadow:inset 0 1px 3px #0006;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .pack-collection>i>span{
+ background:linear-gradient(90deg,#987843,var(--bk-prestige-shop-gold));box-shadow:inset 0 1px #fce7bb66;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop :is(.pack-offer>.text-button,.shop-side .text-button){
+ color:var(--bk-prestige-shop-gold);text-decoration-color:#c4a77370;text-underline-offset:.3em;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .shop-side>article{
+ color:var(--bk-prestige-shop-ivory);background:var(--bk-prestige-shop-panel);
+ border-color:var(--bk-prestige-shop-edge);border-radius:12px;
+ box-shadow:inset 0 1px #f8ebd30a,0 7px 22px #0002;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .shop-side>article>span{
+ color:var(--bk-prestige-shop-gold);background:#c5a46b0e;border-color:#c5a46b42;box-shadow:none;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .shop-side h3{
+ color:var(--bk-prestige-shop-ivory);font-family:var(--serif,serif);font-weight:600;letter-spacing:.02em;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .shop-side p{
+ color:var(--bk-prestige-shop-muted);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop :is(.recipe-launchers>button,.shop-side .btn,.last-pack-link,.starter-sale-actions>.btn:not(.primary)){
+ color:var(--bk-prestige-shop-ivory);background:var(--bk-prestige-shop-ink);
+ border-color:var(--bk-prestige-shop-edge);border-radius:7px;box-shadow:inset 0 1px #fff4d808;
+ transition:background-color .18s ease,border-color .18s ease,color .18s ease;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .recipe-launchers>button{
+ box-shadow:inset 2px 0 color-mix(in srgb,var(--family-accent,#d6b576) 55%,#c9af7a);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .recipe-launchers strong{
+ color:var(--bk-prestige-shop-ivory);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .recipe-launchers small{
+ color:var(--bk-prestige-shop-muted);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .last-pack-link>.icon{
+ color:var(--bk-prestige-shop-gold);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .starter-offer{
+ background:linear-gradient(180deg,#b5945710,transparent 50%),var(--bk-prestige-shop-panel);
+ border-color:var(--bk-prestige-shop-edge);border-top-color:color-mix(in srgb,var(--starter-accent) 45%,#c9b483);
+ border-radius:12px;box-shadow:inset 0 1px #fff0cf0c,0 9px 24px #0003;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .starter-box{
+ background:var(--bk-prestige-shop-ink);border-color:#d9bd86;
+ box-shadow:5px 4px 0 #090c12,6px 4px 0 #b6985d66,11px 15px 22px #0007;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .starter-box::before{
+ border-color:#e6cd925e;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .starter-box-seal{
+ background:#15191eeb;border-color:#dbc18c80;color:var(--starter-accent);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .starter-offer h2{
+ color:var(--bk-prestige-shop-ivory);font-family:var(--serif,serif);font-weight:600;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop :is(.starter-offer-copy>p,.starter-contents,.starter-purchase-note,.shop-footer-note){
+ color:var(--bk-prestige-shop-muted);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop :is(.starter-offer-copy>.eyebrow,.starter-contents b){
+ color:var(--bk-prestige-shop-gold);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop .starter-contents{
+ border-color:var(--bk-prestige-shop-edge);font-variant-numeric:tabular-nums;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop button:focus-visible{
+ outline:2px solid var(--bk-prestige-shop-gold);outline-offset:3px;
+}
+
+/* Purchase disclosures and revealed-card captions use the same materials,
+   while the card's own rarity animation remains untouched. */
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-odds-table{
+ color:var(--bk-prestige-ivory,#f3ebdd);border-color:var(--bk-prestige-line,#bfa16b42);
+ font-variant-numeric:tabular-nums;background:var(--bk-prestige-ink,#0c1015);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-odds-table :is(th,td){
+ border-color:var(--bk-prestige-line,#bfa16b42);
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-odds-table th{
+ color:var(--bk-prestige-gold,#d6b576);background:#bc9b5c12;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-odds-table tbody tr:nth-child(even){
+ background:#ffffff03;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .pack-modal .pack-pull-status{
+ color:var(--bk-prestige-muted,#c3baad);background:var(--bk-prestige-ink,#0c1015);
+ border-color:var(--bk-prestige-line,#bfa16b42);text-shadow:none;
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .pack-modal .new-card>.pack-pull-status{
+ color:var(--bk-prestige-gold,#d6b576);
+}
+@media(hover:hover) and (pointer:fine){
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop :is(.product-section-tabs>button,.recipe-launchers>button,.shop-side .btn,.last-pack-link,.starter-sale-actions>.btn:not(.primary)):hover:not(:disabled){
+  color:var(--bk-prestige-shop-ivory);background:#2b2a27;border-color:var(--bk-prestige-shop-gold);
+ }
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop :is(.pack-buy,.starter-sale-actions>.btn.primary):hover:not(:disabled){
+  background:linear-gradient(180deg,#f7e7c8,#dbbd81);border-color:#f0dbb1;box-shadow:inset 0 1px #fff9eccc,0 7px 20px #0004;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body .product-shop button{transition:none}
+}
+html[data-ui-theme=cyber].bk-fit.bk-landscape-canvas body.reduce-motion .product-shop button{transition:none}

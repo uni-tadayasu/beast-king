@@ -1,0 +1,321 @@
+/* BEAST KING · Prestige. Materials and typography sit above the existing
+   measured landscape layouts. Cards, arena slots and summon canvases retain
+   their own artwork, color, transforms and geometry. */
+html[data-ui-finish="prestige"] {
+  --bk-prestige-ink:#090b0e;
+  --bk-prestige-panel:#151619;
+  --bk-prestige-gold:#ceb889;
+  --bk-prestige-ivory:#f0e9db;
+  --bk-prestige-muted:#b5aea1;
+  --bk-prestige-line:#7663446b;
+  --bk-prestige-serif:Georgia,"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;
+  --bk-prestige-loading-art:url("assets/design-v4/royal-archive.webp");
+  --serif:var(--bk-prestige-serif);
+  --bg:var(--bk-prestige-ink);--panel:var(--bk-prestige-panel);--panel2:#202024;
+  --text:var(--bk-prestige-ivory);--muted:var(--bk-prestige-muted);
+  --line:var(--bk-prestige-line);--gold:var(--bk-prestige-gold);--accent:#d8c49b;
+  --crown-ink:#090b0e;--crown-panel:#151619;--crown-edge:#7663446b;
+  --crown-gold:#ceb889;--crown-aqua:#b7c5bd;--crown-coral:#cf9e95;
+  --cyber-cyan:#d6c194;--cyber-blue:#b1b7b8;--cyber-ink:#090b0e;
+  --cyber-edge:#7663446b;--cyber-dim:#b5aea1;--cyber-radius:6px;
+  accent-color:#ceb889;scrollbar-color:#766344 #121316;
+}
+
+/* The selector prefix matches the legacy layout layer without replacing it. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body {
+  color:var(--bk-prestige-ivory);background:#090b0e;
+  -webkit-font-smoothing:antialiased;
+}
+html[data-ui-finish="prestige"] ::selection{background:#b39a5a66;color:#fff7e4}
+html[data-ui-finish="prestige"] :is(h1,h2,h3,h4):not(:where(.game-card *)){color:#f0e9db;font-weight:600}
+html[data-ui-finish="prestige"] :is(.page-title h1,.modal h2,.rulebook-article h2,.about-section h2){font-family:var(--bk-prestige-serif);letter-spacing:.055em}
+
+html[data-ui-theme="cyber"][data-ui-finish="prestige"] .news-ticker{background:#111215;border-bottom:1px solid #806a443d;color:#c5b69b;box-shadow:none}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"] .news-open{color:#e0cda5;background:#242019;border-color:#7f69447a;font-weight:500;letter-spacing:.08em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"] .news-open::before{background:#d4b67d;box-shadow:none}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"] .news-run{color:#c4b9a3;font-weight:400}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"] .news-toggle{background:#17181b;color:#c8b68f;border-color:#806a444d}
+
+
+/* Obsidian shell and restrained metal controls. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .royal-shell{background:radial-gradient(ellipse at 76% 0,#a28a4f0d,transparent 52%),linear-gradient(120deg,#0b0d10,#111216 50%,#090b0e)}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .royal-shell::before{background:linear-gradient(110deg,transparent 30%,#d8bd7904 49%,transparent 70%);background-size:auto;opacity:1}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.page-label,.eyebrow,.court-kicker){color:#cbb68d;font-weight:500;letter-spacing:.19em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.page-title p,.modal-intro,.keyword-help,.inspect-muted){color:#b5aea1}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.btn,.icon-btn):not(:where(.product-shop *)){color:#e8dfcd;border-color:#7663447a;background:linear-gradient(145deg,#242326,#141519);border-radius:5px;box-shadow:inset 0 1px #fff0cd0a,0 3px 10px #0004;font-weight:500}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.btn.primary,.about-play,.entry-start-button):not(:where(.product-shop *)){color:#211d15;background:linear-gradient(108deg,#aa8d5e,#e1cfa4 48%,#bda171);border:1px solid #deca9b;box-shadow:inset 0 1px #fff9df8c,0 5px 16px #0005;font-weight:700;text-shadow:none}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.btn,.icon-btn):not(:where(.product-shop *)):hover:not(:disabled){color:#fff2d8;border-color:#b29a70;background:linear-gradient(145deg,#332e27,#1b1b1e);box-shadow:inset 0 1px #f9e6bc18,0 5px 16px #0005}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .btn.primary:not(:where(.product-shop *)):hover:not(:disabled){color:#1a1710;border-color:#f2dfb4;background:linear-gradient(108deg,#c7aa79,#f0dfb8 48%,#d3b782);box-shadow:inset 0 1px #fff8e5,0 6px 18px #0007}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.btn.danger,.btn[data-action="deck-bank-delete"],.btn[data-action="confirm-deck-delete"]){background:#2a1d20;border-color:#976461;color:#ebc2bb}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(button,a,input,select,textarea):focus-visible{outline:2px solid #e6d2a7!important;outline-offset:3px;box-shadow:0 0 0 5px #090b0e!important}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .text-button:not(:where(.product-shop *)){color:#d5c197}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(input:not([type=range]),select,textarea){color:#f0e7d6;background-color:#0b0d10;border-color:#75684e;border-radius:4px;box-shadow:inset 0 2px 7px #0005}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body input::placeholder{color:#9f998e}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m4 6 4 4 4-4' fill='none' stroke='%23d6c194' stroke-width='1.5'/%3E%3C/svg%3E")}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body input[type=range]{accent-color:#cbb68d}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.count-pill,.online-badge,.tag,.recipe-family-badge){background:#25231e;color:#e1cfab;border-color:#7663448a;border-radius:3px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.modal,.online-panel,.online-profile,.online-waiting,.mode-feature,.campaign-chapter,.practice-panel,.rulebook-card,.rulebook-article,.rulebook-page,.event-selected){background:linear-gradient(135deg,#202024,#111316);border-color:#7663448a;border-radius:6px;box-shadow:inset 0 1px #e8d8b310,0 16px 46px #0007}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .modal-backdrop{background:#050608dc;backdrop-filter:blur(14px)}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .modal{border-top:1px solid #b39a68;color:#eee4d2;box-shadow:inset 0 0 0 5px #cbb68d05,0 24px 90px #000a}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .modal h2{font-family:var(--bk-prestige-serif);font-weight:500;color:#f0e6d2;letter-spacing:.04em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .modal-close{color:#dac7a1;background:#1a1b1e;border-color:#76634480;border-radius:4px}
+/* Center notifications within the logical game stage, including rotated phones. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #toasts{left:50%;right:auto;max-width:min(calc(100% - 30px),560px)}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.toast,.deck-check-note){color:#e7e4d0;background:#222a26;border-color:#7c927d;border-radius:5px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .toast.error{color:#f2d3c9;background:#302121;border-color:#b48278}
+
+/* A thin editorial news strip, engraved wordmark and instrument-like dock. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen.royal-shell .site-header{background:linear-gradient(180deg,#19191cf5,#0d0f12f5);border-bottom-color:#76634480;box-shadow:0 4px 24px #0005}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .site-brand img{filter:saturate(.45) sepia(.2) drop-shadow(0 2px 5px #0009)}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .site-brand strong{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:.18em;color:#e4d3af;text-shadow:0 1px #fff1}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .site-brand small{color:#aaa394;letter-spacing:.15em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .site-location{color:#e9e0cf;border-color:#6b5b3d70}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .site-location small{color:#b49c73}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.site-controls .icon-btn,.profile-button){color:#cdb88e;background:linear-gradient(145deg,#232327,#121316);border-color:#7461456b;border-radius:5px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .treasure-wallet{color:#e1c996;background:#18181b;border-color:#7b664b85;border-radius:5px;box-shadow:inset 0 1px #eed6a20b}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .treasure-wallet strong{font-family:Georgia,serif;font-weight:400}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen.royal-shell .navigation-dock{background:linear-gradient(180deg,#1c1c20f5,#101114fc);border-color:#79674870;border-radius:7px;box-shadow:inset 0 1px #eed6a20a,0 -6px 24px #0004}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen.royal-shell .dock-link{color:#bcb5a7;font-weight:500;border-radius:4px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen.royal-shell .dock-link.active{color:#ead7ad;border-color:#9f845080;background:linear-gradient(135deg,#3a3022,#1d1d1e);box-shadow:inset 0 -1px #c9af77,inset 0 1px #e6d1a31a}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen.royal-shell .dock-link:not(.active):hover{color:#f0e1bf;background:#d1b6810a;border-color:#8b754947}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.site-copyright,.site-copyright a){color:#a49b8b}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .page-title h1{font-family:var(--bk-prestige-serif);font-weight:500;color:#eee5d4;letter-spacing:.055em}
+
+/* A royal archive entry. The right-hand crown remains visible on tall screens. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-screen{background:#090b0e;color:#f0e7d5}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-scene{background-image:url("assets/design-v4/royal-archive.webp");background-position:center;background-size:cover;opacity:1;filter:none;animation:none}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-vignette{background:linear-gradient(90deg,#06090db3,transparent 60%),linear-gradient(0deg,#06090db3,transparent 32%,transparent 75%,#06090d66)}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-screen::after{inset:16px;border:1px solid #c3a56a24;background:none;mask-image:none;z-index:0}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-mark{color:#bfa77e}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-mark img{filter:saturate(.45) sepia(.2) drop-shadow(0 2px 6px #0009)}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-mark>span{letter-spacing:.24em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-title-en{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:.09em;color:#efdfbc;text-shadow:0 2px 2px #000,0 6px 32px #0008}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-title-ja{font-family:var(--bk-prestige-serif);font-weight:500;letter-spacing:.28em;color:#d4c5a8}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-edition{color:#cbb78e;background:#151517b3;border:1px solid #977b474d;border-radius:2px;box-shadow:inset 0 1px #f5db9d08}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-card-total{color:#e5d1a8;font-family:Georgia,serif;font-weight:400;letter-spacing:.08em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-invitation{font-family:var(--bk-prestige-serif);color:#d0c7b6;letter-spacing:.1em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-start-panel{background:linear-gradient(145deg,#1c1d21e8,#0b0e12f2);border:1px solid #ac8e5d80;border-radius:5px;box-shadow:0 18px 60px #0006,inset 0 1px #f2ddb221;backdrop-filter:blur(16px)}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-start-panel::before{left:22px;right:22px;width:auto;background:linear-gradient(90deg,transparent,#dbc391,transparent)}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-name-heading label{color:#ece2ce;font-weight:500}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.entry-name-heading>span,.entry-name-note,.entry-starter-choice small){color:#b2a995}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(#entry-profile-label,.entry-starter-choice label){color:#d0c5af;font-weight:500}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-input-wrap{background:#090c10;border-color:#74664e;border-radius:4px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-input-mark{color:#c6ad7d}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-profile-option{background:linear-gradient(145deg,#232326,#111419);border-color:#72674c66;border-radius:4px;box-shadow:inset 0 1px #e9d7b00a}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-profile-option>span{color:#d5cbb6}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-profile-option.selected,
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-profile-option[aria-pressed="true"]{background:linear-gradient(145deg,#413627,#24211c);border-color:#c3a570;box-shadow:inset 0 -1px #e1c994;color:#f7e7c6}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-profile-option:hover{background:#312b23;border-color:#b39a68}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-profile-option[aria-pressed="true"]::after{background:#e5cca1;box-shadow:none}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-start-button{border-radius:3px;letter-spacing:.18em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-start-button:hover{filter:brightness(1.05);box-shadow:0 8px 24px #0006,inset 0 1px #fff3d5}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-name-error{color:#f1b3a1}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-deck-rule{color:#bcb29e}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-deck-rule b{font-family:Georgia,serif;font-weight:400;color:#e3ce9f}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-deck-rule .icon{color:#b6a078}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.entry-footer,.entry-footer a){color:#b8ab90}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-art-caption{font-family:var(--bk-prestige-serif);color:#e8d6b2;letter-spacing:.08em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-art-caption small{color:#bca67c}
+
+/* Home: illustrated mode invitations, gallery lighting and a lacquer deck case. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .product-home>.home-mode-rail>.home-mode{background:linear-gradient(100deg,#14161bf7,#131418a6),var(--prestige-mode-art) 75% 50%/cover;border-color:#8b744754;border-radius:5px;box-shadow:inset 0 1px #e4c7850d,inset 0 -1px #0008}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-mode-solo{--mode-light:#c9b68f;--prestige-mode-art:url("assets/design-v2/backgrounds/solo-illustrated.webp")}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-mode-multi{--mode-light:#b4c4c3;--prestige-mode-art:url("assets/design-v2/backgrounds/multi-illustrated.webp")}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-mode-rank{--mode-light:#d2bb86;--prestige-mode-art:url("assets/design-v2/backgrounds/rank-illustrated.webp")}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-mode-event{--mode-light:#c7b1aa;--prestige-mode-art:url("assets/design-v3/backgrounds/realm-court.webp")}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .product-home>.home-mode-rail>.home-mode:hover{background:linear-gradient(100deg,#24231ef5,#1c1b1699),var(--prestige-mode-art) 75% 50%/cover;border-color:#baa174;box-shadow:inset 0 1px #f5d6a324,0 5px 18px #0005}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-mode>i{background:linear-gradient(145deg,#302b21,#15171b);border-color:#a68c5559;border-radius:50%;color:var(--mode-light);box-shadow:inset 0 1px #f0ddb21a,0 4px 9px #0003}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .product-home>.home-mode-rail>.home-mode strong{font-family:var(--bk-prestige-serif);font-weight:600;letter-spacing:.06em;color:#ece2cd}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .product-home>.home-mode-rail>.home-mode small{color:#c1ac80;font-weight:400;letter-spacing:.16em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .product-home>.home-mode-rail>.home-mode em{color:#b8af9d}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .product-home>.home-showcase{background:linear-gradient(120deg,#121519,#0b0d10);border:1px solid #947a4f80;border-radius:6px;box-shadow:inset 0 0 0 5px #ceb88905,inset 0 1px #e5c38220,0 14px 36px #0004}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-scenery{background:linear-gradient(90deg,#0b0d10e8,transparent 90%),url("assets/design-v4/royal-archive.webp") 70% center/cover;opacity:.36;filter:none}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .home-intro h1{font-family:var(--bk-prestige-serif);font-weight:500;letter-spacing:.08em;color:#f0e8d7;text-shadow:0 3px 18px #0008}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-intro h1 em{color:#d7bd89}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-intro>p:last-of-type{color:#c4b9a6}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-edition{border-left:1px solid #c6a771}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-edition>span{color:#bca578;font-family:Georgia,serif;letter-spacing:.16em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-edition>strong{color:#ded3bd;font-weight:500}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-card-fan::before{border-color:#ae8d4f40;box-shadow:0 15px 55px #a17c2c16;background:radial-gradient(ellipse,#cab47a0c,transparent 70%)}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-stage-foot{border-top-color:#8b744747;color:#beb198}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-stage-foot .court-expansion-link{color:#e0c898}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-deckbox{background:radial-gradient(ellipse at 100% 0,#aa8c4910,transparent 65%),linear-gradient(140deg,#232227,#111317);border:1px solid #90764e70;border-radius:5px;box-shadow:inset 0 1px #e5c38215,0 10px 28px #0004}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-deck-top{color:#c0a77d;font-weight:400;letter-spacing:.15em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-deckbox h2{font-family:var(--bk-prestige-serif);color:#eee0c4;font-weight:500}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-deck-count,
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-deckbox>p{color:#bcb19e}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-deck-count b{font-family:Georgia,serif;font-weight:400;color:#f0e5cf}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .deck-ready{color:#b3c9ac}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-shortcuts>button{color:#e0d4be;background:linear-gradient(135deg,#1c1d20,#111317);border-color:#7e6b454d;border-radius:4px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-shortcuts>button:hover{border-color:#b89c6c;background:#27251f}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-shortcuts small{color:#aca18e}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-record{color:#b7ab97;background:#141519;border-color:#7d69464d;border-radius:4px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-record b{color:#e7d5af;font-family:Georgia,serif;font-weight:400}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-record button,
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-resume{color:#ddc79b;background-color:#201f1c;border-color:#9d824b70}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .product-home>.home-originbar{background:linear-gradient(180deg,#1b1b1f,#111316);border-color:#7c69474d;border-radius:5px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-originbar strong{color:#e1d5bd;font-family:var(--bk-prestige-serif);font-weight:500}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-originbar small{color:#b6a079;letter-spacing:.16em}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-originbar nav button{background:#1c1d20;border-color:#8c75474d;border-radius:4px;color:#daceb5}
+
+/* Card library, deck workshop and inspection: quiet mounts around original artwork. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.transfer-source,.deck-panel,.deck-bank-toolbar,.filter-bar,.workshop-tools,.deck-panel-head,.deck-panel-foot,.transfer-workspace){background:#15171b;border-color:#7c69475e;box-shadow:inset 0 1px #e5c38208}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.transfer-source,.deck-panel){border-radius:5px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.transfer-tabs,.deck-tabs,.filter-tabs,.workshop-tabs,.settings-tabs,.bk-screen-tabs) button{background:#1b1c20;border-color:#6d60474d;color:#c7bcaa;border-radius:4px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.transfer-tabs,.deck-tabs,.filter-tabs,.workshop-tabs,.settings-tabs,.bk-screen-tabs) button.active,
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.tab.active,.tab[aria-selected="true"],.bk-screen-tabs button[aria-selected="true"],.bk-screen-tabs button[aria-pressed="true"]){color:#efdbaf;background:linear-gradient(120deg,#3a3123,#23221f);border-color:#b59b6b;box-shadow:inset 0 -1px #d5b97c}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.transfer-card,.deck-image-slot){background:#101215;border-color:#76634466;box-shadow:0 4px 12px #0004}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.transfer-counts,.card-owned){background:#18191c;color:#c7bba5}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .card-owned b{color:#e5c99a}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.detail-info h2,.recipe-heading h2){font-family:var(--bk-prestige-serif);color:#eee0c4;font-weight:500}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .detail-effect{color:#eee5d4;background:#22211e;border-color:#8e794d80;border-left-color:#d3b47b;border-radius:4px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.detail-info .keyword-help,.detail-info .flavor,.inspect-stat,.recipe-note){color:#b6ab97}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .recipe-emblem{background:linear-gradient(145deg,#332d22,#17191d);color:#dec38d;border-color:#967a4d80;border-radius:5px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .recipe-summary>span{background:#22211f;border-color:#816d484d;color:#d2c3a8}
+
+/* Battle mode invitations and common information surfaces. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.solo-layout,.multi-layout,.rank-layout,.event-layout){--mode-accent:#cbb68d}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.mode-feature,.campaign-chapter,.practice-panel,.event-selected,.online-panel)::before{opacity:.12;filter:saturate(.45)}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.mode-feature h2,.campaign-chapter h2,.practice-panel h2,.event-selected h2,.online-panel h2,.mode-title){font-family:var(--bk-prestige-serif);font-weight:500;color:#eee0c4}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.mode-description,.mode-feature p,.online-panel p,.campaign-chapter p,.event-selected p){color:#beb29f}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.campaign-node,.event-deck,.event-card,.practice-opponent,.online-room-row,.rank-stat,.rank-summary,.mode-stat){background-color:#1b1d20;border-color:#89724b66;color:#ded2bc}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.campaign-node.active,.campaign-node.current,.event-deck.active,.event-card.selected){background-color:#302a20;border-color:#c1a16b;color:#eeddbb;box-shadow:inset 0 0 0 1px #d8b47a26}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.rank-emblem,.mode-emblem,.online-room-code){color:#d7bb84;border-color:#a2844e70;text-shadow:none}
+
+/* Duel chrome only. Never change field or summon scene geometry. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.duel-top,.duelist,.duelist-info,.duelist-extras,.hand-section,.hand-inspector,.duel-sidebar,.battle-log-drawer,.duel-help,.selection-panel){background-color:#121518;border-color:#84714e75;color:#e1d6c0;box-shadow:inset 0 1px #ebd6a80a}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.duelist-name,.duel-help h4,.hand-inspector h3,.selection-text strong){color:#eadfc8}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.duel-turn,.turn-label,.duel-phase,.phase-label){color:#dcc18c;background-color:#28251e;border-color:#9c805270}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .end-turn{color:#241f15;background:linear-gradient(115deg,#a88b59,#dfc795);border-color:#d7bd84;box-shadow:inset 0 1px #fff2c86b,0 4px 14px #0005}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .hand-card.selected{box-shadow:0 0 0 2px #e1c58b,0 6px 22px #0008}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .hand-card.playable{box-shadow:0 0 0 1px #c5ac787a,0 4px 12px #0007}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .energy-orb{background:radial-gradient(circle at 30% 25%,#fff0c0,#a6894f 55%,#50422d);border-color:#d4ba82;box-shadow:0 0 8px #b18d3e20}
+
+/* Settings, guides and account surfaces share the same material hierarchy. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .cyber-sound-group{background:#17191d;border-color:#8a754e66;border-radius:5px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .setting-row{color:#e6ddcc;border-color:#806d483d}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.setting-row small,.experience-setting-bottom small){color:#b4aa99}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .setting-volume label{color:#d9cdb6}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .setting-volume output{color:#e2c995}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .toggle{background:#302f2d;border-color:#81775e;box-shadow:inset 0 1px 4px #0005}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .toggle.on{background:#6e6041;border-color:#cbb080;box-shadow:inset 0 1px #e6cd991f}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .toggle span{background:#f0e3c9}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.about-header,.about-footer,.about-section,.rulebook-sheet,.rulebook-spread,.operator-page,.operator-banner,.account-card,.account-profile){color:#e6dcc7;background-color:#15171b;border-color:#7f6c4966}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.about-page p,.rulebook p,.rulebook li,.account-copy,.operator-page p){color:#bdb19d}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.operator-tabs button,.operator-action,.account-tab,.account-nav button){background:#24231f;color:#dcc9a3;border-color:#8d754d80}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.account-workspace,.account-workspace-header,.account-task-panel,.account-summary,.op-console,.op-console-head,.op-main,.op-surface,.op-metrics,.op-record,.op-inbox){background:linear-gradient(140deg,#1d1e22,#101316);border-color:#806b4875;color:#e1d4bc;box-shadow:inset 0 1px #e5c3820a}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.account-task-tabs button,.account-button,.op-nav button,.op-button){color:#ddc9a2;background:#25241f;border-color:#92784e80;box-shadow:inset 0 1px #f0d7a60a}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.account-task-tabs button.active,.op-nav button.active,.account-button.primary,.op-button.primary){color:#201b12;background:linear-gradient(110deg,#ac905e,#dfc99d);border-color:#d5bb88}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.account-input,.op-field input,.op-field select,.op-field textarea){background:#0b0d10;color:#ebdfc7;border-color:#806d4c}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.account-workspace small,.op-surface small,.op-metric-label,.account-summary-label){color:#b7aa93}
+
+/* News reading and loading must not inherit the former cyan chrome. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .news-dialog{background:linear-gradient(145deg,#202024,#101215);border-color:#a48a5a80;color:#e9deca;box-shadow:0 20px 80px #000b}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .news-dialog-header{background:#17191c;border-color:#806a4359}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .news-items article{background:#1c1d20;border-color:#7e69464d}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .news-items h3{color:#e5d0a7;font-family:var(--bk-prestige-serif);font-weight:500}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .news-items p{color:#c4b9a5}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .news-items time{color:#bba177}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.news-page-nav button,.news-return){color:#dbc69b;background:#26231d;border-color:#947d546e}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-loading-track{background:#cbb78514;border-color:#ddc79b24}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-loading-track>i{background:linear-gradient(90deg,#8b7047,#d9bd81 70%,#fff0cc);box-shadow:0 0 10px #e3c58935}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-touch-ring{border-color:#d7bd86;box-shadow:0 0 8px #c6a16626}
+
+
+/* The complete entry ceremony fits beside the artwork on generous screens.
+   Short landscape and rotated phones keep the existing measured two columns. */
+@container beast-viewport (min-width:1100px) and (min-height:700px){
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-layout{display:flex;align-items:center;padding:14px clamp(36px,4.5cqw,90px);gap:36px}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-content{display:grid;width:min(540px,46%);max-width:540px;height:auto;margin:0;grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(5,auto);gap:12px;align-content:center;align-items:start}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-edition{grid-column:1;grid-row:1;font-size:.75rem;padding:5px 10px;margin:0;justify-self:start}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-title{grid-column:1;grid-row:2;margin:0}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-title-en{font-size:clamp(2.8rem,4.25cqw,4.25rem);line-height:1.12;letter-spacing:.075em;margin:0 0 10px;white-space:nowrap}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-title-ja{font-size:1.125rem;line-height:1.5;letter-spacing:.38em}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-invitation{grid-column:1;grid-row:3;margin:0 0 4px;font-size:1rem;line-height:1.65}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-start-panel{grid-column:1;grid-row:4;width:100%;max-width:510px;margin:0;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.25fr);grid-template-rows:none;gap:10px 14px;padding:16px 20px;align-items:center}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-name-heading{margin:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-name-heading label{font-size:.875rem}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-name-heading>span{font-size:.6875rem}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native #entry-player-name{height:44px;min-height:44px;padding:8px 10px 8px 39px;font-size:1rem!important}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-input-mark{left:11px}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native :is(.entry-name-error,.entry-profile-picker,.entry-starter-choice,.entry-start-button,.entry-name-note){grid-column:1/-1;margin:0}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native #entry-profile-label{font-size:.75rem;margin:0 0 6px}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-profile-options{gap:5px}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-profile-option{height:50px;min-height:50px;padding:3px 0;gap:1px}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-profile-option img{width:28px;height:28px}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-profile-option>span{font-size:.75rem;line-height:1.2}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-starter-choice{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:center;gap:5px 12px}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-starter-choice label{font-size:.75rem;line-height:1.5;margin:0}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-starter-choice select{min-height:38px;height:38px;font-size:.875rem!important;margin:0;padding:6px 28px 6px 10px}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-starter-choice small{grid-column:1/-1;font-size:.6875rem;line-height:1.5;margin:0}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-start-button{min-height:44px;font-size:1rem;line-height:1.3}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-name-note{font-size:.6875rem;line-height:1.5}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-deck-rule{grid-column:1;grid-row:5;margin:0;font-size:.75rem;gap:10px}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-deck-rule b{font-size:1rem}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-entry-native .entry-art-caption{display:flex;margin:0 2cqw 24px 0;font-size:.875rem}
+}
+@container beast-viewport (max-height:540px){
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-screen::after{inset:8px}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-vignette{background:linear-gradient(90deg,#06090dd9,transparent 75%),linear-gradient(0deg,#06090da6,transparent 55%)}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-title-en{letter-spacing:.06em}
+ html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-title-ja{letter-spacing:.18em}
+}
+@media (prefers-reduced-motion:reduce){
+ html[data-ui-finish="prestige"] :is(.entry-scene,.entry-content){animation:none}
+ html[data-ui-finish="prestige"] :is(.entry-start-button,.home-mode,.dock-link){transition:none}
+}
+
+/* Actual mode and late home selectors retain their measured tracks. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .home-command .home-shortcuts>button{color:#e0d4be;background:linear-gradient(135deg,#1c1d20,#111317);border-color:#7e6b454d;border-radius:4px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .bk-native-screen .home-command .home-shortcuts>button:hover{background:#28251f;border-color:#b49b6e}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.duel-top,.duelist,.duelist-info,.duelist-extras,.hand-section,.hand-inspector,.duel-sidebar,.battle-log-drawer,.duel-help,.selection-panel,.mobile-action){background:linear-gradient(135deg,#1d1e22f5,#111417f7);color:#e1d6c0;border-color:#8a755378;box-shadow:inset 0 1px #e3c4860c,0 5px 16px #0004}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .enemy.duelist{background:linear-gradient(100deg,#2b2224f5,#19171bf5);border-color:#98726880;box-shadow:inset 2px 0 #b9958b}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .duelist:not(.enemy){box-shadow:inset 2px 0 #b9a070}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.duel-help>p,.hand-inspector-effect,.hand-inspector-scroll p,.selection-text p){color:#d4c8b3}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.solo-mode,.mode-lobby,.event-arena){background:linear-gradient(135deg,#16181c,#0d1013);border-color:#846e465e;border-radius:6px;box-shadow:inset 0 1px #e7c9870c}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.campaign-overview,.campaign-focus,.campaign-round,.solo-practice,.solo-level,.event-opponent,.event-recipe-card,.event-your-deck){background:linear-gradient(140deg,#222226,#121519);border-color:#8a714780;color:#e8ddc6;border-radius:5px;box-shadow:inset 0 1px #f0d79b0a}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.campaign-round.active,.campaign-round.selected,.solo-level.active,.solo-level.selected,.event-opponent.selected){background:linear-gradient(140deg,#342e24,#1e1d1c);border-color:#c1a16b;box-shadow:inset 2px 0 #cfb27a}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.event-opponent strong,.event-your-deck strong,.campaign-focus h2,.solo-practice h2){color:#ecdfc4;font-family:var(--bk-prestige-serif);font-weight:500}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.event-opponent small,.event-opponent em,.event-selected-stats,.event-start-note,.event-footer,.event-your-deck small,.event-selected-copy>p,.event-heading p,.event-pagination,.event-pagination small,.campaign-overview p,.campaign-focus p,.campaign-round small,.solo-practice p,.solo-level small){color:#bfb29d}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .event-opponent::after{background:linear-gradient(90deg,#121416ed,#17191bcc 65%,#17191b66)}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .event-selected::after{background:linear-gradient(0deg,#15171bf5 44%,#15171b60)}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.event-filters>button,.event-stage-tabs>button,.rulebook-tabs>button){color:#c8bba3;background:#1b1d20;border-color:#846e4a70;border-radius:4px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.event-filters>button.active,.event-stage-tabs>button.active,.rulebook-tabs>button.active){color:#ecd7ad;background:linear-gradient(120deg,#3a3123,#24221e);border-color:#b39864;box-shadow:inset 0 -1px #d0b177}
+
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.hand-effects-trigger,.battle-log-trigger,.hand-inspector-choice,.hand-inspector-close,.deck-zone-tabs>button,.detail-reading-tabs>button){color:#d6c7aa;background:linear-gradient(135deg,#25241f,#16181c);border-color:#8b744b70;box-shadow:inset 0 1px #e4c6870c}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.hand-inspector-choice.active,.deck-zone-tabs>button.active,.detail-reading-tabs>button[aria-pressed="true"]){color:#efdbaf;background:linear-gradient(120deg,#3a3022,#24221d);border-color:#bda06b;box-shadow:inset 0 -1px #d5b67e}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .detail-stats>span{background:#24221e;border-color:#88704a66;color:#d9c7a4}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .home-resume small{color:#bbae99}
+
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .solo-mode .campaign-focus-art{background:linear-gradient(100deg,#111317c2,#302c22d9),url("assets/fields/solo.svg") center 42%/cover;border-bottom-color:#9d845947}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.solo-mode .campaign-focus-art>span,.mode-lobby .panel-symbol){color:#dec38e;background:linear-gradient(135deg,#343025,#181a1e);border-color:#a48a5266;box-shadow:0 5px 18px #0004}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .solo-mode .campaign-focus-art>span::after{border-color:#b79b6138}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .mode-lobby .room-join{background:linear-gradient(135deg,#252522,#12161a);border-color:#9c815159;border-radius:5px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .mode-lobby .room-join label{color:#cec1a7}
+
+/* Visual QA: native form arrows and account-specific measured typography. */
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body .entry-content{animation:none}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body select{background-repeat:no-repeat;background-position:right 10px center;background-size:16px 16px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #entry-player-name{color:#f0e6d2;background:#0c0f13;border-color:#75664a}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body :is(.hand-effects-trigger[aria-expanded="true"],.battle-log-trigger[aria-expanded="true"]){color:#ecd5a6;background:#3a3022;border-color:#bd9e65;box-shadow:inset 0 -1px #d8b982}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace h2,
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .op-console h2{font-family:var(--sans);font-weight:600;color:#eee1c7}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .eyebrow{color:#c6ad7e}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace :is(.account-workspace-header,.account-task-panel){background:transparent;border-color:#806b4859}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace :is(.account-summary,.account-overview,.account-next-step,.account-link-step,.account-code-card,.account-devices-panel,.account-device-list>li){background:linear-gradient(135deg,#222327,#121519);border-color:#8f775166;color:#e2d5bd;box-shadow:inset 0 1px #edcc8e0c;border-radius:5px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .account-conflict{background:linear-gradient(135deg,#2d2922,#17191d);border-color:#ae8c5270;border-radius:5px}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .account-task-tabs button{color:#cfc0a7;background:#1d1e21;border-color:#8f754966;border-radius:4px;font-weight:500}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .account-task-tabs button[aria-selected="true"]{color:#ead4aa;background:linear-gradient(120deg,#3b3225,#24221f);border-color:#b79a65;box-shadow:inset 0 -1px #d9ba80}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace :is(h3,.account-link-step h3,.account-summary strong,.account-device-copy strong){color:#eddfc6}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace :is(p,.account-link-step>p,.account-conflict>p,.account-label,.account-sync-meta,.account-device-copy small,.account-section-heading>span,.account-summary small,.account-link-result>p,.account-conflict-options small){color:#c5b9a3}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .account-button{color:#e0cba5;background:linear-gradient(135deg,#2b2822,#191b1e);border-color:#9a7e506e;box-shadow:inset 0 1px #edcd9020;border-radius:4px;font-weight:500}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .account-button.primary{color:#241e13;background:linear-gradient(110deg,#b09461,#e3d0a4);border-color:#ddc28f;font-weight:700}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .account-button.quiet{color:#ccb88d;background:#1b1d20}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .account-button:hover:not(:disabled){border-color:#ddbf88;box-shadow:inset 0 1px #f0d6a12a,0 4px 12px #0004}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .account-input{color:#ece0c7;background:#0b0e12;border-color:#82704b}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace :is(.account-task-symbol .icon,.account-code-placeholder .icon,.account-device-mark,.account-link-code,.account-sync-meta b){color:#d7bd8b}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace :is(.account-scope,.account-device-pagination){border-color:#8b714347;color:#c6b698}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .account-scope small{color:#b1a48b}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .account-section-heading h3>span{color:#e2cca0;background:#30291e;border-color:#a1845066}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .account-status{color:#cad3b9;background:#242b25;border-color:#87957980}
+html[data-ui-theme="cyber"][data-ui-finish="prestige"].bk-fit.bk-landscape-canvas body #modal-root .account-fullscreen .account-workspace .account-status.status-conflict{color:#eed09b;background:#3b3020;border-color:#b3905d}
