@@ -104,6 +104,11 @@ async function captureLayout(name){
  await mkdir('artifacts/layout',{recursive:true});
  await writeFile('artifacts/layout/'+name+'.png',Buffer.from(shot.data,'base64'));
 }
+async function captureCompletedLayout(name){
+ await until(()=>evaluate('(()=>{const layer=document.getElementById("bk-loading-layer");return !!layer&&layer.hidden&&!layer.classList.contains("is-loading")})()'),name+' artwork loader is dismissed');
+ await evaluate('document.fonts.ready.then(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true)))))');
+ await captureLayout(name);
+}
 const loadingReview={boot:null,cases:[]};
 async function navigateWithBootReview(url){
  const gate=holdServerAsset('/app.js');
@@ -238,6 +243,23 @@ async function pointerClick(selector,mobile,label){
   await send('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',buttons:0,clickCount:1,x:point.x,y:point.y});
  }
 }
+async function waitForCameraLayoutStable(label){
+ // Closing settings refits the page before the camera projects the next frame.
+ // Readiness is geometric stability, never the result of the collision checks.
+ let previous=null,stable=0;
+ await until(async()=>{
+  const current=await evaluate(`(()=>{
+   const arena=document.querySelector('.arena'),canvas=arena?.querySelector('.bk-summon-canvas');if(!arena||!canvas)return null;
+   const rows=[...arena.querySelectorAll(':scope > .field-row')],units=[...arena.querySelectorAll('.field-unit')].sort((a,b)=>a.dataset.uid.localeCompare(b.dataset.uid));
+   const nodes=[arena,...rows,...units.flatMap(unit=>[unit,unit.querySelector('.unit-name'),unit.querySelector('.unit-stats')])];if(nodes.some(node=>!node))return null;
+   return {identities:[canvas.dataset.summonCount,canvas.dataset.summonMotion,...rows.map(row=>'row:'+row.dataset.owner),...units.map(unit=>unit.dataset.player+':'+unit.dataset.uid)],positions:nodes.flatMap(node=>{const r=layoutRect(node);return [r.x,r.y,r.width,r.height]}),bodyHeight:Number(canvas.dataset.cameraBodyHeight),cameraRectHeight:Number(canvas.dataset.cameraRectHeight)};
+  })()`);
+  const finite=current&&[...current.positions,current.bodyHeight,current.cameraRectHeight].every(Number.isFinite);
+  const unchanged=finite&&previous&&current.identities.length===previous.identities.length&&current.identities.every((value,index)=>value===previous.identities[index])&&current.positions.length===previous.positions.length&&current.positions.every((value,index)=>Math.abs(value-previous.positions[index])<=.5)&&Math.abs(current.bodyHeight-previous.bodyHeight)<=.000001&&Math.abs(current.cameraRectHeight-previous.cameraRectHeight)<=.5;
+  stable=finite?(unchanged?stable+1:1):0;previous=current;
+  return stable>=3;
+ },label+' reaches settled fitted camera geometry');
+}
 async function assertCameraGeometry(label){
  const result=await evaluate(`(()=>{
   const arena=document.querySelector('.arena'),field=layoutRect(arena),viewport=layoutViewport(),canvas=arena.querySelector('.bk-summon-canvas');
@@ -330,6 +352,7 @@ async function runSummonSmoke(){
   await click('.duel-top [data-action=settings]');await click('[data-action=settings-tab][data-tab=motion]');
   assert.equal(await evaluate('document.querySelector("[data-action=motion]").getAttribute("aria-checked")'),'true');
   await click('[data-action=motion]');await click('.modal-close');
+  await waitForCameraLayoutStable(label+' after closing motion settings');
   await assertSummonScene(expected,label+' with animation disabled');
   assert.equal(await evaluate('document.querySelector(".bk-summon-canvas").dataset.summonMotion'),'off',label+' stops movement rather than hiding creatures');
   const attacker=expected.find(unit=>unit.owner===0);
@@ -580,6 +603,7 @@ try{
  const general=['.navigation-dock>.dock-link','.site-controls>button'];
  for(const {width,height,mobile} of viewports){
   await viewport(width,height,mobile);
+  const reviewScreen=width===1366&&height===768||width===390&&height===844;
   for(const [page,selectors] of [['home',['.home-mode-rail>.home-mode']],['deck',['.deck-panel>.workshop-tools,.deck-panel>.deck-list','.deck-panel>.workshop-tools>*','.transfer-source>.workshop-tools,.transfer-source>#card-results','.transfer-source>.workshop-tools>*','.deck-list>.results-meta,.deck-list>.deck-image-grid,.deck-list>.deck-list-pagination','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination','.transfer-card>.transfer-counts,.transfer-card>.transfer-actions','.deck-bank-actions>.btn','.deck-display-tabs>.btn','.deck-scope-tabs>.btn','.deck-source-tools>.deck-scope-tabs,.deck-source-tools>.btn,.deck-source-tools>.text-button']],['collection',['.filter-bar>.search-field,.filter-bar>.tabs,.filter-bar>.filters-secondary','#card-results>.results-meta,#card-results>.cards-grid,#card-results>.pagination']],['shop',['.product-section-tabs>button']],['rules',['.rulebook-tabs>button']]]){
    await click('.navigation-dock [data-nav='+page+']');await waitElement('main[data-page='+page+']');await waitElement('.bk-native-pane>.bk-fit-pane[data-fit-scale]');await delay(200);
    if(page==='home'){
@@ -587,6 +611,7 @@ try{
     // The feature cards deliberately form an overlapping fan; each complete
     // transformed card must nevertheless remain inside the content pane.
     const fan=await evaluate('(()=>{const p=layoutRect(document.querySelector(".bk-native-pane"));return {frame:p.toJSON(),cards:[...document.querySelectorAll(".home-card-fan>.game-card")].map(e=>{const r=layoutRect(e);return {visible:r.width>0&&r.height>0&&r.top>=p.top-2&&r.bottom<=p.bottom+2&&r.left>=p.left-2&&r.right<=p.right+2,box:r.toJSON()}})}})()');assert.deepEqual(fan.cards.map(c=>c.visible),[true,true,true],width+'x'+height+' all three featured cards fully visible '+JSON.stringify(fan));
+    if(reviewScreen)await captureCompletedLayout('home-'+width+'x'+height);
    }
    if(page==='shop'){
     const assertShopVisible=async(selector,count,label,completeText=false)=>{
@@ -613,6 +638,7 @@ try{
      await assertShopVisible('.pack-display,.pack-buy',2,pack+' artwork and purchase control');
      assert.equal(await evaluate('document.querySelector(".pack-cover-art").complete&&document.querySelector(".pack-cover-art").naturalWidth>0'),true,pack+' illustrated cover loads');
      await check(width+'x'+height+' '+pack+' purchase',['.product-section-tabs>button','.pack-offer>.pack-buy,.pack-offer>.pack-assurance,.pack-offer>.pack-collection']);
+     if(reviewScreen&&pack==='BK05')await captureCompletedLayout('shop-BK05-'+width+'x'+height);
      await selectShopPane('details');
      await assertShopVisible('.pack-offer>p:not([class]),.pack-assurance,.pack-collection,.pack-offer>[data-action=pack-odds]',4,pack+' complete pack description and collection details',true);
      const packContent=await evaluate(`(async()=>{
