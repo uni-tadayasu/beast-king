@@ -1,5 +1,5 @@
-import {ONLINE_API_BASE} from './online.js?v=20261125-37';
-import {bindOutsideDismiss,isDialogBackdrop} from './overlay-dismiss.js?v=20261125-37';
+import {ONLINE_API_BASE} from './online.js?v=20261125-38';
+import {bindOutsideDismiss,isDialogBackdrop} from './overlay-dismiss.js?v=20261125-38';
 /** Built-in release notices. Update these entries when a new game version is published. */
 export const NEWS_ITEMS = Object.freeze([
  {date:'2026.11.25',title:'新しい獣冠の紋章と、王宮の共有画像',text:'黒と淡い金の獣冠アイコンへ刷新。ブラウザのタブやホーム画面でも見分けやすくなりました。リンクを共有した時の画像も、王宮に輝く王冠とBEAST KINGのタイトルに統一しました。'},

@@ -1,4 +1,4 @@
-import {operatorTextReader,operatorRewardReader,operatorReadingPanels,operatorRewardPageSize} from './operator-paging.js?v=20261125-37';
+import {operatorTextReader,operatorRewardReader,operatorReadingPanels,operatorRewardPageSize} from './operator-paging.js?v=20261125-38';
 /** Operator console and player inbox: one page or editing step at a time. */
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const OPERATOR_TABS=Object.freeze([['overview','王庭の状況','globe'],['message','システムメール','book'],['gift','プレゼント','treasure'],['event','イベント','spark'],['notice','公開お知らせ','book'],['maintenance','受付・メンテナンス','shield'],['player','プレイヤー','globe'],['audit','操作の記録','book']]);

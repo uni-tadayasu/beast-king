@@ -12,7 +12,7 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', starter
     <div class="entry-scene" aria-hidden="true"></div>
     <div class="entry-vignette" aria-hidden="true"></div>
     <header class="entry-header">
-      <div class="entry-mark" aria-hidden="true"><img src="assets/design-v2/brand/crest.svg?v=20261125-37" alt="" width="46" height="46"><span>THE ART OF STRATEGY</span></div>
+      <div class="entry-mark" aria-hidden="true"><img src="assets/design-v2/brand/crest.svg?v=20261125-38" alt="" width="46" height="46"><span>THE ART OF STRATEGY</span></div>
       <div class="entry-audio">${audioControl}</div>
     </header>
     <div class="entry-layout">

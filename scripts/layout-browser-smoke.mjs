@@ -282,8 +282,8 @@ async function assertCameraGeometry(label){
 async function assertSummonScene(expected,label){
  await until(()=>evaluate(`(()=>{const c=document.querySelector('.bk-summon-canvas');return c&&Number(c.dataset.summonCount)===${expected.length}&&document.querySelectorAll('.field-slot[data-summon-ready="true"]').length===${expected.length}})()`),label+' loaded summon artwork',90000);
  const result=await evaluate(`(async()=>{
-  const {getCard}=await import('./catalog.js?v=20261125-37');
-  const {resolveSummonArt}=await import('./summon-art.js?v=20261125-37');
+  const {getCard}=await import('./catalog.js?v=20261125-38');
+  const {resolveSummonArt}=await import('./summon-art.js?v=20261125-38');
   const canvas=document.querySelector('.bk-summon-canvas'),rect=layoutRect(canvas),style=getComputedStyle(canvas);
   const slots=[...document.querySelectorAll('.field-slot[data-summon-ready="true"]')].map(slot=>{
    const unit=slot.querySelector('.field-unit'),painting=unit.querySelector('.summon-card-floor .card-art');
@@ -313,8 +313,8 @@ async function runSummonSmoke(){
   // Let debounced saves settle so pagehide cannot overwrite the new fixture.
   await delay(250);
   const expected=await evaluate(`(async()=>{
-   const {newGame}=await import('./engine.js?v=20261125-37');
-   const {getCard}=await import('./catalog.js?v=20261125-37');
+   const {newGame}=await import('./engine.js?v=20261125-38');
+   const {getCard}=await import('./catalog.js?v=20261125-38');
    const saved=JSON.parse(${JSON.stringify(savedProfile)});
    const battle=newGame({playerDeck:saved.deckIds,cpuDeck:saved.deckIds,playerSpecialDeck:saved.specialIds,cpuSpecialDeck:saved.specialIds,seed:33});
    for(const [owner,player] of battle.players.entries())for(let i=0;i<${count};i++){
@@ -388,7 +388,7 @@ async function runReliefSmoke(){
  }
  async function inspectApex(label,moving){
   const result=await evaluate(`(async()=>{
-   const {getCard}=await import('./catalog.js?v=20261125-37');
+   const {getCard}=await import('./catalog.js?v=20261125-38');
    const card=document.querySelector('#modal-root .game-card[data-id=B0001]'),data=getCard('B0001'),art=card.querySelector('.card-art'),finish=card.querySelector('.card-finish'),relief=finish.querySelector('.bk-relief'),contour=relief.querySelector('.bk-relief-contour'),polish=relief.querySelector('.bk-relief-polish');
    const background=node=>{const s=getComputedStyle(node);return {image:s.backgroundImage,size:s.backgroundSize,position:s.backgroundPosition,repeat:s.backgroundRepeat}};
    const inside=(a,b)=>a.left>=b.left-1&&a.right<=b.right+1&&a.top>=b.top-1&&a.bottom<=b.bottom+1;
@@ -475,9 +475,9 @@ async function runForegroundReview(){
    const state={done:false,error:null,rows:[],prepareMs:null,maskTileSize:null,sheet:null,extractor:null};window.__bkForegroundReview=state;
    const overlay=document.createElement('div');overlay.id='foreground-review-overlay';overlay.setAttribute('aria-hidden','true');overlay.style.cssText='position:fixed;inset:0;z-index:2147483647;background:#07121d;pointer-events:none;display:flex;align-items:center;justify-content:center';document.body.appendChild(overlay);
    void (async()=>{
-    const {getCard}=await import('./catalog.js?v=20261125-37');
-    const {resolveSummonArt,computeSummonArtCrop}=await import('./summon-art.js?v=20261125-37');
-    const {createForegroundExtractor,FOREGROUND_INPUT_SIZE}=await import('./summon-foreground.js?v=20261125-37');state.maskTileSize=FOREGROUND_INPUT_SIZE;
+    const {getCard}=await import('./catalog.js?v=20261125-38');
+    const {resolveSummonArt,computeSummonArtCrop}=await import('./summon-art.js?v=20261125-38');
+    const {createForegroundExtractor,FOREGROUND_INPUT_SIZE}=await import('./summon-foreground.js?v=20261125-38');state.maskTileSize=FOREGROUND_INPUT_SIZE;
     const cases=${JSON.stringify(cases)},tileW=480,tileH=348,gap=16,pad=24,top=112;
     const sheet=document.createElement('canvas');sheet.width=1520;sheet.height=1588;sheet.style.cssText='width:100%;height:100%;object-fit:contain';state.sheet=sheet;overlay.appendChild(sheet);
     const ctx=sheet.getContext('2d');ctx.fillStyle='#07121d';ctx.fillRect(0,0,sheet.width,sheet.height);
@@ -562,6 +562,11 @@ try{
  if(cameraOnly||reliefOnly||foregroundOnly)await send('Page.navigate',{url});
  else await navigateWithBootReview(url);
  await waitElement('#entry-start-form');
+ const originalTitles=await evaluate(`(async()=>{const response=await fetch(location.href,{cache:'no-store'});if(!response.ok)throw Error('Cannot read original HTML titles');const html=new DOMParser().parseFromString(await response.text(),'text/html');return {title:html.title,ogTitle:html.querySelector('meta[property="og:title"]')?.content}})()`);
+ assert.ok(originalTitles.title.trim(),'Original HTML has a nonempty title');
+ assert.equal(originalTitles.ogTitle,originalTitles.title,'Original HTML title and og:title agree');
+ const assertDefaultTitle=async label=>assert.deepEqual(await evaluate(`({title:document.title,ogTitle:document.querySelector('meta[property="og:title"]')?.content})`),originalTitles,label+' retains the original HTML and Open Graph title');
+ await assertDefaultTitle('Entry after application rendering');
  for(const {width,height,mobile} of cameraOnly||reliefOnly||foregroundOnly?[{width:1280,height:720,mobile:false}]:[{width:1280,height:720,mobile:false},...viewports.filter(v=>v.mobile&&v.height>v.width)]){
   await viewport(width,height,mobile);await waitElement('.bk-entry-native');
   const entry=await evaluate(`(()=>{const p=layoutRect(document.querySelector('#app'));return [...document.querySelectorAll('#entry-start-form,#entry-player-name,.entry-profile-option,#entry-starter,.entry-start-button,.entry-footer a')].filter(e=>{const r=layoutRect(e);return r.width<=0||r.height<=0||r.left<p.left-2||r.right>p.right+2||r.top<p.top-2||r.bottom>p.bottom+2}).map(e=>e.id||e.className)})()`);
@@ -575,6 +580,7 @@ try{
  await evaluate('document.querySelector("#entry-player-name").value="画面表示テスト十二文字";true');
  assert.equal(await evaluate('document.querySelectorAll("#entry-starter option").length'),4);
  await click('[data-action=name-start]');await waitElement('.product-home');
+ await assertDefaultTitle('Home after starting');
  assert.equal(await evaluate('Object.values(JSON.parse(localStorage.getItem("beast-king-v6")).collection).reduce((a,b)=>a+b,0)'),36);
  if(!cameraOnly&&!reliefOnly&&!foregroundOnly)await runLoadingReview();
  if(!foregroundOnly)await runReliefSmoke();
@@ -590,7 +596,9 @@ try{
   assert.deepEqual(exceptions,[],'No uncaught camera browser errors');
   console.log('Angled battle camera passed: eight original-art creatures, perspective depth, visible hit targets, desktop mouse and portrait touch attacks, rerenders, animation-off, and removal');
  }else{
- await click('.navigation-dock [data-nav=shop]');await click('[data-action=shop-section][data-section=starters]');assert.equal(await evaluate('document.querySelectorAll("[data-action=starter-buy]").length'),4);assert.equal(await evaluate('document.querySelectorAll("[data-action=starter-load]:disabled").length'),3);await click('.navigation-dock [data-nav=home]');
+ await click('.navigation-dock [data-nav=shop]');await click('[data-action=shop-section][data-section=starters]');assert.equal(await evaluate('document.querySelectorAll("[data-action=starter-buy]").length'),4);assert.equal(await evaluate('document.querySelectorAll("[data-action=starter-load]:disabled").length'),3);
+ assert.notEqual(await evaluate('document.title'),originalTitles.title,'Shop navigation uses a page-specific title');
+ await click('.navigation-dock [data-nav=home]');await waitElement('.product-home');await assertDefaultTitle('Home after shop navigation');
  const inspect=`(selectors)=>{const out=[];for(const selector of selectors){const els=[...document.querySelectorAll(selector)].filter(e=>{const r=layoutRect(e);return r.width>0&&r.height>0&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden'});for(let i=0;i<els.length;i++)for(let j=i+1;j<els.length;j++){const a=layoutRect(els[i]),b=layoutRect(els[j]);const w=Math.min(a.right,b.right)-Math.max(a.left,b.left),h=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);if(w>2&&h>2)out.push({selector,i,j,a:els[i].getAttribute('aria-label')||els[i].className,b:els[j].getAttribute('aria-label')||els[j].className,w:Math.round(w),h:Math.round(h)});}}return out}`;
  async function check(label,selectors=[]){
   const v=await evaluate('({w:innerWidth,h:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight})');assert.ok(v.sw<=v.w+2&&v.sh<=v.h+2,label+' viewport overflow '+JSON.stringify(v));
@@ -642,7 +650,7 @@ try{
      await selectShopPane('details');
      await assertShopVisible('.pack-offer>p:not([class]),.pack-assurance,.pack-collection,.pack-offer>[data-action=pack-odds]',4,pack+' complete pack description and collection details',true);
      const packContent=await evaluate(`(async()=>{
-      const {getPack}=await import('./shop.js?v=20261125-37'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
+      const {getPack}=await import('./shop.js?v=20261125-38'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
       return {description:document.querySelector('.pack-offer>p:not([class])').textContent===pack.description,purchase:buy.dataset.pack===pack.id&&buy.textContent.includes(pack.cost+'秘宝で'+pack.size+'枚'),guarantee:document.querySelector('.pack-assurance').textContent.includes('レア以上を1枚保証'),collection:document.querySelector('.pack-collection').textContent.includes(pack.cardCount.toLocaleString('ja-JP')+'種類')};
      })()`);
      assert.deepEqual(packContent,{description:true,purchase:true,guarantee:true,collection:true},pack+' complete supply information');
@@ -662,7 +670,7 @@ try{
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
   // Long scheduled operator content is rendered locally; never sent to live players.
-  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261125-37');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
+  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261125-38');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
   // Real native news dialog, not a synthetic layout. Every notice must
   // appear exactly once, fully within the viewport and outside the controls.
   await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);
