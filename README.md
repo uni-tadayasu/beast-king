@@ -99,7 +99,7 @@
 
 第一弾・第二弾のイラストは16枚ずつ、第三弾・第四弾は24枚ずつの画像にまとめ、カードごとに専用の表示範囲を使います。旧弾の均等でない区切りは `layouts.json` の実測座標を `node scripts/finalize-card-art.mjs` で反映します。追加弾の生成元・配置・目視確認は `assets/design-v3/cards/manifest.json` に記録します。既存アトラスの各セルは独立した絵です。現在のセルヴァ8派生は、元アトラスへの参照よりユーザー指定原画を優先する明示的な共有例外です。アトラス台帳自体は制作履歴として保持します。
 
-第一弾・第二弾の素材集を書き出す場合は `node scripts/build-materials.mjs /absolute/path/Beast-King-Original-Materials [/absolute/path/png-masters]` を実行します。PythonとPillowが必要です。PNG原版のフォルダーを指定した場合は、公開用WebPではなく原版から各カードを切り出します。指定しない場合は公開用WebPから書き出します。旧2弾のアトラスに基づく2,304枚、素材一覧、アニメーション確認ページを生成します。これは過去素材の書き出しです。現行の差し替えと新17枚を含む全カードの確認には `python scripts/review-card-art.py --output /absolute/path/review` を使用します（Node.jsとPillowが必要）。出力先は公開フロントエンドの外に限定し、オーナー用のダウンロードページをゲームへ公開しません。ブランド画像の再書き出しには `python scripts/prepare-brand-assets.py` を使います（PillowとInkscapeが必要）。
+第一弾・第二弾の素材集を書き出す場合は `node scripts/build-materials.mjs /absolute/path/Beast-King-Original-Materials [/absolute/path/png-masters]` を実行します。PythonとPillowが必要です。PNG原版のフォルダーを指定した場合は、公開用WebPではなく原版から各カードを切り出します。指定しない場合は公開用WebPから書き出します。旧2弾のアトラスに基づく2,304枚、素材一覧、アニメーション確認ページを生成します。これは過去素材の書き出しです。現行の差し替えと新17枚を含む全カードの確認には `python scripts/review-card-art.py --output /absolute/path/review` を使用します（Node.jsとPillowが必要）。出力先は公開フロントエンドの外に限定し、オーナー用のダウンロードページをゲームへ公開しません。ブランド画像の再書き出しには `python scripts/prepare-brand-assets.py` を使います（Node.jsとプロジェクトのSharpが必要）。ネイティブSVGの紋章・ファビコンと承認済みOGPを元に生成し、カードやプロフィールの素材は変更しません。アイコンのみの再生成は `node scripts/generate-brand-icons.mjs` です。
 
 画像の右クリック保存・ドラッグ・長押し、通常テキストの選択、ページ内のピンチ・拡大縮小ショートカットを抑制します。名前や端末連携コードなどの入力・編集は維持します。画面のスクリーンショットやブラウザ外の機能による保存まで完全に防ぐことはできません。
 
@@ -273,7 +273,7 @@ GitHub公開用パッケージでは、`dist/` の中身をリポジトリのル
 node scripts/configure-seo.mjs https://www.beast-king.com/
 ```
 
-このスクリプトは `index.html` と `about.html` のcanonical・OGP・Twitter Card・構造化データのURLを更新し、`sitemap.xml` と `robots.txt` を生成します。リポジトリ名を含むサブパスと独自ドメインのどちらにも対応しています。SNS共有画像は `assets/social-ogp.jpg`（1,200 × 630）です。
+このスクリプトは `index.html` と `about.html` のcanonical・OGP・Twitter Card・構造化データのURLを更新し、`sitemap.xml` と `robots.txt` を生成します。リポジトリ名を含むサブパスと独自ドメインのどちらにも対応しています。SNS共有画像は `assets/brand/social-ogp-r37.jpg`（1,200 × 630のJPEG）です。旧URLの `assets/social-ogp.jpg` にも同じ画像を残しています。ファビコンは安定URLのSVG・96px PNG・複数解像度のICOを宣言し、Web Manifestでは通常アイコンとmaskable専用アイコンを分けています。検索結果への反映は検索エンジンの再クロール後になります。
 
 ## 公開前の検証
 

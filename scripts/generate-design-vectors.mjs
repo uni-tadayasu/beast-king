@@ -61,36 +61,23 @@ const origins = [
   { id: 'king', name: '王', color: '#edbd65', paths: '<path d="m3 6 4 4 5-7 5 7 4-4-2 13H5Z"/><path d="M6 15h12M8 21h8M4 10 1 8l2 7m17-5 3-2-2 7"/><path d="m12 9 2 3-2 2-2-2Z"/>' },
 ];
 
-const crest = `<defs>
-  <linearGradient id="crest-gold" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#fff0b5"/><stop offset=".48" stop-color="#f3c66d"/><stop offset="1" stop-color="#b97a32"/></linearGradient>
-  <linearGradient id="crest-cyan" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#bcfff3"/><stop offset="1" stop-color="#38c9d8"/></linearGradient>
-  <linearGradient id="crest-face" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#143d55"/><stop offset="1" stop-color="#061426"/></linearGradient>
-</defs>
-<path d="M23 61c-8 23 1 43 26 55m56-55c8 23-1 43-26 55" fill="none" stroke="url(#crest-gold)" stroke-width="2" stroke-linecap="round"/>
-<g fill="url(#crest-gold)">
-  <path d="M22 75C11 73 9 64 12 59c9 2 12 8 10 16Z"/><path d="M26 94C14 95 9 87 10 82c9-1 15 4 16 12Z"/><path d="M42 111c-11 7-20 3-23-4 8-5 17-2 23 4Z"/>
-  <path d="M106 75c11-2 13-11 10-16-9 2-12 8-10 16Z"/><path d="M102 94c12 1 17-7 16-12-9-1-15 4-16 12Z"/><path d="M86 111c11 7 20 3 23-4-8-5-17-2-23 4Z"/>
-</g>
-<path d="m24 27 22 14 18-25 18 25 22-14-8 30H32Z" fill="url(#crest-gold)"/>
-<path d="M34 51h60" fill="none" stroke="#fff3c8" stroke-width="2" stroke-opacity=".8"/>
-<path d="m64 31 5 8-5 7-5-7Z" fill="url(#crest-cyan)" stroke="#946329" stroke-width="1.2"/>
-<path d="m29 63 14-5 21 8 21-8 14 5-6 26-10 14-19 13-19-13-10-14Z" fill="url(#crest-face)" stroke="url(#crest-gold)" stroke-width="3" stroke-linejoin="round"/>
-<path d="m33 68 8 5-1 14 13 15-13-9-7-12Zm62 0-8 5 1 14-13 15 13-9 7-12Z" fill="url(#crest-gold)"/>
-<path d="m41 73 17 6-7 5-10-5Zm46 0-17 6 7 5 10-5Z" fill="url(#crest-cyan)"/>
-<path d="m55 88 9-4 9 4-9 8Z" fill="url(#crest-gold)"/>
-<path d="m54 99 10 6 10-6m-10-3v9" fill="none" stroke="#f4d28d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+// The editable crest SVG is the brand master. Reuse it when rebuilding the
+// vector collection so a broad regeneration cannot restore retired branding.
+const crestMaster = await readFile(join(output, 'brand/crest.svg'), 'utf8');
+const crest = crestMaster.replace(/^\s*<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '')
+  .replace(/<(title|desc|metadata)\b[^>]*>[\s\S]*?<\/\1>/g, '').replace(/[ \t]+$/gm, '').trim();
 
 const assets = [];
-async function emit(file, { id, displayName, group, width, height, viewBox = `0 0 ${width} ${height}`, usage, body, color = palette.silver, ...extra }) {
+async function emit(file, { id, displayName, group, width, height, viewBox = `0 0 ${width} ${height}`, usage, body, color = palette.silver, preserveSource = false, ...extra }) {
   const titleId = id.replace(/[^a-z0-9_-]/gi, '-') + '-title';
-  const source = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="${viewBox}" role="img" aria-labelledby="${titleId}" color="${color}"><title id="${titleId}">${escape(displayName)}</title><desc>${escape(usage)}</desc><metadata>${escape(copyright)}. Original vector artwork for BEAST KING.</metadata>${body}</svg>\n`;
+  const source = preserveSource ? await readFile(join(output, file), 'utf8') : `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="${viewBox}" role="img" aria-labelledby="${titleId}" color="${color}"><title id="${titleId}">${escape(displayName)}</title><desc>${escape(usage)}</desc><metadata>${escape(copyright)}. Original vector artwork for BEAST KING.</metadata>${body}</svg>\n`;
   await mkdir(dirname(join(output, file)), { recursive: true });
-  await writeFile(join(output, file), source);
+  if (!preserveSource) await writeFile(join(output, file), source);
   assets.push({ id, path: `assets/design-v2/${file}`, displayName, group, width, height, viewBox, usage, transparent: true, format: 'svg', copyright, sha256: createHash('sha256').update(source).digest('hex'), ...extra });
 }
 
-await emit('brand/crest.svg', { id: 'brand-crest', displayName: '六芽の獣冠', group: 'brand', width: 256, height: 256, viewBox: '0 0 128 128', usage: '王冠・獣の瞳・6つの芽を組み合わせたブランド紋章。24px以上のヘッダー、プロフィール、カード裏に使用。', body: crest, minimumSize: 24 });
-await emit('brand/wordmark.svg', { id: 'brand-wordmark', displayName: 'BEAST KING ワードマーク', group: 'brand', width: 880, height: 160, usage: '透明背景の横長ロゴ。文字はGeorgia、Times New Roman、serifの順にフォールバック。', body: `<g transform="translate(4 8) scale(1.1)">${crest}</g><text x="171" y="88" fill="#f7dda1" font-family="Georgia, 'Times New Roman', serif" font-size="66" font-weight="500" letter-spacing="7">BEAST KING</text><path d="M174 118h210m167 0h231" fill="none" stroke="#68d8dc" stroke-opacity=".6"/><g fill="#f3c66d">${Array.from({ length: 6 }, (_, i) => `<path d="m${410 + i * 21} 112 4 6-4 6-4-6Z"/>`).join('')}</g>`, textFallback: "Georgia, 'Times New Roman', serif" });
+await emit('brand/crest.svg', { id: 'brand-crest', displayName: '六芽の獣冠', group: 'brand', width: 256, height: 256, viewBox: '0 0 128 128', usage: '王冠・獣の瞳・6つの芽を組み合わせたブランド紋章。24px以上のヘッダー、プロフィール、カード裏に使用。', body: crest, minimumSize: 24, preserveSource: true });
+await emit('brand/wordmark.svg', { id: 'brand-wordmark', displayName: 'BEAST KING ワードマーク', group: 'brand', width: 880, height: 160, usage: '透明背景の横長ロゴ。文字はGeorgia、Times New Roman、serifの順にフォールバック。', body: `<g transform="translate(4 8) scale(1.1)">${crest}</g><text x="171" y="88" fill="#f0e9db" font-family="Georgia, 'Times New Roman', serif" font-size="66" font-weight="500" letter-spacing="7">BEAST KING</text><path d="M174 118h210m167 0h231" fill="none" stroke="#ceb889" stroke-opacity=".6"/><g fill="#ceb889">${Array.from({ length: 6 }, (_, i) => `<path d="m${410 + i * 21} 112 4 6-4 6-4-6Z"/>`).join('')}</g>`, textFallback: "Georgia, 'Times New Roman', serif" });
 
 if (process.argv.includes('--brand-only')) {
   const manifestFile = join(output, 'vector-manifest.json');

@@ -3,12 +3,12 @@
  * pixels supply the creature; exact public mask assets or native image alpha
  * provide its contour. Battle rules, saves, and private artwork are not sent
  * to another service or a browser inference runtime. */
-import {resolveSummonArt,computeSummonArtCrop,summonArtSourceFromBackground} from './summon-art.js?v=20261125-36';
-import {freshBattleEvents} from './experience-fx.js?v=20261125-36';
-import {createBattleCamera,projectBattlePoint,getBattleSlot} from './battle-camera.js?v=20261125-36';
-import {createWebglBattleRenderer,createCanvasBattleRenderer} from './battle-renderer.js?v=20261125-36';
-import {createForegroundExtractor} from './summon-foreground.js?v=20261125-36';
-import {buildCreatureGeometry} from './summon-geometry.js?v=20261125-36';
+import {resolveSummonArt,computeSummonArtCrop,summonArtSourceFromBackground} from './summon-art.js?v=20261125-37';
+import {freshBattleEvents} from './experience-fx.js?v=20261125-37';
+import {createBattleCamera,projectBattlePoint,getBattleSlot} from './battle-camera.js?v=20261125-37';
+import {createWebglBattleRenderer,createCanvasBattleRenderer} from './battle-renderer.js?v=20261125-37';
+import {createForegroundExtractor} from './summon-foreground.js?v=20261125-37';
+import {buildCreatureGeometry} from './summon-geometry.js?v=20261125-37';
 
 const MAX_TEXTURES=16;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));

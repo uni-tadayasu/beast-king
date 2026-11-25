@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 32 32" role="img" aria-labelledby="beast-king-icon-title">
-<title id="beast-king-icon-title">BEAST KING 王冠と獣の紋章</title>
-<desc>濃紺の地に金の王冠とシアンの瞳。16pxでも識別できるサイトアイコン。</desc>
-<metadata>© 2026 Beast King. Original vector artwork.</metadata>
-<rect width="32" height="32" rx="7" fill="#061426"/>
-<path d="m5 6 6 4 5-7 5 7 6-4-2 8H7Z" fill="#f6cd78"/>
-<path d="m16 7 2 3-2 2-2-2Z" fill="#66e7e3"/>
-<path d="m7 16 5 0 4 2 4-2h5l-1 7-8 6-8-6Z" fill="#f6cd78"/>
-<path d="m9 17 4 1 3 2 3-2 4-1-1 5-6 5-6-5Z" fill="#0b2237"/>
-<path d="m10 19 5 2-3 2-2-1Zm12 0-5 2 3 2 2-1Z" fill="#7cf5eb"/>
-<path d="m14 24 2-1 2 1-2 2Z" fill="#f6cd78"/>
+  <title id="beast-king-icon-title">BEAST KING 王冠と魔獣の紋章</title>
+  <desc>黒漆の地にシャンパンゴールドの王冠と獣の輪郭、アイボリーの瞳。小さな表示に合わせた専用の簡略紋章。</desc>
+  <metadata>© 2026 Beast King. Original vector artwork. Prestige compact edition.</metadata>
+  <rect width="32" height="32" rx="7" fill="#090b0e"/>
+  <path d="m5 6 6 4 5-7 5 7 6-4-2 8H7Z" fill="#d6bf90"/>
+  <path d="m16 7 2 3-2 2-2-2Z" fill="#f0e9db"/>
+  <path d="m7 16 5 0 4 2 4-2h5l-1 7-8 6-8-6Z" fill="#d6bf90"/>
+  <path d="m9 17 4 1 3 2 3-2 4-1-1 5-6 5-6-5Z" fill="#090b0e"/>
+  <path d="m10 19 5 2-3 2-2-1Zm12 0-5 2 3 2 2-1Z" fill="#f0e9db"/>
+  <path d="m14 24 2-1 2 1-2 2Z" fill="#d6bf90"/>
 </svg>

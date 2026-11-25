@@ -1,7 +1,7 @@
 // Portable solo saves are user data, never authority for online decks or ratings.
-import {CARDS,PACKS,getCard} from './catalog.js?v=20261125-36';
-import {STARTERS,ORIGIN_IDS,validateName,checkDeck} from './profile.js?v=20261125-36';
-import {normalizeSoloSnapshot} from './solo-save.js?v=20261125-36';
+import {CARDS,PACKS,getCard} from './catalog.js?v=20261125-37';
+import {STARTERS,ORIGIN_IDS,validateName,checkDeck} from './profile.js?v=20261125-37';
+import {normalizeSoloSnapshot} from './solo-save.js?v=20261125-37';
 export const MAX_REBUILD_BACKUP_BYTES=1000000;
 export const ROLLBACK_KEY='beast-king-rebuild-before-restore-v1';
 const plain=v=>!!v&&typeof v==='object'&&!Array.isArray(v);

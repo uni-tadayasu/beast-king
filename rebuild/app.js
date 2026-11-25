@@ -1,20 +1,20 @@
-import {BRAND_ICONS} from '../brand-icons.js?v=20261125-36';
-import {bindOutsideDismiss,isDialogBackdrop} from '../overlay-dismiss.js?v=20261125-36';
-import {ARTWORK_OVERRIDES} from './artwork-manifest.js?v=20261125-36';
-import {createMusicController} from '../music.js?v=20261125-36';
-import {createExperienceController,RARITY_ORDER,EXPERIENCE_STORAGE_KEY} from '../experience-fx.js?v=20261125-36';
-import {normalizeSoloSnapshot,verifyOperatorSnapshot,musicScene} from './solo-save.js?v=20261125-36';
-import {createOperatorClient} from './operator-client.js?v=20261125-36';
-import {createRebuildCloudClient} from './cloud-client.js?v=20261125-36';
-import {validateRebuildBackup,ROLLBACK_KEY} from './backup.js?v=20261125-36';
-import {CARDS,ORIGINS,TYPE_LABELS,RARITY_LABELS,MODEL_LABELS,STARTER_DECKS,PACKS,SECOND_REGALIA_ID,getCard} from './catalog.js?v=20261125-36';
-import {CARD_ART_CROPS} from '../card-art-layouts.js?v=20261125-36';
-import {CARD_ART_OVERRIDES} from '../card-art-overrides.js?v=20261125-36';
-import {CARD_ART_USER_OVERRIDES} from '../card-art-user.js?v=20261125-36';
-import {newGame,playCard,attack,endTurn,runCpuTurn,getLegalTargets,getAttackTargets,getPlayableCards,getFusionMaterials,canAttack} from './engine.js?v=20261125-36';
-import {CAMPAIGN_BATTLES} from '../campaign.js?v=20261125-36';
-import {STARTERS,STORAGE_KEY,initialProfile,loadProfile,persistProfile,migrateRebuildProfile,checkDeck,saveDeck,chooseStarter,counts,purchase,recordSolo,endSuspendedSolo} from './profile.js?v=20261125-36';
-import {quoteStarterPurchase,purchaseStarter,STARTER_PRICE} from '../shop.js?v=20261125-36';
+import {BRAND_ICONS} from '../brand-icons.js?v=20261125-37';
+import {bindOutsideDismiss,isDialogBackdrop} from '../overlay-dismiss.js?v=20261125-37';
+import {ARTWORK_OVERRIDES} from './artwork-manifest.js?v=20261125-37';
+import {createMusicController} from '../music.js?v=20261125-37';
+import {createExperienceController,RARITY_ORDER,EXPERIENCE_STORAGE_KEY} from '../experience-fx.js?v=20261125-37';
+import {normalizeSoloSnapshot,verifyOperatorSnapshot,musicScene} from './solo-save.js?v=20261125-37';
+import {createOperatorClient} from './operator-client.js?v=20261125-37';
+import {createRebuildCloudClient} from './cloud-client.js?v=20261125-37';
+import {validateRebuildBackup,ROLLBACK_KEY} from './backup.js?v=20261125-37';
+import {CARDS,ORIGINS,TYPE_LABELS,RARITY_LABELS,MODEL_LABELS,STARTER_DECKS,PACKS,SECOND_REGALIA_ID,getCard} from './catalog.js?v=20261125-37';
+import {CARD_ART_CROPS} from '../card-art-layouts.js?v=20261125-37';
+import {CARD_ART_OVERRIDES} from '../card-art-overrides.js?v=20261125-37';
+import {CARD_ART_USER_OVERRIDES} from '../card-art-user.js?v=20261125-37';
+import {newGame,playCard,attack,endTurn,runCpuTurn,getLegalTargets,getAttackTargets,getPlayableCards,getFusionMaterials,canAttack} from './engine.js?v=20261125-37';
+import {CAMPAIGN_BATTLES} from '../campaign.js?v=20261125-37';
+import {STARTERS,STORAGE_KEY,initialProfile,loadProfile,persistProfile,migrateRebuildProfile,checkDeck,saveDeck,chooseStarter,counts,purchase,recordSolo,endSuspendedSolo} from './profile.js?v=20261125-37';
+import {quoteStarterPurchase,purchaseStarter,STARTER_PRICE} from '../shop.js?v=20261125-37';
 const root=document.querySelector('#app'),dialog=document.querySelector('#detail');
 const esc=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const fmt=n=>Number(n).toLocaleString('ja-JP');
@@ -68,7 +68,7 @@ function card(c,{action='detail',data='',className='',unit=null,owned=null,opera
  return '<button type="button" class="card '+c.type+' '+c.rarity+' '+className+'" data-origin="'+esc(c.origin)+'" '+attrs+' title="'+esc(c.name)+'"><span class="cardtop"><span class="cost">'+(c.type==='fusion'?'合':c.cost)+'</span><span class="cardname">'+esc(c.name)+'</span></span>'+cardArt(c,operatorArt)+'<span class="cardtop card-kind"><span>'+icon(typeIcons[c.type])+' '+TYPE_LABELS[c.type]+' · '+esc(origin(c.origin)?.name)+'</span><span class="rarity">'+RARITY_LABELS[c.rarity]+'</span></span><span class="effect">'+esc(c.text)+'</span><span class="cardbottom">'+(['beast','fusion'].includes(c.type)?'<b>'+icon('sword')+' '+(unit?.attack??c.attack)+'</b><b>'+icon('shield')+' '+(unit?.hp??c.hp)+'</b>':esc(c.id))+(owned!==null?'<span>所持 '+owned+'</span>':'')+'</span></button>';
 }
 function onboard(){
- root.innerHTML='<div class="onboard"><form id="onboard" class="panel"><div class="intro"><img src="../assets/icon.svg" alt=""><div><small>旧セーブ互換版</small><h1>BEAST KING</h1><p>最初の契約を結ぶ</p></div></div><label>プレイヤー名<input name="name" type="text" maxlength="32" required autocomplete="nickname" placeholder="1〜16文字"></label><section><h3>プロフィールアイコン</h3><div class="origins">'+ORIGINS.map((o,i)=>'<label><input type="radio" name="origin" value="'+o.id+'" '+(!i?'checked':'')+'><span style="color:'+o.color+'"><img src="../assets/profiles/'+o.id+'.svg" alt="" width="32" height="32"> '+o.name+'</span></label>').join('')+'</div></section><section><h3>最初のスターター</h3><div class="starter-grid">'+STARTERS.map((s,i)=>'<label><input type="radio" name="starter" value="'+s.id+'" '+(!i?'checked':'')+'><span>'+esc(s.name)+'</span><p>'+esc(s.subtitle)+'</p></label>').join('')+'</div></section><p class="muted">名前とアイコンはこの端末で初回のみ設定します。スターター4種類を利用できます。旧セーブ互換版のデータはメインゲームと別に保存します。</p><p class="edition-links"><a href="../">メインゲームへ</a> · <a href="about.html">旧セーブの案内</a></p><button type="submit" class="primary">契約してゲームを開始</button><p id="status" role="status"></p></form></div>';
+ root.innerHTML='<div class="onboard"><form id="onboard" class="panel"><div class="intro"><img src="../assets/icon.svg?v=20261125-37" alt=""><div><small>旧セーブ互換版</small><h1>BEAST KING</h1><p>最初の契約を結ぶ</p></div></div><label>プレイヤー名<input name="name" type="text" maxlength="32" required autocomplete="nickname" placeholder="1〜16文字"></label><section><h3>プロフィールアイコン</h3><div class="origins">'+ORIGINS.map((o,i)=>'<label><input type="radio" name="origin" value="'+o.id+'" '+(!i?'checked':'')+'><span style="color:'+o.color+'"><img src="../assets/profiles/'+o.id+'.svg" alt="" width="32" height="32"> '+o.name+'</span></label>').join('')+'</div></section><section><h3>最初のスターター</h3><div class="starter-grid">'+STARTERS.map((s,i)=>'<label><input type="radio" name="starter" value="'+s.id+'" '+(!i?'checked':'')+'><span>'+esc(s.name)+'</span><p>'+esc(s.subtitle)+'</p></label>').join('')+'</div></section><p class="muted">名前とアイコンはこの端末で初回のみ設定します。スターター4種類を利用できます。旧セーブ互換版のデータはメインゲームと別に保存します。</p><p class="edition-links"><a href="../">メインゲームへ</a> · <a href="about.html">旧セーブの案内</a></p><button type="submit" class="primary">契約してゲームを開始</button><p id="status" role="status"></p></form></div>';
 }
 function audioControls(){return '<div class="audio-controls">'+act('bgm-toggle',profile.bgm?'BGM ON':'BGM OFF','aria-pressed="'+profile.bgm+'"')+act('effects-settings','音・演出','aria-label="音と演出の設定"')+'<label class="volume-control"><span class="visually-hidden">BGM音量</span><input type="range" id="bgm-volume" min="0" max="100" step="5" value="'+Math.round(profile.bgmVolume*100)+'" aria-label="BGM音量"><output id="volume-number">'+Math.round(profile.bgmVolume*100)+'%</output></label></div>'}
 function syncMusic(){music.sync({scene:musicScene(page,match?.game),enabled:profile?.bgm??true,volume:profile?.bgmVolume??.5})}
@@ -97,7 +97,7 @@ async function purchaseWithPresentation(){
 function resumeControls(){const s=profile.suspendedMatch;if(!s)return '';const t=s.chapter===null?'練習戦':CAMPAIGN_BATTLES[s.chapter]?.title||'章モード';return '<div class="resume-panel"><small>'+esc(t)+' · TURN '+s.game.turn+(s.game.winner===null?' · 中断中':' · 対戦終了')+'</small><div>'+act('resume',s.game.winner===null?'対戦を再開':'結果を見る','','primary')+act('discard-match',s.game.winner===null?'降参して終了':'結果を閉じる')+'</div></div>'}
 function shell(body){
  const o=origin(profile.origin);
- root.innerHTML='<div class="shell"><header><div class="brand"><button type="button" class="brand-mark" data-act="brand" aria-label="BEAST KING"><img src="../assets/icon.svg" alt=""></button><div><b>BEAST KING</b><small>旧セーブ互換版</small></div></div><div class="identity"><span class="profile-mark" style="color:'+o.color+'"><img src="../assets/profiles/'+o.id+'.svg" alt="" width="28" height="28">'+esc(profile.name)+'</span><span class="balance">'+icon('treasure')+' 秘宝 '+fmt(profile.treasure)+'</span></div></header><nav aria-label="メインメニュー">'+nav.map(([id,name,mark])=>'<button type="button" data-act="nav" data-page="'+id+'" '+(page===id?'aria-current="page"':'')+(page==='battle'&&match?.game.winner===null?' disabled':'')+'>'+icon(mark)+'<span>'+name+'</span></button>').join('')+'</nav><main data-page="'+page+'">'+body+'</main><footer><span>© 2026 Beast King · 旧セーブ互換版</span><span id="status" role="status">'+esc(message)+'</span>'+audioControls()+'</footer></div>';
+ root.innerHTML='<div class="shell"><header><div class="brand"><button type="button" class="brand-mark" data-act="brand" aria-label="BEAST KING"><img src="../assets/icon.svg?v=20261125-37" alt=""></button><div><b>BEAST KING</b><small>旧セーブ互換版</small></div></div><div class="identity"><span class="profile-mark" style="color:'+o.color+'"><img src="../assets/profiles/'+o.id+'.svg" alt="" width="28" height="28">'+esc(profile.name)+'</span><span class="balance">'+icon('treasure')+' 秘宝 '+fmt(profile.treasure)+'</span></div></header><nav aria-label="メインメニュー">'+nav.map(([id,name,mark])=>'<button type="button" data-act="nav" data-page="'+id+'" '+(page===id?'aria-current="page"':'')+(page==='battle'&&match?.game.winner===null?' disabled':'')+'>'+icon(mark)+'<span>'+name+'</span></button>').join('')+'</nav><main data-page="'+page+'">'+body+'</main><footer><span>© 2026 Beast King · 旧セーブ互換版</span><span id="status" role="status">'+esc(message)+'</span>'+audioControls()+'</footer></div>';
 }
 function home(){
  const s=STARTERS.find(x=>x.id===profile.starterId);
