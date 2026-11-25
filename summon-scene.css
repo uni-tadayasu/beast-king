@@ -38,9 +38,9 @@ html.bk-fit body .duel-shell[data-field] .arena[data-battle-camera="angled"] .fi
  border:0;border-radius:5px;background:transparent!important;box-shadow:none;
  pointer-events:auto;touch-action:manipulation;container-type:inline-size;
 }
-/* Keep approved DOM artwork available to the resolver. Hiding its wrapper
-   only after upload prevents empty creatures while images load or fail. */
-html.bk-fit body .duel-shell[data-field] .arena[data-battle-camera="angled"] .field-slot[data-camera-placed="true"][data-summon-ready="true"] .summon-card-floor{
+/* Keep approved DOM artwork available to the resolver, but use only the flat
+   tabletop card while its background-free upper creature is being prepared. */
+html.bk-fit body .duel-shell[data-field] .arena[data-battle-camera="angled"] .field-slot[data-camera-placed="true"][data-summon-floor-ready="true"] .summon-card-floor{
  display:none;
 }
 html.bk-fit body .duel-shell[data-field] .arena[data-battle-camera="angled"] .field-slot[data-camera-placed="true"] .field-unit .unit-name{

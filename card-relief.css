@@ -1,0 +1,118 @@
+/* Load after rarity-fx.css. Relief never changes card dimensions or places a
+   finish over names, costs, rules, or stats. The actual picture supplies every
+   raised contour; only the thin metal frame extends outside the art aperture. */
+.card-relief-filter-definitions {
+  position: fixed;
+  inset: 0 auto auto 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bk-relief,
+.bk-relief > span {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.bk-relief { isolation: isolate; }
+.bk-relief-contour {
+  filter: url('#bk-card-relief-etch');
+  opacity: .82;
+}
+.bk-relief-polish {
+  filter: url('#bk-card-relief-polish');
+  opacity: .86;
+  -webkit-mask-image: linear-gradient(112deg, transparent 35%, #0003 42%, #000 48%, #000 51%, #0003 57%, transparent 65%);
+  mask-image: linear-gradient(112deg, transparent 35%, #0003 42%, #000 48%, #000 51%, #0003 57%, transparent 65%);
+  -webkit-mask-size: 280% 100%;
+  mask-size: 280% 100%;
+  -webkit-mask-position: 50% 50%;
+  mask-position: 50% 50%;
+  animation: bk-relief-polish 9.6s ease-in-out infinite;
+  animation-delay: var(--fx-phase);
+}
+.bk-relief-grain {
+  background:
+    repeating-linear-gradient(128deg, #fff0 0 3px, #fff0da55 3px 3.5px, #fff0 3.5px 6px),
+    repeating-linear-gradient(38deg, #130c2000 0 8px, #130c2055 8px 8.5px, #130c2000 8.5px 12px);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #0000 7%, #0005 50%, #000 100%);
+  mask-image: radial-gradient(ellipse at 50% 45%, #0000 7%, #0005 50%, #000 100%);
+  opacity: .2;
+}
+.bk-relief-rim {
+  border: 1px solid #f2dba496;
+  box-shadow:
+    inset 1px 1px 0 #fff5ceab,
+    inset -1px -1px 0 #392744ed,
+    inset 0 0 0 2px #120e1f9e,
+    inset 0 0 0 3px #c6a77764,
+    inset 0 0 14px #170e3350;
+}
+.bk-relief-rim::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid #f5dfae34;
+  clip-path: polygon(0 0, 17% 0, 17% 1%, 1% 1%, 1% 17%, 0 17%, 0 0,
+    100% 0, 100% 17%, 99% 17%, 99% 1%, 83% 1%, 83% 0, 100% 0,
+    100% 100%, 83% 100%, 83% 99%, 99% 99%, 99% 83%, 100% 83%, 100% 100%,
+    0 100%, 0 83%, 1% 83%, 1% 99%, 17% 99%, 17% 100%, 0 100%);
+}
+
+/* Raised gold / platinum edging, while existing selection outlines retain
+   their original color and priority. No pseudo-element crosses the text. */
+.game-card[data-card-relief='apex']::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: 6;
+  display: block;
+  border: 1px solid #f1d9999e;
+  border-radius: inherit;
+  background: none;
+  box-shadow: inset 1px 1px 0 #fff3d780, inset -1px -1px 0 #24152ad9, 0 0 0 1px #1b1023b3;
+  pointer-events: none;
+  animation: none;
+}
+.game-card[data-card-relief='apex'][data-card-type='fusion']::after {
+  border-color: #ecdcffad;
+  box-shadow: inset 1px 1px 0 #fff0ff85, inset -1px -1px 0 #24152ad9, 0 0 0 1px #1b1023b3;
+}
+.game-card[data-card-relief='apex']:is(.hidden-gimmick, .hidden-special, [data-face-down='true'])::after,
+:is(.hidden-gimmick, .hidden-special, [data-face-down='true']) .game-card[data-card-relief='apex']::after { display: none; }
+
+/* Broad foil would wash out the small relief ridges. Keep the GGR light
+   signature, but let its art-derived material be the most visible finish. */
+.card-finish[data-relief-ready='true'] .bk-fx { --fx-foil: .22; }
+.card-finish[data-relief-ready='true'] .bk-fx-prism { opacity: .12; }
+.card-finish[data-relief-ready='true'] .bk-fx-dust { opacity: .42; }
+.card-finish[data-relief-ready='true'] .bk-fx-shards { opacity: .15; }
+.card-finish[data-relief-ready='true'] .bk-fx-rays { display: none; }
+.card-finish[data-relief-ready='true'] .bk-fx-crown { opacity: .68; }
+
+@keyframes bk-relief-polish {
+  0%, 12% { -webkit-mask-position: 110% 50%; mask-position: 110% 50%; opacity: .34; }
+  38% { opacity: .9; }
+  70%, 100% { -webkit-mask-position: -10% 50%; mask-position: -10% 50%; opacity: .34; }
+}
+
+/* Motion pauses use the shared rarity viewport/page observers. Reduced motion
+   leaves real static ridges and a fixed reflection, never an untextured card. */
+.reduce-motion .bk-relief-polish,
+[data-motion='reduced'] .bk-relief-polish {
+  animation: none !important;
+  -webkit-mask-position: 50% 50%;
+  mask-position: 50% 50%;
+  opacity: .48;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bk-relief-polish { animation: none !important; -webkit-mask-position: 50% 50%; mask-position: 50% 50%; opacity: .48; }
+}
+@media (forced-colors: active) {
+  .bk-relief, .game-card[data-card-relief='apex']::after { display: none; }
+}

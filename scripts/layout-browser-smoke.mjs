@@ -10,8 +10,8 @@ import {resolve,sep,extname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {launchSmokeChrome,stopSmokeChrome} from './chrome-smoke-launch.mjs';
 import {setTimeout as delay} from 'node:timers/promises';
-const args=process.argv.slice(2),cameraOnly=args.includes('--camera-only'),directories=args.filter(arg=>arg!=='--camera-only');
-assert.ok(directories.length<=1&&!directories.some(arg=>arg.startsWith('--')),'Usage: node scripts/layout-browser-smoke.mjs [public-directory] [--camera-only]');
+const args=process.argv.slice(2),cameraOnly=args.includes('--camera-only'),reliefOnly=args.includes('--relief-only'),foregroundOnly=args.includes('--foreground-only'),directories=args.filter(arg=>!['--camera-only','--relief-only','--foreground-only'].includes(arg));
+assert.ok(directories.length<=1&&!directories.some(arg=>arg.startsWith('--'))&&[cameraOnly,reliefOnly,foregroundOnly].filter(Boolean).length<=1,'Usage: node scripts/layout-browser-smoke.mjs [public-directory] [--camera-only | --relief-only | --foreground-only]');
 const root=directories[0]?resolve(directories[0]):fileURLToPath(new URL('../',import.meta.url));
 const viewports=[
  {width:1920,height:1080,mobile:false},{width:1902,height:800,mobile:false},
@@ -19,7 +19,7 @@ const viewports=[
  {width:768,height:1024,mobile:true},{width:390,height:844,mobile:true},
  {width:320,height:568,mobile:true},{width:844,height:390,mobile:true},
 ];
-const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.mp3':'audio/mpeg'};
+const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.mp3':'audio/mpeg','.wasm':'application/wasm'};
 const server=createServer(async(req,res)=>{
  try{
   const url=new URL(req.url,'http://127.0.0.1'),path=resolve(root,'.'+decodeURIComponent(url.pathname)+(url.pathname.endsWith('/')?'index.html':''));
@@ -29,7 +29,7 @@ const server=createServer(async(req,res)=>{
   res.setHeader('Content-Length',info.size);createReadStream(path).on('error',()=>res.destroy()).pipe(res);
  }catch{res.writeHead(404);res.end('Not found')}
 });
-let browser,ws;const pending=new Map(),exceptions=[];let sequence=0;
+let browser,ws,foregroundNetwork=null;const pending=new Map(),exceptions=[];let sequence=0;
 async function until(fn,label,ms=8000){
  const end=Date.now()+ms;
  while(Date.now()<end){try{const result=await fn();if(result)return result}catch{}await delay(100)}
@@ -184,27 +184,29 @@ async function assertCameraGeometry(label){
  if(result.units.some(u=>u.owner===0)&&result.units.some(u=>u.owner===1))assert.ok(average(0)>average(1)*1.03,label+' makes near creatures visibly larger than far creatures '+JSON.stringify(result.units));
 }
 async function assertSummonScene(expected,label){
- await until(()=>evaluate(`(()=>{const c=document.querySelector('.bk-summon-canvas');return c&&Number(c.dataset.summonCount)===${expected.length}&&document.querySelectorAll('.field-slot[data-summon-ready="true"]').length===${expected.length}})()`),label+' loaded summon artwork',15000);
+ await until(()=>evaluate(`(()=>{const c=document.querySelector('.bk-summon-canvas');return c&&Number(c.dataset.summonCount)===${expected.length}&&document.querySelectorAll('.field-slot[data-summon-ready="true"]').length===${expected.length}})()`),label+' loaded summon artwork',90000);
  const result=await evaluate(`(async()=>{
-  const {getCard}=await import('./catalog.js?v=20261125-34');
-  const {resolveSummonArt}=await import('./summon-art.js?v=20261125-34');
+  const {getCard}=await import('./catalog.js?v=20261125-35');
+  const {resolveSummonArt}=await import('./summon-art.js?v=20261125-35');
   const canvas=document.querySelector('.bk-summon-canvas'),rect=layoutRect(canvas),style=getComputedStyle(canvas);
   const slots=[...document.querySelectorAll('.field-slot[data-summon-ready="true"]')].map(slot=>{
    const unit=slot.querySelector('.field-unit'),painting=unit.querySelector('.summon-card-floor .card-art');
    const background=painting&&getComputedStyle(painting).backgroundImage;
    const actual=background?.match(/^url\\(["']?(.*?)["']?\\)$/)?.[1];
    const source=resolveSummonArt(getCard(unit.dataset.cardId));
-   return {uid:unit.dataset.uid,cardId:unit.dataset.cardId,owner:Number(unit.dataset.player),sameCard:slot.dataset.cardId===unit.dataset.cardId&&source?.cardId===unit.dataset.cardId,originalSource:!!actual&&!!source&&new URL(actual,document.baseURI).pathname===new URL(source.src,document.baseURI).pathname};
+   return {uid:unit.dataset.uid,cardId:unit.dataset.cardId,owner:Number(unit.dataset.player),sameCard:slot.dataset.cardId===unit.dataset.cardId&&source?.cardId===unit.dataset.cardId,originalSource:!!actual&&!!source&&new URL(actual,document.baseURI).pathname===new URL(source.src,document.baseURI).pathname,maskCoverage:Number(slot.dataset.summonMaskCoverage),meshDepth:Number(slot.dataset.summonMeshDepth)};
   });
-  return {canvases:document.querySelectorAll('.bk-summon-canvas').length,count:Number(canvas.dataset.summonCount),renderer:canvas.closest('.arena')?.dataset.summonRenderer,visible:rect.width>0&&rect.height>0&&canvas.width>0&&canvas.height>0&&style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)>0,pointerEvents:style.pointerEvents,slots};
+  return {canvases:document.querySelectorAll('.bk-summon-canvas').length,count:Number(canvas.dataset.summonCount),foreground:canvas.dataset.summonForeground,renderer:canvas.closest('.arena')?.dataset.summonRenderer,visible:rect.width>0&&rect.height>0&&canvas.width>0&&canvas.height>0&&style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)>0,pointerEvents:style.pointerEvents,slots};
  })()`);
  assert.equal(result.canvases,1,label+' has one shared summon canvas');
  assert.equal(result.count,expected.length,label+' keeps every living field creature visible');
  assert.ok(['webgl','canvas'].includes(result.renderer),label+' has a working renderer');
  assert.equal(result.visible,true,label+' keeps the scene visible');
  assert.equal(result.pointerEvents,'none',label+' does not cover battle controls');
+ assert.equal(result.foreground,'transparent',label+' uses the background-free presentation');
  assert.deepEqual(result.slots.map(({uid,cardId,owner})=>({uid,cardId,owner})).sort((a,b)=>a.uid.localeCompare(b.uid)),[...expected].sort((a,b)=>a.uid.localeCompare(b.uid)),label+' mirrors both public fields');
  assert.ok(result.slots.every(slot=>slot.sameCard&&slot.originalSource),label+' uses each slot’s exact published card illustration');
+ assert.ok(result.slots.every(slot=>slot.maskCoverage>0&&slot.maskCoverage<.9995&&slot.meshDepth>0),label+' supplies a nonrectangular alpha mask and positive mesh thickness '+JSON.stringify(result.slots));
  await assertCameraGeometry(label);
 }
 async function runSummonSmoke(){
@@ -215,8 +217,8 @@ async function runSummonSmoke(){
   // Let debounced saves settle so pagehide cannot overwrite the new fixture.
   await delay(250);
   const expected=await evaluate(`(async()=>{
-   const {newGame}=await import('./engine.js?v=20261125-34');
-   const {getCard}=await import('./catalog.js?v=20261125-34');
+   const {newGame}=await import('./engine.js?v=20261125-35');
+   const {getCard}=await import('./catalog.js?v=20261125-35');
    const saved=JSON.parse(${JSON.stringify(savedProfile)});
    const battle=newGame({playerDeck:saved.deckIds,cpuDeck:saved.deckIds,playerSpecialDeck:saved.specialIds,cpuSpecialDeck:saved.specialIds,seed:33});
    for(const [owner,player] of battle.players.entries())for(let i=0;i<${count};i++){
@@ -233,7 +235,7 @@ async function runSummonSmoke(){
   })()`);
   await send('Page.reload',{ignoreCache:true});await waitElement('.home-resume');
   await viewport(width,height,mobile);await click('[data-action=resume]');await waitElement('.duel-shell');
-  await until(()=>evaluate(`Number(document.querySelector('.bk-summon-canvas')?.dataset.summonCount)===${expected.length}`),'fixture models are loaded',15000);
+  await until(()=>evaluate(`Number(document.querySelector('.bk-summon-canvas')?.dataset.summonCount)===${expected.length}`),'fixture models are loaded',90000);
   return expected;
  }
  for(const size of [{width:1366,height:768,mobile:false},{width:390,height:844,mobile:true}]){
@@ -267,6 +269,182 @@ async function runSummonSmoke(){
  }
 }
 
+/** Two bounded real-UI cases share the isolated test profile. The approved
+ * illustrated face and printed game values must survive both finish modes. */
+async function runReliefSmoke(){
+ const originalMotion=await evaluate('!document.body.classList.contains("reduce-motion")');
+ async function setMotion(enabled){
+  await click('.site-controls [data-action=settings]');
+  await click('[data-action=settings-tab][data-tab=motion]');
+  if(await evaluate('document.querySelector("[data-action=motion]").getAttribute("aria-checked")')!==String(enabled))await click('[data-action=motion]');
+  await click('#modal-root .modal-close');
+ }
+ async function searchCard(id){
+  await evaluate(`(()=>{const input=document.querySelector('#card-search');input.value=${JSON.stringify(id)};input.dispatchEvent(new Event('input',{bubbles:true}));return true})()`);
+  await waitElement('#card-results .game-card[data-id="'+id+'"]');
+ }
+ async function openApex(){
+  await searchCard('B0001');
+  await click('#card-results .game-card[data-id=B0001]');
+  await until(()=>evaluate(exists('#modal-root .game-card[data-id=B0001] .card-finish[data-relief-ready=true][data-fx-visible=true]')),'visible apex relief in card detail');
+  await evaluate(`(async()=>{await document.fonts.ready;const style=document.querySelector('#modal-root .game-card[data-id=B0001] .card-art').style.backgroundImage;const src=style.slice(4,-1).replace(/^["']|["']$/g,'');const image=new Image();image.src=src;await image.decode();return true})()`);
+ }
+ async function inspectApex(label,moving){
+  const result=await evaluate(`(async()=>{
+   const {getCard}=await import('./catalog.js?v=20261125-35');
+   const card=document.querySelector('#modal-root .game-card[data-id=B0001]'),data=getCard('B0001'),art=card.querySelector('.card-art'),finish=card.querySelector('.card-finish'),relief=finish.querySelector('.bk-relief'),contour=relief.querySelector('.bk-relief-contour'),polish=relief.querySelector('.bk-relief-polish');
+   const background=node=>{const s=getComputedStyle(node);return {image:s.backgroundImage,size:s.backgroundSize,position:s.backgroundPosition,repeat:s.backgroundRepeat}};
+   const inside=(a,b)=>a.left>=b.left-1&&a.right<=b.right+1&&a.top>=b.top-1&&a.bottom<=b.bottom+1;
+   const overlap=(a,b)=>Math.min(a.right,b.right)-Math.max(a.left,b.left)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>1;
+   const aperture=layoutRect(finish),artBox=layoutRect(art),visible=layoutRect(contour),shade=getComputedStyle(contour),shine=getComputedStyle(polish);
+   return {id:card.dataset.id,finish:card.dataset.cardRelief,ready:finish.dataset.reliefReady,visible:finish.dataset.fxVisible,aria:finish.getAttribute('aria-hidden'),count:finish.querySelectorAll('.bk-relief').length,
+    source:background(art),copies:[...relief.querySelectorAll('.bk-relief-contour,.bk-relief-polish')].map(background),filter:shade.filter,opacity:Number(shade.opacity),polish:{name:shine.animationName,state:shine.animationPlayState,opacity:Number(shine.opacity)},
+    aperture:aperture.toJSON(),visibleBox:visible.toJSON(),sameAperture:inside(aperture,artBox)&&inside(artBox,aperture),withinArt:inside(visible,artBox),textOverlap:[...card.querySelectorAll('.card-top,.card-bottom')].filter(node=>overlap(aperture,layoutRect(node))).map(node=>node.className),pointerEvents:getComputedStyle(relief).pointerEvents,
+    actual:{name:card.querySelector('.card-name').textContent,cost:Number(card.querySelector('.cost-gem').textContent),attack:Number(card.querySelector('[title="攻撃力"]').textContent),hp:Number(card.querySelector('[title="守備力"]').textContent),text:card.querySelector('.card-effect').textContent},
+    expected:{name:data.name,cost:data.cost,attack:data.attack,hp:data.hp,text:data.text},definitionCount:document.querySelectorAll('#bk-card-relief-etch').length};
+  })()`);
+  assert.equal(result.finish,'apex',label+' marks the strongest card');
+  assert.equal(result.ready,'true',label+' finishes mounting its relief');
+  assert.equal(result.visible,'true',label+' is observed in the viewport');
+  assert.equal(result.aria,'true',label+' keeps purely decorative art out of the accessible text');
+  assert.equal(result.count,1,label+' has exactly one relief subtree');
+  assert.equal(result.definitionCount,1,label+' shares one static contour filter');
+  assert.equal(result.copies.length,2,label+' has two approved-art layers');
+  assert.ok(result.source.image.includes('assets/design-v2/cards/individual/illustration-update-02.webp'),label+' keeps the approved B0001 atlas');
+  for(const copy of result.copies)assert.deepEqual(copy,result.source,label+' exactly preserves the existing artwork source and crop');
+  assert.ok(result.filter.includes('#bk-card-relief-etch')&&result.opacity>0&&result.visibleBox.width>0&&result.visibleBox.height>0,label+' renders actual static etched ridges');
+  assert.equal(result.sameAperture,true,label+' keeps the finish aligned with the illustration');
+  assert.equal(result.withinArt,true,label+' confines embossing to the illustration');
+  assert.deepEqual(result.textOverlap,[],label+' leaves card name, cost, rules and stats uncovered');
+  assert.equal(result.pointerEvents,'none',label+' never blocks game input');
+  assert.deepEqual(result.actual,result.expected,label+' preserves every printed game value');
+  assert.equal(result.polish.name,moving?'bk-relief-polish':'none',label+' respects the motion setting');
+  if(moving)assert.equal(result.polish.state,'running',label+' moves the localized reflection only while visible');
+  await assertFits();
+  return result;
+ }
+ async function capture(name){
+  const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+  await mkdir('artifacts/layout',{recursive:true});
+  await writeFile('artifacts/layout/'+name+'.png',Buffer.from(shot.data,'base64'));
+ }
+ async function dismissOutside(mobile,label){
+  const point=await evaluate(`(()=>{const backdrop=document.querySelector('#modal-root .modal-backdrop');for(const [x,y] of [[3,3],[innerWidth/2,3],[innerWidth-3,3],[3,innerHeight/2],[innerWidth-3,innerHeight/2],[3,innerHeight-3],[innerWidth/2,innerHeight-3]])if(document.elementFromPoint(x,y)===backdrop)return {x,y};return null})()`);
+  assert.ok(point,label+' leaves the modal backdrop available for dismissal');
+  if(mobile){
+   await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...point,radiusX:1,radiusY:1,force:1,id:1}]});
+   await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  }else{
+   await send('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',buttons:1,clickCount:1,...point});
+   await send('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',buttons:0,clickCount:1,...point});
+  }
+  await until(()=>evaluate('!document.querySelector("#modal-root .modal")'),label+' dismisses the detail by clicking or tapping outside');
+ }
+ for(const {width,height,mobile} of [{width:1366,height:768,mobile:false},{width:390,height:844,mobile:true}]){
+  const label=width+'x'+height+' apex relief';
+  await viewport(width,height,mobile);await click('.navigation-dock [data-nav=collection]');
+  await click('[data-action=collection-scope][data-scope=all]');
+  await setMotion(true);await openApex();
+  const moving=await inspectApex(label,true);
+  await capture('relief-'+width+'x'+height);
+  await pointerClick('#modal-root .modal-close',mobile,label+' close control');
+  await until(()=>evaluate('!document.querySelector("#modal-root .modal")'),label+' closes with its visible close control');
+  await setMotion(false);await openApex();
+  const still=await inspectApex(label+' with animation disabled',false);
+  assert.deepEqual(still.source,moving.source,label+' motion toggle never changes the illustration');
+  assert.deepEqual(still.actual,moving.actual,label+' motion toggle never changes card values');
+  await capture('relief-static-'+width+'x'+height);
+  await writeFile('artifacts/layout/relief-'+width+'x'+height+'.json',JSON.stringify({moving,still},null,2));
+  await dismissOutside(mobile,label);
+  await searchCard('B0002');await click('#card-results .game-card[data-id=B0002]');
+  await waitElement('#modal-root .game-card[data-id=B0002] .card-finish.bk-fx-ready');
+  const normal=await evaluate(`(()=>{const card=document.querySelector('#modal-root .game-card[data-id=B0002]');return {marked:card.hasAttribute('data-card-relief'),relief:card.querySelectorAll('[data-card-relief],.bk-relief').length}})()`);
+  assert.deepEqual(normal,{marked:false,relief:0},label+' keeps an ordinary beast on its existing finish');
+  await click('#modal-root .modal-close');
+ }
+ await setMotion(originalMotion);
+ await evaluate(`(()=>{const input=document.querySelector('#card-search');input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));return true})()`);
+ await click('.navigation-dock [data-nav=home]');await viewport(1280,720);
+}
+
+/** Review actual worker output, using public catalog artwork only. The sheet
+ * is created in the CI browser so the pixels pass through the shipped decoder,
+ * preprocessing, WASM model and alpha composer. No generated/repainted art. */
+async function runForegroundReview(){
+ const cases=[['B0001','BASE / redrawn atlas'],['B0257','BASE / original atlas'],['B0263','ORIGINAL / portrait'],['B0512','REGALIA / public printing'],['B1537','BK04 / star deer'],['B1609','BK04 / evolved deer'],['B2049','PREMIUM / dragon'],['B2053','PREMIUM / messenger'],['F0513','PREMIUM / fusion'],['B2056','BK05 / origami'],['B2073','BK05 / glass'],['F0522','BK05 / pigment']];
+ foregroundNetwork=[];
+ try{
+  await evaluate(`(()=>{
+   const state={done:false,error:null,rows:[],startupMs:null,inputSize:null,sheet:null,extractor:null};window.__bkForegroundReview=state;
+   const overlay=document.createElement('div');overlay.id='foreground-review-overlay';overlay.setAttribute('aria-hidden','true');overlay.style.cssText='position:fixed;inset:0;z-index:2147483647;background:#07121d;pointer-events:none;display:flex;align-items:center;justify-content:center';document.body.appendChild(overlay);
+   void (async()=>{
+    const {getCard}=await import('./catalog.js?v=20261125-35');
+    const {resolveSummonArt,computeSummonArtCrop}=await import('./summon-art.js?v=20261125-35');
+    const {createForegroundExtractor,FOREGROUND_INPUT_SIZE}=await import('./summon-foreground.js?v=20261125-35');state.inputSize=FOREGROUND_INPUT_SIZE;
+    const cases=${JSON.stringify(cases)},tileW=480,tileH=348,gap=16,pad=24,top=112;
+    const sheet=document.createElement('canvas');sheet.width=1520;sheet.height=1588;sheet.style.cssText='width:100%;height:100%;object-fit:contain';state.sheet=sheet;overlay.appendChild(sheet);
+    const ctx=sheet.getContext('2d');ctx.fillStyle='#07121d';ctx.fillRect(0,0,sheet.width,sheet.height);
+    ctx.fillStyle='#e7f4ff';ctx.font='bold 28px sans-serif';ctx.fillText('BEAST KING · ORIGINAL ART / FOREGROUND REVIEW',pad,42);
+    ctx.fillStyle='#9fc4d9';ctx.font='16px sans-serif';ctx.fillText('Public illustrations · 320px source crop · original RGB retained · local U²-Net-P '+FOREGROUND_INPUT_SIZE+'px alpha',pad,72);
+    const checker=(x,y,w,h)=>{ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();for(let row=0;row<Math.ceil(h/12);row++)for(let col=0;col<Math.ceil(w/12);col++){ctx.fillStyle=(row+col)%2?'#20313f':'#11212e';ctx.fillRect(x+col*12,y+row*12,12,12);}ctx.restore();};
+    const fitImage=(image,x,y,size)=>{const s=Math.min(size/image.width,size/image.height),w=image.width*s,h=image.height*s;ctx.drawImage(image,x+(size-w)/2,y+(size-h)/2,w,h);};
+    state.extractor=createForegroundExtractor({window,document});const startup=performance.now();await state.extractor.prepare();state.startupMs=Math.round(performance.now()-startup);
+    for(let index=0;index<cases.length;index++){
+     const [id,group]=cases[index],x=pad+(index%3)*(tileW+gap),y=top+Math.floor(index/3)*(tileH+gap),row={id,group,status:'preparing'};state.rows.push(row);
+     ctx.fillStyle='#0b1b29';ctx.fillRect(x,y,tileW,tileH);ctx.strokeStyle='#315166';ctx.strokeRect(x+.5,y+.5,tileW-1,tileH-1);
+     ctx.fillStyle='#dceefe';ctx.font='bold 18px sans-serif';ctx.fillText(id+'  '+group,x+12,y+25);ctx.font='14px sans-serif';ctx.fillStyle='#9fc4d9';ctx.fillText('APPROVED ORIGINAL',x+12,y+49);ctx.fillText('BACKGROUND-FREE',x+248,y+49);
+     checker(x+12,y+60,220,220);checker(x+248,y+60,220,220);
+     try{
+      const card=getCard(id),art=resolveSummonArt(card),url=new URL(art.src,document.baseURI);row.name=card.name;row.source=url.pathname+url.search;
+      if(url.origin!==location.origin||!url.pathname.startsWith('/assets/'))throw Error('review source must be a public same-origin asset');
+      const image=new Image();image.src=url.href;await image.decode();
+      const crop=computeSummonArtCrop(art,image.naturalWidth,image.naturalHeight);if(!crop)throw Error('invalid approved crop');row.crop=crop;
+      const source=document.createElement('canvas'),aspect=crop.width/crop.height;source.width=Math.round(aspect>=1?320:320*aspect);source.height=Math.round(aspect>=1?320/aspect:320);
+      const originalContext=source.getContext('2d',{willReadFrequently:true});originalContext.drawImage(image,crop.x,crop.y,crop.width,crop.height,0,0,source.width,source.height);
+      const before=originalContext.getImageData(0,0,source.width,source.height);fitImage(source,x+12,y+60,220);
+      const started=performance.now(),result=await state.extractor.extract(source,{persistent:false});row.latencyMs=Math.round(performance.now()-started);
+      if(result.width!==source.width||result.height!==source.height)throw Error('foreground changed source dimensions');
+      let rgbChanged=0,sourceChanged=0,alphaIncreased=0,clear=0,opaque=0,soft=0,alphaSum=0;const after=originalContext.getImageData(0,0,source.width,source.height);
+      for(let p=0;p<before.data.length;p+=4){for(let channel=0;channel<3;channel++)if(result.data[p+channel]!==before.data[p+channel])rgbChanged++;for(let channel=0;channel<4;channel++)if(after.data[p+channel]!==before.data[p+channel])sourceChanged++;const alpha=result.data[p+3];if(alpha>before.data[p+3])alphaIncreased++;if(alpha<=8)clear++;else if(alpha<128)soft++;else opaque++;alphaSum+=alpha;}
+      const count=source.width*source.height;Object.assign(row,{status:'ok',width:source.width,height:source.height,rgbChanged,sourceChanged,alphaIncreased,clearFraction:clear/count,opaqueFraction:opaque/count,softFraction:soft/count,alphaCoverage:alphaSum/(count*255)});
+      const cutout=document.createElement('canvas');cutout.width=result.width;cutout.height=result.height;const cutoutContext=cutout.getContext('2d'),pixels=cutoutContext.createImageData(result.width,result.height);pixels.data.set(result.data);cutoutContext.putImageData(pixels,0,0);fitImage(cutout,x+248,y+60,220);
+      ctx.fillStyle='#b7e9cd';ctx.font='15px sans-serif';ctx.fillText('RGB Δ '+rgbChanged+' · source Δ '+sourceChanged+' · '+(row.latencyMs/1000).toFixed(2)+'s',x+12,y+305);
+      ctx.fillStyle='#9fc4d9';ctx.font='14px sans-serif';ctx.fillText('solid '+(row.opaqueFraction*100).toFixed(1)+'% · clear '+(row.clearFraction*100).toFixed(1)+'% · alpha '+(row.alphaCoverage*100).toFixed(1)+'%',x+12,y+329);
+      cutout.width=0;source.width=0;
+     }catch(error){row.status='failed';row.error=error.code||error.message||String(error);ctx.fillStyle='#ffb0b6';ctx.font='16px sans-serif';ctx.fillText('EXTRACTION FAILED · '+row.error.slice(0,38),x+12,y+310);}
+    }
+    ctx.fillStyle='#9fc4d9';ctx.font='14px sans-serif';ctx.fillText('Runtime startup '+state.startupMs+'ms · semantic outline quality requires visual review',pad,sheet.height-15);
+   })().catch(error=>{state.error=error.stack||String(error);}).finally(()=>{state.extractor?.destroy();state.extractor=null;state.done=true;});return true;
+  })()`);
+  let completed=-1;
+  await until(async()=>{
+   const progress=await evaluate('(()=>{const s=window.__bkForegroundReview;return {done:s.done,count:s.rows.filter(r=>r.status!=="preparing").length,last:s.rows.at(-1)?.id}})()');
+   if(progress.count!==completed){completed=progress.count;console.log('Foreground review '+completed+'/'+cases.length+(progress.last?' · '+progress.last:''));}
+   return progress.done;
+  },'12 actual foreground extractions',300000);
+  const payload=await evaluate('(()=>{const s=window.__bkForegroundReview;return {report:{startupMs:s.startupMs,inputSize:s.inputSize,error:s.error,rows:s.rows},png:s.sheet?.toDataURL("image/png")}})()');
+  const requests=foregroundNetwork;foregroundNetwork=null;
+  payload.report.requests=requests;
+  await mkdir('artifacts/layout',{recursive:true});
+  await writeFile('artifacts/layout/foreground-review.json',JSON.stringify(payload.report,null,2));
+  if(payload.png)await writeFile('artifacts/layout/foreground-review.png',Buffer.from(payload.png.split(',')[1],'base64'));
+  assert.equal(payload.report.error,null,'The shipped foreground runtime initializes successfully');
+  assert.equal(payload.report.rows.length,cases.length,'All requested original-art styles were reviewed');
+  for(const row of payload.report.rows){
+   assert.equal(row.status,'ok',row.id+' produces a foreground silhouette');
+   assert.equal(row.rgbChanged,0,row.id+' keeps every source RGB byte');
+   assert.equal(row.sourceChanged,0,row.id+' does not mutate the authorized original');
+   assert.equal(row.alphaIncreased,0,row.id+' never makes original transparency opaque');
+   assert.ok(row.clearFraction>0&&row.opaqueFraction>0&&row.alphaCoverage>0&&row.alphaCoverage<1,row.id+' has a nonempty, genuinely transparent silhouette');
+  }
+  const sourceOrigin=await evaluate('location.origin');
+  assert.ok(requests.every(request=>new URL(request.url).origin===sourceOrigin&&request.method==='GET'),'Foreground review uses only local GET requests; artwork is never uploaded: '+JSON.stringify(requests));
+ }finally{
+  foregroundNetwork=null;
+  await evaluate('window.__bkForegroundReview?.extractor?.destroy();document.getElementById("foreground-review-overlay")?.remove();delete window.__bkForegroundReview;true');
+ }
+}
+
 try{
  await new Promise((res,rej)=>{server.once('error',rej);server.listen(0,'127.0.0.1',res)});
  const url='http://127.0.0.1:'+server.address().port+'/';
@@ -274,6 +452,7 @@ try{
  ws.addEventListener('message',event=>{
   const m=JSON.parse(event.data);
   if(m.id){const p=pending.get(m.id);if(!p)return;pending.delete(m.id);clearTimeout(p.timer);if(m.error)p.reject(Error(m.error.message));else p.resolve(m.result);return}
+  if(m.method==='Network.requestWillBeSent'&&foregroundNetwork)foregroundNetwork.push({url:m.params.request.url,method:m.params.request.method,type:m.params.type});
   if(m.method==='Runtime.exceptionThrown')exceptions.push(m.params.exceptionDetails.exception?.description||m.params.exceptionDetails.text);
   if(m.method==='Page.javascriptDialogOpening')void send('Page.handleJavaScriptDialog',{accept:true}).catch(()=>{});
  });
@@ -282,7 +461,7 @@ try{
  // No production writes: the test runs against a temporary local server/profile.
  await send('Network.enable');await send('Network.setBlockedURLs',{urls:['*chatgpt.site/*']});
  await send('Page.navigate',{url});await waitElement('#entry-start-form');
- for(const {width,height,mobile} of cameraOnly?[{width:1280,height:720,mobile:false}]:[{width:1280,height:720,mobile:false},...viewports.filter(v=>v.mobile&&v.height>v.width)]){
+ for(const {width,height,mobile} of cameraOnly||reliefOnly||foregroundOnly?[{width:1280,height:720,mobile:false}]:[{width:1280,height:720,mobile:false},...viewports.filter(v=>v.mobile&&v.height>v.width)]){
   await viewport(width,height,mobile);await waitElement('.bk-entry-native');
   const entry=await evaluate(`(()=>{const p=layoutRect(document.querySelector('#app'));return [...document.querySelectorAll('#entry-start-form,#entry-player-name,.entry-profile-option,#entry-starter,.entry-start-button,.entry-footer a')].filter(e=>{const r=layoutRect(e);return r.width<=0||r.height<=0||r.left<p.left-2||r.right>p.right+2||r.top<p.top-2||r.bottom>p.bottom+2}).map(e=>e.id||e.className)})()`);
   assert.deepEqual(entry,[],width+'x'+height+' complete entry controls inside the live canvas');await assertFits();
@@ -292,7 +471,15 @@ try{
  assert.equal(await evaluate('document.querySelectorAll("#entry-starter option").length'),4);
  await click('[data-action=name-start]');await waitElement('.product-home');
  assert.equal(await evaluate('Object.values(JSON.parse(localStorage.getItem("beast-king-v6")).collection).reduce((a,b)=>a+b,0)'),36);
- if(cameraOnly){
+ if(!foregroundOnly)await runReliefSmoke();
+ if(foregroundOnly||cameraOnly)await runForegroundReview();
+ if(foregroundOnly){
+  assert.deepEqual(exceptions,[],'No uncaught foreground browser errors');
+  console.log('Foreground review passed: twelve public originals, exact source RGB preservation, transparent masks, local-only requests and review contact sheet');
+ }else if(reliefOnly){
+  assert.deepEqual(exceptions,[],'No uncaught relief browser errors');
+  console.log('Apex relief passed: exact approved artwork and crop, printed card values, art-only relief, static motion-off finish, ordinary-card exclusion, close control and outside dismissal on desktop and portrait touch');
+ }else if(cameraOnly){
   await runSummonSmoke();
   assert.deepEqual(exceptions,[],'No uncaught camera browser errors');
   console.log('Angled battle camera passed: eight original-art creatures, perspective depth, visible hit targets, desktop mouse and portrait touch attacks, rerenders, animation-off, and removal');
@@ -346,7 +533,7 @@ try{
      await selectShopPane('details');
      await assertShopVisible('.pack-offer>p:not([class]),.pack-assurance,.pack-collection,.pack-offer>[data-action=pack-odds]',4,pack+' complete pack description and collection details',true);
      const packContent=await evaluate(`(async()=>{
-      const {getPack}=await import('./shop.js?v=20261125-34'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
+      const {getPack}=await import('./shop.js?v=20261125-35'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
       return {description:document.querySelector('.pack-offer>p:not([class])').textContent===pack.description,purchase:buy.dataset.pack===pack.id&&buy.textContent.includes(pack.cost+'秘宝で'+pack.size+'枚'),guarantee:document.querySelector('.pack-assurance').textContent.includes('レア以上を1枚保証'),collection:document.querySelector('.pack-collection').textContent.includes(pack.cardCount.toLocaleString('ja-JP')+'種類')};
      })()`);
      assert.deepEqual(packContent,{description:true,purchase:true,guarantee:true,collection:true},pack+' complete supply information');
@@ -366,7 +553,7 @@ try{
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
   // Long scheduled operator content is rendered locally; never sent to live players.
-  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261125-34');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
+  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261125-35');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
   // Real native news dialog, not a synthetic layout. Every notice must
   // appear exactly once, fully within the viewport and outside the controls.
   await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);

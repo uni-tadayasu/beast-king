@@ -21,7 +21,7 @@ if (!['https:', 'http:'].includes(base.protocol) || base.username || base.passwo
 if (!base.pathname.endsWith('/')) base.pathname += '/';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = process.argv[3] ? resolve(process.argv[3]) : root;
-const imageUrl = new URL('assets/social-ogp.jpg?v=20261125-34', base).href;
+const imageUrl = new URL('assets/social-ogp.jpg?v=20261125-35', base).href;
 const escapeAttribute = value => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
 const escapeXml = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
 const pageDefinitions = [

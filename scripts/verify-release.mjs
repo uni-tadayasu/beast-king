@@ -21,6 +21,14 @@ const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const directory='assets/design-v2/cards/individual/';
 const read=path=>readFile(resolve(root,path));
 const hash=buffer=>createHash('sha256').update(buffer).digest('hex');
+const foregroundRuntime={
+ 'ort.wasm.min.mjs':'f53ed4792e758e7232f779d479eb8931b97ff3ab2e3b9a33ee00d1251ffdaad6',
+ 'ort-wasm-simd-threaded.mjs':'745eb7c0ce6f18a6aa521971b2877babc7ffb27eecb58ab3bc6e5ef4692672e8',
+ 'ort-wasm-simd-threaded.wasm':'207d02be4591c156b0a98f024f3d58005b5b04c92274d759fb390338c63559ea',
+ 'u2netp-192.onnx':'0022dc72eb3f891abcb975063186ddc06e49b04cb63c5df62f681b3dc5ec8cf0'
+};
+for(const [file,checksum] of Object.entries(foregroundRuntime))assert.equal(hash(await read('assets/summon-runtime/'+file)),checksum,'Foreground runtime provenance mismatch: '+file);
+for(const file of ['LICENSE-ONNX.txt','LICENSE-U2NET.txt','NOTICE.txt'])assert((await read('assets/summon-runtime/'+file)).length>100,'Missing foreground runtime attribution');
 const manifest=JSON.parse(await read(directory+'manifest.json'));
 const production=JSON.parse(await read(directory+'production.json'));
 const artReview=JSON.parse(await read('assets/design-v2/art-direction-review.json'));

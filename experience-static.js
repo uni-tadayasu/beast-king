@@ -1,5 +1,5 @@
 /** Public guide pages share the same local feedback preferences as the game. */
-import {createExperienceController} from './experience-fx.js?v=20261125-34';
+import {createExperienceController} from './experience-fx.js?v=20261125-35';
 document.addEventListener('contextmenu',event=>event.preventDefault(),true);
 
 const start = () => {

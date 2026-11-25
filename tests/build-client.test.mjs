@@ -49,11 +49,11 @@ test('a missing browser module fails without replacing the last good package',as
 
 test('a fresh browser entry rejects stale module, page, and manifest cache queries before replacing output',async t=>{
  const {root,write,page}=await fixture(t);
- await write('index.html',page.replace('src="app.js"','src="app.js?v=20261125-34"'));
- await write('app.js',"import {cards} from './catalog.js?v=20261125-34'; export const total=cards.length;");
+ await write('index.html',page.replace('src="app.js"','src="app.js?v=20261125-35"'));
+ await write('app.js',"import {cards} from './catalog.js?v=20261125-35'; export const total=cards.length;");
  const {directory}=await buildClient(root),before=await readFile(join(directory,'app.js'),'utf8');
  for(const [path,valid,stale] of [
-  ['app.js',before,before.replace('20261125-34','20261124-28')],
+  ['app.js',before,before.replace('20261125-35','20261124-28')],
   ['about.html',page,page.replace('src="app.js"','src="app.js?v=20261124-28"')],
   ['rebuild/profile.js','export const saved=true;',"import '../catalog.js?v=20261124-26';"],
   ['manifest.webmanifest','{"icons":[]}','{"icons":[{"src":"assets/icon.svg?v=20261124-28"}]}'],
@@ -72,4 +72,18 @@ test('an asset symlink cannot copy private data into the browser package',async 
  const {root}=await fixture(t);
  await symlink(join(root,'.env'),join(root,'assets/leak.svg'));
  await assert.rejects(buildClient(root),/Public files must be regular files/);
+});
+
+test('browser packaging permits only the reviewed foreground runtime paths',async t=>{
+ const {root,write}=await fixture(t);
+ await write('assets/summon-runtime/ort.wasm.min.mjs','export const version="reviewed";');
+ await write('assets/summon-runtime/ort-wasm-simd-threaded.wasm','reviewed wasm fixture');
+ await write('assets/summon-runtime/u2netp-192.onnx','reviewed model fixture');
+ await write('assets/summon-runtime/LICENSE-ONNX.txt','MIT fixture');
+ await write('assets/unreviewed.wasm','not browser media');
+ await write('assets/unreviewed.onnx','not browser media');
+ await write('assets/summon-runtime/unreviewed.mjs','not reviewed code');
+ const {directory}=await buildClient(root),paths=await readdir(directory,{recursive:true});
+ for(const name of ['ort.wasm.min.mjs','ort-wasm-simd-threaded.wasm','u2netp-192.onnx','LICENSE-ONNX.txt'])assert(paths.includes('assets/summon-runtime/'+name));
+ for(const name of ['assets/unreviewed.wasm','assets/unreviewed.onnx','assets/summon-runtime/unreviewed.mjs'])assert(!paths.includes(name));
 });

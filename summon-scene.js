@@ -1,13 +1,15 @@
-/** Persistent illustration-faithful relief summons. Only the public field and
- * each card's already-authorized painting enter this presentation layer.
- * The original pixels are retained; there is no guessed animal silhouette,
- * recoloured replacement, hidden-card lookup, or change to battle/save state. */
-import {resolveSummonArt,computeSummonArtCrop,summonArtSourceFromBackground} from './summon-art.js?v=20261125-34';
-import {freshBattleEvents} from './experience-fx.js?v=20261125-34';
-import {createBattleCamera,projectBattlePoint,getBattleSlot} from './battle-camera.js?v=20261125-34';
-import {createWebglBattleRenderer,createCanvasBattleRenderer} from './battle-renderer.js?v=20261125-34';
+/** Persistent, background-free relief summons. Only revealed field units and
+ * their already-authorized artwork enter this presentation layer. Original RGB
+ * pixels supply the creature; a local worker provides alpha, not a new painting
+ * or invented back-side anatomy. Battle rules and saves never enter the worker. */
+import {resolveSummonArt,computeSummonArtCrop,summonArtSourceFromBackground} from './summon-art.js?v=20261125-35';
+import {freshBattleEvents} from './experience-fx.js?v=20261125-35';
+import {createBattleCamera,projectBattlePoint,getBattleSlot} from './battle-camera.js?v=20261125-35';
+import {createWebglBattleRenderer,createCanvasBattleRenderer} from './battle-renderer.js?v=20261125-35';
+import {createForegroundExtractor} from './summon-foreground.js?v=20261125-35';
+import {buildCreatureGeometry} from './summon-geometry.js?v=20261125-35';
 
-const MAX_TEXTURES=16, GRID=14;
+const MAX_TEXTURES=16;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const identity=(owner,uid)=>owner+':'+uid;
 const originColours={mountain:'#eac27f',river:'#7fd6ff',seed:'#cee896',grass:'#8ce5bc',flower:'#e9aaff',tree:'#b4e5a0',king:'#ffe4a2'};
@@ -33,9 +35,6 @@ export function summonChanges(before,next){
  return changes;
 }
 
-const meshUV=Array.from({length:(GRID+1)**2},(_,i)=>({u:(i%(GRID+1))/GRID,v:Math.floor(i/(GRID+1))/GRID}));
-const meshIndices=[];
-for(let y=0;y<GRID;y++)for(let x=0;x<GRID;x++){const a=y*(GRID+1)+x,b=a+1,c=a+GRID+1,d=c+1;meshIndices.push(a,c,b,b,c,d);}
 const quadUV=[{u:0,v:0},{u:1,v:0},{u:1,v:1},{u:0,v:1}],quadIndices=[0,1,2,0,2,3];
 const projected=(camera,x,y,z)=>projectBattlePoint(camera,{x,y,z});
 function drawTable(renderer,camera){
@@ -56,24 +55,33 @@ function drawGround(renderer,camera,slot,binding,glow){
  const corners=slot.cardCorners;
  renderer.polygon(corners.map(p=>({...p,y:p.y+3})),{fill:[0,0,0,.48]});
  renderer.polygon(corners,{fill:[.025,.10,.16,.94],stroke:[...colour,binding?.unit.ready ? .8 : .40],lineWidth:active?2.6:1.3});
- if(binding?.item.texture)renderer.mesh(binding.item.texture,corners,quadUV,quadIndices,{tint:[.70,.80,.85,.72],fade:false});
+ if(binding?.item.floorTexture)renderer.mesh(binding.item.floorTexture,corners,quadUV,quadIndices,{tint:[.76,.84,.89,.82],fade:false});
  renderer.polygon(corners,{fill:null,stroke:[...colour,active ? .95 : .6+glow*.35],lineWidth:active?2.4:1.3});
  if(binding){
   const ring=Array.from({length:33},(_,i)=>{const a=i/32*Math.PI*2;return projected(camera,slot.world.x+Math.cos(a)*.64,.04,slot.world.z+Math.sin(a)*.35);});
   renderer.polygon(ring,{fill:[...colour,.07+glow*.13],stroke:[...colour,.30+glow*.5],lineWidth:1.2+glow*1.3});
  }
 }
-function drawPainting(renderer,camera,slot,binding,pose){
- const {scale,lift,yaw,alpha}=pose,c=Math.cos(yaw),s=Math.sin(yaw);
- const points=meshUV.map(({u,v})=>{
-  const x=(u-.5)*slot.bodyWidth*scale,bulge=Math.sin(u*Math.PI)*Math.sin(v*Math.PI)*slot.bodyWidth*.08;
-  return projected(camera,slot.world.x+x*c+bulge*s,slot.bodyBaseY+(1-v)*slot.bodyHeight*scale+lift,slot.world.z-x*s+bulge*c);
- });
- const bottom=[points[GRID*(GRID+1)],points[(GRID+1)**2-1]];
- renderer.polygon([slot.basePoint,bottom[0],bottom[1]],{fill:[...binding.accent,.065]});
- renderer.mesh(binding.item.texture,points,meshUV,meshIndices,{tint:[1,1,1,alpha]});
- const border=[points[0],points[GRID],points[(GRID+1)**2-1],points[GRID*(GRID+1)]];
- renderer.polygon(border,{fill:null,stroke:[...binding.accent,.34*alpha],lineWidth:.8});
+function drawCreature(renderer,camera,slot,binding,pose){
+ const {scale,lift,yaw,alpha}=pose,c=Math.cos(yaw),s=Math.sin(yaw),geometry=binding.item.geometry;
+ const place=(v,back=false)=>{const x=v.x*slot.bodyWidth*scale,z=(back?-.025:v.z)*slot.bodyHeight*scale;
+  return projected(camera,slot.world.x+x*c+z*s,slot.bodyBaseY+v.y*slot.bodyHeight*scale+lift,slot.world.z-x*s+z*c);};
+ const points=geometry.vertices.map(v=>place(v)),back=geometry.vertices.map(v=>place(v,true));
+ const shadow=Array.from({length:33},(_,i)=>{const a=i/32*Math.PI*2;return projected(camera,slot.world.x+Math.cos(a)*slot.bodyWidth*.35,.055,slot.world.z+Math.sin(a)*.22);});
+ renderer.polygon(shadow,{fill:[0,.015,.025,.3*alpha]});
+ if(renderer.kind==='canvas'){
+  // The software path keeps the raised front and matte contour without
+  // drawing the entire painting twice or degenerate side-wall UV triangles.
+  for(const [a,b] of geometry.contourEdges)renderer.polygon([back[a],back[b],points[b],points[a]],{fill:[.07,.13,.17,.8*alpha]});
+  renderer.mesh(binding.item.texture,points,geometry.uvs,geometry.indices,{tint:[1,1,1,alpha],fade:false});return;
+ }
+ // A narrow back and joined contour give the silhouette physical thickness.
+ // The front uses real depth testing; transparent texels never occlude limbs.
+ renderer.mesh(binding.item.texture,back,geometry.uvs,geometry.indices,{tint:[.62,.68,.73,alpha],fade:false,depthTest:true});
+ const sidePoints=[],sideUV=[],sideIndices=[];
+ for(const [a,b] of geometry.contourEdges){const k=sidePoints.length;sidePoints.push(back[a],back[b],points[b],points[a]);sideUV.push(geometry.uvs[a],geometry.uvs[b],geometry.uvs[b],geometry.uvs[a]);sideIndices.push(k,k+1,k+2,k,k+2,k+3);}
+ if(sideIndices.length)renderer.mesh(binding.item.texture,sidePoints,sideUV,sideIndices,{tint:[.73,.79,.85,alpha],fade:false,depthTest:true});
+ renderer.mesh(binding.item.texture,points,geometry.uvs,geometry.indices,{tint:[1,1,1,alpha],shades:binding.item.shades,fade:false,depthTest:true});
 }
 
 export function createSummonScene(options={}){
@@ -81,6 +89,7 @@ export function createSummonScene(options={}){
  if(!doc?.createElement||!win)return {sync(){},react(){},refresh(){},destroy(){}};
  let canvas=null,renderer=null,arena=null,snapshot=null,battleKey=null,bindings=[],frame=0,lastPaint=-Infinity,dirty=true,destroyed=false,active=false;
  let cameraCache=null;
+ let foreground=null;
  let prefs={motion:true,intensity:'full'},activation=-Infinity,clock=()=>win.performance?.now?.()??Date.now();
  const reduced=win.matchMedia?.('(prefers-reduced-motion: reduce)'),textures=new Map(),loads=new Map(),instances=new Map(),offs=[];
  const on=(target,event,fn,opts)=>{target?.addEventListener?.(event,fn,opts);offs.push(()=>target?.removeEventListener?.(event,fn,opts));};
@@ -90,7 +99,7 @@ export function createSummonScene(options={}){
  const schedule=()=>{dirty=true;if(!frame&&active&&visible()&&!destroyed)frame=win.requestAnimationFrame(paint);};
  const stop=()=>{if(frame)win.cancelAnimationFrame(frame);frame=0;};
  function unmark(){
-  for(const b of bindings)if(b.slot?.dataset)delete b.slot.dataset.summonReady;
+  for(const b of bindings)if(b.slot?.dataset){for(const name of ['summonReady','summonFloorReady','summonState','summonMaskCoverage','summonMeshDepth'])delete b.slot.dataset[name];}
   for(const slot of arena?.querySelectorAll('[data-camera-placed]')||[]){delete slot.dataset.cameraPlaced;for(const name of ['x','y','w','h','label-h'])slot.style.removeProperty('--summon-'+name);}
   if(arena?.dataset)delete arena.dataset.battleCamera;
  }
@@ -100,8 +109,8 @@ export function createSummonScene(options={}){
   try{renderer=createWebglBattleRenderer(canvas);}catch{renderer=null;}
   if(!renderer){canvas=doc.createElement('canvas');canvas.className='bk-summon-canvas';canvas.setAttribute('aria-hidden','true');try{renderer=createCanvasBattleRenderer(canvas);}catch{renderer=null;}}
   if(!renderer){canvas=null;return false;}
-  // A lost GPU context degrades to the original-image software projection.
-  on(canvas,'webglcontextlost',event=>{event.preventDefault();stop();const old=canvas;canvas=doc.createElement('canvas');canvas.className='bk-summon-canvas';canvas.setAttribute('aria-hidden','true');renderer=createCanvasBattleRenderer(canvas);for(const item of textures.values())item.texture=renderer?.upload(item.source);if(arena&&renderer){old.replaceWith(canvas);arena.dataset.summonRenderer=renderer.kind;schedule();}else{old.remove();unmark();}});
+  // A lost GPU context retains the same transparent silhouettes in software.
+  on(canvas,'webglcontextlost',event=>{event.preventDefault();stop();const old=canvas;canvas=doc.createElement('canvas');canvas.className='bk-summon-canvas';canvas.setAttribute('aria-hidden','true');renderer=createCanvasBattleRenderer(canvas);for(const item of textures.values()){item.texture=item.source?renderer?.upload(item.source):null;item.floorTexture=item.floorSource?renderer?.upload(item.floorSource):null;}if(arena&&renderer){old.replaceWith(canvas);arena.dataset.summonRenderer=renderer.kind;schedule();}else{old.remove();unmark();}});
   return true;
  }
  function loadImage(src){
@@ -115,23 +124,33 @@ export function createSummonScene(options={}){
  function cacheKey(art){return art.src+'|'+JSON.stringify(art.crop);}
  function evict(){
   const used=new Set(bindings.map(b=>b.artKey));
-  for(const [key,item] of textures){if(textures.size<=MAX_TEXTURES)break;if(used.has(key)||!item.done)continue;if(item.texture)renderer?.release(item.texture);textures.delete(key);}
+  for(const [key,item] of textures){if(used.has(key)||(!item.privateSource&&(textures.size<=MAX_TEXTURES||!item.done)))continue;if(item.texture)renderer?.release(item.texture);if(item.floorTexture)renderer?.release(item.floorTexture);if(item.privateSource)loads.delete(item.artSource);textures.delete(key);}
  }
  function requestArt(art){
   const key=cacheKey(art),cached=textures.get(key);
   if(cached&&!cached.failed)return cached;
-  if(cached&&clock()-cached.failedAt<5000)return cached;
-  if(cached)textures.delete(key);
-  const item={done:false,texture:null,source:null,aspect:1};textures.set(key,item);
-  loadImage(art.src).then(img=>{
+  if(cached&&clock()-cached.failedAt<(cached.floorTexture?60000:5000))return cached;
+  if(cached){if(cached.texture)renderer?.release(cached.texture);if(cached.floorTexture)renderer?.release(cached.floorTexture);textures.delete(key);}
+  const url=new URL(art.src,doc.baseURI),privateSource=url.origin!==new URL(doc.baseURI).origin||!url.pathname.includes('/assets/');
+  const item={done:false,texture:null,floorTexture:null,source:null,floorSource:null,geometry:null,aspect:1,privateSource,artSource:art.src};textures.set(key,item);
+  loadImage(art.src).then(async img=>{
    if(destroyed||textures.get(key)!==item)return;
    const crop=computeSummonArtCrop(art,img.naturalWidth,img.naturalHeight);if(!crop)throw Error('invalid image crop');
    const source=doc.createElement('canvas'),limit=320,aspect=crop.width/crop.height;
    source.width=Math.round(aspect>=1?limit:limit*aspect);source.height=Math.round(aspect>=1?limit/aspect:limit);
-   const ctx=source.getContext('2d');if(!ctx)throw Error('image canvas unavailable');
+   const ctx=source.getContext('2d',{willReadFrequently:true});if(!ctx)throw Error('image canvas unavailable');
    ctx.drawImage(img,crop.x,crop.y,crop.width,crop.height,0,0,source.width,source.height);
-   item.source=source;item.aspect=aspect;item.texture=renderer?.upload(source);item.done=true;evict();schedule();
-  }).catch(()=>{item.done=true;item.failed=true;item.failedAt=clock();schedule();});return item;
+   item.floorSource=source;item.aspect=aspect;item.floorTexture=renderer?.upload(source);schedule();
+   foreground??=createForegroundExtractor({window:win,document:doc});
+   const pixels=await foreground.extract(source,{persistent:false});
+   if(destroyed||textures.get(key)!==item)return;
+   const geometry=buildCreatureGeometry(pixels,{grid:renderer?.kind==='canvas'?12:24});
+   if(!geometry)throw Error('creature outline unavailable');
+   const body=doc.createElement('canvas');body.width=pixels.width;body.height=pixels.height;
+   const bodyContext=body.getContext('2d');if(!bodyContext)throw Error('creature canvas unavailable');
+   const imageData=bodyContext.createImageData(pixels.width,pixels.height);imageData.data.set(pixels.data);bodyContext.putImageData(imageData,0,0);
+   item.source=body;item.geometry=geometry;item.shades=geometry.normals.map(n=>clamp(.88+.18*(n.x*-.3+n.y*.4+n.z*.86),.83,1.09));item.aspect=geometry.aspect;item.texture=renderer?.upload(body);item.done=true;evict();schedule();
+  }).catch(()=>{if(textures.get(key)!==item)return;item.done=true;item.failed=true;item.failedAt=clock();schedule();});return item;
  }
  function captureBindings(){
   if(!arena)return;
@@ -140,7 +159,7 @@ export function createSummonScene(options={}){
    const key=identity(Number(element.dataset.player),element.dataset.uid),unit=instances.get(key);if(!unit||unit.cardId!==element.dataset.cardId)continue;
    const anchor=element.querySelector('.summon-anchor'),artElement=element.querySelector('.card-art');if(!anchor||!artElement)continue;
    const src=summonArtSourceFromBackground(win.getComputedStyle(artElement).backgroundImage),card=getCard(unit.cardId),art=resolveSummonArt(card,{sourceOverride:src,baseUrl:doc.baseURI});
-   const slot=element.closest('.field-slot');if(!art){if(slot?.dataset)delete slot.dataset.summonReady;continue;}
+   const slot=element.closest('.field-slot');if(!art){if(slot?.dataset){delete slot.dataset.summonReady;delete slot.dataset.summonFloorReady;delete slot.dataset.summonState;}continue;}
    const item=requestArt(art),artKey=cacheKey(art),colour=originColours[card.element]||originColours.flower;
    current.push({key,unit,element,anchor,slot,index:Number(slot?.dataset.slot)||0,item,artKey,colour,rarity:card.rarity,accent:[1,3,5].map(i=>parseInt(colour.slice(i,i+2),16)/255)});
   }
@@ -181,7 +200,7 @@ export function createSummonScene(options={}){
    else if(binding.unit.cue==='heal')glow=.7*pulse;
   }
   if(animate&&now-activation<900)glow=Math.max(glow,Math.sin(clamp((now-activation)/900,0,1)*Math.PI)*.65);
-  const yaw=(binding.unit.owner===0?-.02:.02)+(animate?Math.sin(now*.0007+phase)*.025:0);
+  const yaw=(binding.unit.owner===0?-.10:.10)+(animate?Math.sin(now*.0007+phase)*.065:0);
   return {scale,lift,glow,alpha,yaw};
  }
  function paint(now){
@@ -192,20 +211,22 @@ export function createSummonScene(options={}){
   renderer.begin(m.width,m.height);const layout=cameraLayout(m);if(!layout)return;
   const {camera,slots}=layout;drawTable(renderer,camera);let count=0;
   const poses=new Map();
-  for(const item of slots){if(item.binding)poses.set(item.binding,poseFor(item.binding,now,animate));drawGround(renderer,camera,item.slot,item.binding,poses.get(item.binding)?.glow||0);}
+  for(const item of slots){if(item.binding){poses.set(item.binding,poseFor(item.binding,now,animate));item.element.dataset.summonState=item.binding.item.failed?'unavailable':item.binding.item.texture?'ready':'preparing';if(item.binding.item.floorTexture)item.element.dataset.summonFloorReady='true';}drawGround(renderer,camera,item.slot,item.binding,poses.get(item.binding)?.glow||0);}
   for(const {slot,binding,element} of slots.sort((a,b)=>b.slot.owner-a.slot.owner)){
    if(!binding?.item.texture){delete element.dataset.summonReady;continue;}
-   drawPainting(renderer,camera,slot,binding,poses.get(binding));element.dataset.summonReady='true';count++;
+   drawCreature(renderer,camera,slot,binding,poses.get(binding));element.dataset.summonReady='true';
+   element.dataset.summonMaskCoverage=(binding.item.geometry.opaquePixels/(binding.item.source.width*binding.item.source.height)).toFixed(4);
+   element.dataset.summonMeshDepth=String(binding.item.geometry.thickness);count++;
   }
-  canvas.dataset.summonCount=String(count);canvas.dataset.summonMotion=animate?'on':'off';
+  canvas.dataset.summonCount=String(count);canvas.dataset.summonForeground='transparent';canvas.dataset.summonMotion=animate?'on':'off';
   if(animate&&bindings.length)frame=win.requestAnimationFrame(paint);
  }
  function sync(game,next={}){
   if(destroyed)return;
   prefs={motion:next.motion??prefs.motion,intensity:next.intensity??prefs.intensity};const state=snapshotSummons(game),newArena=state?doc.querySelector('.duel-shell .arena'):null;
-  if(!state||!newArena||next.enabled===false){active=false;stop();unmark();bindings=[];instances.clear();snapshot=null;battleKey=null;activation=-Infinity;if(arena?.dataset)delete arena.dataset.summonRenderer;canvas?.remove();arena=null;return;}
+  if(!state||!newArena||next.enabled===false){active=false;stop();unmark();bindings=[];evict();for(const [id,item] of textures)if(!item.done){if(item.floorTexture)renderer?.release(item.floorTexture);textures.delete(id);}foreground?.destroy();foreground=null;instances.clear();snapshot=null;battleKey=null;activation=-Infinity;if(arena?.dataset)delete arena.dataset.summonRenderer;canvas?.remove();arena=null;return;}
   const key=next.key??game,newBattle=battleKey!==key||!snapshot,changes=newBattle?[]:summonChanges(snapshot,state),now=clock();
-  if(newBattle){instances.clear();activation=-Infinity;}battleKey=key;snapshot=state;
+  if(newBattle){instances.clear();activation=-Infinity;foreground??=createForegroundExtractor({window:win,document:doc});foreground.prepare().catch(()=>{});}battleKey=key;snapshot=state;
   const alive=new Set(state.units.map(u=>u.key));for(const id of instances.keys())if(!alive.has(id))instances.delete(id);
   for(const u of state.units){const prior=instances.get(u.key);instances.set(u.key,{...u,phase:prior?.phase??Array.from(u.uid).reduce((sum,c)=>sum+c.charCodeAt(0),u.owner*17),cue:prior?.cue||'',at:prior?.at??-Infinity});}
   if(moving())for(const change of changes){if(change.kind==='activate')activation=now;else{const unit=instances.get(change.key);if(unit){unit.cue=change.kind;unit.at=now;}}}
@@ -220,6 +241,6 @@ export function createSummonScene(options={}){
  return {sync,
   react(kind,{uid,player=0}={}){const unit=instances.get(identity(player,uid));if(unit&&moving()){unit.cue=kind;unit.at=clock();schedule();}},
   refresh(){captureBindings();schedule();},
-  destroy(){if(destroyed)return;destroyed=true;active=false;stop();unmark();for(const off of offs)off();resize?.disconnect();renderer?.destroy();canvas?.remove();if(arena?.dataset)delete arena.dataset.summonRenderer;textures.clear();loads.clear();instances.clear();bindings=[];snapshot=null;arena=null;}
+  destroy(){if(destroyed)return;destroyed=true;active=false;stop();unmark();for(const off of offs)off();resize?.disconnect();foreground?.destroy();renderer?.destroy();canvas?.remove();if(arena?.dataset)delete arena.dataset.summonRenderer;textures.clear();loads.clear();instances.clear();bindings=[];snapshot=null;arena=null;}
  };
 }

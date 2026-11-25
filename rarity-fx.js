@@ -3,6 +3,8 @@
  * No game state, save data, card definitions or input handlers are changed.
  */
 
+import { syncCardRelief, clearCardRelief } from './card-relief.js?v=20261125-35';
+
 export const RARITY_FX_LAYERS = Object.freeze({
   N: Object.freeze(['foil', 'glints']),
   R: Object.freeze(['foil', 'glints', 'dust']),
@@ -59,7 +61,11 @@ export function initRarityEffects(doc = document) {
     : null;
 
   const attach = host => {
-    if (attached.has(host) || !host.isConnected) return;
+    if (!host.isConnected) return;
+    if (attached.has(host)) {
+      syncCardRelief(host, host.querySelector('.bk-fx'), doc);
+      return;
+    }
     const rarity = rarityOf(host);
     if (!rarity) return;
     // Opponent face-down zones must not reveal rarity or card identity.
@@ -78,6 +84,7 @@ export function initRarityEffects(doc = document) {
     host.dataset.fxRarity = rarity;
     host.dataset.fxVisible = intersection ? 'false' : 'true';
     host.appendChild(fx);
+    syncCardRelief(host, fx, doc);
     attached.add(host);
     intersection?.observe(host);
   };
@@ -104,7 +111,23 @@ export function initRarityEffects(doc = document) {
     let changed = false;
     for (const record of records) {
       if (record.target.nodeType === 1 && record.target.closest('.bk-fx')) continue;
+      if (record.type === 'attributes') {
+        const target = record.target;
+        const host = target.matches('.card-art') ? target.nextElementSibling : target;
+        if (host?.matches('.card-finish') && attached.has(host)) {
+          // Synchronize in this microtask: a revoked/pending private image must
+          // never survive in a copied relief until a later animation frame.
+          syncCardRelief(host, host.querySelector('.bk-fx'), doc);
+        }
+        continue;
+      }
       if (record.removedNodes.length) changed = true;
+      // Replacing only an illustration also invalidates its adjacent finish.
+      if (record.target.nodeType === 1 && [...record.removedNodes, ...record.addedNodes].some(node => node.nodeType === 1 && node.matches('.card-art'))) {
+        for (const host of record.target.querySelectorAll('.card-finish')) {
+          if (attached.has(host)) syncCardRelief(host, host.querySelector('.bk-fx'), doc);
+        }
+      }
       for (const node of record.addedNodes) {
         if (node.nodeType !== 1 || node.classList.contains('bk-fx') || node.closest('.bk-fx')) continue;
         pending.add(node);
@@ -119,7 +142,7 @@ export function initRarityEffects(doc = document) {
   };
   visibility();
   discover(doc.body);
-  mutation.observe(doc.body, { childList: true, subtree: true });
+  mutation.observe(doc.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'data-regalia-status', 'data-card-relief'] });
   doc.addEventListener('visibilitychange', visibility);
 
   const cleanup = () => {
@@ -129,6 +152,7 @@ export function initRarityEffects(doc = document) {
     if (frame) win.cancelAnimationFrame(frame);
     pending.clear();
     for (const host of attached) {
+      clearCardRelief(host, host.querySelector('.bk-fx'));
       for (const child of host.children) if (child.classList.contains('bk-fx')) child.remove();
       host.classList.remove('bk-fx-ready');
       delete host.dataset.fxRarity;
