@@ -1,5 +1,5 @@
-import {getDeckPreset} from './catalog.js?v=20261125-36';
-import { CAMPAIGN_CHAPTERS, CAMPAIGN_BATTLES, CAMPAIGN_TOTAL_BATTLES, normalizeCampaignProgress, getCampaignBattle, getNextCampaignBattle, isCampaignBattleUnlocked } from './campaign.js?v=20261125-36';
+import {getDeckPreset} from './catalog.js?v=20261125-37';
+import { CAMPAIGN_CHAPTERS, CAMPAIGN_BATTLES, CAMPAIGN_TOTAL_BATTLES, normalizeCampaignProgress, getCampaignBattle, getNextCampaignBattle, isCampaignBattleUnlocked } from './campaign.js?v=20261125-37';
 
 /** Dedicated mode screens. State and actions remain in app.js. */
 export function soloView({ section='campaign', mapPage=null, data = {}, game, difficulty = 'normal', cpuDeckId = 'random', campaignProgress, campaignBattleId, LEVELS = {}, STARTER_DECKS = [], elementMap = {}, icon, esc, title } = {}) {

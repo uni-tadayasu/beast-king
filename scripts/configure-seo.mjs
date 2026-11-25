@@ -21,7 +21,8 @@ if (!['https:', 'http:'].includes(base.protocol) || base.username || base.passwo
 if (!base.pathname.endsWith('/')) base.pathname += '/';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = process.argv[3] ? resolve(process.argv[3]) : root;
-const imageUrl = new URL('assets/social-ogp.jpg?v=20261125-36', base).href;
+const imageUrl = new URL('assets/brand/social-ogp-r37.jpg', base).href;
+const imageAlt = '黒い王宮に輝く金の王冠と「BEAST KING」「ビーストキング」、36枚で戦う無料ブラウザカードゲームの文字。';
 const escapeAttribute = value => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
 const escapeXml = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
 const pageDefinitions = [
@@ -52,7 +53,7 @@ for (const page of pages) {
 const oldBaseList = [...oldBases].sort((a, b) => b.length - a.length);
 function remapUrl(value) {
   if (typeof value !== 'string') return value;
-  if (/^https?:\/\/.+\/assets\/social-ogp\.(?:png|jpe?g|webp)(?:[?#].*)?$/i.test(value)) return imageUrl;
+  if (/^https?:\/\/.+\/assets\/(?:social-ogp\.(?:png|jpe?g|webp)|brand\/social-ogp-r\d+\.jpg)(?:[?#].*)?$/i.test(value)) return imageUrl;
   for (const oldBase of oldBaseList) {
     if (value === oldBase.slice(0, -1)) return base.href;
     if (value.startsWith(oldBase)) return new URL(value.slice(oldBase.length), base).href;
@@ -87,7 +88,9 @@ for (const page of pages) {
     ['property', 'og:image:width', '1200'],
     ['property', 'og:image:height', '630'],
     ['property', 'og:image:type', 'image/jpeg'],
+    ['property', 'og:image:alt', imageAlt],
     ['name', 'twitter:image', imageUrl],
+    ['name', 'twitter:image:alt', imageAlt],
   ]) html = setMeta(html, attribute, key, value);
   html = html.replace(/(<script\b[^>]*\btype=["']application\/ld\+json["'][^>]*>)([\s\S]*?)(<\/script>)/gi, (full, start, json, end) => {
     let data;
@@ -104,4 +107,4 @@ const urls = pages.filter(page=>page.index).map(page=>new URL(page.relative, bas
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(url => `  <url><loc>${escapeXml(url)}</loc></url>`).join('\n')}\n</urlset>\n`;
 await writeFile(resolve(dist, 'sitemap.xml'), sitemap);
 await writeFile(resolve(dist, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${new URL('sitemap.xml', base).href}\n`);
-console.log(`SEO configured: ${base.href} (${pages.length} pages, social-ogp.jpg)`);
+console.log(`SEO configured: ${base.href} (${pages.length} pages, social-ogp-r37.jpg)`);

@@ -282,8 +282,8 @@ async function assertCameraGeometry(label){
 async function assertSummonScene(expected,label){
  await until(()=>evaluate(`(()=>{const c=document.querySelector('.bk-summon-canvas');return c&&Number(c.dataset.summonCount)===${expected.length}&&document.querySelectorAll('.field-slot[data-summon-ready="true"]').length===${expected.length}})()`),label+' loaded summon artwork',90000);
  const result=await evaluate(`(async()=>{
-  const {getCard}=await import('./catalog.js?v=20261125-36');
-  const {resolveSummonArt}=await import('./summon-art.js?v=20261125-36');
+  const {getCard}=await import('./catalog.js?v=20261125-37');
+  const {resolveSummonArt}=await import('./summon-art.js?v=20261125-37');
   const canvas=document.querySelector('.bk-summon-canvas'),rect=layoutRect(canvas),style=getComputedStyle(canvas);
   const slots=[...document.querySelectorAll('.field-slot[data-summon-ready="true"]')].map(slot=>{
    const unit=slot.querySelector('.field-unit'),painting=unit.querySelector('.summon-card-floor .card-art');
@@ -313,8 +313,8 @@ async function runSummonSmoke(){
   // Let debounced saves settle so pagehide cannot overwrite the new fixture.
   await delay(250);
   const expected=await evaluate(`(async()=>{
-   const {newGame}=await import('./engine.js?v=20261125-36');
-   const {getCard}=await import('./catalog.js?v=20261125-36');
+   const {newGame}=await import('./engine.js?v=20261125-37');
+   const {getCard}=await import('./catalog.js?v=20261125-37');
    const saved=JSON.parse(${JSON.stringify(savedProfile)});
    const battle=newGame({playerDeck:saved.deckIds,cpuDeck:saved.deckIds,playerSpecialDeck:saved.specialIds,cpuSpecialDeck:saved.specialIds,seed:33});
    for(const [owner,player] of battle.players.entries())for(let i=0;i<${count};i++){
@@ -388,7 +388,7 @@ async function runReliefSmoke(){
  }
  async function inspectApex(label,moving){
   const result=await evaluate(`(async()=>{
-   const {getCard}=await import('./catalog.js?v=20261125-36');
+   const {getCard}=await import('./catalog.js?v=20261125-37');
    const card=document.querySelector('#modal-root .game-card[data-id=B0001]'),data=getCard('B0001'),art=card.querySelector('.card-art'),finish=card.querySelector('.card-finish'),relief=finish.querySelector('.bk-relief'),contour=relief.querySelector('.bk-relief-contour'),polish=relief.querySelector('.bk-relief-polish');
    const background=node=>{const s=getComputedStyle(node);return {image:s.backgroundImage,size:s.backgroundSize,position:s.backgroundPosition,repeat:s.backgroundRepeat}};
    const inside=(a,b)=>a.left>=b.left-1&&a.right<=b.right+1&&a.top>=b.top-1&&a.bottom<=b.bottom+1;
@@ -475,9 +475,9 @@ async function runForegroundReview(){
    const state={done:false,error:null,rows:[],prepareMs:null,maskTileSize:null,sheet:null,extractor:null};window.__bkForegroundReview=state;
    const overlay=document.createElement('div');overlay.id='foreground-review-overlay';overlay.setAttribute('aria-hidden','true');overlay.style.cssText='position:fixed;inset:0;z-index:2147483647;background:#07121d;pointer-events:none;display:flex;align-items:center;justify-content:center';document.body.appendChild(overlay);
    void (async()=>{
-    const {getCard}=await import('./catalog.js?v=20261125-36');
-    const {resolveSummonArt,computeSummonArtCrop}=await import('./summon-art.js?v=20261125-36');
-    const {createForegroundExtractor,FOREGROUND_INPUT_SIZE}=await import('./summon-foreground.js?v=20261125-36');state.maskTileSize=FOREGROUND_INPUT_SIZE;
+    const {getCard}=await import('./catalog.js?v=20261125-37');
+    const {resolveSummonArt,computeSummonArtCrop}=await import('./summon-art.js?v=20261125-37');
+    const {createForegroundExtractor,FOREGROUND_INPUT_SIZE}=await import('./summon-foreground.js?v=20261125-37');state.maskTileSize=FOREGROUND_INPUT_SIZE;
     const cases=${JSON.stringify(cases)},tileW=480,tileH=348,gap=16,pad=24,top=112;
     const sheet=document.createElement('canvas');sheet.width=1520;sheet.height=1588;sheet.style.cssText='width:100%;height:100%;object-fit:contain';state.sheet=sheet;overlay.appendChild(sheet);
     const ctx=sheet.getContext('2d');ctx.fillStyle='#07121d';ctx.fillRect(0,0,sheet.width,sheet.height);
@@ -642,7 +642,7 @@ try{
      await selectShopPane('details');
      await assertShopVisible('.pack-offer>p:not([class]),.pack-assurance,.pack-collection,.pack-offer>[data-action=pack-odds]',4,pack+' complete pack description and collection details',true);
      const packContent=await evaluate(`(async()=>{
-      const {getPack}=await import('./shop.js?v=20261125-36'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
+      const {getPack}=await import('./shop.js?v=20261125-37'),pack=getPack(${JSON.stringify(pack)}),buy=document.querySelector('.pack-buy');
       return {description:document.querySelector('.pack-offer>p:not([class])').textContent===pack.description,purchase:buy.dataset.pack===pack.id&&buy.textContent.includes(pack.cost+'秘宝で'+pack.size+'枚'),guarantee:document.querySelector('.pack-assurance').textContent.includes('レア以上を1枚保証'),collection:document.querySelector('.pack-collection').textContent.includes(pack.cardCount.toLocaleString('ja-JP')+'種類')};
      })()`);
      assert.deepEqual(packContent,{description:true,purchase:true,guarantee:true,collection:true},pack+' complete supply information');
@@ -662,7 +662,7 @@ try{
    await check(width+'x'+height+' '+page,[...general,...selectors]);
   }
   // Long scheduled operator content is rendered locally; never sent to live players.
-  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261125-36');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
+  await evaluate(`(async()=>{const {setPublicNotice}=await import('./news.js?v=20261125-37');setPublicNotice({ok:true,notice:'長文の運営告知',notices:[{id:'fixture-long-notice',title:'長文の運営告知',body:'【検証用】改行を含む長いお知らせ。<script>を文字として表示します。\\n'.repeat(40),status:'published',phase:'active',startAt:Date.now()}],maintenance:false,upcomingMaintenance:{startAt:Date.now()+3600000,endAt:Date.now()+7200000,message:'予約メンテナンスの表示検証'}});return true})()`);
   // Real native news dialog, not a synthetic layout. Every notice must
   // appear exactly once, fully within the viewport and outside the controls.
   await click('.news-open');await waitElement('#news-dialog[open]');await delay(120);

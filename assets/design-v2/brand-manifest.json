@@ -1,12 +1,19 @@
 {
   "copyright": "© 2026 Beast King",
+  "generatedBy": "scripts/prepare-brand-assets.py",
   "palette": {
-    "navy": "#061426",
-    "gold": "#f3c66d",
-    "cyan": "#66e7e3"
+    "obsidian": "#090b0e",
+    "champagne": "#ceb889",
+    "ivory": "#f0e9db"
   },
   "tagline": "その一手に、王の意志を。",
-  "socialIllustration": "assets/design-v2/backgrounds/entry-illustrated.webp",
+  "socialIllustration": "assets/design-v4/royal-archive.webp",
+  "socialImage": "assets/brand/social-ogp-r37.jpg",
+  "socialImageSize": {
+    "width": 1200,
+    "height": 630,
+    "type": "image/jpeg"
+  },
   "origins": [
     "mountain",
     "river",
@@ -19,43 +26,73 @@
   "files": [
     {
       "path": "assets/icon.svg",
-      "bytes": 784,
-      "sha256": "8d643558e0568c0265868931bdf71d26d741b56077a270973c0453ae5e49fef2"
+      "bytes": 884,
+      "sha256": "07165857e56e3028075446cd864858b9cdac961d6590f86faccb370ae14fbcfa"
+    },
+    {
+      "path": "assets/favicon.svg",
+      "bytes": 884,
+      "sha256": "07165857e56e3028075446cd864858b9cdac961d6590f86faccb370ae14fbcfa"
     },
     {
       "path": "assets/favicon-16.png",
-      "bytes": 617,
-      "sha256": "3c1eb215da0d47f068be8b10975f5384362cdde35a27b07f282b2c7338470542"
+      "bytes": 633,
+      "sha256": "c9b4c84c681bd3bdba6377bb1302411c053c47429d61ea9f934e12799bc9fbeb"
     },
     {
       "path": "assets/favicon-32.png",
-      "bytes": 1400,
-      "sha256": "982d4e6b436db5d3d74afa23365086b48fd2d385ca90b23b80e9cc0c82efaa1e"
+      "bytes": 1355,
+      "sha256": "dcbf046fb2a968a2c708fd931ba8b2195b9718003d97eed0fa650fcc3d45f318"
+    },
+    {
+      "path": "assets/favicon-48.png",
+      "bytes": 2068,
+      "sha256": "c529fe5dbf3c9966b4d9c3fe36905bd5f138ce6826b3461a0b870eff42b92d51"
+    },
+    {
+      "path": "assets/favicon-96.png",
+      "bytes": 3300,
+      "sha256": "66a90b46646e262d0ffe13b0683306dc061ca66d06e3ce8cf1b2e4c9b5cffb9d"
     },
     {
       "path": "assets/favicon.ico",
-      "bytes": 18331,
-      "sha256": "525b4d8153b9b0dd9e92d7eb51194004410eb81d8212b46bd52e20ecd289d2f0"
+      "bytes": 18165,
+      "sha256": "71b47dfe0643156ea7988dfca7d321edbb957e8e8d972a8a97f678ba9a908d50"
     },
     {
       "path": "assets/apple-touch-icon.png",
-      "bytes": 35043,
-      "sha256": "d7c3e0ec0e5eaacd35c2fb1d4b0ca70641b4c20085fb04ce43daef071755cfe2"
+      "bytes": 18537,
+      "sha256": "4d45143dab0785c511adddbe466638464dad6b30e8e4fabd43155c2a93d87fdd"
     },
     {
       "path": "assets/icon-192.png",
-      "bytes": 39133,
-      "sha256": "6874b37038fe93dc82413bae5aff4618f0cca3d3aed32dcc87c7f0738aec799b"
+      "bytes": 20166,
+      "sha256": "c2eba35229206eb28508d9d8a5f8d376424dacde34f53ded808c11ddbb59961f"
     },
     {
       "path": "assets/icon-512.png",
-      "bytes": 214791,
-      "sha256": "8b4e938772f064e69f6ef10c121c95e063c50f60b9c9bd3bcd6835810e685305"
+      "bytes": 60601,
+      "sha256": "b4159adf9db35f6b3928038e4c67d520bbe90fe4702289010c616a4049b8b42d"
+    },
+    {
+      "path": "assets/icon-maskable-192.png",
+      "bytes": 16568,
+      "sha256": "bcd303d569bb9abc55f9f9326bdfd4b0724c472ff6c55c4d70c0c748ff164743"
+    },
+    {
+      "path": "assets/icon-maskable-512.png",
+      "bytes": 50035,
+      "sha256": "a1d2b63739092b5c96845b331369d43c9890a5fb25cddca11b0ce3d6cf1dcbfd"
     },
     {
       "path": "assets/social-ogp.jpg",
-      "bytes": 270198,
-      "sha256": "b21a05de6c0b209454ba602b59a4744bbce4956d0311d1bf80989ec885a6d3b7"
+      "bytes": 203310,
+      "sha256": "42d895c1ac6f038fd8df76386a7b7cc66785e0bc662fdfc04686351d8afb9359"
+    },
+    {
+      "path": "assets/brand/social-ogp-r37.jpg",
+      "bytes": 203310,
+      "sha256": "42d895c1ac6f038fd8df76386a7b7cc66785e0bc662fdfc04686351d8afb9359"
     },
     {
       "path": "assets/profiles/mountain.svg",
@@ -94,28 +131,33 @@
     },
     {
       "path": "assets/design-v2/brand/crest.svg",
-      "bytes": 2206,
-      "sha256": "4ee28362cf983366085843bf18ed5ede0cc8274c8e43078e9f5ffe990bea46d7"
+      "bytes": 2284,
+      "sha256": "e0ea8db4a2025edbc36e556bb88a279c5792388ac737f234637225a46a79205e"
     },
     {
       "path": "assets/design-v2/brand/wordmark.svg",
-      "bytes": 2686,
-      "sha256": "9ad0082841f818b81d5fed84f5fea07e6bd3bf96128e4f50262679960134efe0"
+      "bytes": 2776,
+      "sha256": "e357e99b6a8611f8c26c871d2f593f5ff779e179fab72ed7c303e876cb86e210"
     },
     {
       "path": "assets/design-v2/brand/favicon.svg",
-      "bytes": 784,
-      "sha256": "8d643558e0568c0265868931bdf71d26d741b56077a270973c0453ae5e49fef2"
+      "bytes": 884,
+      "sha256": "07165857e56e3028075446cd864858b9cdac961d6590f86faccb370ae14fbcfa"
     },
     {
       "path": "assets/design-v2/brand/app-icon.svg",
-      "bytes": 2728,
-      "sha256": "1da802d242921edc49fe16232415d4b99e04fbc165045afa1800a4a5571d912b"
+      "bytes": 2758,
+      "sha256": "66ac6ee4004e672464ca948ceeb534449408f18de72210059d2a959fc5ed9e59"
+    },
+    {
+      "path": "assets/design-v2/brand/app-icon-maskable.svg",
+      "bytes": 2635,
+      "sha256": "2d0b2acc2d2ae67363ff4a322e5cb9ab38e25802b22c4e0b7e409a6d75e5d658"
     },
     {
       "path": "assets/design-v2/brand/social-ogp.svg",
-      "bytes": 817974,
-      "sha256": "d8b175d9f9eeec9ff64de4a9452fc98e3f1a0c162413d402f289c47253dbd47b"
+      "bytes": 271700,
+      "sha256": "a2ca2a523aa643a61f16043cbc6f6a81e1ccad1ef5f3dffbe0a8fe2eb541ba59"
     }
   ]
 }
