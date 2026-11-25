@@ -2,10 +2,12 @@
  * each card's already-authorized painting enter this presentation layer.
  * The original pixels are retained; there is no guessed animal silhouette,
  * recoloured replacement, hidden-card lookup, or change to battle/save state. */
-import {resolveSummonArt,computeSummonArtCrop,summonArtSourceFromBackground} from './summon-art.js?v=20261125-33';
-import {freshBattleEvents} from './experience-fx.js?v=20261125-33';
+import {resolveSummonArt,computeSummonArtCrop,summonArtSourceFromBackground} from './summon-art.js?v=20261125-34';
+import {freshBattleEvents} from './experience-fx.js?v=20261125-34';
+import {createBattleCamera,projectBattlePoint,getBattleSlot} from './battle-camera.js?v=20261125-34';
+import {createWebglBattleRenderer,createCanvasBattleRenderer} from './battle-renderer.js?v=20261125-34';
 
-const MAX_TEXTURES=16, GRID=28;
+const MAX_TEXTURES=16, GRID=14;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const identity=(owner,uid)=>owner+':'+uid;
 const originColours={mountain:'#eac27f',river:'#7fd6ff',seed:'#cee896',grass:'#8ce5bc',flower:'#e9aaff',tree:'#b4e5a0',king:'#ffe4a2'};
@@ -31,95 +33,54 @@ export function summonChanges(before,next){
  return changes;
 }
 
-/** A shallow curved surface keeps the whole approved image, including wings
- * and horns at its edges. It never tries to infer an unseen back/side view. */
-function reliefMesh(){
- const vertices=[],indices=[];
- for(let y=0;y<=GRID;y++)for(let x=0;x<=GRID;x++){
-  const u=x/GRID,v=y/GRID,arch=Math.sin(u*Math.PI)*Math.sin(v*Math.PI);
-  vertices.push(u-.5,.5-v,arch*.16,u,v);
- }
- for(let y=0;y<GRID;y++)for(let x=0;x<GRID;x++){
-  const a=y*(GRID+1)+x,b=a+1,c=a+GRID+1,d=c+1;indices.push(a,c,b,b,c,d);
- }
- return {vertices:new Float32Array(vertices),indices:new Uint16Array(indices)};
+const meshUV=Array.from({length:(GRID+1)**2},(_,i)=>({u:(i%(GRID+1))/GRID,v:Math.floor(i/(GRID+1))/GRID}));
+const meshIndices=[];
+for(let y=0;y<GRID;y++)for(let x=0;x<GRID;x++){const a=y*(GRID+1)+x,b=a+1,c=a+GRID+1,d=c+1;meshIndices.push(a,c,b,b,c,d);}
+const quadUV=[{u:0,v:0},{u:1,v:0},{u:1,v:1},{u:0,v:1}],quadIndices=[0,1,2,0,2,3];
+const projected=(camera,x,y,z)=>projectBattlePoint(camera,{x,y,z});
+function drawTable(renderer,camera){
+ const b=camera.boardWorldBounds,c=camera.boardCorners;
+ // The visible front edge and converging grid establish the low viewing angle.
+ renderer.polygon([c[3],c[2],projected(camera,b.right,-.24,b.near),projected(camera,b.left,-.24,b.near)],{fill:[.015,.045,.075,.98],stroke:[.25,.60,.72,.8],lineWidth:1.5});
+ renderer.polygon(c,{fill:[.018,.095,.13,.96],stroke:[.35,.85,.91,.8],lineWidth:1.6});
+ for(let x=-4.8;x<=4.81;x+=1.2)renderer.line([projected(camera,x,.003,b.far),projected(camera,x,.003,b.near)],{stroke:[.20,.55,.64,.12]});
+ for(let z=-3;z<=3.01;z+=.6)renderer.line([projected(camera,b.left,.003,z),projected(camera,b.right,.003,z)],{stroke:[.20,.55,.64,z===0?.38:.12]});
+ const ring=Array.from({length:49},(_,i)=>{const a=i/48*Math.PI*2;return projected(camera,Math.cos(a)*1.3,.006,Math.sin(a)*.85);});
+ renderer.line(ring,{stroke:[.34,.76,.84,.20],lineWidth:1.3});
+ renderer.line([projected(camera,-.65,.008,0),projected(camera,.65,.008,0)],{stroke:[.65,.87,.87,.28]});
 }
-
-const VERTEX=`attribute vec3 aPosition;
-attribute vec2 aUV;
-uniform vec2 uResolution,uCenter,uSize;
-uniform float uYaw,uLift,uScale;
-varying vec2 vUV;
-varying float vDepth;
-void main(){
- float c=cos(uYaw),s=sin(uYaw);
- vec3 p=vec3(aPosition.x*c+aPosition.z*s,aPosition.y,-aPosition.x*s+aPosition.z*c);
- float perspective=1.0/(1.0-p.z*.20);
- vec2 pixel=uCenter+vec2(p.x,-p.y)*uSize*perspective*uScale+vec2(0.0,-uLift);
- gl_Position=vec4(pixel/uResolution*vec2(2.0,-2.0)+vec2(-1.0,1.0),-p.z*.2,1.0);
- vUV=aUV;vDepth=aPosition.z;
-}`;
-const FRAGMENT=`precision mediump float;
-uniform sampler2D uImage;
-uniform float uGlow,uAlpha;
-uniform vec3 uAccent;
-varying vec2 vUV;
-varying float vDepth;
-void main(){
- vec4 tex=texture2D(uImage,vUV);
- // Preserve all of the painting. Only the final antialiased pixel fades.
- float edge=min(min(vUV.x,1.0-vUV.x),min(vUV.y,1.0-vUV.y));
- float alpha=tex.a*smoothstep(0.0,.006,edge)*uAlpha;
- vec3 paint=tex.rgb*(.96+.04*vDepth/.16);
- paint+=uAccent*uGlow*.20+vec3(pow(max(0.0,vDepth/.16),6.0)*.025);
- gl_FragColor=vec4(paint,alpha);
-}`;
-
-function webglRenderer(canvas){
- const gl=canvas.getContext('webgl',{alpha:true,premultipliedAlpha:false,antialias:true,depth:false,preserveDrawingBuffer:false,powerPreference:'low-power'});
- if(!gl)return null;
- const shaders=[];
- function shader(type,source){const s=gl.createShader(type);shaders.push(s);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error('summon shader');return s;}
- let program;
- try{program=gl.createProgram();gl.attachShader(program,shader(gl.VERTEX_SHADER,VERTEX));gl.attachShader(program,shader(gl.FRAGMENT_SHADER,FRAGMENT));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error('summon program');}
- catch{for(const s of shaders)gl.deleteShader(s);if(program)gl.deleteProgram(program);return null;}
- for(const s of shaders)gl.deleteShader(s);
- const geometry=reliefMesh(),vbo=gl.createBuffer(),ibo=gl.createBuffer();
- gl.bindBuffer(gl.ARRAY_BUFFER,vbo);gl.bufferData(gl.ARRAY_BUFFER,geometry.vertices,gl.STATIC_DRAW);
- gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ibo);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,geometry.indices,gl.STATIC_DRAW);
- const loc={};for(const name of ['uResolution','uCenter','uSize','uYaw','uLift','uScale','uGlow','uAlpha','uAccent','uImage'])loc[name]=gl.getUniformLocation(program,name);
- const position=gl.getAttribLocation(program,'aPosition'),uv=gl.getAttribLocation(program,'aUV');
- const textures=new Set();
- return {kind:'webgl',
-  upload(source){const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,source);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);textures.add(t);return t;},
-  release(texture){gl.deleteTexture(texture);textures.delete(texture);},
-  begin(width,height){gl.viewport(0,0,canvas.width,canvas.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.useProgram(program);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.bindBuffer(gl.ARRAY_BUFFER,vbo);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ibo);gl.enableVertexAttribArray(position);gl.vertexAttribPointer(position,3,gl.FLOAT,false,20,0);gl.enableVertexAttribArray(uv);gl.vertexAttribPointer(uv,2,gl.FLOAT,false,20,12);gl.uniform2f(loc.uResolution,width,height);gl.uniform1i(loc.uImage,0);},
-  draw(texture,p){gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);gl.uniform2f(loc.uCenter,p.x,p.y);gl.uniform2f(loc.uSize,p.width,p.height);gl.uniform1f(loc.uYaw,p.yaw);gl.uniform1f(loc.uLift,p.lift);gl.uniform1f(loc.uScale,p.scale);gl.uniform1f(loc.uGlow,p.glow);gl.uniform1f(loc.uAlpha,p.alpha);gl.uniform3fv(loc.uAccent,p.accent);gl.drawElements(gl.TRIANGLES,geometry.indices.length,gl.UNSIGNED_SHORT,0);},
-  destroy(){for(const t of textures)gl.deleteTexture(t);textures.clear();gl.deleteBuffer(vbo);gl.deleteBuffer(ibo);gl.deleteProgram(program);}
- };
+function drawGround(renderer,camera,slot,binding,glow){
+ const active=binding?.element.classList.contains('selected')||binding?.element.classList.contains('targetable');
+ const rarityColour=binding?.rarity==='GGR'?[1,.83,.44]:binding?.rarity==='GR'?[.82,.67,1]:null;
+ const colour=active?[1,.84,.40]:rarityColour||binding?.accent||[.25,.64,.77];
+ const corners=slot.cardCorners;
+ renderer.polygon(corners.map(p=>({...p,y:p.y+3})),{fill:[0,0,0,.48]});
+ renderer.polygon(corners,{fill:[.025,.10,.16,.94],stroke:[...colour,binding?.unit.ready ? .8 : .40],lineWidth:active?2.6:1.3});
+ if(binding?.item.texture)renderer.mesh(binding.item.texture,corners,quadUV,quadIndices,{tint:[.70,.80,.85,.72],fade:false});
+ renderer.polygon(corners,{fill:null,stroke:[...colour,active ? .95 : .6+glow*.35],lineWidth:active?2.4:1.3});
+ if(binding){
+  const ring=Array.from({length:33},(_,i)=>{const a=i/32*Math.PI*2;return projected(camera,slot.world.x+Math.cos(a)*.64,.04,slot.world.z+Math.sin(a)*.35);});
+  renderer.polygon(ring,{fill:[...colour,.07+glow*.13],stroke:[...colour,.30+glow*.5],lineWidth:1.2+glow*1.3});
+ }
 }
-
-/** The same original image remains visible without WebGL. The fallback uses
- * narrow image strips for restrained perspective, not a substitute creature. */
-function canvasRenderer(canvas){
- const ctx=canvas.getContext('2d',{alpha:true});if(!ctx)return null;
- let ratio=1;
- return {kind:'canvas',upload:source=>source,release(){},
-  begin(w){ratio=canvas.width/w;ctx.setTransform(ratio,0,0,ratio,0,0);ctx.clearRect(0,0,canvas.width/ratio,canvas.height/ratio);},
-  draw(texture,p){
-   ctx.save();ctx.translate(p.x,p.y-p.lift);ctx.scale(p.scale,p.scale);ctx.globalAlpha=p.alpha;
-   ctx.shadowColor=p.glow>.1?'rgba('+p.accent.map(c=>Math.round(c*255)).join(',')+',.8)':'rgba(0,0,0,.65)';ctx.shadowBlur=p.glow>.1?12:5;
-   const strips=16,sw=texture.width/strips,cos=Math.cos(p.yaw),sin=Math.sin(p.yaw);
-   for(let i=0;i<strips;i++){const u=(i+.5)/strips-.5,curve=Math.sin((u+.5)*Math.PI)*.06,z=-u*sin+curve*cos,per=1/(1-z*.20);const x=(u*cos+curve*sin)*p.width*per,w=p.width/strips*cos*per+.55,h=p.height*per;ctx.drawImage(texture,i*sw,0,sw,texture.height,x-w/2,-h/2,w,h);ctx.shadowBlur=0;}
-   ctx.restore();
-  },destroy(){}
- };
+function drawPainting(renderer,camera,slot,binding,pose){
+ const {scale,lift,yaw,alpha}=pose,c=Math.cos(yaw),s=Math.sin(yaw);
+ const points=meshUV.map(({u,v})=>{
+  const x=(u-.5)*slot.bodyWidth*scale,bulge=Math.sin(u*Math.PI)*Math.sin(v*Math.PI)*slot.bodyWidth*.08;
+  return projected(camera,slot.world.x+x*c+bulge*s,slot.bodyBaseY+(1-v)*slot.bodyHeight*scale+lift,slot.world.z-x*s+bulge*c);
+ });
+ const bottom=[points[GRID*(GRID+1)],points[(GRID+1)**2-1]];
+ renderer.polygon([slot.basePoint,bottom[0],bottom[1]],{fill:[...binding.accent,.065]});
+ renderer.mesh(binding.item.texture,points,meshUV,meshIndices,{tint:[1,1,1,alpha]});
+ const border=[points[0],points[GRID],points[(GRID+1)**2-1],points[GRID*(GRID+1)]];
+ renderer.polygon(border,{fill:null,stroke:[...binding.accent,.34*alpha],lineWidth:.8});
 }
 
 export function createSummonScene(options={}){
  const doc=options.document??globalThis.document,win=options.window??globalThis.window,getCard=options.getCard??(()=>null);
- if(!doc?.createElement||!win)return {sync(){},react(){},destroy(){}};
+ if(!doc?.createElement||!win)return {sync(){},react(){},refresh(){},destroy(){}};
  let canvas=null,renderer=null,arena=null,snapshot=null,battleKey=null,bindings=[],frame=0,lastPaint=-Infinity,dirty=true,destroyed=false,active=false;
+ let cameraCache=null;
  let prefs={motion:true,intensity:'full'},activation=-Infinity,clock=()=>win.performance?.now?.()??Date.now();
  const reduced=win.matchMedia?.('(prefers-reduced-motion: reduce)'),textures=new Map(),loads=new Map(),instances=new Map(),offs=[];
  const on=(target,event,fn,opts)=>{target?.addEventListener?.(event,fn,opts);offs.push(()=>target?.removeEventListener?.(event,fn,opts));};
@@ -128,15 +89,19 @@ export function createSummonScene(options={}){
  const localRect=node=>{const rect=node.getBoundingClientRect();return win.BeastKingViewport?.toLocalRect(rect)||rect;};
  const schedule=()=>{dirty=true;if(!frame&&active&&visible()&&!destroyed)frame=win.requestAnimationFrame(paint);};
  const stop=()=>{if(frame)win.cancelAnimationFrame(frame);frame=0;};
- function unmark(){for(const b of bindings)if(b.slot?.dataset)delete b.slot.dataset.summonReady;}
+ function unmark(){
+  for(const b of bindings)if(b.slot?.dataset)delete b.slot.dataset.summonReady;
+  for(const slot of arena?.querySelectorAll('[data-camera-placed]')||[]){delete slot.dataset.cameraPlaced;for(const name of ['x','y','w','h','label-h'])slot.style.removeProperty('--summon-'+name);}
+  if(arena?.dataset)delete arena.dataset.battleCamera;
+ }
  function init(){
   if(canvas)return !!renderer;
   canvas=doc.createElement('canvas');canvas.className='bk-summon-canvas';canvas.setAttribute('aria-hidden','true');canvas.setAttribute('role','presentation');
-  try{renderer=webglRenderer(canvas);}catch{renderer=null;}
-  if(!renderer){canvas=doc.createElement('canvas');canvas.className='bk-summon-canvas';canvas.setAttribute('aria-hidden','true');try{renderer=canvasRenderer(canvas);}catch{renderer=null;}}
+  try{renderer=createWebglBattleRenderer(canvas);}catch{renderer=null;}
+  if(!renderer){canvas=doc.createElement('canvas');canvas.className='bk-summon-canvas';canvas.setAttribute('aria-hidden','true');try{renderer=createCanvasBattleRenderer(canvas);}catch{renderer=null;}}
   if(!renderer){canvas=null;return false;}
   // A lost GPU context degrades to the original-image software projection.
-  on(canvas,'webglcontextlost',event=>{event.preventDefault();stop();const old=canvas;canvas=doc.createElement('canvas');canvas.className='bk-summon-canvas';canvas.setAttribute('aria-hidden','true');renderer=canvasRenderer(canvas);for(const item of textures.values())item.texture=renderer?.upload(item.source);if(arena&&renderer){old.replaceWith(canvas);arena.dataset.summonRenderer=renderer.kind;schedule();}else{old.remove();unmark();}});
+  on(canvas,'webglcontextlost',event=>{event.preventDefault();stop();const old=canvas;canvas=doc.createElement('canvas');canvas.className='bk-summon-canvas';canvas.setAttribute('aria-hidden','true');renderer=createCanvasBattleRenderer(canvas);for(const item of textures.values())item.texture=renderer?.upload(item.source);if(arena&&renderer){old.replaceWith(canvas);arena.dataset.summonRenderer=renderer.kind;schedule();}else{old.remove();unmark();}});
   return true;
  }
  function loadImage(src){
@@ -177,7 +142,7 @@ export function createSummonScene(options={}){
    const src=summonArtSourceFromBackground(win.getComputedStyle(artElement).backgroundImage),card=getCard(unit.cardId),art=resolveSummonArt(card,{sourceOverride:src,baseUrl:doc.baseURI});
    const slot=element.closest('.field-slot');if(!art){if(slot?.dataset)delete slot.dataset.summonReady;continue;}
    const item=requestArt(art),artKey=cacheKey(art),colour=originColours[card.element]||originColours.flower;
-   current.push({key,unit,element,anchor,slot,item,artKey,colour,accent:[1,3,5].map(i=>parseInt(colour.slice(i,i+2),16)/255)});
+   current.push({key,unit,element,anchor,slot,index:Number(slot?.dataset.slot)||0,item,artKey,colour,rarity:card.rarity,accent:[1,3,5].map(i=>parseInt(colour.slice(i,i+2),16)/255)});
   }
   bindings=current;evict();
  }
@@ -188,27 +153,49 @@ export function createSummonScene(options={}){
   if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}
   return {rect,width,height,sx:width/rect.width,sy:height/rect.height};
  }
+ function cameraLayout(m){
+  const rows=[...arena.querySelectorAll(':scope > .field-row[data-owner]')];if(rows.length!==2)return null;
+  const rects=rows.map(row=>{const r=localRect(row);return {row,x:(r.x-m.rect.x)*m.sx,y:(r.y-m.rect.y)*m.sy,width:r.width*m.sx,height:r.height*m.sy};});
+  const left=Math.max(...rects.map(r=>r.x)),right=Math.min(...rects.map(r=>r.x+r.width)),top=Math.min(...rects.map(r=>r.y)),bottom=Math.max(...rects.map(r=>r.y+r.height));
+  if(right-left<80||bottom-top<70)return null;
+  const cameraRect={x:left+3,y:top+3,width:right-left-6,height:bottom-top-6},cameraKey=Object.values(cameraRect).map(n=>n.toFixed(2)).join('|');
+  if(cameraCache?.key!==cameraKey)cameraCache={key:cameraKey,value:createBattleCamera(cameraRect)};
+  const camera=cameraCache.value,slots=[];
+  const bindingBySlot=new Map(bindings.map(b=>[b.slot,b]));
+  for(const r of rects)for(const element of r.row.querySelectorAll(':scope > .field-slot')){
+   const binding=bindingBySlot.get(element),owner=Number(element.dataset.owner),index=Number(element.dataset.slot),slot=getBattleSlot(camera,owner,index,binding?.item.aspect||1);
+   const vars={x:slot.hitBounds.x-r.x,y:slot.hitBounds.y-r.y,w:slot.hitBounds.width,h:slot.hitBounds.height,'label-h':camera.labelHeight};
+   for(const [key,value] of Object.entries(vars)){const text=value.toFixed(2)+'px';if(element.style.getPropertyValue('--summon-'+key)!==text)element.style.setProperty('--summon-'+key,text);}
+   if(element.dataset.cameraPlaced!=='true')element.dataset.cameraPlaced='true';
+   slots.push({slot,binding,element});
+  }
+  canvas.dataset.cameraElevation=String(camera.elevationDeg);canvas.dataset.cameraBodyHeight=String(camera.bodyHeight);canvas.dataset.cameraRectHeight=String(camera.rect.height);return {camera,slots};
+ }
+ function poseFor(binding,now,animate){
+  const phase=binding.unit.phase||0,age=now-binding.unit.at;
+  let scale=1,lift=animate?Math.sin(now*.0017+phase)*.035:0,glow=0,alpha=1;
+  if(animate&&age<640){const t=clamp(age/640,0,1),pulse=Math.sin(t*Math.PI);
+   if(binding.unit.cue==='summon'){scale=.84+.16*(1-Math.pow(1-t,3));lift-=.15*(1-t);alpha=.25+.75*t;glow=pulse;}
+   else if(binding.unit.cue==='attack'){lift+=.20*pulse;scale=1+.055*pulse;glow=.5*pulse;}
+   else if(binding.unit.cue==='damage'){lift+=Math.sin(t*32)*.035*(1-t);glow=.35*pulse;}
+   else if(binding.unit.cue==='heal')glow=.7*pulse;
+  }
+  if(animate&&now-activation<900)glow=Math.max(glow,Math.sin(clamp((now-activation)/900,0,1)*Math.PI)*.65);
+  const yaw=(binding.unit.owner===0?-.02:.02)+(animate?Math.sin(now*.0007+phase)*.025:0);
+  return {scale,lift,glow,alpha,yaw};
+ }
  function paint(now){
   frame=0;if(!active||destroyed||!visible()||!renderer||!arena?.isConnected)return;
   const animate=moving(),period=prefs.intensity==='subtle'||renderer.kind==='canvas'?66:33;
   if(!dirty&&now-lastPaint<period){if(animate)frame=win.requestAnimationFrame(paint);return;}
   dirty=false;lastPaint=now;const m=measure();if(!m)return;
-  renderer.begin(m.width,m.height);let count=0;
-  for(const b of bindings){
-   if(!b.anchor.isConnected||!b.item.texture){if(b.slot?.dataset)delete b.slot.dataset.summonReady;continue;}
-   const r=localRect(b.anchor),aw=r.width*m.sx,ah=r.height*m.sy;if(aw<2||ah<2)continue;
-   const h=Math.min(ah,aw/b.item.aspect),w=h*b.item.aspect,phase=(b.unit.phase||0),age=now-b.unit.at;
-   let scale=1,lift=animate?Math.sin(now*.0017+phase)*Math.min(2.5,h*.015):0,glow=0,alpha=1;
-   if(animate&&age<640){const t=clamp(age/640,0,1),pulse=Math.sin(t*Math.PI);
-    if(b.unit.cue==='summon'){scale=.88+.12*(1-Math.pow(1-t,3));lift-=h*.12*(1-t);alpha=.25+.75*t;glow=pulse;}
-    else if(b.unit.cue==='attack'){lift+=h*.09*pulse;scale=1+.055*pulse;glow=.5*pulse;}
-    else if(b.unit.cue==='damage'){lift+=Math.sin(t*32)*2*(1-t);glow=.35*pulse;}
-    else if(b.unit.cue==='heal')glow=.7*pulse;
-   }
-   if(animate&&now-activation<900)glow=Math.max(glow,Math.sin(clamp((now-activation)/900,0,1)*Math.PI)*.65);
-   const yaw=(b.unit.owner===0?-.055:.055)+(animate?Math.sin(now*.0007+phase)*.055:0);
-   renderer.draw(b.item.texture,{x:(r.x-m.rect.x)*m.sx+aw/2,y:(r.y-m.rect.y)*m.sy+ah-h/2,width:w,height:h,yaw,lift,scale,glow,alpha,accent:b.accent});
-   b.slot.dataset.summonReady='true';count++;
+  renderer.begin(m.width,m.height);const layout=cameraLayout(m);if(!layout)return;
+  const {camera,slots}=layout;drawTable(renderer,camera);let count=0;
+  const poses=new Map();
+  for(const item of slots){if(item.binding)poses.set(item.binding,poseFor(item.binding,now,animate));drawGround(renderer,camera,item.slot,item.binding,poses.get(item.binding)?.glow||0);}
+  for(const {slot,binding,element} of slots.sort((a,b)=>b.slot.owner-a.slot.owner)){
+   if(!binding?.item.texture){delete element.dataset.summonReady;continue;}
+   drawPainting(renderer,camera,slot,binding,poses.get(binding));element.dataset.summonReady='true';count++;
   }
   canvas.dataset.summonCount=String(count);canvas.dataset.summonMotion=animate?'on':'off';
   if(animate&&bindings.length)frame=win.requestAnimationFrame(paint);
@@ -223,15 +210,15 @@ export function createSummonScene(options={}){
   for(const u of state.units){const prior=instances.get(u.key);instances.set(u.key,{...u,phase:prior?.phase??Array.from(u.uid).reduce((sum,c)=>sum+c.charCodeAt(0),u.owner*17),cue:prior?.cue||'',at:prior?.at??-Infinity});}
   if(moving())for(const change of changes){if(change.kind==='activate')activation=now;else{const unit=instances.get(change.key);if(unit){unit.cue=change.kind;unit.at=now;}}}
   active=true;if(!init())return;
-  if(arena!==newArena){if(arena?.dataset)delete arena.dataset.summonRenderer;arena=newArena;arena.appendChild(canvas);resize?.disconnect();resize?.observe(arena);}
-  arena.dataset.summonRenderer=renderer.kind;captureBindings();schedule();
+  if(arena!==newArena){if(arena?.dataset)delete arena.dataset.summonRenderer;arena=newArena;arena.appendChild(canvas);resize?.disconnect();resize?.observe(arena);for(const row of arena.querySelectorAll(':scope > .field-row'))resize?.observe(row);}
+  arena.dataset.summonRenderer=renderer.kind;arena.dataset.battleCamera='angled';captureBindings();schedule();
  }
  const resize=typeof win.ResizeObserver==='function'?new win.ResizeObserver(schedule):null;
- on(win,'resize',schedule,{passive:true});on(win,'beastking:viewport',schedule);on(win,'bk-fit-card-metrics',schedule);
+ on(win,'resize',schedule,{passive:true});on(win,'beastking:viewport',schedule);on(win,'bk-fit-card-metrics',schedule);on(win,'bk-battle-layout',schedule);
  on(doc,'visibilitychange',()=>{if(!visible()){stop();activation=-Infinity;for(const unit of instances.values())unit.at=-Infinity;}else schedule();});
  on(win,'pagehide',stop);on(win,'pageshow',schedule);on(reduced,'change',schedule);
  return {sync,
-  react(kind,{uid,player=0}={}){const unit=instances.get(identity(player,uid));if(unit){unit.cue=kind;unit.at=clock();schedule();}},
+  react(kind,{uid,player=0}={}){const unit=instances.get(identity(player,uid));if(unit&&moving()){unit.cue=kind;unit.at=clock();schedule();}},
   refresh(){captureBindings();schedule();},
   destroy(){if(destroyed)return;destroyed=true;active=false;stop();unmark();for(const off of offs)off();resize?.disconnect();renderer?.destroy();canvas?.remove();if(arena?.dataset)delete arena.dataset.summonRenderer;textures.clear();loads.clear();instances.clear();bindings=[];snapshot=null;arena=null;}
  };

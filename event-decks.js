@@ -2,7 +2,7 @@
  * These lists grant no ownership, operator entitlement or special artwork.
  * "Environment" is the game's authored challenge roster, not a measured usage ranking.
  */
-import {CARDS,ORIGINS,EXPANSION_FAMILIES,getCard,validateDeck,validateSpecialDeck} from './catalog.js?v=20261125-33';
+import {CARDS,ORIGINS,EXPANSION_FAMILIES,getCard,validateDeck,validateSpecialDeck} from './catalog.js?v=20261125-34';
 
 const older=card=>card.setId==='BK01'||card.setId==='BK02';
 const pairs=cards=>cards.flatMap(card=>[card.id,card.id]);

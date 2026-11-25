@@ -2,7 +2,14 @@
 
 Public origin: https://www.beast-king.com/ . Preserve the repository CNAME and existing GitHub Pages main/(root) publication. Root owns app.js, all shared UI/CSS, integration and deployment; catalog agent owns catalog.js, catalog tests, about.html, README, this contract and online.js/client tests, with index.html description/SEO edits delegated only when requested; engine agent owns engine.js, engine tests and the online Worker/API tests; art agent owns assets. Do not publish temporary QA pages.
 
-## Current r33 summon display
+## Current r34 battle camera
+
+- View the tabletop from the player's near side toward the opponent through a perspective camera. The ground is horizontal in world space, field cards lie on it, and the approved creature paintings stand upright above their cards. Near-side cards and creatures appear larger than their far-side counterparts; the board must visibly convey depth rather than retain the former overhead presentation.
+- Project the tabletop, card floors, creature surfaces and their interactive bounds from the same camera geometry. Field slots remain identified by owner and slot, while living creatures retain owner-plus-UID identity. Pointer targets follow the displayed creatures, and readable names, attack/defense values and effect-inspection controls retain reserved space. HUD, hand and special-card zones keep their normal layout and controls.
+- Upright creature surfaces continue to use the exact approved original artwork. Camera perspective does not introduce a reconstructed 360-degree creature mesh or invented body parts. Preserve all r33 artwork authorization, persistence, motion preferences and resource limits.
+- Camera changes affect presentation only: do not change battle rules, card effects, saved games, match actions or hidden-information boundaries. Keep normal card rendering available while artwork or the perspective renderer is unavailable.
+
+## Preserved r33 summon display
 
 - Living ordinary and fusion beasts on either player's field remain projected above their cards for as long as they occupy the field. Match each instance by owner and UID, preserve it through rerenders, and remove it when it leaves the field. Restored battles display the current creatures without replaying their summons.
 - Use the actual card illustration, including its reviewed atlas crop or approved replacement, to preserve the creature's appearance and colours. This is a shallow original-art **2.5D projection**, not a reconstructed full 360-degree creature mesh. Do not replace a card with a generic animal model or invent unseen parts of its body.
