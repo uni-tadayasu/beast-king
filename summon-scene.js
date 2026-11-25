@@ -169,7 +169,7 @@ export function createSummonScene(options={}){
    if(element.dataset.cameraPlaced!=='true')element.dataset.cameraPlaced='true';
    slots.push({slot,binding,element});
   }
-  canvas.dataset.cameraElevation=String(camera.elevationDeg);return {camera,slots};
+  canvas.dataset.cameraElevation=String(camera.elevationDeg);canvas.dataset.cameraBodyHeight=String(camera.bodyHeight);canvas.dataset.cameraRectHeight=String(camera.rect.height);return {camera,slots};
  }
  function poseFor(binding,now,animate){
   const phase=binding.unit.phase||0,age=now-binding.unit.at;
@@ -214,7 +214,7 @@ export function createSummonScene(options={}){
   arena.dataset.summonRenderer=renderer.kind;arena.dataset.battleCamera='angled';captureBindings();schedule();
  }
  const resize=typeof win.ResizeObserver==='function'?new win.ResizeObserver(schedule):null;
- on(win,'resize',schedule,{passive:true});on(win,'beastking:viewport',schedule);on(win,'bk-fit-card-metrics',schedule);
+ on(win,'resize',schedule,{passive:true});on(win,'beastking:viewport',schedule);on(win,'bk-fit-card-metrics',schedule);on(win,'bk-battle-layout',schedule);
  on(doc,'visibilitychange',()=>{if(!visible()){stop();activation=-Infinity;for(const unit of instances.values())unit.at=-Infinity;}else schedule();});
  on(win,'pagehide',stop);on(win,'pageshow',schedule);on(reduced,'change',schedule);
  return {sync,

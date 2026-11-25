@@ -167,6 +167,25 @@ function fit(node,width,height,{modal=false,logicalMin=0,center=false,fill=false
   node.dataset.fitScale=scale.toFixed(4);
  }
 }
+function fitBattlePane(pane,width,height){
+ // Camera targets are absolute projections of the previous fitted canvas.
+ // Their old pixel coordinates must not enlarge scrollWidth/scrollHeight
+ // while fit() tries a new canvas size. The two normal-flow grid rows still
+ // reserve the board space; only their already-positioned overlays are hidden.
+ const projected=[...pane.querySelectorAll('.arena[data-battle-camera="angled"]>.field-row>.field-slot[data-camera-placed="true"]')].map(node=>({
+  node,display:node.style.getPropertyValue('display'),priority:node.style.getPropertyPriority('display')
+ }));
+ for(const {node} of projected)node.style.setProperty('display','none','important');
+ try{fit(pane,width,height,{fill:true});}
+ finally{
+  for(const {node,display,priority} of projected){
+   if(display)node.style.setProperty('display',display,priority);
+   else node.style.removeProperty('display');
+  }
+ }
+ // Motion-off scenes also need fresh targets after the final scale is set.
+ window.dispatchEvent(new Event('bk-battle-layout'));
+}
 function paginateAbout(){
  if(about)return;
  const main=doc.querySelector('body.about-page main')||(!doc.querySelector('#app')?doc.querySelector('body>main'):null);
@@ -259,6 +278,7 @@ function fitApp(){
   preparePage(pane);
   const w=frame.clientWidth,h=frame.clientHeight;
   if(pane.dataset.page==='deck'&&pane.querySelector('.dual-workshop')&&workshopMode==='cards')fitDeckWorkshop(pane,w,h);
+  else if(pane.matches('.duel-layout'))fitBattlePane(pane,w,h);
   else fit(pane,w,h,{fill:true,measureCards:pane.dataset.page==='collection'&&pane.dataset.bkCatalogMode!=='filter'});
   target.dataset.fitScale='1.0000';target.dataset.fitWidth=String(target.clientWidth);target.dataset.fitHeight=String(target.clientHeight);
   lastRoot=target;return;

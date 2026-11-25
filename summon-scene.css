@@ -15,6 +15,9 @@ html.bk-fit body .duel-shell[data-field] .arena[data-battle-camera="angled"] .tu
 
 html.bk-fit body .duel-shell[data-field] .arena[data-battle-camera="angled"]>.field-row{
  position:relative;z-index:3;overflow:visible;pointer-events:none;
+ /* Absolute projected targets have no intrinsic height. Stretch each row to
+    its reserved grid track so the camera receives the whole battle area. */
+ align-self:stretch;margin:0;
 }
 html.bk-fit body .duel-shell[data-field] .arena[data-battle-camera="angled"] .field-row>.field-slot[data-camera-placed="true"]{
  --summon-label-h:32px;--summon-stat-h:calc(var(--summon-label-h)/2);

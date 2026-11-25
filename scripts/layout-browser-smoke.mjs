@@ -120,6 +120,12 @@ async function assertReadableModal(label,{fullViewport=false,controls=[],body=[]
 /** Send real browser input at the visible model's screen position. The raw
  * rectangle deliberately stays in physical screen coordinates for rotated
  * portrait play; layoutRect is only used for logical geometry assertions. */
+async function cameraLayoutDiagnostic(){
+ return evaluate(`(()=>{
+  const describe=node=>{if(!node)return null;const s=getComputedStyle(node);return {rect:node.getBoundingClientRect().toJSON(),logical:layoutRect(node).toJSON(),client:[node.clientWidth,node.clientHeight],scroll:[node.scrollWidth,node.scrollHeight],fitScale:node.dataset.fitScale,style:node.getAttribute('style'),rows:s.gridTemplateRows,columns:s.gridTemplateColumns,padding:s.padding,margin:s.margin}};
+  return {viewport:layoutViewport(),pane:describe(document.querySelector('.duel-layout')),arena:describe(document.querySelector('.arena')),rows:[...document.querySelectorAll('.arena>.field-row')].map(row=>({owner:row.dataset.owner,...describe(row)})),canvas:{...document.querySelector('.bk-summon-canvas')?.dataset},slots:[...document.querySelectorAll('.field-slot[data-camera-placed]')].map(slot=>({owner:slot.dataset.owner,index:slot.dataset.slot,...describe(slot)})),modal:describe(document.querySelector('#modal-root .modal')),modalBlocks:[...document.querySelectorAll('#modal-root .modal>* ,#modal-root .settings-section>*')].filter(node=>node.clientHeight>0).map(node=>({node:node.dataset.action||node.className||node.tagName,...describe(node)}))};
+ })()`);
+}
 async function pointerClick(selector,mobile,label){
  await evaluate(`(()=>{
   const identify=e=>e?{tag:e.tagName,action:e.closest?.('[data-action]')?.dataset.action,uid:e.closest?.('[data-uid]')?.dataset.uid,player:e.closest?.('[data-player]')?.dataset.player}:null;
@@ -166,9 +172,10 @@ async function assertCameraGeometry(label){
   const overlap=(a,b)=>Math.min(a.right,b.right)-Math.max(a.left,b.left)>2&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>2;
   for(let i=0;i<units.length;i++)for(let j=i+1;j<units.length;j++)if(overlap(units[i].box,units[j].box)||[units[i].name,units[i].stats].some(a=>[units[j].name,units[j].stats].some(b=>overlap(a,b))))overlaps.push([units[i].uid,units[j].uid]);
   const inside=(r,b)=>r.width>0&&r.height>0&&r.left>=b.left-2&&r.right<=b.right+2&&r.top>=b.top-2&&r.bottom<=b.bottom+2;
-  return {camera:arena.dataset.battleCamera,units,overlaps,allPlaced:arena.querySelectorAll('.field-slot[data-camera-placed="true"]').length===8,inside:units.every(u=>inside(u.box,field)&&inside(u.box,{left:0,top:0,right:viewport.width,bottom:viewport.height})&&inside(u.name,u.box)&&inside(u.stats,u.box)),canvasCount:document.querySelectorAll('.bk-summon-canvas').length};
+  return {camera:arena.dataset.battleCamera,bodyHeight:Number(canvas?.dataset.cameraBodyHeight),cameraRectHeight:Number(canvas?.dataset.cameraRectHeight),units,overlaps,allPlaced:arena.querySelectorAll('.field-slot[data-camera-placed="true"]').length===8,inside:units.every(u=>inside(u.box,field)&&inside(u.box,{left:0,top:0,right:viewport.width,bottom:viewport.height})&&inside(u.name,u.box)&&inside(u.stats,u.box)),canvasCount:document.querySelectorAll('.bk-summon-canvas').length};
  })()`);
  assert.equal(result.camera,'angled',label+' uses the own-side angled battle camera');
+ assert.ok(result.bodyHeight>.5,label+' gives the upright painting real height '+JSON.stringify({bodyHeight:result.bodyHeight,cameraRectHeight:result.cameraRectHeight}));
  assert.equal(result.allPlaced,true,label+' places all eight ground sockets in the camera');
  assert.ok(result.units.every(u=>u.placed),label+' aligns every model with its interactive target');
  assert.equal(result.inside,true,label+' keeps model controls and labels inside the field and viewport '+JSON.stringify(result));
@@ -238,6 +245,7 @@ async function runSummonSmoke(){
   const screenshot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
   await mkdir('artifacts/layout',{recursive:true});
   await writeFile(`artifacts/layout/summons-${width}x${height}.png`,Buffer.from(screenshot.data,'base64'));
+  await writeFile(`artifacts/layout/summons-${width}x${height}.json`,JSON.stringify(await cameraLayoutDiagnostic(),null,2));
   await assertSummonScene(crowded,label+' with all eight slots occupied');
   const expected=await loadFixture(2,size);
   await assertSummonScene(expected,label);
@@ -610,7 +618,8 @@ try{
  try{
   const diagnostic=await evaluate(`(()=>({pointer:window.__bkPointerProbe||null,selected:document.querySelector('.duel-help')?.dataset.selection,modal:document.querySelector('#modal-root .modal')?.getAttribute('aria-label'),units:[...document.querySelectorAll('.field-unit')].map(e=>({uid:e.dataset.uid,player:e.dataset.player,classes:e.className,rect:e.getBoundingClientRect().toJSON()})),viewport:layoutViewport()}))()`);
   await mkdir('artifacts/layout',{recursive:true});
-  await writeFile('artifacts/layout/failure.json',JSON.stringify({error:error.stack||String(error),exceptions,...diagnostic},null,2));
+  const cameraLayout=await cameraLayoutDiagnostic();
+  await writeFile('artifacts/layout/failure.json',JSON.stringify({error:error.stack||String(error),exceptions,...diagnostic,cameraLayout},null,2));
   console.error('Browser failure diagnostics',JSON.stringify({exceptions,...diagnostic}));
  }catch{}
  try{
