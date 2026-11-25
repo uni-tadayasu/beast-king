@@ -1,36 +1,36 @@
-import {splitReadingText} from './reading-pages.js?v=20261125-35';
-import {bindOutsideDismiss} from './overlay-dismiss.js?v=20261125-35';
-import {createSummonScene} from './summon-scene.js?v=20261125-35';
-import {isApexReliefCard} from './card-relief.js?v=20261125-35';
-import {createExperienceController} from './experience-fx.js?v=20261125-35';
-import {BRAND_ICONS} from './brand-icons.js?v=20261125-35';
-import {CARD_ART_CROPS} from './card-art-layouts.js?v=20261125-35';
-import {CARD_ART_EXPANSIONS} from './card-art-expansion.js?v=20261125-35';
-import {CARD_ART_FIFTH} from './card-art-fifth.js?v=20261125-35';
-import {CARD_ART_OVERRIDES} from './card-art-overrides.js?v=20261125-35';
-import {CARD_ART_USER_OVERRIDES} from './card-art-user.js?v=20261125-35';
-import {PREMIUM_CARD_ART} from './card-art-premium.js?v=20261125-35';
-import {PREMIUM_DECK,PREMIUM_DECK_ID} from './premium-deck.js?v=20261125-35';
-import { CARDS, DECK_MIN, DECK_COPY_LIMIT, ELEMENTS, TYPE_LABELS, RARITY_LABELS, KEYWORD_LABELS, STARTER_DECKS, DECK_PRESETS, getDeckPreset, getCard, validateDeck, validateSpecialDeck, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS, SUBTYPE_LABELS, EXPANSION_DECKS, EXPANSION_FAMILIES, getExpansionDeck } from './catalog.js?v=20261125-35';
-import {createMusicController} from './music.js?v=20261125-35';
-import {createOnlineClient} from './online.js?v=20261125-35';
-import {createCloudSync} from './cloud-sync.js?v=20261125-35';
-import {createAccountUi} from './account-ui.js?v=20261125-35';
-import {setPublicNotice} from './news.js?v=20261125-35';
-import {createPresenceController} from './presence.js?v=20261125-35';
-import {entryView} from './entry.js?v=20261125-35';
-import {soloView} from './mode-views.js?v=20261125-35';
-import {EVENT_DECKS,EVENT_DECK_GROUPS,getEventDeck} from './event-decks.js?v=20261125-35';
-import {createEventProgress,normalizeEventProgress,recordEventResult} from './event-battles.js?v=20261125-35';
-import {eventChallengeView} from './event-views.js?v=20261125-35';
-import {rulebookView} from './rules-view.js?v=20261125-35';
-import {homeDashboard,treasureShop,packOddsView} from './product-views.js?v=20261125-35';
-import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayout} from './viewport.js?v=20261125-35';
-import {battleLogView} from './battle-log.js?v=20261125-35';
-import {handInspectorView} from './hand-inspector.js?v=20261125-35';
-import {CAMPAIGN_BATTLES,createCampaignProgress,normalizeCampaignProgress,getCampaignBattle,isCampaignBattleUnlocked,getNextCampaignBattle,recordCampaignResult} from './campaign.js?v=20261125-35';
-import {PACKS,getPack,PACK_ID,PACK_NAME,PACK_DESCRIPTION,PACK_COST,PACK_SIZE,STARTING_TREASURE,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,PACK_CARD_IDS,createStarterCollection,hasStarterCards,migrateLegacyStarters,normalizeCollection,grantDeckCollection,openPack,getBattleReward,quoteStarterPurchase,purchaseStarter,quoteDeckRecipe} from './shop.js?v=20261125-35';
-import { newGame, playCard, attack, endTurn, runCpuTurn, getLegalTargets, getAttackTargets, canAttack, getPlayableCards, getCardCost, getFusionChoices, getEligibleFusionMaterials, validateFusionSelection, MAX_HEART_POINTS } from './engine.js?v=20261125-35';
+import {splitReadingText} from './reading-pages.js?v=20261125-36';
+import {bindOutsideDismiss} from './overlay-dismiss.js?v=20261125-36';
+import {createSummonScene} from './summon-scene.js?v=20261125-36';
+import {isApexReliefCard} from './card-relief.js?v=20261125-36';
+import {createExperienceController} from './experience-fx.js?v=20261125-36';
+import {BRAND_ICONS} from './brand-icons.js?v=20261125-36';
+import {CARD_ART_CROPS} from './card-art-layouts.js?v=20261125-36';
+import {CARD_ART_EXPANSIONS} from './card-art-expansion.js?v=20261125-36';
+import {CARD_ART_FIFTH} from './card-art-fifth.js?v=20261125-36';
+import {CARD_ART_OVERRIDES} from './card-art-overrides.js?v=20261125-36';
+import {CARD_ART_USER_OVERRIDES} from './card-art-user.js?v=20261125-36';
+import {PREMIUM_CARD_ART} from './card-art-premium.js?v=20261125-36';
+import {PREMIUM_DECK,PREMIUM_DECK_ID} from './premium-deck.js?v=20261125-36';
+import { CARDS, DECK_MIN, DECK_COPY_LIMIT, ELEMENTS, TYPE_LABELS, RARITY_LABELS, KEYWORD_LABELS, STARTER_DECKS, DECK_PRESETS, getDeckPreset, getCard, validateDeck, validateSpecialDeck, SPECIAL_DECK_SIZE, POINT_SCALE, FUSION_MATERIAL_BONUS, MODEL_LABELS, SUBTYPE_LABELS, EXPANSION_DECKS, EXPANSION_FAMILIES, getExpansionDeck } from './catalog.js?v=20261125-36';
+import {createMusicController} from './music.js?v=20261125-36';
+import {createOnlineClient} from './online.js?v=20261125-36';
+import {createCloudSync} from './cloud-sync.js?v=20261125-36';
+import {createAccountUi} from './account-ui.js?v=20261125-36';
+import {setPublicNotice} from './news.js?v=20261125-36';
+import {createPresenceController} from './presence.js?v=20261125-36';
+import {entryView} from './entry.js?v=20261125-36';
+import {soloView} from './mode-views.js?v=20261125-36';
+import {EVENT_DECKS,EVENT_DECK_GROUPS,getEventDeck} from './event-decks.js?v=20261125-36';
+import {createEventProgress,normalizeEventProgress,recordEventResult} from './event-battles.js?v=20261125-36';
+import {eventChallengeView} from './event-views.js?v=20261125-36';
+import {rulebookView} from './rules-view.js?v=20261125-36';
+import {homeDashboard,treasureShop,packOddsView} from './product-views.js?v=20261125-36';
+import {calculateCardLayout,calculateFittedCardLayout,calculateWorkshopTileLayout} from './viewport.js?v=20261125-36';
+import {battleLogView} from './battle-log.js?v=20261125-36';
+import {handInspectorView} from './hand-inspector.js?v=20261125-36';
+import {CAMPAIGN_BATTLES,createCampaignProgress,normalizeCampaignProgress,getCampaignBattle,isCampaignBattleUnlocked,getNextCampaignBattle,recordCampaignResult} from './campaign.js?v=20261125-36';
+import {PACKS,getPack,PACK_ID,PACK_NAME,PACK_DESCRIPTION,PACK_COST,PACK_SIZE,STARTING_TREASURE,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,PACK_CARD_IDS,createStarterCollection,hasStarterCards,migrateLegacyStarters,normalizeCollection,grantDeckCollection,openPack,getBattleReward,quoteStarterPurchase,purchaseStarter,quoteDeckRecipe} from './shop.js?v=20261125-36';
+import { newGame, playCard, attack, endTurn, runCpuTurn, getLegalTargets, getAttackTargets, canAttack, getPlayableCards, getCardCost, getFusionChoices, getEligibleFusionMaterials, validateFusionSelection, MAX_HEART_POINTS } from './engine.js?v=20261125-36';
 
 const $ = (s, r=document) => r.querySelector(s);
 const layoutWidth=()=>window.BeastKingViewport?.get().width||window.innerWidth;
@@ -638,7 +638,7 @@ function settingsModal(){
  currentModal={kind:'settings',label:'ゲーム設定'};
  const active=key=>settingsTab===key;
  showModal(`<div class="eyebrow">SYSTEM SETTINGS</div><h2>ゲーム設定</h2><div class="settings-tabs" role="tablist" aria-label="設定の種類">${[['sound','音'],['motion','演出'],['account','データ・プロフィール']].map(([key,label])=>`<button role="tab" tabindex="${active(key)?0:-1}" data-action="settings-tab" data-tab="${key}" aria-selected="${active(key)}" aria-controls="settings-${key}">${label}</button>`).join('')}</div>
- <section id="settings-sound" class="settings-section" role="tabpanel" aria-label="音の設定" ${active('sound')?'':'hidden'}><div class="cyber-sound-group"><div class="setting-row"><div>BGM<small>メニュー・バトル・クライマックスで切り替え</small></div><button class="toggle ${data.bgm?'on':''}" data-action="bgm" role="switch" aria-checked="${data.bgm}" aria-label="BGM"><span></span></button></div><div class="setting-volume"><label for="bgm-volume">BGM音量 <output id="bgm-volume-readout">${Math.round(data.bgmVolume*100)}%</output></label><input id="bgm-volume" data-input="bgm-volume" type="range" min="0" max="100" step="1" value="${Math.round(data.bgmVolume*100)}" aria-label="BGM音量" aria-valuetext="${Math.round(data.bgmVolume*100)}%"></div></div><div class="cyber-sound-group"><div class="setting-row"><div>システム・効果音<small>サイバー操作音・カード・バトル・開封</small></div><button class="toggle ${data.sound?'on':''}" data-action="sound" role="switch" aria-checked="${data.sound}" aria-label="効果音"><span></span></button></div>${experience.settingsMarkup()}</div></section>
+ <section id="settings-sound" class="settings-section" role="tabpanel" aria-label="音の設定" ${active('sound')?'':'hidden'}><div class="cyber-sound-group"><div class="setting-row"><div>BGM<small>メニュー・バトル・クライマックスで切り替え</small></div><button class="toggle ${data.bgm?'on':''}" data-action="bgm" role="switch" aria-checked="${data.bgm}" aria-label="BGM"><span></span></button></div><div class="setting-volume"><label for="bgm-volume">BGM音量 <output id="bgm-volume-readout">${Math.round(data.bgmVolume*100)}%</output></label><input id="bgm-volume" data-input="bgm-volume" type="range" min="0" max="100" step="1" value="${Math.round(data.bgmVolume*100)}" aria-label="BGM音量" aria-valuetext="${Math.round(data.bgmVolume*100)}%"></div></div><div class="cyber-sound-group"><div class="setting-row"><div>システム・効果音<small>操作音・カード・バトル・開封</small></div><button class="toggle ${data.sound?'on':''}" data-action="sound" role="switch" aria-checked="${data.sound}" aria-label="効果音"><span></span></button></div>${experience.settingsMarkup()}</div></section>
  <section id="settings-motion" class="settings-section" role="tabpanel" aria-label="演出の設定" ${active('motion')?'':'hidden'}><div class="setting-row"><div>アニメーション<small>端末の「視差効果を減らす」設定にも対応</small></div><button class="toggle ${data.motion?'on':''}" data-action="motion" role="switch" aria-checked="${data.motion}" aria-label="アニメーション"><span></span></button></div><p class="modal-intro">対戦は自分側の斜め手前から表示します。魔獣はカード原画の姿で、場にいる間カードの上に立ち上がります。アニメーションをオフにすると、立体表示を残して動きを止めます。開封演出はスキップできます。</p></section>
  <section id="settings-account" class="settings-section" role="tabpanel" aria-label="データとプロフィール" ${active('account')?'':'hidden'}><div class="settings-data-grid"><div class="setting-row"><div class="profile-setting">${profileIcon(data.profileOrigin)}<div>プロフィール<small>${esc(data.playerName||'未設定')} · ${elementMap[data.profileOrigin]?.name||'山'}</small></div></div><button class="btn small" data-action="online-name">変更</button></div><div class="setting-row"><div>端末連携と同期<small>別端末でも続きから</small></div><button class="btn small" data-action="cloud-open"><span data-cloud-status>端末連携</span></button></div><div class="setting-row"><div>お知らせ・プレゼント<small>届いた報酬を確認</small></div><button class="btn small" data-action="inbox-open">受取ボックス</button></div></div><div class="settings-backup"><p class="modal-intro">バックアップに認証情報・連携コードは含みません。</p><div class="modal-actions"><button class="btn small" data-action="export">${icon('download')}バックアップ保存</button><button class="btn small" data-action="import">${icon('upload')}読み込む</button></div></div><input id="backup-input" type="file" accept=".json,application/json" hidden><nav class="settings-links" aria-label="ゲームと保存データの案内"><a class="game-guide-link" href="about.html">ゲーム紹介・ルール</a><a class="game-guide-link" href="rebuild/">先行版の保存データ</a></nav></section>`);
  const intensity=$('[data-experience-intensity]',modalRoot)?.closest('.setting-row');if(intensity)$('#settings-motion',modalRoot).append(intensity);

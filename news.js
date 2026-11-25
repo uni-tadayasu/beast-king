@@ -1,7 +1,8 @@
-import {ONLINE_API_BASE} from './online.js?v=20261125-35';
-import {bindOutsideDismiss,isDialogBackdrop} from './overlay-dismiss.js?v=20261125-35';
+import {ONLINE_API_BASE} from './online.js?v=20261125-36';
+import {bindOutsideDismiss,isDialogBackdrop} from './overlay-dismiss.js?v=20261125-36';
 /** Built-in release notices. Update these entries when a new game version is published. */
 export const NEWS_ITEMS = Object.freeze([
+ {date:'2026.11.25',title:'黒と金で彩る、新しい王庭',text:'王庭・デッキ・図鑑・ショップ・設定の画面を、深い黒と淡い金で統一しました。王宮の書庫を描いた背景と、王冠の紋章を配したロード画面を追加。見出し・ボタン・案内の文字も整えました。'},
  {date:'2026.11.25',title:'背景なしの魔獣と、最上位カードのレリーフ加工',text:'対戦中の魔獣を、原画の色や顔を保った背景なしの立体レリーフとしてカードの上に表示します。場にいる間は姿が残り、召喚・攻撃・発動に反応。アニメーションをオフにしても静止した姿が残ります。最上位GGRの大型魔獣・合成魔獣402枚には、絵柄に沿った浮き彫りと金属の縁取りを追加しました。'},
  {date:'2026.11.25',title:'自分側の斜め視点で戦うバトル画面',text:'自分の陣地の斜め手前から相手を見る視点へ変更。手前のカードを大きく、奥を小さく映し、盤面と魔獣の高さを表現します。原画の魔獣がカードの上に立ち、名前・能力値・操作位置も視点に合わせます。'},
  {date:'2026.11.25',title:'カード原画を使った魔獣の常時立体投影',text:'自分と相手の魔獣を、カード原画の姿と色を保ってカードの上に立体投影します。場にいる間は表示が続き、召喚・攻撃・発動に反応。アニメーションをオフにしても静止した姿が残り、場を離れると消えます。'},

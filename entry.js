@@ -12,7 +12,7 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', starter
     <div class="entry-scene" aria-hidden="true"></div>
     <div class="entry-vignette" aria-hidden="true"></div>
     <header class="entry-header">
-      <div class="entry-mark" aria-hidden="true"><img src="assets/icon.svg" alt="" width="46" height="46"><span>CYBER CARD ARENA</span></div>
+      <div class="entry-mark" aria-hidden="true"><img src="assets/design-v2/brand/crest.svg" alt="" width="46" height="46"><span>THE ART OF STRATEGY</span></div>
       <div class="entry-audio">${audioControl}</div>
     </header>
     <div class="entry-layout">
@@ -31,7 +31,7 @@ export function entryView({ playerName = '', profileOrigin = 'mountain', starter
         </form>
         <div class="entry-deck-rule" aria-label="通常デッキ32枚、特殊デッキ4枚"><span>${glyph('cards')}通常デッキ <b>32</b> 枚</span><span class="entry-rule-divider" aria-hidden="true"></span><span>${glyph('fusion')}特殊デッキ <b>4</b> 枚</span></div>
       </section>
-      <div class="entry-art-caption" aria-hidden="true"><span class="entry-art-line"></span><span>七つの源が、覚醒する。<small>AWAKEN YOUR STRATEGY</small></span></div>
+      <div class="entry-art-caption" aria-hidden="true"><span class="entry-art-line"></span><span>王冠は、その一手を待っている。<small>EVERY MOVE, A LEGACY.</small></span></div>
     </div>
     <footer class="entry-footer"><span>PC · スマホ · タブレット</span><a href="about.html">ゲーム紹介・遊び方</a><span>© 2026 Beast King</span></footer>
   </main>`;

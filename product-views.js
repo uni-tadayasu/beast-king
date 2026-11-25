@@ -1,7 +1,7 @@
-import {EVENT_DECKS} from './event-decks.js?v=20261125-35';
-import {STARTER_DECKS,getDeckPreset,getCard,ELEMENTS,CARDS,EXPANSION_DECKS,EXPANSION_FAMILIES} from './catalog.js?v=20261125-35';
-import {PACKS,getPack,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,STARTER_PRICE,quoteStarterPurchase,hasStarterCards} from './shop.js?v=20261125-35';
-import {PREMIUM_DECK_ID} from './premium-deck.js?v=20261125-35';
+import {EVENT_DECKS} from './event-decks.js?v=20261125-36';
+import {STARTER_DECKS,getDeckPreset,getCard,ELEMENTS,CARDS,EXPANSION_DECKS,EXPANSION_FAMILIES} from './catalog.js?v=20261125-36';
+import {PACKS,getPack,EXTRA_COPY_TREASURE,RARITY_ODDS,GUARANTEED_RARITY_ODDS,STARTER_PRICE,quoteStarterPurchase,hasStarterCards} from './shop.js?v=20261125-36';
+import {PREMIUM_DECK_ID} from './premium-deck.js?v=20261125-36';
 
 export function homeDashboard({data,game,icon,esc,fmt,cardMarkup,counts}={}) {
   const expansion=PACKS.at(-1),stat=counts(data.deckIds),preset=getDeckPreset(data.starter);
@@ -12,7 +12,7 @@ export function homeDashboard({data,game,icon,esc,fmt,cardMarkup,counts}={}) {
       <div class="home-mode-rail" role="group" aria-label="対戦モードを選択">${[['solo','sword','SOLO CHRONICLE','ソロモード','全10章・20の試練'],['multi','users','FRIEND MATCH','ルーム対戦','合言葉でつながる決闘'],['rank','crown','RANKED MATCH','ランクマッチ','磨いた戦略で王座へ'],['event','trophy','CROWN CHALLENGERS','イベント戦',EVENT_DECKS.length+'種の環境デッキに挑戦']].map(([id,ic,en,jp,caption])=>`<button class="home-mode home-mode-${id}" data-action="${id}-mode"><i>${icon(ic)}</i><span><small>${en}</small><strong>${jp}</strong><em>${caption}</em></span></button>`).join('')}</div>
     <section class="home-showcase" aria-labelledby="court-title">
       <div class="home-scenery" aria-hidden="true"></div>
-      <div class="home-intro"><p class="court-kicker">BATTLE COMMAND</p><h1 id="court-title">その一手に、<br><em>王の意志を。</em></h1><p>ようこそ、${esc(data.playerName)}。<br>七つの源と、君だけの36枚。</p><div class="home-edition"><span>BK05 · DREAM REALM</span><strong>折紙・玻璃・影絵・彩墨。夢が戦術になる。</strong></div></div>
+      <div class="home-intro"><p class="court-kicker">THE ROYAL GALLERY</p><h1 id="court-title">その一手に、<br><em>王の意志を。</em></h1><p>ようこそ、${esc(data.playerName)}。<br>七つの源と、君だけの36枚。</p><div class="home-edition"><span>BK05 · DREAM REALM</span><strong>折紙・玻璃・影絵・彩墨。夢が戦術になる。</strong></div></div>
       <div class="home-card-fan" aria-label="注目のカード">${['F0515','F0518','F0522'].map(id=>cardMarkup(getCard(id),{classes:'home-featured-card',artContext:id==='B0512'&&data.activeDeckId==='operator-kirahara-v1'&&data.deckIds.includes(id)?'active':'public'})).join('')}</div><div class="home-stage-foot"><span>${expansion.editionLabel}・${expansion.name}</span><button class="court-expansion-link" data-action="expansion-shop" data-pack="${expansion.id}"><strong>幻彩の夢界へ。</strong>${icon('chevron-right')}</button><span>全${fmt(CARDS.length)}枚</span></div>
     </section>
     <aside class="home-command">
