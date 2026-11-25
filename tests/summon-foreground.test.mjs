@@ -141,9 +141,9 @@ test('coordinator runs FIFO and starts a timeout only when each extraction start
   assert.equal(worker.sent.length, 1);
   assert.deepEqual([...h.timers.values()].map(v => v.delay), [90000]);
   assert.deepEqual(Object.keys(worker.sent[0]).sort(), ['height', 'id', 'pixels', 'type', 'width']);
-  assert.equal(worker.sent[0].width, 192);
-  assert.equal(worker.sent[0].height, 192);
-  assert.equal(worker.sent[0].pixels.byteLength, 192 * 192 * 4);
+  assert.equal(worker.sent[0].width, 320);
+  assert.equal(worker.sent[0].height, 320);
+  assert.equal(worker.sent[0].pixels.byteLength, 320 * 320 * 4);
   const mask = new Uint8ClampedArray(FOREGROUND_INPUT_SIZE ** 2); mask.fill(255, mask.length / 2);
   worker.emit({type: 'result', id: worker.sent[0].id, width: FOREGROUND_INPUT_SIZE, height: FOREGROUND_INPUT_SIZE, mask: mask.buffer});
   const result = await first;

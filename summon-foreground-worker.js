@@ -51,7 +51,7 @@ async function initialize() {
   ort.env.wasm.wasmPaths = runtime.href;
   // This production graph has 192px input/output shapes; weights and
   // operators are unchanged. Avoid retaining the larger inference arena.
-  session = await ort.InferenceSession.create(new URL('u2netp-192.onnx', runtime).href, {
+  session = await ort.InferenceSession.create(new URL('u2netp.onnx', runtime).href, {
     executionProviders: ['wasm'], graphOptimizationLevel: 'all',
     enableCpuMemArena: false, enableMemPattern: false,
   });

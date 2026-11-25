@@ -2,7 +2,7 @@
  * Original artwork stays in the browser: only RGBA pixels enter the worker,
  * and only a one-channel mask returns. There is no persistent image cache.
  */
-export const FOREGROUND_INPUT_SIZE = 192;
+export const FOREGROUND_INPUT_SIZE = 320;
 const STARTUP_TIMEOUT = 120000, EXTRACTION_TIMEOUT = 90000, IDLE_RELEASE_DELAY = 12000;
 const MAX_PIXELS = 4096 * 4096;
 
