@@ -5,6 +5,14 @@
 .summon-anchor{position:absolute;inset:3% -12% 31%;display:block;pointer-events:none}
 .bk-summon-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none!important;user-select:none;touch-action:none}
 
+/* The tabletop is opaque: retain the turn indicator above the scene without
+   intercepting input on a standing creature behind the transparent row. */
+html.bk-fit body .duel-shell[data-field] .arena[data-battle-camera="angled"] .midline>.turn-label{
+ position:relative;z-index:4;pointer-events:none;color:#c1e7ed;
+ background:none;text-shadow:0 1px 3px #02131b,0 0 6px #02131b;
+}
+html.bk-fit body .duel-shell[data-field] .arena[data-battle-camera="angled"] .turn-label strong{color:#bdf8ff}
+
 html.bk-fit body .duel-shell[data-field] .arena[data-battle-camera="angled"]>.field-row{
  position:relative;z-index:3;overflow:visible;pointer-events:none;
 }

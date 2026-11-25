@@ -121,6 +121,21 @@ async function assertReadableModal(label,{fullViewport=false,controls=[],body=[]
  * rectangle deliberately stays in physical screen coordinates for rotated
  * portrait play; layoutRect is only used for logical geometry assertions. */
 async function pointerClick(selector,mobile,label){
+ await evaluate(`(()=>{
+  const identify=e=>e?{tag:e.tagName,action:e.closest?.('[data-action]')?.dataset.action,uid:e.closest?.('[data-uid]')?.dataset.uid,player:e.closest?.('[data-player]')?.dataset.player}:null;
+  const probe={label:${JSON.stringify(label)},selector:${JSON.stringify(selector)},events:[]};window.__bkPointerProbe=probe;
+  window.__bkPointerProbeCleanup?.();
+  const trace=event=>{
+   const target=document.querySelector(probe.selector),point=document.elementFromPoint(event.clientX,event.clientY);
+   const entry={type:event.type,trusted:event.isTrusted,x:event.clientX,y:event.clientY,target:identify(event.target),hit:identify(point),requested:target?.getBoundingClientRect().toJSON(),selected:document.querySelector('.field-unit.selected')?.dataset.uid,targets:[...document.querySelectorAll('.field-unit.targetable')].map(e=>e.dataset.uid)};probe.events.push(entry);
+   queueMicrotask(()=>{entry.after={targetConnected:event.target.isConnected,selected:document.querySelector('.field-unit.selected')?.dataset.uid,targets:[...document.querySelectorAll('.field-unit.targetable')].map(e=>e.dataset.uid)};});
+   if(probe.events.length>20)probe.events.shift();
+  };
+  const types=['pointerdown','mousedown','pointerup','mouseup','click'];
+  types.forEach(type=>document.addEventListener(type,trace,true));
+  window.__bkPointerProbeCleanup=()=>types.forEach(type=>document.removeEventListener(type,trace,true));
+  return true;
+ })()`);
  const point=await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e||e.disabled)return null;const r=e.getBoundingClientRect(),x=r.x+r.width*.5,y=r.y+r.height*.36,hit=document.elementFromPoint(x,y);return {x,y,width:r.width,height:r.height,unobstructed:!!hit&&(hit===e||e.contains(hit))}})()`);
  assert.ok(point&&point.width>=24&&point.height>=24,label+' has a usable visible hit target '+JSON.stringify(point));
  assert.equal(point.unobstructed,true,label+' target is not covered by another control');
@@ -582,6 +597,12 @@ try{
  console.log('Layout smoke passed: entry, home, deck, collection, shop, rules, solo, practice, room, rank, details, battle and every chapter in both guides; eight desktop/mobile viewports including portrait touch landscape fallback; readable account workspaces, conflict/code/device pages and profile/settings/analysis dialogs; persistent original-art summons, motion-off, rerenders and creature removal on desktop/mobile');
  }
 }catch(error){
+ try{
+  const diagnostic=await evaluate(`(()=>({pointer:window.__bkPointerProbe||null,selected:document.querySelector('.duel-help')?.dataset.selection,modal:document.querySelector('#modal-root .modal')?.getAttribute('aria-label'),units:[...document.querySelectorAll('.field-unit')].map(e=>({uid:e.dataset.uid,player:e.dataset.player,classes:e.className,rect:e.getBoundingClientRect().toJSON()})),viewport:layoutViewport()}))()`);
+  await mkdir('artifacts/layout',{recursive:true});
+  await writeFile('artifacts/layout/failure.json',JSON.stringify({error:error.stack||String(error),exceptions,...diagnostic},null,2));
+  console.error('Browser failure diagnostics',JSON.stringify({exceptions,...diagnostic}));
+ }catch{}
  try{
   const screenshot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
   await mkdir('artifacts/layout',{recursive:true});
