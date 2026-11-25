@@ -421,7 +421,7 @@ try{
    await click('#settings-account [data-action=online-name]');await waitElement('#online-nickname');await delay(300);
    assert.equal(await evaluate('document.querySelectorAll(".profile-options .profile-option").length'),7);
    await assertReadableModal(width+'x'+height+' profile',{controls:['.modal-close','#online-nickname','.profile-options .profile-option','[data-action=online-name-save]'],body:['.modal-intro','#online-nickname'],labels:['.profile-name-label','.profile-choice-label','.profile-option','.modal-actions button']});
-   await click('.modal-close');await click('.navigation-dock [data-nav=home]');await click('[data-bk-screen-tab=command]');await delay(160);await click('[data-action=deck-analysis]');await waitElement('.deck-check-summary');await delay(300);
+   await click('.modal-close');await click('.navigation-dock [data-nav=home]');await waitElement('[data-bk-screen-tab=command]');await click('[data-bk-screen-tab=command]');await delay(160);await click('[data-action=deck-analysis]');await waitElement('.deck-check-summary');await delay(300);
    await assertReadableModal(width+'x'+height+' deck analysis',{controls:['.modal-close','.modal-actions button'],body:['.modal-intro','.deck-check-note'],labels:['.deck-check-summary>div','.deck-curve>div>span','.modal-actions button']});
    assert.equal(await evaluate('(()=>{const curve=document.querySelector(".deck-curve");return curve.scrollHeight<=curve.clientHeight+2})()'),true,'The chart includes all bar labels without overflowing into the advice row');
    await click('.modal-close');
